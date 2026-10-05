@@ -22,7 +22,7 @@
   <string name="mail_settings_content_search_indexing_resume">Узнавіць</string>
   <string name="mail_settings_content_search_indexing_description">Нядаўнія лісты будуць праіндэксаваны першымі. Усе праіндэксаваныя паведамленні даступны для пошуку, пакуль ідзе індэксацыя.</string>
   <string name="mail_settings_content_search_on_this_device_section">На гэтай прыладзе</string>
-  <string name="mail_settings_content_search_index_size">Памер індэксу</string>
+  <string name="mail_settings_content_search_index_size">Памер індэкса</string>
   <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
   <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальныя даныя пошуку</string>

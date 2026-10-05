@@ -10,18 +10,18 @@
   <string name="mail_settings_content_search_preparing_status">Valmistellaan…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Odotetaan Wi-Fi-yhteyttä</string>
   <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
-  <string name="mail_settings_content_search_failed_retry">Try again</string>
+  <string name="mail_settings_content_search_failed_retry">Yritä uudelleen</string>
   <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
-  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_indexing_section">Indeksoidaan</string>
   <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
   <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
-  <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
-  <string name="mail_settings_content_search_indexing_paused">Paused</string>
-  <string name="mail_settings_content_search_indexing_pause">Pause</string>
-  <string name="mail_settings_content_search_indexing_resume">Resume</string>
+  <string name="mail_settings_content_search_indexing_up_to_date">Ajan tasalla</string>
+  <string name="mail_settings_content_search_indexing_paused">Pysäytetty</string>
+  <string name="mail_settings_content_search_indexing_pause">Pysäytä</string>
+  <string name="mail_settings_content_search_indexing_resume">Jatka</string>
   <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
-  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_on_this_device_section">Tällä laitteella</string>
   <string name="mail_settings_content_search_index_size">Index size</string>
   <string name="mail_settings_content_search_clear_data_button">Tyhjennä paikalliset hakutiedot</string>
   <string name="mail_settings_content_search_clear_data_description">Paikallisten hakutietojen tyhjentäminen poistaa viestien sisällön haun käytöstä. Voit ottaa sen takaisin käyttöön milloin tahansa.</string>
@@ -30,36 +30,36 @@
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Tyhjennä tiedot</string>
   <string name="content_search_bottomsheet_title">Mobile data usage</string>
   <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
-  <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
+  <string name="content_search_bottomsheet_start_indexing">Aloita indeksointi</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
   <string name="content_search_no_results_description">Kokeile eri hakusanoja tai tarkista oikeinkirjoitus.</string>
   <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
-  <string name="content_search_no_results_learn_more">Learn more..</string>
+  <string name="content_search_no_results_learn_more">Lue lisää..</string>
   <string name="content_search_no_results_set_up_action">Set up content search</string>
-  <string name="content_search_failed_title">Search failed</string>
+  <string name="content_search_failed_title">Haku epäonnistui</string>
   <string name="content_search_failed_description">Something went wrong. Please try again.</string>
-  <string name="content_search_failed_retry">Try again</string>
+  <string name="content_search_failed_retry">Yritä uudelleen</string>
   <string name="content_search_set_up_banner_title">Search inside emails too</string>
   <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
-  <string name="content_search_set_up_banner_turn_on">Set up now</string>
-  <string name="content_search_set_up_banner_not_now">Not now</string>
-  <string name="content_search_indexing_complete_banner_title">All done!</string>
+  <string name="content_search_set_up_banner_turn_on">Määritä nyt</string>
+  <string name="content_search_set_up_banner_not_now">Ei nyt</string>
+  <string name="content_search_indexing_complete_banner_title">Kaikki valmista!</string>
   <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
-  <string name="content_search_indexing_complete_banner_got_it">Got it</string>
+  <string name="content_search_indexing_complete_banner_got_it">Selvä</string>
   <string name="content_search_placeholder_text">Etsi</string>
   <string name="content_search_clear_query_content_description">Tyhjennä hakusanat</string>
   <string name="content_search_close_content_description">Sulje haku</string>
   <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
-  <string name="content_search_results_title">Results</string>
+  <string name="content_search_results_title">Tulokset</string>
   <plurals name="content_search_results_title_with_count">
-    <item quantity="one">%1$d Result</item>
-    <item quantity="other">%1$d Results</item>
+    <item quantity="one">%1$d Tulos</item>
+    <item quantity="other">%1$d Tulosta</item>
   </plurals>
   <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Recent mail searches</string>
-  <string name="content_search_clear_recent_searches">Clear all</string>
+  <string name="content_search_clear_recent_searches">Tyhjennä kaikki</string>
   <string name="content_search_previously_found_title">Aiemmin löydetyt</string>
   <string name="content_search_dismiss_recent_search_content_description">Poista \"%1$s\" viimeisimmistä hauista</string>
   <!-- Indexing progress -->
@@ -67,7 +67,7 @@
   <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
-  <string name="content_search_indexing_see_details">See details</string>
+  <string name="content_search_indexing_see_details">Näytä tiedot</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Poistetaanko pysyvästi?</string>
   <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>

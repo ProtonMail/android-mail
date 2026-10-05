@@ -5,7 +5,7 @@
   <string name="mail_settings_content_search_learn_more">Saiba mais..</string>
   <string name="mail_settings_content_search_toggle_title">Pesquisa em conteúdo de e-mail</string>
   <string name="mail_settings_content_search_mobile_data_title">Download usando dados móveis</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Use os dados moveis para continuar baixando quando perder o Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Preparando %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Aguardando por Wi-Fi…</string>
@@ -28,33 +28,33 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Limpar dados de pesquisa locais</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Limpar dados</string>
-  <string name="content_search_bottomsheet_title">Mobile data usage</string>
-  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_title">Uso de dados móveis</string>
+  <string name="content_search_bottomsheet_description">Os e-mails da sua caixa de correio serão descarregados e preparados para serem pesquisados.</string>
   <string name="content_search_bottomsheet_start_indexing">Iniciar indexagem</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
   <string name="content_search_no_results_description">Tente usar palavras-chave diferentes ou verifique a ortografia.</string>
   <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
   <string name="content_search_no_results_learn_more">Saiba mais..</string>
-  <string name="content_search_no_results_set_up_action">Set up content search</string>
-  <string name="content_search_failed_title">Search failed</string>
-  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
-  <string name="content_search_failed_retry">Try again</string>
-  <string name="content_search_set_up_banner_title">Search inside emails too</string>
-  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
-  <string name="content_search_set_up_banner_turn_on">Set up now</string>
+  <string name="content_search_no_results_set_up_action">Configurar em conteúdo de e-mail</string>
+  <string name="content_search_failed_title">Erro de pesquisa</string>
+  <string name="content_search_failed_description">Ocorreu um erro. Tente novamente.</string>
+  <string name="content_search_failed_retry">Tentar novamente</string>
+  <string name="content_search_set_up_banner_title">Pesquise dentro de e-mails também</string>
+  <string name="content_search_set_up_banner_description">Encontre palavras e frases dentro de seus e-mais, não apenas os remetentes e os assuntos.</string>
+  <string name="content_search_set_up_banner_turn_on">Configurar agora</string>
   <string name="content_search_set_up_banner_not_now">Agora não</string>
-  <string name="content_search_indexing_complete_banner_title">All done!</string>
+  <string name="content_search_indexing_complete_banner_title">Tudo pronto!</string>
   <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
-  <string name="content_search_indexing_complete_banner_got_it">Got it</string>
+  <string name="content_search_indexing_complete_banner_got_it">Entendi</string>
   <string name="content_search_placeholder_text">Pesquisar</string>
   <string name="content_search_clear_query_content_description">Limpar consulta de pesquisa</string>
   <string name="content_search_close_content_description">Fechar pesquisa</string>
   <string name="content_search_first_run_description">Digite um nome, assunto ou palavra-chave para pesquisar</string>
-  <string name="content_search_results_title">Results</string>
+  <string name="content_search_results_title">Resultados</string>
   <plurals name="content_search_results_title_with_count">
-    <item quantity="one">%1$d Result</item>
-    <item quantity="other">%1$d Results</item>
+    <item quantity="one">%1$d Resultado</item>
+    <item quantity="other">%1$d Resultados</item>
   </plurals>
   <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
