@@ -164,9 +164,17 @@ data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
 
 data object NpsFeedbackEnabled : FeatureFlagDefinition(
     key = "NPSFeedbackAndroidMail",
-    name = "Show NPS survey",
+    name = "NPS survey: user targeted (backend)",
     category = FeatureFlagCategory.Rating,
-    description = "Show the NPS survey bottom sheet. The backend turns it off once the survey is answered.",
+    description = "Set by the backend for users it wants to survey, and turned off once they answer.",
+    defaultValue = false
+)
+
+data object NpsEnabledInApp : FeatureFlagDefinition(
+    key = "MailAndroidV7NpsSurvey",
+    name = "NPS survey: enabled in this app (client)",
+    category = FeatureFlagCategory.Rating,
+    description = "Turns the survey on for this app version. Users still need the backend flag.",
     defaultValue = false
 )
 

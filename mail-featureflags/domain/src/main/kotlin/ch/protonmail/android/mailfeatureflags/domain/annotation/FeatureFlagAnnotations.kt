@@ -98,6 +98,10 @@ annotation class IsNpsFeedbackEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsNpsEnabledInApp
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsRateOnUpsellEnabled
 
 @Qualifier

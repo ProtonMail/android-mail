@@ -35,6 +35,9 @@ import kotlin.test.assertEquals
 class ShouldShowNpsTest {
 
     private val inMemoryMailboxRepository = mockk<InMemoryMailboxRepository>()
+    private val isNpsEnabledInApp = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns true
+    }
     private val isNpsFeedbackEnabled = mockk<FeatureFlag<Boolean>> {
         coEvery { get() } returns true
     }
@@ -42,7 +45,12 @@ class ShouldShowNpsTest {
         coEvery { get() } returns false
     }
 
-    private val shouldShowNps = ShouldShowNps(inMemoryMailboxRepository, isNpsFeedbackEnabled, showRatingBooster)
+    private val shouldShowNps = ShouldShowNps(
+        inMemoryMailboxRepository,
+        isNpsEnabledInApp,
+        isNpsFeedbackEnabled,
+        showRatingBooster
+    )
 
     @AfterTest
     fun tearDown() {
@@ -74,9 +82,22 @@ class ShouldShowNpsTest {
     }
 
     @Test
-    fun `given the NPS flag is off, when back from the reader, then the survey is not offered`() = runTest {
+    fun `given the backend NPS flag is off, when back from the reader, then the survey is not offered`() = runTest {
         // Given
         coEvery { isNpsFeedbackEnabled.get() } returns false
+        every { inMemoryMailboxRepository.observeScreenViewCount() } returns flowOf(1)
+
+        // When
+        val result = shouldShowNps().toList()
+
+        // Then
+        assertEquals(listOf(false), result)
+    }
+
+    @Test
+    fun `given the client NPS flag is off, when back from the reader, then the survey is not offered`() = runTest {
+        // Given
+        coEvery { isNpsEnabledInApp.get() } returns false
         every { inMemoryMailboxRepository.observeScreenViewCount() } returns flowOf(1)
 
         // When

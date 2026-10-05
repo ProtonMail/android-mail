@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsEnabledInApp
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsFeedbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
@@ -29,10 +30,12 @@ import javax.inject.Inject
 
 /**
  * Whether to offer the NPS survey: once the user is back on the mailbox from the message reader.
+ * Both the client flag, which gates the feature per app version, and the backend flag must be on.
  * The rating booster keeps the visit it is due on, so the two never show at the same time.
  */
 class ShouldShowNps @Inject constructor(
     private val inMemoryMailboxRepository: InMemoryMailboxRepository,
+    @IsNpsEnabledInApp private val isNpsEnabledInApp: FeatureFlag<Boolean>,
     @IsNpsFeedbackEnabled private val isNpsFeedbackEnabled: FeatureFlag<Boolean>,
     @IsShowRatingBoosterEnabled private val showRatingBooster: FeatureFlag<Boolean>
 ) {
@@ -41,6 +44,7 @@ class ShouldShowNps @Inject constructor(
         .map { screenViewCount ->
             screenViewCount >= SCREEN_VIEW_COUNT_THRESHOLD &&
                 !isRatingBoosterDue(screenViewCount) &&
+                isNpsEnabledInApp.get() &&
                 isNpsFeedbackEnabled.get()
         }
         .distinctUntilChanged()
