@@ -36,6 +36,8 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlig
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageWebViewPoolEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsEnabledInApp
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsUserTargeted
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
@@ -43,8 +45,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRegisterDevice
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRestrictMessageWebViewHeightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsEnabledInApp
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsFeedbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
@@ -67,6 +67,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.NpsEnabledInApp
+import ch.protonmail.android.mailfeatureflags.domain.model.NpsUserTargeted
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellExperiment
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellOptOut
@@ -76,8 +78,6 @@ import ch.protonmail.android.mailfeatureflags.domain.model.RegisterDeviceTokenWi
 import ch.protonmail.android.mailfeatureflags.domain.model.RestrictMessageWebViewHeight
 import ch.protonmail.android.mailfeatureflags.domain.model.SdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SdkUpgradesReadEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.NpsEnabledInApp
-import ch.protonmail.android.mailfeatureflags.domain.model.NpsFeedbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.SpringOffer2026Wave2Enabled
@@ -265,14 +265,13 @@ object FeatureFlagsModule {
 
     @Provides
     @Singleton
-    @IsNpsFeedbackEnabled
-    fun provideIsNpsFeedbackEnabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = NpsFeedbackEnabled.key, false)
+    @IsNpsUserTargeted
+    fun provideIsNpsUserTargeted(factory: BooleanFeatureFlagFactory) = factory.create(key = NpsUserTargeted.key, false)
 
     @Provides
     @IntoSet
     @Singleton
-    fun provideNpsFeedbackEnabledDef(): FeatureFlagDefinition = NpsFeedbackEnabled
+    fun provideNpsUserTargetedDef(): FeatureFlagDefinition = NpsUserTargeted
 
     @Provides
     @Singleton
