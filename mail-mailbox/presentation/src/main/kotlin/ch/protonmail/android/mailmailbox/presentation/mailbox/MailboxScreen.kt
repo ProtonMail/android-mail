@@ -229,6 +229,10 @@ fun MailboxScreen(
         actions.onShowRatingBooster()
     }
 
+    ConsumableLaunchedEffect(mailboxState.showNps) {
+        actions.onShowNps()
+    }
+
     val completeActions = actions.copy(
         navigateToComposer = { viewModel.submit(MailboxViewAction.NavigateToComposer) },
         onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
@@ -1250,6 +1254,7 @@ object MailboxScreen {
         val onCustomizeToolbar: () -> Unit,
         val validateUserSession: () -> Unit,
         val onShowRatingBooster: () -> Unit,
+        val onShowNps: () -> Unit,
         val onCategoryItemClicked: (CategoryItemUiModel) -> Unit
     ) {
 
@@ -1312,6 +1317,7 @@ object MailboxScreen {
                 onCustomizeToolbar = {},
                 validateUserSession = {},
                 onShowRatingBooster = {},
+                onShowNps = {},
                 onCategoryItemClicked = {}
             )
         }

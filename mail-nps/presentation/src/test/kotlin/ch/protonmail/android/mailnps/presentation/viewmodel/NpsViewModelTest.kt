@@ -22,11 +22,9 @@ import app.cash.turbine.test
 import arrow.core.Either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnps.domain.model.NpsScore
 import ch.protonmail.android.mailnps.domain.usecase.DismissNps
 import ch.protonmail.android.mailnps.domain.usecase.SubmitNpsFeedback
-import ch.protonmail.android.mailnps.presentation.model.NpsEligibilityState
 import ch.protonmail.android.mailnps.presentation.model.NpsOperation.NpsAction
 import ch.protonmail.android.mailnps.presentation.reducer.NpsReducer
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -60,9 +58,6 @@ internal class NpsViewModelTest {
     private val dismissNps = mockk<DismissNps> {
         coEvery { this@mockk.invoke(any()) } returns Unit.right()
     }
-    private val isNpsFeedbackEnabled = mockk<FeatureFlag<Boolean>> {
-        coEvery { get() } returns true
-    }
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
@@ -71,7 +66,6 @@ internal class NpsViewModelTest {
         submitNpsFeedback,
         dismissNps,
         NpsReducer(),
-        isNpsFeedbackEnabled,
         observePrimaryUserId
     )
 
@@ -191,49 +185,6 @@ internal class NpsViewModelTest {
         // Then
         assertFalse(viewModel.state.value.isShareEnabled)
         response.complete(Unit.right())
-    }
-
-    @Test
-    fun `given the NPS flag is enabled, when eligibility is observed, then the survey is shown`() = runTest {
-        // Given
-        coEvery { isNpsFeedbackEnabled.get() } returns true
-
-        // When
-        val viewModel = viewModel()
-
-        // Then
-        viewModel.eligibility.test {
-            assertEquals(NpsEligibilityState.Show, awaitItem())
-        }
-    }
-
-    @Test
-    fun `given the NPS flag is disabled, when eligibility is observed, then the survey is hidden`() = runTest {
-        // Given
-        coEvery { isNpsFeedbackEnabled.get() } returns false
-
-        // When
-        val viewModel = viewModel()
-
-        // Then
-        viewModel.eligibility.test {
-            assertEquals(NpsEligibilityState.Hide, awaitItem())
-        }
-    }
-
-    @Test
-    fun `given no signed in user, when eligibility is observed, then it stays loading`() = runTest {
-        // Given
-        every { observePrimaryUserId() } returns flowOf(null)
-
-        // When
-        val viewModel = viewModel()
-
-        // Then
-        viewModel.eligibility.test {
-            assertEquals(NpsEligibilityState.Loading, awaitItem())
-            expectNoEvents()
-        }
     }
 
     private companion object {

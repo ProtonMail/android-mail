@@ -80,7 +80,8 @@ object MailboxStateSampleData {
         bottomSheetState = null,
         composerNavigationState = MailboxComposerNavigationState.Enabled(),
         error = Effect.empty(),
-        showRatingBooster = Effect.empty()
+        showRatingBooster = Effect.empty(),
+        showNps = Effect.empty()
     )
 
     val Inbox = MailboxState(
@@ -122,7 +123,8 @@ object MailboxStateSampleData {
         bottomSheetState = null,
         composerNavigationState = MailboxComposerNavigationState.Enabled(),
         error = Effect.empty(),
-        showRatingBooster = Effect.empty()
+        showRatingBooster = Effect.empty(),
+        showNps = Effect.empty()
     )
 
     val AllMail = MailboxState(
@@ -161,7 +163,8 @@ object MailboxStateSampleData {
         bottomSheetState = null,
         composerNavigationState = MailboxComposerNavigationState.Enabled(),
         error = Effect.empty(),
-        showRatingBooster = Effect.empty()
+        showRatingBooster = Effect.empty(),
+        showNps = Effect.empty()
     )
 
     val Trash = Inbox.copy(
@@ -176,7 +179,8 @@ object MailboxStateSampleData {
         currentMailLabel: MailLabel = inboxDynamicLabel,
         bottomSheetState: BottomSheetState? = null,
         error: Effect<TextUiModel> = Effect.empty(),
-        showRatingBooster: Effect<Unit> = Effect.empty()
+        showRatingBooster: Effect<Unit> = Effect.empty(),
+        showNps: Effect<Unit> = Effect.empty()
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
@@ -213,6 +217,7 @@ object MailboxStateSampleData {
         bottomSheetState = bottomSheetState,
         composerNavigationState = MailboxComposerNavigationState.Enabled(),
         error = error,
-        showRatingBooster = showRatingBooster
+        showRatingBooster = showRatingBooster,
+        showNps = showNps
     )
 }

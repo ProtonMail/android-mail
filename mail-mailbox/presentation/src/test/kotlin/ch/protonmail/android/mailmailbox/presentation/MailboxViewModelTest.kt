@@ -121,6 +121,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveVal
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ObserveViewModeChanged
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.SetActiveCategoryLabel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowNps
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateIncludeFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.UpdateUnreadFilter
@@ -239,6 +240,10 @@ internal class MailboxViewModelTest {
 
     private val shouldShowRatingBooster = mockk<ShouldShowRatingBooster> {
         every { this@mockk(any()) } returns flowOf(false)
+    }
+
+    private val shouldShowNps = mockk<ShouldShowNps> {
+        every { this@mockk() } returns flowOf(false)
     }
 
     private val selectMailLabelId = mockk<SelectMailLabelId> {
@@ -476,6 +481,7 @@ internal class MailboxViewModelTest {
             observeValidSenderAddress = observeValidSenderAddress,
             shouldShowRatingBooster = shouldShowRatingBooster,
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
+            shouldShowNps = shouldShowNps,
             setActiveCategoryLabel = setActiveCategoryLabel,
             selectCategory = selectCategory,
             observeCategoryViewStatus = observeCategoryViewStatus
@@ -523,7 +529,8 @@ internal class MailboxViewModelTest {
                 actionResult = Effect.empty(),
                 composerNavigationState = MailboxComposerNavigationState.Enabled(),
                 error = Effect.empty(),
-                showRatingBooster = Effect.empty()
+                showRatingBooster = Effect.empty(),
+                showNps = Effect.empty()
             )
 
             assertEquals(expected, actual)
@@ -1381,7 +1388,8 @@ internal class MailboxViewModelTest {
                 actionResult = Effect.empty(),
                 composerNavigationState = MailboxComposerNavigationState.Enabled(),
                 error = Effect.empty(),
-                showRatingBooster = Effect.empty()
+                showRatingBooster = Effect.empty(),
+                showNps = Effect.empty()
             )
 
             // when
@@ -1419,7 +1427,8 @@ internal class MailboxViewModelTest {
                 actionResult = Effect.empty(),
                 composerNavigationState = MailboxComposerNavigationState.Enabled(),
                 error = Effect.empty(),
-                showRatingBooster = Effect.empty()
+                showRatingBooster = Effect.empty(),
+                showNps = Effect.empty()
             )
 
             // when
@@ -4547,6 +4556,22 @@ internal class MailboxViewModelTest {
             }
             coVerify(exactly = 1) {
                 recordRatingBoosterTriggered.invoke()
+            }
+        }
+    }
+
+    @Test
+    fun `should offer the NPS survey once when it should be shown`() = runTest {
+        // Given
+        every { shouldShowNps() } returns flowOf(true, false, true)
+
+        // When
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowNps)
             }
         }
     }

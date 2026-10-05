@@ -70,7 +70,8 @@ class MailboxReducer @Inject constructor(
             actionResult = currentState.toNewActionMessageStateFrom(operation),
             composerNavigationState = currentState.toComposerNavigationState(operation),
             error = currentState.toNewErrorBarState(operation),
-            showRatingBooster = currentState.toNewShowRatingBoosterState(operation)
+            showRatingBooster = currentState.toNewShowRatingBoosterState(operation),
+            showNps = currentState.toNewShowNpsState(operation)
         )
 
     private fun MailboxState.toNewCategoryViewStateFrom(operation: MailboxOperation): CategoryViewState {
@@ -243,6 +244,14 @@ class MailboxReducer @Inject constructor(
             Effect.of(Unit)
         } else {
             showRatingBooster
+        }
+    }
+
+    private fun MailboxState.toNewShowNpsState(operation: MailboxOperation): Effect<Unit> {
+        return if (operation is MailboxEvent.ShowNps) {
+            Effect.of(Unit)
+        } else {
+            showNps
         }
     }
 }

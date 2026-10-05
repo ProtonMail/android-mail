@@ -21,7 +21,6 @@ package ch.protonmail.android.navigation
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
-import ch.protonmail.android.mailnps.presentation.model.NpsDisplayState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
@@ -39,7 +38,6 @@ sealed interface HomeInterstitialPriority {
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
     data class SummerCampaign(val state: SummerCampaignModalState.Show) : HomeInterstitialPriority
     data class FallPromo(val state: FallPromoModalState.Show) : HomeInterstitialPriority
-    data object Nps : HomeInterstitialPriority
     data object None : HomeInterstitialPriority
 }
 
@@ -52,9 +50,7 @@ fun resolveHomeInterstitialPriority(
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
     summerCampaignState: SummerCampaignModalState,
-    fallPromoState: FallPromoModalState,
-    // NPS sits lowest, so it only shows when nothing else needs the interstitial slot.
-    npsDisplayState: NpsDisplayState
+    fallPromoState: FallPromoModalState
 ): HomeInterstitialPriority {
     // Wait until all states are loaded
     @Suppress("ComplexCondition")
@@ -83,7 +79,6 @@ fun resolveHomeInterstitialPriority(
             HomeInterstitialPriority.SummerCampaign(summerCampaignState)
         blackFridayState is BlackFridayModalState.Show -> HomeInterstitialPriority.BlackFriday(blackFridayState)
         springSaleState is SpringPromoModalState.Show -> HomeInterstitialPriority.SpringPromo(springSaleState)
-        npsDisplayState is NpsDisplayState.Show -> HomeInterstitialPriority.Nps
         else -> HomeInterstitialPriority.None
     }
 }

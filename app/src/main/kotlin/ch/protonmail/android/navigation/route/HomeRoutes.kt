@@ -104,6 +104,7 @@ internal fun NavGraphBuilder.addMailbox(
     showSnackbar: (type: SnackbarType) -> Unit,
     showFeatureMissingSnackbar: () -> Unit,
     onShowRatingBooster: () -> Unit,
+    onShowNps: () -> Unit,
     snackbarHeight: () -> Dp = { 0.dp }
 ) {
     composableWithTransitions(
@@ -146,7 +147,8 @@ internal fun NavGraphBuilder.addMailbox(
                 onCustomizeToolbar = {
                     navController.navigate(Destination.Screen.EditToolbarScreen(ToolbarType.List))
                 },
-                onShowRatingBooster = onShowRatingBooster
+                onShowRatingBooster = onShowRatingBooster,
+                onShowNps = onShowNps
             ),
             onEvent = onEvent,
             snackbarHeight = snackbarHeight()
