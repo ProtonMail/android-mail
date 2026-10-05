@@ -18,12 +18,8 @@
 
 package ch.protonmail.android.mailnps.presentation.ui
 
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +32,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -55,6 +53,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -70,10 +71,25 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailnps.domain.model.NpsScore
 import ch.protonmail.android.mailnps.presentation.R
 import ch.protonmail.android.mailnps.presentation.model.NpsState
+import kotlin.math.abs
+import kotlin.math.cos
+import kotlin.math.sin
+
+@Composable
+fun NpsBottomSheetContent(
+    state: NpsState,
+    actions: NpsBottomSheet.Actions,
+    modifier: Modifier = Modifier
+) {
+    // The sheet background is always light, so its content always uses the light palette, whatever the app theme.
+    ProtonTheme(isDark = false) {
+        NpsSheet(state = state, actions = actions, modifier = modifier)
+    }
+}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun NpsBottomSheetContent(
+private fun NpsSheet(
     state: NpsState,
     actions: NpsBottomSheet.Actions,
     modifier: Modifier = Modifier
@@ -115,7 +131,9 @@ fun NpsBottomSheetContent(
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Huge))
 
             FlowRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .selectableGroup(),
                 // Figma splits the scale into 0-5 and 6-10, even when a wider sheet could fit more per row.
                 maxItemsInEachRow = SCORE_BUTTONS_PER_ROW,
                 horizontalArrangement = Arrangement.spacedBy(
@@ -196,13 +214,15 @@ private fun NpsScoreButton(
 ) {
     val background = if (selected) ProtonTheme.colors.interactionBrandDefaultNorm else UnselectedScoreBackground
     val textColor = if (selected) SelectedScoreText else ProtonTheme.colors.textNorm
+    val scoreDescription = stringResource(R.string.nps_score_content_description, score.value)
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(ScoreButtonSize)
             .clip(RoundedCornerShape(ProtonDimens.CornerRadius.ExtraLarge))
             .background(background)
-            .clickable(onClick = onClick)
+            .selectable(selected = selected, role = Role.RadioButton, onClick = onClick)
+            .semantics(mergeDescendants = true) { contentDescription = scoreDescription }
             .padding(ProtonDimens.Spacing.MediumLight)
     ) {
         Text(
