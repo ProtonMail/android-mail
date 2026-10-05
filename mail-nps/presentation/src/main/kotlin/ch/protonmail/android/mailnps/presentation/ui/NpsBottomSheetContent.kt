@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailnps.presentation.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -161,39 +162,26 @@ private fun NpsSheet(
                 Caption(text = stringResource(R.string.nps_subtext_high))
             }
 
+            // The comment field and Share only appear once a score is picked; until then the note sits under the scale.
             AnimatedVisibility(visible = state.isScoreSelected) {
-                NpsCommentField(
-                    comment = state.comment,
-                    onCommentChanged = actions.onCommentChanged,
-                    modifier = Modifier.padding(top = ProtonDimens.Spacing.ExtraLarge)
-                )
+                Column {
+                    NpsCommentField(
+                        comment = state.comment,
+                        onCommentChanged = actions.onCommentChanged,
+                        modifier = Modifier.padding(top = ProtonDimens.Spacing.ExtraLarge)
+                    )
+
+                    Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Massive))
+
+                    NpsShareButton(enabled = state.isShareEnabled, onClick = actions.onShareClicked)
+                }
             }
 
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Massive))
-
-            ProtonSolidButton(
-                onClick = actions.onShareClicked,
-                enabled = state.isShareEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(ShareButtonHeight),
-                colors = ButtonDefaults.protonButtonColors(
-                    backgroundColor = ProtonTheme.colors.interactionBrandDefaultNorm,
-                    contentColor = ProtonTheme.colors.textInverted,
-                    disabledBackgroundColor = ProtonTheme.colors.interactionBrandDefaultDisabled,
-                    disabledContentColor = ProtonTheme.colors.brandMinus20
-                ),
-                shape = CircleShape
-            ) {
-                Text(
-                    text = stringResource(R.string.nps_share_button),
-                    style = ProtonTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
+            val privacyNoteSpacing by animateDpAsState(
+                targetValue = if (state.isScoreSelected) ProtonDimens.Spacing.Medium else ProtonDimens.Spacing.Massive,
+                label = "privacyNoteSpacing"
+            )
+            Spacer(modifier = Modifier.height(privacyNoteSpacing))
 
             Text(
                 text = stringResource(R.string.nps_privacy_note),
@@ -203,6 +191,31 @@ private fun NpsSheet(
                 modifier = Modifier.fillMaxWidth()
             )
         }
+    }
+}
+
+@Composable
+private fun NpsShareButton(enabled: Boolean, onClick: () -> Unit) {
+    ProtonSolidButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(ShareButtonHeight),
+        colors = ButtonDefaults.protonButtonColors(
+            backgroundColor = ProtonTheme.colors.interactionBrandDefaultNorm,
+            contentColor = ProtonTheme.colors.textInverted,
+            disabledBackgroundColor = ProtonTheme.colors.interactionBrandDefaultDisabled,
+            disabledContentColor = ProtonTheme.colors.brandMinus20
+        ),
+        shape = CircleShape
+    ) {
+        Text(
+            text = stringResource(R.string.nps_share_button),
+            style = ProtonTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
