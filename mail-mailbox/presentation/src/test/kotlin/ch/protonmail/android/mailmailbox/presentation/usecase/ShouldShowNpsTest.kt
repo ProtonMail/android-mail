@@ -38,7 +38,7 @@ class ShouldShowNpsTest {
     private val isNpsEnabledInApp = mockk<FeatureFlag<Boolean>> {
         coEvery { get() } returns true
     }
-    private val isNpsFeedbackEnabled = mockk<FeatureFlag<Boolean>> {
+    private val isNpsUserTargeted = mockk<FeatureFlag<Boolean>> {
         coEvery { get() } returns true
     }
     private val showRatingBooster = mockk<FeatureFlag<Boolean>> {
@@ -48,7 +48,7 @@ class ShouldShowNpsTest {
     private val shouldShowNps = ShouldShowNps(
         inMemoryMailboxRepository,
         isNpsEnabledInApp,
-        isNpsFeedbackEnabled,
+        isNpsUserTargeted,
         showRatingBooster
     )
 
@@ -84,7 +84,7 @@ class ShouldShowNpsTest {
     @Test
     fun `given the backend NPS flag is off, when back from the reader, then the survey is not offered`() = runTest {
         // Given
-        coEvery { isNpsFeedbackEnabled.get() } returns false
+        coEvery { isNpsUserTargeted.get() } returns false
         every { inMemoryMailboxRepository.observeScreenViewCount() } returns flowOf(1)
 
         // When

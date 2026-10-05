@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsEnabledInApp
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsFeedbackEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsUserTargeted
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmailbox.domain.repository.InMemoryMailboxRepository
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class ShouldShowNps @Inject constructor(
     private val inMemoryMailboxRepository: InMemoryMailboxRepository,
     @IsNpsEnabledInApp private val isNpsEnabledInApp: FeatureFlag<Boolean>,
-    @IsNpsFeedbackEnabled private val isNpsFeedbackEnabled: FeatureFlag<Boolean>,
+    @IsNpsUserTargeted private val isNpsUserTargeted: FeatureFlag<Boolean>,
     @IsShowRatingBoosterEnabled private val showRatingBooster: FeatureFlag<Boolean>
 ) {
 
@@ -45,7 +45,7 @@ class ShouldShowNps @Inject constructor(
             screenViewCount >= SCREEN_VIEW_COUNT_THRESHOLD &&
                 !isRatingBoosterDue(screenViewCount) &&
                 isNpsEnabledInApp.get() &&
-                isNpsFeedbackEnabled.get()
+                isNpsUserTargeted.get()
         }
         .distinctUntilChanged()
 

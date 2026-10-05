@@ -162,7 +162,7 @@ data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object NpsFeedbackEnabled : FeatureFlagDefinition(
+data object NpsUserTargeted : FeatureFlagDefinition(
     key = "NPSFeedbackAndroidMail",
     name = "NPS survey: user targeted (backend)",
     category = FeatureFlagCategory.Rating,
