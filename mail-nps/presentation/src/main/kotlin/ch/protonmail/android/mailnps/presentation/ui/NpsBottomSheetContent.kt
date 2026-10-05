@@ -173,7 +173,7 @@ private fun NpsSheet(
 
             ProtonSolidButton(
                 onClick = actions.onShareClicked,
-                enabled = state.isScoreSelected,
+                enabled = state.isShareEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(ShareButtonHeight),

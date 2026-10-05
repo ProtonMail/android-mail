@@ -24,9 +24,10 @@ import ch.protonmail.android.mailnps.domain.model.NpsScore
 
 /**
  * State of the NPS bottom sheet. The comment field and the enabled "Share" button only appear once a score
- * is picked, so both are derived from [selectedScore]. [isAnswered] is set once a score is shared or the
- * sheet is dismissed, so closing the sheet after sharing is not recorded as a dismissal. [dismiss] and
- * [showThankYou] are one-shot effects consumed by the host (close the sheet, show the thank-you toast).
+ * is picked, so both are derived from [selectedScore]. [isAnswered] is set as soon as Share is tapped or the
+ * sheet is dismissed, before the response is sent, so a second tap or a later dismissal records nothing.
+ * [dismiss] and [showThankYou] are one-shot effects consumed by the host (close the sheet, show the thank-you
+ * toast).
  */
 @Immutable
 data class NpsState(
@@ -38,6 +39,8 @@ data class NpsState(
 ) {
 
     val isScoreSelected: Boolean = selectedScore != null
+
+    val isShareEnabled: Boolean = isScoreSelected && !isAnswered
 
     companion object {
 

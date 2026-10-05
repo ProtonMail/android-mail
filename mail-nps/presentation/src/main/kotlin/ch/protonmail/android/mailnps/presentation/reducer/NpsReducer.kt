@@ -30,17 +30,16 @@ class NpsReducer @Inject constructor() {
     fun newStateFrom(current: NpsState, operation: NpsOperation): NpsState = when (operation) {
         is NpsAction.ScoreSelected -> current.copy(selectedScore = operation.score)
         is NpsAction.CommentChanged -> current.copy(comment = operation.comment)
-        // Side-effect-only actions: the ViewModel records the response and emits the matching event.
+        // Answered right away, so the response is only recorded once while it is being sent.
         is NpsAction.ShareClicked,
-        is NpsAction.SheetDismissed -> current
+        is NpsAction.SheetDismissed -> current.copy(isAnswered = true)
 
         is NpsEvent.Submitted -> current.copy(
-            isAnswered = true,
             showThankYou = Effect.of(Unit),
             dismiss = Effect.of(Unit)
         )
 
         // The host already closed the sheet, so there is nothing to dismiss.
-        is NpsEvent.Dismissed -> current.copy(isAnswered = true)
+        is NpsEvent.Dismissed -> current
     }
 }
