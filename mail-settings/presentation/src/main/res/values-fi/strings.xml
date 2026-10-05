@@ -29,7 +29,7 @@
   <string name="mail_settings_app">Sovelluksen mukauttaminen</string>
   <string name="mail_settings_content_search">Email content search</string>
   <string name="mail_settings_mailbox">Postilaatikon asetukset</string>
-  <string name="mail_settings_new_badge">New</string>
+  <string name="mail_settings_new_badge">Uusi</string>
   <string name="mail_settings_folders_labels">Kansiot ja tunnisteet</string>
   <string name="mail_settings_spam_and_custom_filters">Roskaposti ja suodattimet</string>
   <string name="mail_settings_privacy_and_security">Yksityisyys ja suojaus</string>

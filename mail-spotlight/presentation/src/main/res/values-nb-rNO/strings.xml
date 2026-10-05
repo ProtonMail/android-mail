@@ -53,22 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Søk er blitt bedre.</string>
   <string name="spotlight_screen_content_search_subtitle">Finn det som betyr noe, uten å ofre personvernet ditt.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_message_content_title">Hvert ord, nå søkbart</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Finn e-poster etter meldingsinnhold, ikke bare emne eller avsender.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Fremdeles ende-til-ende-kryptert</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Indeksering skjer på enheten, kryptert med nøkkelen din. Ingenting sendes til Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Fortsett der du slapp</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
-  <string name="spotlight_screen_whats_new_pill">What’s new</string>
-  <string name="spotlight_screen_content_search_button_continue">Continue</string>
-  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
-  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Gå raskt tilbake til nylige søk og treff. Lagret på enheten din for å bevare ende-til-ende-kryptering.</string>
+  <string name="spotlight_screen_whats_new_pill">Hva er nytt</string>
+  <string name="spotlight_screen_content_search_button_continue">Fortsett</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Slå på</string>
+  <string name="spotlight_screen_content_search_button_not_now">Ikke nå</string>
   <!-- How email content search works -->
-  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_title">Slik fungerer e-postinnholdssøk</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">E-postene dine lastes ned til denne telefonen</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">For å søke i e-postinnholdet laster Proton Mail sikkert ned en kopi til denne enheten.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">En privat indeks er bygget på enheten</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">En lett søkeindeks opprettes lokalt på enheten din. Tenk på det som et kart for å finne meldingene du leter etter.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Vi indekserer i bakgrunnen</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Det vil ta litt tid å indeksere e-postene, men du kan fortsette å bruke e-post som vanlig mens vi jobber i bakgrunnen.</string>
 </resources>

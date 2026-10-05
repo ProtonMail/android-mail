@@ -52,23 +52,23 @@
   <string name="spotlight_screen_category_view_button_dismiss">Inbox behouden zoals voorheen</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Zoeken is nu nog beter geworden.</string>
-  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_subtitle">Ontdek wat echt belangrijk is, zonder uw privacy op te geven.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Elk woord, nu doorzoekbaar</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Vind e-mails op berichtinhoud, niet alleen op onderwerp of afzender.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Nog steeds end-to-end versleuteld</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Het indexeren gebeurt op uw apparaat, gecodeerd met uw sleutel. Er wordt niets naar Proton gestuurd.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Ga verder waar u was gebleven</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
-  <string name="spotlight_screen_whats_new_pill">What’s new</string>
-  <string name="spotlight_screen_content_search_button_continue">Continue</string>
-  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
-  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Bekijk snel recente zoekopdrachten en resultaten. Deze worden op uw apparaat opgeslagen om end-to-end versleuteling te behouden.</string>
+  <string name="spotlight_screen_whats_new_pill">Nieuw</string>
+  <string name="spotlight_screen_content_search_button_continue">Doorgaan</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Zet aan</string>
+  <string name="spotlight_screen_content_search_button_not_now">Niet nu</string>
   <!-- How email content search works -->
-  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_title">Hoe het zoeken naar e-mailinhoud werkt</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Uw e-mails worden naar deze telefoon gedownload</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Om uw e-mailinhoud te doorzoeken, downloadt Proton Mail veilig een kopie naar dit apparaat.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Er wordt een privé-index op het apparaat gebouwd</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Er wordt lokaal op uw apparaat een afgeslankte zoekindex gemaakt. Zie het als een kaart waarop u de berichten kunt vinden die u zoekt.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We indexeren op de achtergrond</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Het indexeren van uw e-mails zal enige tijd in beslag nemen, maar u kunt mail blijven gebruiken zoals u gewend bent terwijl wij op de achtergrond werken.</string>
 </resources>

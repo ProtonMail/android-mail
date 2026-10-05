@@ -59,10 +59,10 @@
   <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Jatka siitä, mihin jäit</string>
   <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
-  <string name="spotlight_screen_whats_new_pill">What’s new</string>
-  <string name="spotlight_screen_content_search_button_continue">Continue</string>
-  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
-  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <string name="spotlight_screen_whats_new_pill">Mitä uutta</string>
+  <string name="spotlight_screen_content_search_button_continue">Jatka</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Ota käyttöön</string>
+  <string name="spotlight_screen_content_search_button_not_now">Ei nyt</string>
   <!-- How email content search works -->
   <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
   <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
