@@ -19,15 +19,21 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import arrow.core.Either
+import arrow.core.getOrElse
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SearchMatchPosition
+import ch.protonmail.android.mailmessage.domain.model.searchMatchedTerms
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -46,7 +52,17 @@ class GetMailboxItems @Inject constructor(
         pageKey: PageKey = PageKey.DefaultPageKey()
     ): Either<PaginationError, List<MailboxItem>> = when (type) {
         MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map { list ->
-            list.map { messageMailboxItemMapper.toMailboxItem(it) }
+            val matchPositions = if (pageKey is PageKey.PageKeyForSearch) {
+                getSearchMatchPositions(userId, list)
+            } else {
+                emptyMap()
+            }
+            list.map { message ->
+                messageMailboxItemMapper.toMailboxItem(
+                    message = message,
+                    searchMatchedTerms = message.searchMatchedTerms(matchPositions[message.messageId].orEmpty())
+                )
+            }
         }
 
         MailboxItemType.Conversation -> when (pageKey) {
@@ -55,5 +71,19 @@ class GetMailboxItems @Inject constructor(
             }
             is PageKey.PageKeyForSearch -> throw IllegalArgumentException("Invalid page key $pageKey for View Mode")
         }
+    }
+
+    // Highlighting is best effort.
+    // A failure leaves the results without fuzzy highlights rather than failing the page.
+    private suspend fun getSearchMatchPositions(
+        userId: UserId,
+        messages: List<Message>
+    ): Map<MessageId, List<SearchMatchPosition>> {
+        if (messages.isEmpty()) return emptyMap()
+        return messageRepository.getSearchMatchPositions(userId, messages.map { it.messageId })
+            .getOrElse {
+                Timber.w("Failed to get search match positions: $it")
+                emptyMap()
+            }
     }
 }

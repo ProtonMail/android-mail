@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class MessageMailboxItemMapper @Inject constructor() : Mapper<Message, MailboxItem> {
 
-    fun toMailboxItem(message: Message) = MailboxItem(
+    fun toMailboxItem(message: Message, searchMatchedTerms: List<String> = emptyList()) = MailboxItem(
         type = MailboxItemType.Message,
         id = message.messageId.id,
         time = message.time,
@@ -51,6 +51,7 @@ class MessageMailboxItemMapper @Inject constructor() : Mapper<Message, MailboxIt
         attachments = message.attachmentPreviews,
         isDraft = message.isDraft,
         isScheduled = message.isScheduled,
-        snoozeStatus = message.snoozeInformation
+        snoozeStatus = message.snoozeInformation,
+        searchMatchedTerms = searchMatchedTerms
     )
 }

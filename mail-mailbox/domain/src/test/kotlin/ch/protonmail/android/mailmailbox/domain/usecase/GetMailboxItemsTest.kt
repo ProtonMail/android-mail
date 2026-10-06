@@ -19,14 +19,20 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import arrow.core.getOrElse
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SearchMatchField
+import ch.protonmail.android.mailmessage.domain.model.SearchMatchPosition
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
@@ -39,6 +45,7 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class GetMailboxItemsTest {
 
@@ -94,6 +101,56 @@ class GetMailboxItemsTest {
             assert(current.time >= previous.time)
             previous = current
         }
+    }
+
+    @Test
+    fun `should not ask for search match positions outside search`() = runTest {
+        // When
+        val mailboxItems = usecase.invoke(userId, MailboxItemType.Message, PageKey.DefaultPageKey())
+            .getOrElse(::error)
+
+        // Then
+        coVerify(exactly = 0) { messageRepository.getSearchMatchPositions(any(), any()) }
+        assertTrue(mailboxItems.all { it.searchMatchedTerms.isEmpty() })
+    }
+
+    @Test
+    fun `should attach the search matched terms to each search result`() = runTest {
+        // Given
+        val pageKey = PageKey.PageKeyForSearch(keyword = "governmnt")
+        coEvery { messageRepository.getMessages(userId, pageKey) } returns listOf(
+            buildMessage(userId, "1", subject = "New government policy"),
+            buildMessage(userId, "2", subject = "Unrelated")
+        ).right()
+        coEvery {
+            messageRepository.getSearchMatchPositions(userId, listOf(MessageId("1"), MessageId("2")))
+        } returns mapOf(
+            MessageId("1") to listOf(SearchMatchPosition(SearchMatchField.Subject, valueIndex = 0, start = 4, end = 14))
+        ).right()
+
+        // When
+        val mailboxItems = usecase.invoke(userId, MailboxItemType.Message, pageKey)
+            .getOrElse(::error)
+
+        // Then
+        assertEquals(listOf(listOf("government"), emptyList()), mailboxItems.map { it.searchMatchedTerms })
+    }
+
+    @Test
+    fun `should still return search results when match positions fail`() = runTest {
+        // Given
+        val pageKey = PageKey.PageKeyForSearch(keyword = "governmnt")
+        coEvery {
+            messageRepository.getSearchMatchPositions(userId, any())
+        } returns PaginationError.Other(DataError.Local.IllegalStateError).left()
+
+        // When
+        val mailboxItems = usecase.invoke(userId, MailboxItemType.Message, pageKey)
+            .getOrElse(::error)
+
+        // Then
+        assertEquals(3, mailboxItems.size)
+        assertTrue(mailboxItems.all { it.searchMatchedTerms.isEmpty() })
     }
 
     @Test
