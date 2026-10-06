@@ -37,6 +37,8 @@ enum class MailboxItemType {
  * @property isReplied always `false` if [type] is [MailboxItemType.Conversation]
  * @property isRepliedAll always `false` if [type] is [MailboxItemType.Conversation]
  * @property isForwarded always `false` if [type] is [MailboxItemType.Conversation]
+ * @property searchMatchedTerms the text a search matched in the subject and addresses, fuzzy matches
+ *  included. Empty outside search results.
  */
 data class MailboxItem(
     val type: MailboxItemType,
@@ -63,7 +65,8 @@ data class MailboxItem(
     val attachments: List<AttachmentMetadata>,
     val isDraft: Boolean,
     val isScheduled: Boolean,
-    val snoozeStatus: ConversationSnoozeStatus
+    val snoozeStatus: ConversationSnoozeStatus,
+    val searchMatchedTerms: List<String> = emptyList()
 )
 
 fun ViewMode.toMailboxItemType() = when (this) {
