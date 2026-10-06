@@ -21,8 +21,8 @@ package ch.protonmail.android.mailcontentsearch.domain.model
 /**
  * The one-off messages the search screen shows an account.
  *
- * Each account answers each message once, and the answer is remembered from then on. It outlives
- * the search index, so clearing the search data does not bring a message back.
+ * Each account answers each message once. The answer is kept until the account signs out or is
+ * removed. Clearing the search data only brings back the "indexing complete" note.
  */
 enum class ContentSearchPrompt {
 

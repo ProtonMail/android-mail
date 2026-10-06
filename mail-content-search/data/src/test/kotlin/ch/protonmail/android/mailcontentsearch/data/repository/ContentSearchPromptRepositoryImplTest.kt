@@ -22,6 +22,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.preferencesOf
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -146,6 +147,44 @@ internal class ContentSearchPromptRepositoryImplTest {
             assertEquals(false.right(), awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `should forget only the answers of accounts it is not told to keep`() = runTest {
+        // Given
+        val keptKey = booleanPreferencesKey("contentSearchPromptDismissed_IndexingComplete_user-1")
+        val goneSetUpKey = booleanPreferencesKey("contentSearchPromptDismissed_SetUpOffer_user-2")
+        val goneCompleteKey = booleanPreferencesKey("contentSearchPromptDismissed_IndexingComplete_user-2")
+        val unrelatedKey = booleanPreferencesKey("someOtherSetting")
+        val stored = preferencesOf(
+            dismissedKey to true,
+            keptKey to true,
+            goneSetUpKey to true,
+            goneCompleteKey to true,
+            unrelatedKey to true
+        )
+        val transform = slot<suspend (Preferences) -> Preferences>()
+        coEvery { dataStore.updateData(capture(transform)) } returns stored
+
+        // When
+        val result = repository.retainOnly(setOf(userId))
+
+        // Then
+        assertEquals(Unit.right(), result)
+        val edited = transform.captured(stored)
+        assertEquals(setOf(dismissedKey, keptKey, unrelatedKey), edited.asMap().keys)
+    }
+
+    @Test
+    fun `should report an error when the answers cannot be forgotten`() = runTest {
+        // Given
+        coEvery { dataStore.updateData(any()) } throws IOException()
+
+        // When
+        val result = repository.retainOnly(emptySet())
+
+        // Then
+        assertEquals(PreferencesError.left(), result)
     }
 
     @Test

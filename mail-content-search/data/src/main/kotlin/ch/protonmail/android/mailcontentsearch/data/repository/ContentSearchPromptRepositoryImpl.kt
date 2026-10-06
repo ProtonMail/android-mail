@@ -52,6 +52,14 @@ class ContentSearchPromptRepositoryImpl @Inject constructor(
             prefs.remove(dismissedKey(userId, prompt))
         }.map { }
 
+    override suspend fun retainOnly(userIds: Set<UserId>): Either<PreferencesError, Unit> =
+        dataStoreProvider.contentSearchDataStore.safeEdit { prefs ->
+            val keptIds = userIds.map { it.id }.toSet()
+            prefs.asMap().keys
+                .filter { key -> ownerIdOf(key.name)?.let { it !in keptIds } ?: false }
+                .forEach { prefs.remove(it) }
+        }.map { }
+
     companion object {
 
         private const val DISMISSED_KEY_PREFIX = "contentSearchPromptDismissed_"
@@ -64,5 +72,11 @@ class ContentSearchPromptRepositoryImpl @Inject constructor(
          */
         fun dismissedKey(userId: UserId, prompt: ContentSearchPrompt) =
             booleanPreferencesKey("$DISMISSED_KEY_PREFIX${prompt.name}_${userId.id}")
+
+        /** The account id in a [dismissedKey], or null if [keyName] is not one. */
+        private fun ownerIdOf(keyName: String): String? = ContentSearchPrompt.entries
+            .map { prompt -> "$DISMISSED_KEY_PREFIX${prompt.name}_" }
+            .firstOrNull { keyName.startsWith(it) }
+            ?.let { keyName.removePrefix(it) }
     }
 }

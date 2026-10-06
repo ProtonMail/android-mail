@@ -47,7 +47,8 @@ class MainInitializer : Initializer<Unit> {
         RustNetworkObserverInitializer::class.java,
         WebViewCrashExceptionHandlerInitializer::class.java,
         EventsStartupInitializer::class.java,
-        ComposerStagingCleanupInitializer::class.java
+        ComposerStagingCleanupInitializer::class.java,
+        ContentSearchSignOutInitializer::class.java
     )
 
     companion object {
