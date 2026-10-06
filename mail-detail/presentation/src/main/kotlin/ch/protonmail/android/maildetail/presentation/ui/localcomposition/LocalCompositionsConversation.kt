@@ -23,3 +23,9 @@ import androidx.compose.runtime.compositionLocalOf
 internal val LocalIsLastMessageAutoExpandEnabled = compositionLocalOf { false }
 internal val LocalIsMessageWebViewPoolEnabled = compositionLocalOf { false }
 internal val LocalHighlightQuery = compositionLocalOf { "" }
+
+/**
+ * False for a conversation page the pager only shows in part, e.g. while a back swipe from the screen edge drags
+ * the next page in. Such a page must not open a message, since opening one marks it as read (ET-5511).
+ */
+internal val LocalIsActiveConversationPage = compositionLocalOf { true }

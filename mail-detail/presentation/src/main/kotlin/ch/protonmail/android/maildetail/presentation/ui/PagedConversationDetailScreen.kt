@@ -33,7 +33,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,6 +64,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.Page
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailState
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsActiveConversationPage
 import ch.protonmail.android.maildetail.presentation.viewmodel.PagedConversationDetailViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -286,16 +289,21 @@ private fun Pager(
                 if (page == pagerState.targetPage) {
                     onTopBarStateUpdated(topBarHostState)
                 }
-                PageUpdated(
-                    topBarHostState = topBarHostState,
-                    conversationActions = conversationActions,
-                    navigationArgs = conversationDetailNavigationArgs.copy(
-                        initialScrollToMessageId = item.cursorId.messageId?.let { MessageIdUiModel(it) }
-                    ),
-                    conversationId = item.cursorId.conversationId,
-                    isDirectionForwards = isDirectionForwards,
-                    snackbarHeight = snackbarHeight
-                )
+                // Only the page the pager settled on is active: one that is only dragged in part, for example by
+                // a back swipe from the screen edge, must not open its messages and mark them as read.
+                val isActivePage by remember(page) { derivedStateOf { pagerState.settledPage == page } }
+                CompositionLocalProvider(LocalIsActiveConversationPage provides isActivePage) {
+                    PageUpdated(
+                        topBarHostState = topBarHostState,
+                        conversationActions = conversationActions,
+                        navigationArgs = conversationDetailNavigationArgs.copy(
+                            initialScrollToMessageId = item.cursorId.messageId?.let { MessageIdUiModel(it) }
+                        ),
+                        conversationId = item.cursorId.conversationId,
+                        isDirectionForwards = isDirectionForwards,
+                        snackbarHeight = snackbarHeight
+                    )
+                }
             }
 
             // should be handled by indexing to never reach the end page (view pager can't scroll further)
