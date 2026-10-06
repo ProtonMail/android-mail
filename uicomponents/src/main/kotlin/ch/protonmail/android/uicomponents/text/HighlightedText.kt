@@ -153,7 +153,8 @@ fun buildMultiWordHighlightedText(
             if (words.isEmpty()) {
                 append(text)
             } else {
-                val pattern = words.joinToString("|") { Regex.escape(it) }
+                // Longest first, so "gov" doesn't cut a match for "government" short
+                val pattern = words.sortedByDescending { it.length }.joinToString("|") { Regex.escape(it) }
                 val regex = Regex(pattern, RegexOption.IGNORE_CASE)
 
                 var currentIndex = 0

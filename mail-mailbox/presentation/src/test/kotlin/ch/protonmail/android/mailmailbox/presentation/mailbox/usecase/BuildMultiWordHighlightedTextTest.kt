@@ -242,4 +242,24 @@ class BuildMultiWordHighlightedTextTest {
         assertEquals(text, result.text)
         assertTrue(result.spanStyles.isEmpty())
     }
+
+    @Test
+    fun `prefers the longest word when one word is a prefix of another`() {
+        // Given
+        val text = "New government policy"
+        val highlight = "gov government"
+
+        // When
+        val result = buildMultiWordHighlightedText(
+            text = text,
+            highlight = highlight,
+            highlightTextColor = highlightTextColor,
+            highlightBackgroundColor = highlightBackgroundColor,
+            visibleEnd = text.length
+        )
+
+        // Then
+        val highlighted = result.spanStyles.map { text.substring(it.start, it.end) }
+        assertEquals(listOf("government"), highlighted)
+    }
 }
