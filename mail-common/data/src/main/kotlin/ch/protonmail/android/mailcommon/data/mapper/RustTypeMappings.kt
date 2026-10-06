@@ -96,6 +96,7 @@ import uniffi.mail_uniffi.RsvpOrganizer
 import uniffi.mail_uniffi.RsvpProgress
 import uniffi.mail_uniffi.RsvpState
 import uniffi.mail_uniffi.RsvpUnanswerableReason
+import uniffi.mail_uniffi.SearchMatchPosition
 import uniffi.mail_uniffi.ShowImages
 import uniffi.mail_uniffi.ShowMoved
 import uniffi.mail_uniffi.SpamOrTrash
@@ -121,6 +122,7 @@ typealias LocalLabelId = Id
 typealias LocalViewMode = ViewMode
 typealias LocalMessageId = Id
 typealias LocalMessageMetadata = Message
+typealias LocalSearchMatchPosition = SearchMatchPosition
 typealias LocalMessageBanner = MessageBanner
 typealias LocalMessageBannerAutoDelete = MessageBanner.AutoDelete
 typealias LocalMessageBannerBlockedSender = MessageBanner.BlockedSender

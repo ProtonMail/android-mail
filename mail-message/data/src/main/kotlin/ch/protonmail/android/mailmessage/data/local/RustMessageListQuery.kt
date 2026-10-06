@@ -22,6 +22,8 @@ import arrow.core.Either
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
+import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
+import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
@@ -40,6 +42,11 @@ interface RustMessageListQuery {
     suspend fun supportsIncludeFilter(): Boolean
 
     suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+
+    suspend fun getSearchMatchPositions(
+        userId: UserId,
+        messageIds: List<LocalMessageId>
+    ): Either<PaginationError, Map<String, List<LocalSearchMatchPosition>>>
 
     suspend fun updateUnreadFilter(filterUnread: Boolean)
 

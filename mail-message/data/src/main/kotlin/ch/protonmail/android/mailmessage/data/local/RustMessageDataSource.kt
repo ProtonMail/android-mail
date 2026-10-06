@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.data.mapper.LocalLabelAsAction
 import ch.protonmail.android.mailcommon.data.mapper.LocalLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageMetadata
+import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.mailcommon.data.mapper.RemoteMessageId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.SenderImageTheme
@@ -57,6 +58,11 @@ interface RustMessageDataSource {
     suspend fun supportsIncludeFilter(): Boolean
 
     suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+
+    suspend fun getSearchMatchPositions(
+        userId: UserId,
+        messageIds: List<LocalMessageId>
+    ): Either<PaginationError, Map<String, List<LocalSearchMatchPosition>>>
 
     suspend fun getMessage(userId: UserId, messageId: LocalMessageId): Either<DataError, LocalMessageMetadata>
     suspend fun getMessage(userId: UserId, messageId: RemoteMessageId): Either<DataError, LocalMessageMetadata>

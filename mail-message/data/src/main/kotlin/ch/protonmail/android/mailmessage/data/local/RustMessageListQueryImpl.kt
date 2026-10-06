@@ -25,6 +25,8 @@ import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
+import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.data.local.RustMailboxFactory
 import ch.protonmail.android.maillabel.data.mapper.toLocalCategoryLabelId
@@ -37,6 +39,7 @@ import ch.protonmail.android.mailmessage.data.usecase.CreateRustSearchPaginator
 import ch.protonmail.android.mailmessage.data.util.awaitWithTimeout
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
+import ch.protonmail.android.mailmessage.data.wrapper.SearchMessagePaginatorWrapper
 import ch.protonmail.android.mailpagination.data.model.scroller.PendingRequest
 import ch.protonmail.android.mailpagination.data.model.scroller.RequestType
 import ch.protonmail.android.mailpagination.data.model.scroller.isCompleted
@@ -67,6 +70,7 @@ import uniffi.mail_uniffi.MessageScrollerStatusUpdate
 import uniffi.mail_uniffi.MessageScrollerUpdate
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class RustMessageListQueryImpl @Inject constructor(
     private val rustMailboxFactory: RustMailboxFactory,
     private val createRustMessagesPaginator: CreateRustMessagesPaginator,
@@ -247,6 +251,22 @@ class RustMessageListQueryImpl @Inject constructor(
                 else -> state.paginatorWrapper.totalItemsCount()
             }
         }
+    }
+
+    override suspend fun getSearchMatchPositions(
+        userId: UserId,
+        messageIds: List<LocalMessageId>
+    ): Either<PaginationError, Map<String, List<LocalSearchMatchPosition>>> {
+        val searchPaginator = paginatorMutex.withLock {
+            paginatorState
+                ?.takeIf { it.pageDescriptor.userId == userId }
+                ?.paginatorWrapper as? SearchMessagePaginatorWrapper
+        } ?: return emptyMap<String, List<LocalSearchMatchPosition>>().right()
+
+        val mailbox = rustMailboxFactory.create(userId).getOrNull()
+            ?: return PaginationError.Other(DataError.Local.IllegalStateError).left()
+
+        return searchPaginator.getMatchPositions(messageIds, mailbox)
     }
 
     override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
