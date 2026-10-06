@@ -126,6 +126,7 @@ import ch.protonmail.android.maildetail.presentation.ui.dialog.BlockSenderDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.EditScheduleSendDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.MarkAsLegitimateDialog
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsActiveConversationPage
 import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsLastMessageAutoExpandEnabled
 import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalIsMessageWebViewPoolEnabled
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
@@ -1085,14 +1086,15 @@ private fun MessagesContent(
     // key and therefore does NOT re-trigger auto-expansion, while a genuine draft->sent flip (isDraft true -> false)
     // still does.
     val isAutoExpandEnabled = LocalIsLastMessageAutoExpandEnabled.current
+    val isActivePage = LocalIsActiveConversationPage.current
     val lastMessage = uiModels.lastOrNull()
     val lastMessageIsDraft = when (lastMessage) {
         is ConversationDetailMessageUiModel.Collapsed -> lastMessage.isDraft
         is ConversationDetailMessageUiModel.Expanding -> lastMessage.collapsed.isDraft
         else -> false
     }
-    LaunchedEffect(lastMessage?.messageId?.id, lastMessageIsDraft) {
-        if (!isAutoExpandEnabled) return@LaunchedEffect
+    LaunchedEffect(lastMessage?.messageId?.id, lastMessageIsDraft, isActivePage) {
+        if (!isAutoExpandEnabled || !isActivePage) return@LaunchedEffect
 
         val lastCollapsedMessage = lastMessage as? ConversationDetailMessageUiModel.Collapsed ?: return@LaunchedEffect
         val scrollToMessageId = scrollToMessageState.getScrollTargetMessageIdOrNull()
@@ -1158,7 +1160,8 @@ private fun MessagesContent(
 
     // The webview for the message that we will scroll to has loaded
     // this is important as the listview will need its final height
-    LaunchedEffect(scrollToMessageState) {
+    LaunchedEffect(scrollToMessageState, isActivePage) {
+        if (!isActivePage) return@LaunchedEffect
         val scrollRequest = scrollToMessageState as? ScrollToMessageState.ScrollRequested
             ?: return@LaunchedEffect
 
