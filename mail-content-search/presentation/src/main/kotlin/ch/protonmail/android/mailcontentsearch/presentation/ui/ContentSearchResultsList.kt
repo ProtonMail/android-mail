@@ -68,7 +68,7 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun ResultsList(
     items: LazyPagingItems<ContentSearchResultUiModel>,
     actions: ContentSearchActions,
-    highlightText: String,
+    query: String,
     selectionMode: Boolean,
     selectedItemIds: Set<String>,
     avatarImages: AvatarImagesUiModel,
@@ -133,7 +133,7 @@ internal fun ResultsList(
                     actions = itemActionsFor(result),
                     avatarImageUiModel = avatarImages.stateFor(item),
                     accessibilitySwipeActions = persistentListOf(),
-                    highlightText = highlightText,
+                    highlightText = result.highlightText(query),
                     isSelectable = true,
                     selectionMode = selectionMode,
                     isSelected = item.id in selectedItemIds,

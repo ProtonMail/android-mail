@@ -23,6 +23,8 @@ import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * A search result row: the mailbox item it renders as, plus the one thing the mailbox model cannot tell
@@ -34,10 +36,19 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 @Immutable
 data class ContentSearchResultUiModel(
     val item: MailboxItemUiModel,
-    val isInTrashOrSpam: Boolean
+    val isInTrashOrSpam: Boolean,
+    val searchMatchedTerms: ImmutableList<String> = persistentListOf()
 ) {
 
     val id: String get() = item.id
+
+    /**
+     * The query plus the text search matched in this result, so fuzzy matches are highlighted too.
+     *
+     * The highlight splits this on whitespace. Matched terms are single words or addresses, so the split keeps
+     * them whole.
+     */
+    fun highlightText(query: String): String = (listOf(query) + searchMatchedTerms).joinToString(" ")
 }
 
 /**
