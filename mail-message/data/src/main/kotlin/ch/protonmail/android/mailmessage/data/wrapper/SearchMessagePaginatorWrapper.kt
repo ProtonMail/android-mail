@@ -24,6 +24,9 @@ import arrow.core.right
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
+import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
+import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
+import ch.protonmail.android.maillabel.data.wrapper.MailboxWrapper
 import ch.protonmail.android.mailpagination.data.mapper.toPaginationError
 import ch.protonmail.android.mailpagination.data.mapper.toRustIncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
@@ -34,6 +37,7 @@ import uniffi.mail_uniffi.SearchScroller
 import uniffi.mail_uniffi.SearchScrollerCursorResult
 import uniffi.mail_uniffi.SearchScrollerFetchMoreResult
 import uniffi.mail_uniffi.SearchScrollerGetItemsResult
+import uniffi.mail_uniffi.SearchScrollerHighlightingPositionsBatchResult
 import uniffi.mail_uniffi.SearchScrollerSupportsIncludeFilterResult
 import uniffi.mail_uniffi.SearchScrollerTotalResult
 
@@ -93,6 +97,16 @@ class SearchMessagePaginatorWrapper(
     }
 
     override fun getScrollerId(): String = rustPaginator.id()
+
+    /** Keyed by the message id's string value. */
+    suspend fun getMatchPositions(
+        messageIds: List<LocalMessageId>,
+        mailbox: MailboxWrapper
+    ): Either<PaginationError, Map<String, List<LocalSearchMatchPosition>>> =
+        when (val result = rustPaginator.highlightingPositionsBatch(messageIds, mailbox.getRustMailbox())) {
+            is SearchScrollerHighlightingPositionsBatchResult.Error -> result.v1.toPaginationError().left()
+            is SearchScrollerHighlightingPositionsBatchResult.Ok -> result.v1.right()
+        }
 
     override suspend fun getCategoryViewStatus(): CategoryViewStatus = CategoryViewStatus.NotAvailable
 

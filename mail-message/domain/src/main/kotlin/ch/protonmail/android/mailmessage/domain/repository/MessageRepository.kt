@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewStatus
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailmessage.domain.model.RemoteMessageId
+import ch.protonmail.android.mailmessage.domain.model.SearchMatchPosition
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -51,6 +52,15 @@ interface MessageRepository {
     suspend fun supportsIncludeFilter(): Boolean
 
     suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+
+    /**
+     * Where the active search matched in each of [messageIds], keyed by message.
+     * Empty when no search for [userId] is active.
+     */
+    suspend fun getSearchMatchPositions(
+        userId: UserId,
+        messageIds: List<MessageId>
+    ): Either<PaginationError, Map<MessageId, List<SearchMatchPosition>>>
 
     suspend fun getSenderImage(
         userId: UserId,
