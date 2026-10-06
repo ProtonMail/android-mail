@@ -103,6 +103,7 @@ internal fun PaymentButtonsPlusToUnlimited(
                 .fillMaxWidth()
                 .padding(horizontal = ProtonDimens.Spacing.Large),
             product = plan.product,
+            ctaText = stringResource(R.string.upselling_pu_cta),
             variant = MailPurchaseButtonVariant.Default,
             onPurchaseClicked = { actions.onUpgradeAttempt(telemetryPayload) },
             onSuccess = { _ -> actions.onSuccess(telemetryPayload) },

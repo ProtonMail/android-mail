@@ -19,11 +19,13 @@
 package ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -38,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -64,23 +67,38 @@ internal fun ComparisonTableHeaderRow(
     variant: PlanUpgradeVariant,
     colors: UpsellingVariantColors,
     baseColumnLabel: TextUiModel,
+    titleLabel: TextUiModel? = null,
+    paidColumnLabel: TextUiModel? = null,
     onPaidColumnPlaced: (Dp) -> Unit
 ) {
     var paidColumnWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
+    val labelsOffset = if (paidColumnLabel != null) ProtonDimens.Spacing.Tiny else 0.dp
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = ProtonDimens.Spacing.Standard)
+            .offset(y = labelsOffset)
             .padding(bottom = ProtonDimens.Spacing.Large)
     ) {
-        Spacer(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        )
+                .align(Alignment.CenterVertically)
+        ) {
+            if (titleLabel != null) {
+                Text(
+                    text = titleLabel.string(),
+                    style = ProtonTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.tableTextColor,
+                    fontSize = UpsellingLayoutValues.ComparisonTable.titleColumnSize
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -113,6 +131,8 @@ internal fun ComparisonTableHeaderRow(
             Row {
                 Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Small))
                 when {
+                    paidColumnLabel != null -> PillBadge(label = paidColumnLabel)
+
                     variant is PlanUpgradeVariant.FallPromo -> PlanBadge(
                         colors = colors,
                         labelRes = R.string.upselling_unlimited_plan,
@@ -159,6 +179,21 @@ private fun PlanBadge(
 }
 
 @Composable
+private fun PillBadge(label: TextUiModel) {
+    Text(
+        modifier = Modifier
+            .background(color = Color.White, shape = ProtonTheme.shapes.extraLarge)
+            .padding(horizontal = ProtonDimens.Spacing.Compact, vertical = ProtonDimens.Spacing.Small),
+        text = label.string(),
+        style = ProtonTheme.typography.bodyLarge,
+        fontWeight = FontWeight.SemiBold,
+        color = Color.Black,
+        textAlign = TextAlign.Center,
+        fontSize = UpsellingLayoutValues.ComparisonTable.titleColumnSize
+    )
+}
+
+@Composable
 private fun UnlimitedBadge() {
     Image(
         painter = painterResource(id = R.drawable.illustration_upselling_unlimited_badge),
@@ -176,5 +211,13 @@ private fun ComparisonTableHeaderRowPreview() {
             baseColumnLabel = TextUiModel.TextRes(R.string.upselling_free_plan),
             onPaidColumnPlaced = {}
         )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun PillBadgePreview() {
+    ProtonTheme {
+        PillBadge(label = TextUiModel.TextRes(R.string.upselling_unlimited_plan))
     }
 }
