@@ -640,7 +640,7 @@ private fun ContentSearchBody(
             ResultsList(
                 items = items,
                 actions = actions,
-                highlightText = state.query,
+                query = state.query,
                 selectionMode = state.inSelectionMode,
                 selectedItemIds = remember(state.selectionState.selectedItems) {
                     state.selectionState.selectedItems.mapTo(HashSet()) { it.id }

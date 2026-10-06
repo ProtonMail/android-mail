@@ -308,7 +308,8 @@ class ContentSearchViewModel @Inject constructor(
                         ),
                         // Read while the domain item is still in hand: the mapped row keeps the location
                         // icons but not the label ids they were derived from.
-                        isInTrashOrSpam = item.isInTrashOrSpam()
+                        isInTrashOrSpam = item.isInTrashOrSpam(),
+                        searchMatchedTerms = item.searchMatchedTerms.toImmutableList()
                     )
                 }
             }
