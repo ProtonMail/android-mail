@@ -26,48 +26,56 @@ enum class UpsellContentTheme(
     @DrawableRes val headerDrawable: Int,
     @StringRes val titleRes: Int,
     @StringRes val rowTitleRes: Int,
-    @StringRes val rowSubtitleRes: Int
+    @StringRes val rowSubtitleRes: Int,
+    val telemetryId: String
 ) {
     Generic(
         R.drawable.illustration_pu_generic,
         R.string.upselling_pu_generic_title,
         R.string.upselling_pu_row_generic_title,
-        R.string.upselling_pu_row_generic_subtitle
+        R.string.upselling_pu_row_generic_subtitle,
+        "generic"
     ),
     ThreatProtection(
         R.drawable.illustration_pu_sentinel,
         R.string.upselling_pu_threat_protection_title,
         R.string.upselling_pu_row_threat_protection_title,
-        R.string.upselling_pu_row_threat_protection_subtitle
+        R.string.upselling_pu_row_threat_protection_subtitle,
+        "inbox-threat-protection"
     ),
     Aliases(
         R.drawable.illustration_pu_aliases,
         R.string.upselling_pu_aliases_title,
         R.string.upselling_pu_row_aliases_title,
-        R.string.upselling_pu_row_aliases_subtitle
+        R.string.upselling_pu_row_aliases_subtitle,
+        "inbox-unlimited-aliases"
     ),
     Drive(
         R.drawable.illustration_pu_drive,
         R.string.upselling_pu_drive_title,
         R.string.upselling_pu_row_drive_title,
-        R.string.upselling_pu_row_drive_subtitle
+        R.string.upselling_pu_row_drive_subtitle,
+        "drive"
     ),
     VpnBrowse(
         R.drawable.illustration_pu_vpn,
         R.string.upselling_pu_vpn_browse_title,
         R.string.upselling_pu_row_vpn_browse_title,
-        R.string.upselling_pu_row_vpn_browse_subtitle
+        R.string.upselling_pu_row_vpn_browse_subtitle,
+        "vpn-browse-securely"
     ),
     VpnStreaming(
         R.drawable.illustration_pu_streaming,
         R.string.upselling_pu_vpn_streaming_title,
         R.string.upselling_pu_row_vpn_streaming_title,
-        R.string.upselling_pu_row_vpn_streaming_subtitle
+        R.string.upselling_pu_row_vpn_streaming_subtitle,
+        "vpn-unblock-streaming"
     ),
     Pass(
         R.drawable.illustration_pu_pass,
         R.string.upselling_pu_pass_title,
         R.string.upselling_pu_row_pass_title,
-        R.string.upselling_pu_row_pass_subtitle
+        R.string.upselling_pu_row_pass_subtitle,
+        "pass"
     )
 }

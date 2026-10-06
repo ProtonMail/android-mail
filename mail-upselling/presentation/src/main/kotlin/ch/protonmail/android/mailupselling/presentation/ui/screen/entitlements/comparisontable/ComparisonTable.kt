@@ -56,6 +56,11 @@ internal fun ComparisonTable(
     var highlightHeight by remember { mutableStateOf(0.dp) }
     var plusCellHeaderWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
+    val highlightBarShape = if (entitlementsUiModel.paidColumnLabel != null) {
+        UpsellingLayoutValues.PlusUnlimited.highlightBarShape
+    } else {
+        UpsellingLayoutValues.ComparisonTable.highlightBarShape
+    }
 
     Box(modifier = modifier.padding(horizontal = ProtonDimens.Spacing.Small)) {
         Box(
@@ -64,7 +69,7 @@ internal fun ComparisonTable(
                 .padding(end = ProtonDimens.Spacing.Standard)
                 .background(
                     color = colors.tableHighlightColor,
-                    shape = UpsellingLayoutValues.ComparisonTable.highlightBarShape
+                    shape = highlightBarShape
                 )
                 .width(plusCellHeaderWidth)
                 .height(highlightHeight)
@@ -83,6 +88,8 @@ internal fun ComparisonTable(
                 variant = variant,
                 colors = colors,
                 baseColumnLabel = entitlementsUiModel.baseColumnLabel,
+                titleLabel = entitlementsUiModel.titleLabel,
+                paidColumnLabel = entitlementsUiModel.paidColumnLabel,
                 onPaidColumnPlaced = { plusCellHeaderWidth = it }
             )
 

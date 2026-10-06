@@ -182,4 +182,27 @@ internal class ObservePlanUpgradesTest {
         assertEquals(expectedOffers, actualPlans)
         coVerify(exactly = 0) { resolveUpsellVariant(userId) }
     }
+
+    @Test
+    fun `should fall back to mail plus when the fall promo is active but no offer is tagged`() = runTest {
+        // Given
+        val expectedOffers = listOf(MonthlyProductOfferDetail, YearlyProductOfferDetail)
+        coEvery { getCurrentFallPromoPhase() } returns FallPromoPhase.Active.Wave1
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns true
+        coEvery { resolveUpsellVariant(userId) } returns UpsellVariantPlan.MAIL_PLUS
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(
+            listOf(
+                UpsellingTestData.MailPlusProducts.MonthlyProductOfferList,
+                UpsellingTestData.MailPlusProducts.YearlyProductOfferList,
+                UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferList,
+                UpsellingTestData.UnlimitedMailProduct.YearlyProductOfferList
+            )
+        )
+
+        // When
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
+
+        // Then
+        assertEquals(expectedOffers, actualPlans)
+    }
 }

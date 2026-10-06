@@ -50,7 +50,10 @@ fun SidebarPlusToUnlimitedUpsellRow(modifier: Modifier = Modifier, onClick: () -
                     icon = painterResource(R.drawable.ic_infinity),
                     iconTint = Color.Unspecified,
                     text = stringResource(it.rowTitleRes),
-                    onClick = onClick
+                    onClick = {
+                        viewModel?.recordUpsellButtonTapped()
+                        onClick()
+                    }
                 )
             }
         }
