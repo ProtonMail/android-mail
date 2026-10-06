@@ -38,4 +38,7 @@ interface ContentSearchPromptRepository {
 
     /** Forgets the account's answer, so the message is shown again. */
     suspend fun reset(userId: UserId, prompt: ContentSearchPrompt): Either<PreferencesError, Unit>
+
+    /** Forgets every answer that does not belong to one of [userIds]. */
+    suspend fun retainOnly(userIds: Set<UserId>): Either<PreferencesError, Unit>
 }
