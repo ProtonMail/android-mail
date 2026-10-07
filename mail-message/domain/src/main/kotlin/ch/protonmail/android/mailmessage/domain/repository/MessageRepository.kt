@@ -54,11 +54,12 @@ interface MessageRepository {
     suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
 
     /**
-     * Where the active search matched in each of [messageIds], keyed by message.
-     * Empty when no search for [userId] is active.
+     * Where the search behind [pageKey] matched in each of [messageIds], keyed by message.
+     * Empty when that search is no longer the active one.
      */
     suspend fun getSearchMatchPositions(
         userId: UserId,
+        pageKey: PageKey,
         messageIds: List<MessageId>
     ): Either<PaginationError, Map<MessageId, List<SearchMatchPosition>>>
 

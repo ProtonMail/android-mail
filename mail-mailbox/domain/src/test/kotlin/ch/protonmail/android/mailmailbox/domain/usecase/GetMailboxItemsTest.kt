@@ -110,7 +110,7 @@ class GetMailboxItemsTest {
             .getOrElse(::error)
 
         // Then
-        coVerify(exactly = 0) { messageRepository.getSearchMatchPositions(any(), any()) }
+        coVerify(exactly = 0) { messageRepository.getSearchMatchPositions(any(), any(), any()) }
         assertTrue(mailboxItems.all { it.searchMatchedTerms.isEmpty() })
     }
 
@@ -123,7 +123,7 @@ class GetMailboxItemsTest {
             buildMessage(userId, "2", subject = "Unrelated")
         ).right()
         coEvery {
-            messageRepository.getSearchMatchPositions(userId, listOf(MessageId("1"), MessageId("2")))
+            messageRepository.getSearchMatchPositions(userId, pageKey, listOf(MessageId("1"), MessageId("2")))
         } returns mapOf(
             MessageId("1") to listOf(SearchMatchPosition(SearchMatchField.Subject, valueIndex = 0, start = 4, end = 14))
         ).right()
@@ -141,7 +141,7 @@ class GetMailboxItemsTest {
         // Given
         val pageKey = PageKey.PageKeyForSearch(keyword = "governmnt")
         coEvery {
-            messageRepository.getSearchMatchPositions(userId, any())
+            messageRepository.getSearchMatchPositions(userId, pageKey, any())
         } returns PaginationError.Other(DataError.Local.IllegalStateError).left()
 
         // When

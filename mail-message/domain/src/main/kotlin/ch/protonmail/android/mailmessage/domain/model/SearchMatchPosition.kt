@@ -36,13 +36,16 @@ enum class SearchMatchField { Subject, From, To, Cc, Bcc }
  * The text that search matched at each of [positions], such as "government" for the query "governmnt".
  *
  * The SDK indexes each field as one value, with recipients joined by ", ". Positions in any other
- * value, or outside the field, are skipped.
+ * value, or outside the field, are skipped. Each field is encoded once, however many positions it has.
  */
-fun Message.searchMatchedTerms(positions: List<SearchMatchPosition>): List<String> = positions.mapNotNull { position ->
-    val value = searchIndexedValue(position.field).encodeToByteArray()
-    position
-        .takeIf { it.valueIndex == 0 && it.start in 0 until it.end && it.end <= value.size }
-        ?.let { value.decodeToString(it.start, it.end) }
+fun Message.searchMatchedTerms(positions: List<SearchMatchPosition>): List<String> {
+    val encodedFields = mutableMapOf<SearchMatchField, ByteArray>()
+    return positions.mapNotNull { position ->
+        val value = encodedFields.getOrPut(position.field) { searchIndexedValue(position.field).encodeToByteArray() }
+        position
+            .takeIf { it.valueIndex == 0 && it.start in 0 until it.end && it.end <= value.size }
+            ?.let { value.decodeToString(it.start, it.end) }
+    }
 }
 
 private fun Message.searchIndexedValue(field: SearchMatchField): String = when (field) {

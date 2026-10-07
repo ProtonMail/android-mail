@@ -253,20 +253,40 @@ class RustMessageListQueryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Positions are cached with the paginator, so only messages not seen yet reach Rust.
+     *
+     * The call queues behind any fetch in flight on the scroller. Without the cache, every refresh served by
+     * [reloadMessages] would wait on Rust again for positions we already have.
+     */
     override suspend fun getSearchMatchPositions(
         userId: UserId,
+        pageKey: PageKey,
         messageIds: List<LocalMessageId>
     ): Either<PaginationError, Map<String, List<LocalSearchMatchPosition>>> {
-        val searchPaginator = paginatorMutex.withLock {
-            paginatorState
-                ?.takeIf { it.pageDescriptor.userId == userId }
-                ?.paginatorWrapper as? SearchMessagePaginatorWrapper
-        } ?: return emptyMap<String, List<LocalSearchMatchPosition>>().right()
+        val requested = pageKey.toPageDescriptor(userId)
+        val state = paginatorMutex.withLock { paginatorState }
+        val searchPaginator = state
+            ?.takeIf { it.pageDescriptor == requested }
+            ?.paginatorWrapper as? SearchMessagePaginatorWrapper
+            ?: return emptyMap<String, List<LocalSearchMatchPosition>>().right()
 
-        val mailbox = rustMailboxFactory.create(userId).getOrNull()
-            ?: return PaginationError.Other(DataError.Local.IllegalStateError).left()
+        val ids = messageIds.mapTo(HashSet()) { it.value.toString() }
+        val missingIds = messageIds.filterNot { it.value.toString() in state.searchMatchPositions }
+        if (missingIds.isEmpty()) return state.searchMatchPositions.filterKeys { it in ids }.right()
 
-        return searchPaginator.getMatchPositions(messageIds, mailbox)
+        return searchPaginator.getMatchPositions(missingIds, state.mailbox).map { fetched ->
+            // Messages without a match are cached too, so they are not asked for again.
+            val positions = missingIds.map { it.value.toString() }.associateWith { fetched[it].orEmpty() }
+            paginatorMutex.withLock {
+                val current = paginatorState
+                // A paginator created while Rust answered belongs to another search.
+                if (current?.paginatorWrapper === searchPaginator) {
+                    paginatorState = current.copy(searchMatchPositions = current.searchMatchPositions + positions)
+                }
+            }
+            (state.searchMatchPositions + positions).filterKeys { it in ids }
+        }
     }
 
     override suspend fun setActiveCategoryLabel(categoryLabelId: LocalCategoryLabelId): Either<PaginationError, Unit> =
@@ -312,7 +332,8 @@ class RustMessageListQueryImpl @Inject constructor(
             paginatorState = PaginatorState(
                 paginatorWrapper = wrapper,
                 pageDescriptor = pageDescriptor,
-                scrollerCache = ScrollerCache()
+                scrollerCache = ScrollerCache(),
+                mailbox = mailbox
             )
 
             // Get initial category view status
@@ -501,7 +522,9 @@ class RustMessageListQueryImpl @Inject constructor(
         val paginatorWrapper: MessagePaginatorWrapper,
         val pageDescriptor: PageDescriptor,
         val scrollerCache: ScrollerCache<Message>,
-        val pendingRequest: PendingRequest<Message>? = null
+        val mailbox: MailboxWrapper,
+        val pendingRequest: PendingRequest<Message>? = null,
+        val searchMatchPositions: Map<String, List<LocalSearchMatchPosition>> = emptyMap()
     )
 
     private fun PaginatorState.withFollowUpResponse(): PaginatorState {
