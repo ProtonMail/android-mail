@@ -100,8 +100,10 @@ import ch.protonmail.android.maildetail.presentation.usecase.ObservePrimaryUserA
 import ch.protonmail.android.maildetail.presentation.usecase.print.PrintMessage
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.sample.LabelIdSample
+import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ResolveSystemLabelId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.moveto.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
@@ -359,7 +361,13 @@ internal class ConversationDetailViewModelTest {
         coEvery { this@mockk(any(), any()) } returns SystemLabelId.Inbox.right()
     }
 
+    private val findLocalSystemLabelId = mockk<FindLocalSystemLabelId> {
+        coEvery { this@mockk(any(), SystemLabelId.AllMail) } returns MailLabelId.System(LabelIdSample.AllMail)
+    }
+
     private val executeWhenOnline = mockk<ExecuteWhenOnline>(relaxed = true)
+
+    private var searchQuery = ""
 
     private val isAutoExpandEnabled = mockk<FeatureFlag<Boolean>> {
         coEvery { this@mockk.get() } returns true
@@ -434,6 +442,7 @@ internal class ConversationDetailViewModelTest {
             unsubscribeFromNewsletter = unsubscribeFromNewsletter,
             toolbarRefreshSignal = toolbarRefreshSignal,
             resolveSystemLabelId = resolveSystemLabelId,
+            findLocalSystemLabelId = findLocalSystemLabelId,
             executeWhenOnline = executeWhenOnline,
             conversationId = conversationId,
             isSingleMessageModeEnabled = isSingleMessageModeEnabled,
@@ -441,7 +450,7 @@ internal class ConversationDetailViewModelTest {
             openedFromLocation = labelId,
             isMessageSenderBlocked = isMessageSenderBlocked,
             conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
-            searchQuery = "",
+            searchQuery = searchQuery,
             isAutoExpandEnabled = isAutoExpandEnabled,
             isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
             isMessageWebViewPoolEnabled = isMessageWebViewPoolEnabled,
@@ -546,6 +555,70 @@ internal class ConversationDetailViewModelTest {
                 true
             )
         }
+    }
+
+    @Test
+    fun `reloads a search result from All Mail when the opened label no longer contains it`() = runTest {
+        // Given
+        val almostAllMail = LabelId("15")
+        searchQuery = "invoice"
+        coEvery {
+            observeConversationWithMessages(userId, conversationId, almostAllMail, any(), any())
+        } returns flowOf(ConversationError.NullValueReturned.left())
+
+        // When
+        val viewModel = createViewModel(almostAllMail)
+        advanceUntilIdle()
+
+        // Then
+        coVerify { observeConversationWithMessages(userId, conversationId, LabelIdSample.AllMail, any(), true) }
+        coVerify(exactly = 0) { reducer.newStateFrom(any(), ConversationDetailEvent.ExitScreen) }
+        assertEquals(LabelIdSample.AllMail, viewModel.openedFromLocation)
+    }
+
+    @Test
+    fun `exits when a conversation opened outside search is no longer in the opened label`() = runTest {
+        // Given
+        val inbox = LabelIdSample.Inbox
+        coEvery {
+            observeConversationWithMessages(userId, conversationId, inbox, any(), any())
+        } returns flowOf(ConversationError.NullValueReturned.left())
+
+        // When
+        val viewModel = createViewModel(inbox)
+        advanceUntilIdle()
+
+        // Then
+        coVerify { reducer.newStateFrom(any(), ConversationDetailEvent.ExitScreen) }
+        coVerify(exactly = 0) {
+            observeConversationWithMessages(userId, conversationId, LabelIdSample.AllMail, any(), any())
+        }
+        assertEquals(inbox, viewModel.openedFromLocation)
+    }
+
+    @Test
+    fun `exits when a shown search result is no longer in the opened label`() = runTest {
+        // Given
+        val inbox = LabelIdSample.Inbox
+        searchQuery = "invoice"
+        val conversationWithMessages = ConversationWithMessages(
+            conversation = ConversationSample.WeatherForecast,
+            messages = ConversationMessages(nonEmptyListOf(MessageSample.Invoice), MessageSample.Invoice.messageId)
+        )
+        coEvery {
+            observeConversationWithMessages(userId, conversationId, inbox, any(), any())
+        } returns flowOf(conversationWithMessages.right(), ConversationError.NullValueReturned.left())
+
+        // When
+        val viewModel = createViewModel(inbox)
+        advanceUntilIdle()
+
+        // Then
+        coVerify { reducer.newStateFrom(any(), ConversationDetailEvent.ExitScreen) }
+        coVerify(exactly = 0) {
+            observeConversationWithMessages(userId, conversationId, LabelIdSample.AllMail, any(), any())
+        }
+        assertEquals(inbox, viewModel.openedFromLocation)
     }
 
     @Test

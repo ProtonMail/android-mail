@@ -2518,6 +2518,7 @@ internal class ConversationDetailViewModelIntegrationTest {
         unsubscribeFromNewsletter = unsubscribeFromNewsletter,
         toolbarRefreshSignal = toolbarRefreshSignal,
         resolveSystemLabelId = resolveSystemLabelId,
+        findLocalSystemLabelId = mockk(),
         executeWhenOnline = executeOnOnline,
         conversationId = conversationId,
         isSingleMessageModeEnabled = false,

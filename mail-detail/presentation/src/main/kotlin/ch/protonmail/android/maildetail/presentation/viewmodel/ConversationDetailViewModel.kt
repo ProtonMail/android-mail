@@ -107,6 +107,7 @@ import ch.protonmail.android.maillabel.domain.extension.isOutbox
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ResolveSystemLabelId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsItemId
@@ -190,7 +191,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
     @Assisted val conversationId: ConversationId,
     @Assisted val isSingleMessageModeEnabled: Boolean,
     @Assisted val initialScrollToMessageId: MessageIdUiModel?,
-    @Assisted val openedFromLocation: LabelId,
+    @Assisted openedFromLocation: LabelId,
     @Assisted val conversationEntryPoint: ConversationDetailEntryPoint,
     @Assisted val searchQuery: String,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -242,6 +243,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private val toolbarRefreshSignal: ToolbarActionsRefreshSignal,
     private val executeWhenOnline: ExecuteWhenOnline,
     private val resolveSystemLabelId: ResolveSystemLabelId,
+    private val findLocalSystemLabelId: FindLocalSystemLabelId,
     @IsLastMessageAutoExpandEnabled private val isAutoExpandEnabled: FeatureFlag<Boolean>,
     @IsWebViewDarkModeFallbackEnabled private val isWebViewDarkModeFallbackEnabled: FeatureFlag<Boolean>,
     @IsMessageWebViewPoolEnabled private val isMessageWebViewPoolEnabled: FeatureFlag<Boolean>,
@@ -286,6 +288,24 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private val mutableDetailState = MutableStateFlow(initialState)
     private val attachmentsState = MutableStateFlow<Map<MessageId, List<AttachmentMetadata>>>(emptyMap())
     private val showAllMessages = MutableStateFlow(false)
+    private val location = MutableStateFlow(openedFromLocation)
+
+    /**
+     * True once the conversation has loaded.
+     *
+     * After that, a missing conversation was moved while open, so the screen exits.
+     * It is only read and written inside the conversation data flow.
+     */
+    private var hasShownConversation = false
+
+    /**
+     * The label the conversation is shown in.
+     *
+     * It starts as the label given by the caller. It changes to All Mail when a search result is no longer there.
+     * See [reopenSearchResultFromAllMail].
+     */
+    val openedFromLocation: LabelId
+        get() = location.value
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
@@ -591,12 +611,12 @@ class ConversationDetailViewModel @AssistedInject constructor(
 
     @Suppress("LongMethod")
     private fun observeConversationData(conversationId: ConversationId) = primaryUserId.flatMapLatest { userId ->
-        showAllMessages.flatMapLatest { showAllMessages ->
+        combine(location, showAllMessages, ::Pair).flatMapLatest { (location, showAllMessages) ->
             combine(
                 observeConversationWithMessages(
                     userId,
                     conversationId,
-                    openedFromLocation,
+                    location,
                     conversationEntryPoint,
                     showAllMessages
                 ),
@@ -616,7 +636,12 @@ class ConversationDetailViewModel @AssistedInject constructor(
                         }
 
                         error is ConversationError.NullValueReturned -> {
-                            ConversationDataLoadingResult.Exit
+                            // Null emits nothing while the conversation reloads from All Mail.
+                            if (reopenSearchResultFromAllMail(userId, location)) {
+                                null
+                            } else {
+                                ConversationDataLoadingResult.Exit
+                            }
                         }
 
                         else -> {
@@ -683,6 +708,7 @@ class ConversationDetailViewModel @AssistedInject constructor(
                         )
                     }
 
+                hasShownConversation = true
                 ConversationDataLoadingResult.Success(
                     conversationData = metadataEvent,
                     messagesData = messagesEvent
@@ -1725,6 +1751,33 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private fun handleLoadImagesAfterImageProxyFailure(messageId: MessageIdUiModel) = viewModelScope.launch {
         messageViewStateCache.setShouldLoadImagesSafely(MessageId(messageId.id), false)
         emitNewStateFrom(ConversationDetailEvent.OnLoadImagesAfterImageProxyFailure(messageId))
+    }
+
+    /**
+     * Reloads a search result from All Mail when the opened label no longer contains it.
+     *
+     * A result can move to Trash or Spam after the search ran. Swiping to it then finds nothing in the opened
+     * label, and the screen would close. All Mail contains every message, so the result loads from there.
+     * This matches what the results list does when the same row is tapped.
+     *
+     * This only applies before the conversation first loads. One that disappears later was moved while open,
+     * for example trashed by the user, and the screen exits as usual.
+     *
+     * Returns true when the conversation is about to load again from All Mail.
+     */
+    private suspend fun reopenSearchResultFromAllMail(userId: UserId, currentLocation: LabelId): Boolean {
+        if (searchQuery.isBlank() || hasShownConversation) return false
+
+        val allMail = findLocalSystemLabelId(userId, SystemLabelId.AllMail)?.labelId
+            ?.takeIf { it != currentLocation }
+            ?: return false
+
+        Timber.d("Search result not found in $currentLocation, loading it from All Mail")
+        // Opening from All Mail shows trashed messages too, as in resolveInitialShowAll.
+        // It is set before the location, so the All Mail reload never hides them.
+        showAllMessages.value = true
+        location.value = allMail
+        return true
     }
 
     /**
