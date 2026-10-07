@@ -29,6 +29,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEn
 import ch.protonmail.android.maildetail.domain.model.ConversationOpenMode
 import ch.protonmail.android.maildetail.domain.usecase.ObserveIsSingleMessageViewModePreferred
 import ch.protonmail.android.maildetail.presentation.mapper.toPage
+import ch.protonmail.android.maildetail.presentation.model.ConversationPagerSource
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.NavigationArgs
 import ch.protonmail.android.maildetail.presentation.model.PagedConversationDetailAction
@@ -145,7 +146,9 @@ class PagedConversationDetailViewModel @Inject constructor(
                         messageId = getInitialScrollToMessageId()?.id,
                         locationViewModeIsConversation = requireLocationViewModeModeIsConversation(),
                         labelId = requireLabelId(),
-                        categoryLabelId = getCategoryLabelIdOrNull()
+                        categoryLabelId = getCategoryLabelIdOrNull(),
+                        pagerSource = getPagerSource(),
+                        searchQuery = getSearchQuery()
                     ).fold(
                         ifLeft = { error ->
                             Timber.e(
@@ -290,6 +293,11 @@ class PagedConversationDetailViewModel @Inject constructor(
     private fun getInitialScrollToMessageId(): MessageIdUiModel? {
         val messageIdStr = savedStateHandle.get<String>(ConversationDetailScreen.ScrollToMessageIdKey)
         return messageIdStr?.let { if (it == "null") null else MessageIdUiModel(it) }
+    }
+
+    private fun getPagerSource(): ConversationPagerSource {
+        val value = savedStateHandle.get<String>(PagedConversationDetailScreen.PagerSourceKey)
+        return ConversationPagerSource.entries.find { it.name == value } ?: ConversationPagerSource.Mailbox
     }
 
     private fun getSearchQuery(): String =
