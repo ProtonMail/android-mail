@@ -27,15 +27,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,9 +61,20 @@ fun ProtonModalBottomSheetLayout(
     content()
 
     if (showBottomSheet) {
+        val scope = rememberCoroutineScope()
         ModalBottomSheet(
             onDismissRequest = onDismissed,
             sheetState = sheetState,
+            // With animations off, Material3 1.4.0 can drop the anchor update when the content grows
+            // right after show(). The sheet then stays at its loading height. Expanding again on resize
+            // moves it to the new anchor. It's a no-op when the sheet is already in place.
+            // Material3 1.5.0-alpha19+ uses foundation's AnchoredDraggableState, which re-snaps to the
+            // latest anchors after the drag ends. Remove this once we're on a stable 1.5.0.
+            modifier = Modifier.onSizeChanged {
+                if (sheetState.targetValue == SheetValue.Expanded) {
+                    scope.launch { sheetState.expand() }
+                }
+            },
             shape = shape,
             containerColor = containerColor,
             contentColor = ProtonTheme.colors.textNorm,
