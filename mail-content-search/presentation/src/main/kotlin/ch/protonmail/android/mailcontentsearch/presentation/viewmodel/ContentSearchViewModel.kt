@@ -47,7 +47,6 @@ import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchO
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchResultUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
-import ch.protonmail.android.mailcontentsearch.presentation.model.buildHighlightText
 import ch.protonmail.android.mailcontentsearch.presentation.model.isInTrashOrSpam
 import ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -86,6 +85,7 @@ import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidati
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsRefreshSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.uicomponents.text.buildSearchHighlightText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -325,7 +325,7 @@ class ContentSearchViewModel @Inject constructor(
                         // Read while the domain item is still in hand: the mapped row keeps the location
                         // icons but not the label ids they were derived from.
                         isInTrashOrSpam = item.isInTrashOrSpam(),
-                        highlightText = buildHighlightText(query, item.searchMatchedTerms)
+                        highlightText = buildSearchHighlightText(query, item.searchMatchedTerms)
                     )
                 }
             }
