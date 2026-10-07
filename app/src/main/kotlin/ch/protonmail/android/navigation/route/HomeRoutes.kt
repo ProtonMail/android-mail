@@ -52,9 +52,11 @@ import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearc
 import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreen
 import ch.protonmail.android.mailcontentsearch.presentation.ui.ContentSearchScreenActions
 import ch.protonmail.android.mailcontentsearch.presentation.ui.DECLINE_CONTENT_SEARCH_KEY
+import ch.protonmail.android.mailcontentsearch.presentation.ui.OpenSearchResultRequest
 import ch.protonmail.android.mailcontentsearch.presentation.ui.TURN_ON_CONTENT_SEARCH_KEY
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchSetUpPromptViewModel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationDetailEntryPoint
+import ch.protonmail.android.maildetail.presentation.model.ConversationPagerSource
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
@@ -86,6 +88,10 @@ internal fun NavGraphBuilder.addConversationDetail(
             navArgument(ConversationDetailScreen.SearchQueryKey) {
                 type = NavType.StringType
                 defaultValue = ""
+            },
+            navArgument(PagedConversationDetailScreen.PagerSourceKey) {
+                type = NavType.StringType
+                defaultValue = ConversationPagerSource.Mailbox.name
             }
         )
     ) {
@@ -498,26 +504,30 @@ internal fun NavGraphBuilder.addContentSearchScreen(
                     onSetUpContentSearch = {
                         navController.navigate(Destination.Screen.ContentSearchSetUp.route)
                     },
-                    onOpenItem = { request ->
-                        val destination = when (request.shouldOpenInComposer) {
-                            true -> Destination.Screen.EditDraftComposer(request.messageId)
-                            false -> Destination.Screen.Conversation(
-                                conversationId = request.conversationId,
-                                scrollToMessageId = request.messageId,
-                                openedFromLocation = request.openedFromLocation,
-                                openedFromCategory = null,
-                                locationViewModeIsConversation = request.isConversationGrouping,
-                                entryPoint = ConversationDetailEntryPoint.Mailbox,
-                                searchQuery = request.searchQuery
-                            )
-                        }
-                        navController.navigate(destination)
-                    }
+                    onOpenItem = { request -> navController.navigate(request.toDestination()) }
                 ),
                 turnOnContentSearchRequested = isTurnOnRequested
             )
         }
     }
+}
+
+private fun OpenSearchResultRequest.toDestination(): String = when (shouldOpenInComposer) {
+    true -> Destination.Screen.EditDraftComposer(messageId)
+    false -> Destination.Screen.Conversation(
+        conversationId = conversationId,
+        scrollToMessageId = messageId,
+        openedFromLocation = openedFromLocation,
+        openedFromCategory = null,
+        locationViewModeIsConversation = isConversationGrouping,
+        entryPoint = ConversationDetailEntryPoint.Mailbox,
+        searchQuery = searchQuery,
+        pagerSource = if (isRecentSearchResult) {
+            ConversationPagerSource.SingleItem
+        } else {
+            ConversationPagerSource.SearchResults
+        }
+    )
 }
 
 internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) {
