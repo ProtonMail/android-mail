@@ -295,7 +295,9 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
                         } else {
                             state.openedFromLocation
                         },
-                        shouldOpenInComposer = found.item.shouldOpenInComposer
+                        shouldOpenInComposer = found.item.shouldOpenInComposer,
+                        // Its search is not the one running, so there are no results to swipe through.
+                        isRecentSearchResult = true
                     )
                 )
             },
@@ -364,7 +366,8 @@ fun ContentSearchScreen(actions: ContentSearchScreenActions, turnOnContentSearch
                             } else {
                                 state.openedFromLocation
                             },
-                            shouldOpenInComposer = item.shouldOpenInComposer
+                            shouldOpenInComposer = item.shouldOpenInComposer,
+                            isRecentSearchResult = false
                         )
                     )
                 }
