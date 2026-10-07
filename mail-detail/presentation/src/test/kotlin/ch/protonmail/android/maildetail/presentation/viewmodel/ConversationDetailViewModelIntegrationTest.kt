@@ -2529,7 +2529,8 @@ internal class ConversationDetailViewModelIntegrationTest {
         isAutoExpandEnabled = isAutoExpandEnabled,
         isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
         isMessageWebViewPoolEnabled = isMessageWebViewPoolEnabled,
-        applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
+        applyWebViewDarkModeFallback = applyWebViewDarkModeFallback,
+        getSearchMatchedTerms = mockk()
     )
 
     private fun aMessageAttachment(id: String): AttachmentMetadata = AttachmentMetadata(

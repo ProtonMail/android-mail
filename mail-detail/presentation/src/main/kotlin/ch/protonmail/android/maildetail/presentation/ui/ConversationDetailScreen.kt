@@ -206,6 +206,7 @@ fun ConversationDetailScreen(
     val isSingleMessageMode = viewModel.isSingleMessageModeEnabled
     val isLastMessageAutoExpandEnabled by viewModel.autoExpandLastMessageEnabled.collectAsStateWithLifecycle()
     val isMessageWebViewPoolEnabled by viewModel.messageWebViewPoolEnabled.collectAsStateWithLifecycle()
+    val highlightText by viewModel.highlightText.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
     val currentAppTheme = if (isSystemInDarkTheme())
         MessageTheme.Dark
@@ -215,6 +216,7 @@ fun ConversationDetailScreen(
     topBarState.messages.value = if (isSingleMessageMode) null else uiModel?.messageCount
     topBarState.title.value = uiModel?.subject ?: DetailScreenTopBar.NoTitle
     topBarState.isStarred.value = uiModel?.isStarred
+    topBarState.highlightText.value = highlightText
 
     fun dismissBottomSheet(continuation: () -> Unit = {}) {
         scope.launch { bottomSheetState.hide() }
@@ -561,7 +563,7 @@ fun ConversationDetailScreen(
         CompositionLocalProvider(
             LocalIsLastMessageAutoExpandEnabled provides isLastMessageAutoExpandEnabled,
             LocalIsMessageWebViewPoolEnabled provides isMessageWebViewPoolEnabled,
-            LocalHighlightQuery provides navigationArgs.searchQuery
+            LocalHighlightQuery provides highlightText
         ) {
             ConversationDetailScreen(
                 modifier = modifier,
