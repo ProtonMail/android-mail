@@ -28,6 +28,7 @@ class ConversationTopBarState {
 
     val messages = mutableStateOf<Int?>(0)
     val title = mutableStateOf("")
+    val highlightText = mutableStateOf("")
     val isStarred = mutableStateOf<Boolean?>(false)
     val subjectAlpha = mutableFloatStateOf(0f)
 

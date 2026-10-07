@@ -122,6 +122,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.CancelScheduleSendMessage
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessageBodyWithClickableLinks
+import ch.protonmail.android.mailmessage.domain.usecase.GetSearchMatchedTerms
 import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
@@ -385,6 +386,8 @@ internal class ConversationDetailViewModelTest {
         every { this@mockk(any()) } answers { firstArg() }
     }
 
+    private val getSearchMatchedTerms = mockk<GetSearchMatchedTerms>()
+
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher().apply { Dispatchers.setMain(this) }
     }
@@ -393,69 +396,74 @@ internal class ConversationDetailViewModelTest {
         createViewModel()
     }
 
-    private fun createViewModel(labelId: LabelId = LabelIdSample.AllMail, isSingleMessageModeEnabled: Boolean = false) =
-        ConversationDetailViewModel(
-            observePrimaryUserId = observePrimaryUserId,
-            messageIdUiModelMapper = messageIdUiModelMapper,
-            actionUiModelMapper = actionUiModelMapper,
-            conversationMessageMapper = conversationMessageMapper,
-            conversationMetadataMapper = conversationMetadataMapper,
-            markConversationAsRead = markConversationAsRead,
-            markConversationAsUnread = markConversationAsUnread,
-            moveConversation = move,
-            deleteConversations = deleteConversations,
-            observeConversationWithMessages = observeConversationWithMessages,
-            getDetailBottomBarActions = getDetailBottomBarActions,
-            reducer = reducer,
-            starConversations = starConversations,
-            unStarConversations = unStarConversations,
-            starMessages = starMessages,
-            unStarMessages = unStarMessages,
-            getMessageBodyWithClickableLinks = getDecryptedMessageBody,
-            markMessageAsRead = markMessageAsRead,
-            messageViewStateCache = messageViewStateCache,
-            observeConversationViewState = observeConversationViewState,
-            getAttachmentIntentValues = getAttachmentIntentValues,
-            loadImageAvoidDuplicatedExecution = loadImageAvoidDuplicatedExecution,
-            ioDispatcher = Dispatchers.Unconfined,
-            observePrivacySettings = observePrivacySettings,
-            updateLinkConfirmationSetting = updateLinkConfirmationSetting,
-            reportPhishingMessage = reportPhishingMessage,
-            isProtonCalendarInstalled = isProtonCalendarInstalled,
-            markMessageAsUnread = markMessageAsUnread,
-            findContactByEmail = findContactByEmail,
-            getMoreActionsBottomSheetData = getMoreActionsBottomSheetData,
-            moveMessage = moveMessage,
-            deleteMessages = deleteMessages,
-            observePrimaryUserAddress = observePrimaryUserAddress,
-            loadAvatarImage = loadAvatarImage,
-            observeAvatarImageStates = observeAvatarImageStates,
-            avatarImageUiModelMapper = avatarImageUiModelMapper,
-            markMessageAsLegitimate = markMessageAsLegitimate,
-            unblockSender = unblockSender,
-            blockSender = blockSender,
-            cancelScheduleSendMessage = cancelScheduleSendMessage,
-            printMessage = printMessage,
-            getRsvpEvent = getRsvpEvent,
-            answerRsvpEvent = answerRsvpEvent,
-            snoozeRepository = snoozeRepository,
-            unsubscribeFromNewsletter = unsubscribeFromNewsletter,
-            toolbarRefreshSignal = toolbarRefreshSignal,
-            resolveSystemLabelId = resolveSystemLabelId,
-            findLocalSystemLabelId = findLocalSystemLabelId,
-            executeWhenOnline = executeWhenOnline,
-            conversationId = conversationId,
-            isSingleMessageModeEnabled = isSingleMessageModeEnabled,
-            initialScrollToMessageId = null,
-            openedFromLocation = labelId,
-            isMessageSenderBlocked = isMessageSenderBlocked,
-            conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
-            searchQuery = searchQuery,
-            isAutoExpandEnabled = isAutoExpandEnabled,
-            isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
-            isMessageWebViewPoolEnabled = isMessageWebViewPoolEnabled,
-            applyWebViewDarkModeFallback = applyWebViewDarkModeFallback
-        )
+    private fun createViewModel(
+        labelId: LabelId = LabelIdSample.AllMail,
+        isSingleMessageModeEnabled: Boolean = false,
+        initialScrollToMessageId: MessageIdUiModel? = null,
+        searchQuery: String = this.searchQuery
+    ) = ConversationDetailViewModel(
+        observePrimaryUserId = observePrimaryUserId,
+        messageIdUiModelMapper = messageIdUiModelMapper,
+        actionUiModelMapper = actionUiModelMapper,
+        conversationMessageMapper = conversationMessageMapper,
+        conversationMetadataMapper = conversationMetadataMapper,
+        markConversationAsRead = markConversationAsRead,
+        markConversationAsUnread = markConversationAsUnread,
+        moveConversation = move,
+        deleteConversations = deleteConversations,
+        observeConversationWithMessages = observeConversationWithMessages,
+        getDetailBottomBarActions = getDetailBottomBarActions,
+        reducer = reducer,
+        starConversations = starConversations,
+        unStarConversations = unStarConversations,
+        starMessages = starMessages,
+        unStarMessages = unStarMessages,
+        getMessageBodyWithClickableLinks = getDecryptedMessageBody,
+        markMessageAsRead = markMessageAsRead,
+        messageViewStateCache = messageViewStateCache,
+        observeConversationViewState = observeConversationViewState,
+        getAttachmentIntentValues = getAttachmentIntentValues,
+        loadImageAvoidDuplicatedExecution = loadImageAvoidDuplicatedExecution,
+        ioDispatcher = Dispatchers.Unconfined,
+        observePrivacySettings = observePrivacySettings,
+        updateLinkConfirmationSetting = updateLinkConfirmationSetting,
+        reportPhishingMessage = reportPhishingMessage,
+        isProtonCalendarInstalled = isProtonCalendarInstalled,
+        markMessageAsUnread = markMessageAsUnread,
+        findContactByEmail = findContactByEmail,
+        getMoreActionsBottomSheetData = getMoreActionsBottomSheetData,
+        moveMessage = moveMessage,
+        deleteMessages = deleteMessages,
+        observePrimaryUserAddress = observePrimaryUserAddress,
+        loadAvatarImage = loadAvatarImage,
+        observeAvatarImageStates = observeAvatarImageStates,
+        avatarImageUiModelMapper = avatarImageUiModelMapper,
+        markMessageAsLegitimate = markMessageAsLegitimate,
+        unblockSender = unblockSender,
+        blockSender = blockSender,
+        cancelScheduleSendMessage = cancelScheduleSendMessage,
+        printMessage = printMessage,
+        getRsvpEvent = getRsvpEvent,
+        answerRsvpEvent = answerRsvpEvent,
+        snoozeRepository = snoozeRepository,
+        unsubscribeFromNewsletter = unsubscribeFromNewsletter,
+        toolbarRefreshSignal = toolbarRefreshSignal,
+        resolveSystemLabelId = resolveSystemLabelId,
+        findLocalSystemLabelId = findLocalSystemLabelId,
+        executeWhenOnline = executeWhenOnline,
+        conversationId = conversationId,
+        isSingleMessageModeEnabled = isSingleMessageModeEnabled,
+        initialScrollToMessageId = initialScrollToMessageId,
+        openedFromLocation = labelId,
+        isMessageSenderBlocked = isMessageSenderBlocked,
+        conversationEntryPoint = ConversationDetailEntryPoint.Mailbox,
+        searchQuery = searchQuery,
+        isAutoExpandEnabled = isAutoExpandEnabled,
+        isWebViewDarkModeFallbackEnabled = isWebViewDarkModeFallbackEnabled,
+        isMessageWebViewPoolEnabled = isMessageWebViewPoolEnabled,
+        applyWebViewDarkModeFallback = applyWebViewDarkModeFallback,
+        getSearchMatchedTerms = getSearchMatchedTerms
+    )
 
     @BeforeTest
     fun setUp() {
@@ -474,6 +482,37 @@ internal class ConversationDetailViewModelTest {
             // Then
             assertEquals(ConversationDetailState.Loading, awaitItem())
         }
+    }
+
+    @Test
+    fun `highlight text adds what search matched in the opened message`() = runTest {
+        // Given
+        val messageId = MessageIdUiModel("message-id")
+        coEvery {
+            getSearchMatchedTerms(UserIdSample.Primary, "governmnt", MessageId("message-id"))
+        } returns listOf("government")
+        val viewModel = createViewModel(initialScrollToMessageId = messageId, searchQuery = "governmnt")
+
+        // When
+        viewModel.highlightText.test {
+            // Then
+            assertEquals("governmnt", awaitItem())
+            assertEquals("governmnt government", awaitItem())
+        }
+    }
+
+    @Test
+    fun `highlight text stays empty and reads no terms outside of search`() = runTest {
+        // Given
+        val viewModel = createViewModel(initialScrollToMessageId = MessageIdUiModel("message-id"))
+
+        // When
+        viewModel.highlightText.test {
+            // Then
+            assertEquals("", awaitItem())
+            expectNoEvents()
+        }
+        coVerify(exactly = 0) { getSearchMatchedTerms(any(), any(), any()) }
     }
 
     @Test

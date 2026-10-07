@@ -133,6 +133,7 @@ import ch.protonmail.android.mailmessage.domain.model.RsvpAnswer
 import ch.protonmail.android.mailmessage.domain.usecase.CancelScheduleSendMessage
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessageBodyWithClickableLinks
+import ch.protonmail.android.mailmessage.domain.usecase.GetSearchMatchedTerms
 import ch.protonmail.android.mailmessage.domain.usecase.LoadAvatarImage
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveAvatarImageStates
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
@@ -152,6 +153,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfi
 import ch.protonmail.android.mailsnooze.domain.SnoozeRepository
 import ch.protonmail.android.mailsnooze.presentation.model.SnoozeConversationId
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedTrackersBottomSheetEvent
+import ch.protonmail.android.uicomponents.text.buildSearchHighlightText
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -247,7 +249,8 @@ class ConversationDetailViewModel @AssistedInject constructor(
     @IsLastMessageAutoExpandEnabled private val isAutoExpandEnabled: FeatureFlag<Boolean>,
     @IsWebViewDarkModeFallbackEnabled private val isWebViewDarkModeFallbackEnabled: FeatureFlag<Boolean>,
     @IsMessageWebViewPoolEnabled private val isMessageWebViewPoolEnabled: FeatureFlag<Boolean>,
-    private val applyWebViewDarkModeFallback: ApplyWebViewDarkModeFallback
+    private val applyWebViewDarkModeFallback: ApplyWebViewDarkModeFallback,
+    private val getSearchMatchedTerms: GetSearchMatchedTerms
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -323,6 +326,24 @@ class ConversationDetailViewModel @AssistedInject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
         initialValue = false
+    )
+
+    /**
+     * The highlight for the subject and addresses: the query plus what search matched in the opened result.
+     *
+     * Each pager page has its own view model, so each page reads the terms of its own message.
+     * A message outside the active search gets no terms and highlights the query only.
+     * The body keeps highlighting the raw [searchQuery].
+     */
+    val highlightText: StateFlow<String> = flow {
+        val messageId = initialScrollToMessageId?.let { MessageId(it.id) }
+        if (searchQuery.isBlank() || messageId == null) return@flow
+        val terms = getSearchMatchedTerms(primaryUserId.first(), searchQuery, messageId)
+        emit(buildSearchHighlightText(searchQuery, terms))
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        initialValue = searchQuery
     )
 
     init {
