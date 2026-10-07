@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcategory.data.mapper.toCategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcommon.data.mapper.LocalCategoryLabelId
 import ch.protonmail.android.mailcommon.data.mapper.LocalConversationId
+import ch.protonmail.android.mailcommon.data.mapper.LocalItemId
 import ch.protonmail.android.mailcommon.data.mapper.LocalMessageId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -178,36 +179,46 @@ class RustMessageListQueryImpl @Inject constructor(
         labelId: LabelId,
         categoryLabelId: CategoryLabelId?,
         firstPage: LocalConversationId
-    ): Either<PaginationError, MailMessageCursorWrapper>? {
-        val pageDescriptor = PageDescriptor.Default(
-            userId = userId,
-            labelId = labelId, categoryLabelId = categoryLabelId
-        )
+    ): Either<PaginationError, MailMessageCursorWrapper>? = getCursorFromActivePaginator(
+        pageDescriptor = PageDescriptor.Default(userId = userId, labelId = labelId, categoryLabelId = categoryLabelId),
+        anchorItemId = firstPage
+    )
 
-        return paginatorMutex.withLock {
-            val state = paginatorState
-            when {
-                state == null -> {
-                    Timber.d("rust-message-query: No active paginator to reuse for cursor")
-                    null
-                }
+    override suspend fun getSearchCursorFromActivePaginator(
+        userId: UserId,
+        keyword: String,
+        anchorItemId: LocalItemId
+    ): Either<PaginationError, MailMessageCursorWrapper>? = getCursorFromActivePaginator(
+        pageDescriptor = PageDescriptor.Search(userId = userId, keyword = keyword),
+        anchorItemId = anchorItemId
+    )
 
-                state.pageDescriptor != pageDescriptor -> {
-                    Timber.d(
-                        "rust-message-query: Active paginator cannot be reused for cursor. active=%s requested=%s",
-                        state.pageDescriptor,
-                        pageDescriptor
-                    )
-                    null
-                }
+    private suspend fun getCursorFromActivePaginator(
+        pageDescriptor: PageDescriptor,
+        anchorItemId: LocalItemId
+    ): Either<PaginationError, MailMessageCursorWrapper>? = paginatorMutex.withLock {
+        val state = paginatorState
+        when {
+            state == null -> {
+                Timber.d("rust-message-query: No active paginator to reuse for cursor")
+                null
+            }
 
-                else -> {
-                    Timber.d(
-                        "rust-message-query: Reusing active mailbox paginator for cursor, scrollerId=%s",
-                        state.paginatorWrapper.getScrollerId()
-                    )
-                    state.paginatorWrapper.getCursor(firstPage)
-                }
+            state.pageDescriptor != pageDescriptor -> {
+                Timber.d(
+                    "rust-message-query: Active paginator cannot be reused for cursor. active=%s requested=%s",
+                    state.pageDescriptor,
+                    pageDescriptor
+                )
+                null
+            }
+
+            else -> {
+                Timber.d(
+                    "rust-message-query: Reusing active paginator for cursor, scrollerId=%s",
+                    state.paginatorWrapper.getScrollerId()
+                )
+                state.paginatorWrapper.getCursor(anchorItemId)
             }
         }
     }

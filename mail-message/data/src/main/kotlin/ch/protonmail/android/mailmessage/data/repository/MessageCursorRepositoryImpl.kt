@@ -82,6 +82,29 @@ class MessageCursorRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSearchCursor(
+        anchorItemId: CursorId,
+        userId: UserId,
+        keyword: String
+    ): Either<ConversationCursorError, ConversationCursor> {
+        val messageId = anchorItemId.messageId ?: run {
+            Timber.w("message-cursor-repository: Search cursor needs a message anchor, got %s", anchorItemId)
+            return ConversationCursorError.InvalidState.left()
+        }
+        val searchCursorResult = rustMessageListQuery.getSearchCursorFromActivePaginator(
+            userId = userId,
+            keyword = keyword,
+            anchorItemId = messageId.toLocalConversationId()
+        ) ?: run {
+            Timber.d("message-cursor-repository: No active search to get a cursor from")
+            return ConversationCursorError.InvalidState.left()
+        }
+
+        return searchCursorResult
+            .mapLeft { it.toConversationCursorError() }
+            .map { cursorWrapper -> RustConversationCursorImpl(anchorItemId, cursorWrapper) }
+    }
+
     /**
      * Cursor lookup strategy:
      *
