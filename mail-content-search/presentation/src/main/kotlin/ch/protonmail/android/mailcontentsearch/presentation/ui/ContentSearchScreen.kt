@@ -640,7 +640,6 @@ private fun ContentSearchBody(
             ResultsList(
                 items = items,
                 actions = actions,
-                query = state.query,
                 selectionMode = state.inSelectionMode,
                 selectedItemIds = remember(state.selectionState.selectedItems) {
                     state.selectionState.selectedItems.mapTo(HashSet()) { it.id }
@@ -873,7 +872,7 @@ private fun ContentSearchScreenResultsPreview() {
         MailboxItemUiModelPreviewData.Message.WeatherForecastAug,
         MailboxItemUiModelPreviewData.Message.WeatherForecastSep,
         MailboxItemUiModelPreviewData.Conversation.WeatherForecast
-    ).map { ContentSearchResultUiModel(item = it, isInTrashOrSpam = false) }
+    ).map { ContentSearchResultUiModel(item = it, isInTrashOrSpam = false, highlightText = "weather") }
     ProtonTheme {
         ContentSearchScreen(
             state = ContentSearchState.Initial.copy(

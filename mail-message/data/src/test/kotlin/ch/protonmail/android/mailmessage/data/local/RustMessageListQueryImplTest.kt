@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.local
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
+import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -36,6 +37,7 @@ import ch.protonmail.android.mailmessage.data.usecase.CreateRustMessagesPaginato
 import ch.protonmail.android.mailmessage.data.usecase.CreateRustSearchPaginator
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailmessage.data.wrapper.MessagePaginatorWrapper
+import ch.protonmail.android.mailmessage.data.wrapper.SearchMessagePaginatorWrapper
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -62,6 +64,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
+import uniffi.mail_uniffi.Id
 import uniffi.mail_uniffi.Message
 import uniffi.mail_uniffi.MessageScrollerListUpdate
 import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
@@ -100,6 +103,23 @@ class RustMessageListQueryImplTest {
     private val socialCategoryId = CategoryLabelId(CategorySystemLabelId.Social.labelId.id)
     private val primaryLocalCategoryId = primaryCategoryId.toLocalCategoryLabelId()
     private val socialLocalCategoryId = socialCategoryId.toLocalCategoryLabelId()
+
+    private fun searchPaginatorWithNextEmitting(
+        callback: CapturingSlot<MessageScrollerLiveQueryCallback>,
+        items: List<Message>
+    ): SearchMessagePaginatorWrapper = mockk {
+        coEvery { nextPage() } answers {
+            callback.captured.onUpdate(
+                MessageScrollerUpdate.List(
+                    MessageScrollerListUpdate.Append(items = items, scrollerId = DefaultScrollerId)
+                )
+            )
+            Unit.right()
+        }
+        coEvery { disconnect() } just Runs
+        every { getScrollerId() } returns DefaultScrollerId
+        coEvery { getCategoryViewStatus() } returns CategoryViewStatus.NotAvailable
+    }
 
     private fun paginatorWrapperWithNextEmitting(
         callback: CapturingSlot<MessageScrollerLiveQueryCallback>,
@@ -620,6 +640,74 @@ class RustMessageListQueryImplTest {
         // Then the mailbox count is not handed to the search screen
         assertNull(actual)
         coVerify(exactly = 0) { paginator.totalItemsCount() }
+    }
+
+    @Test
+    fun `Search - reads match positions once and serves them from the cache after`() = runTest {
+        // Given
+        val key = PageKey.PageKeyForSearch(keyword = "governmnt")
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = searchPaginatorWithNextEmitting(callback, expectedMessages)
+        val positions = listOf(LocalSearchMatchPosition("subject", 0u, 4u, 14u))
+        coEvery { paginator.getMatchPositions(listOf(Id(1uL)), mailbox) } returns mapOf("1" to positions).right()
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustSearchPaginator(mailbox, "governmnt", capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, key)
+
+        // When
+        val first = rustMessageListQuery.getSearchMatchPositions(userId, key, listOf(Id(1uL)))
+        val second = rustMessageListQuery.getSearchMatchPositions(userId, key, listOf(Id(1uL)))
+
+        // Then
+        assertEquals(mapOf("1" to positions).right(), first)
+        assertEquals(first, second)
+        coVerify(exactly = 1) { paginator.getMatchPositions(any(), any()) }
+    }
+
+    @Test
+    fun `Search - asks Rust only for the messages without cached match positions`() = runTest {
+        // Given
+        val key = PageKey.PageKeyForSearch(keyword = "governmnt")
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = searchPaginatorWithNextEmitting(callback, expectedMessages)
+        val noPositions = emptyMap<String, List<LocalSearchMatchPosition>>()
+        coEvery { paginator.getMatchPositions(listOf(Id(1uL)), mailbox) } returns noPositions.right()
+        coEvery { paginator.getMatchPositions(listOf(Id(2uL)), mailbox) } returns noPositions.right()
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustSearchPaginator(mailbox, "governmnt", capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, key)
+        rustMessageListQuery.getSearchMatchPositions(userId, key, listOf(Id(1uL)))
+
+        // When
+        val actual = rustMessageListQuery.getSearchMatchPositions(userId, key, listOf(Id(1uL), Id(2uL)))
+
+        // Then messages without a match are cached as such
+        assertEquals(mapOf("1" to emptyList<LocalSearchMatchPosition>(), "2" to emptyList()).right(), actual)
+        coVerify(exactly = 1) { paginator.getMatchPositions(listOf(Id(2uL)), mailbox) }
+    }
+
+    @Test
+    fun `Search - reads no match positions for a search that is not the active one`() = runTest {
+        // Given
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = searchPaginatorWithNextEmitting(callback, expectedMessages)
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustSearchPaginator(mailbox, "report", capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, PageKey.PageKeyForSearch(keyword = "report"))
+
+        // When
+        val actual = rustMessageListQuery.getSearchMatchPositions(
+            userId,
+            PageKey.PageKeyForSearch(keyword = "invoice"),
+            listOf(Id(1uL))
+        )
+
+        // Then
+        assertEquals(emptyMap<String, List<LocalSearchMatchPosition>>().right(), actual)
+        coVerify(exactly = 0) { paginator.getMatchPositions(any(), any()) }
     }
 
     @Test

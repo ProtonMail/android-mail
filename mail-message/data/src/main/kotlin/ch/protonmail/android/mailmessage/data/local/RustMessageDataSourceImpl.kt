@@ -123,8 +123,11 @@ class RustMessageDataSourceImpl @Inject constructor(
     override suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey) =
         rustMessageListQuery.getTotalItemsCount(userId, pageKey)
 
-    override suspend fun getSearchMatchPositions(userId: UserId, messageIds: List<LocalMessageId>) =
-        rustMessageListQuery.getSearchMatchPositions(userId, messageIds)
+    override suspend fun getSearchMatchPositions(
+        userId: UserId,
+        pageKey: PageKey,
+        messageIds: List<LocalMessageId>
+    ) = rustMessageListQuery.getSearchMatchPositions(userId, pageKey, messageIds)
 
     override suspend fun getMessage(
         userId: UserId,

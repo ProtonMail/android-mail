@@ -96,9 +96,10 @@ class RustMessageRepositoryImpl @Inject constructor(
 
     override suspend fun getSearchMatchPositions(
         userId: UserId,
+        pageKey: PageKey,
         messageIds: List<MessageId>
     ): Either<PaginationError, Map<MessageId, List<SearchMatchPosition>>> =
-        rustMessageDataSource.getSearchMatchPositions(userId, messageIds.map { it.toLocalMessageId() })
+        rustMessageDataSource.getSearchMatchPositions(userId, pageKey, messageIds.map { it.toLocalMessageId() })
             .map { positionsById ->
                 positionsById.entries.associate { (id, positions) ->
                     MessageId(id) to positions.mapNotNull { it.toSearchMatchPosition() }

@@ -53,7 +53,7 @@ class GetMailboxItems @Inject constructor(
     ): Either<PaginationError, List<MailboxItem>> = when (type) {
         MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map { list ->
             val matchPositions = if (pageKey is PageKey.PageKeyForSearch) {
-                getSearchMatchPositions(userId, list)
+                getSearchMatchPositions(userId, pageKey, list)
             } else {
                 emptyMap()
             }
@@ -77,10 +77,11 @@ class GetMailboxItems @Inject constructor(
     // A failure leaves the results without fuzzy highlights rather than failing the page.
     private suspend fun getSearchMatchPositions(
         userId: UserId,
+        pageKey: PageKey,
         messages: List<Message>
     ): Map<MessageId, List<SearchMatchPosition>> {
         if (messages.isEmpty()) return emptyMap()
-        return messageRepository.getSearchMatchPositions(userId, messages.map { it.messageId })
+        return messageRepository.getSearchMatchPositions(userId, pageKey, messages.map { it.messageId })
             .getOrElse {
                 Timber.w("Failed to get search match positions: $it")
                 emptyMap()

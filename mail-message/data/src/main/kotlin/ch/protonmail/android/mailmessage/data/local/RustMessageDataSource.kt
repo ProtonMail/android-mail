@@ -61,6 +61,7 @@ interface RustMessageDataSource {
 
     suspend fun getSearchMatchPositions(
         userId: UserId,
+        pageKey: PageKey,
         messageIds: List<LocalMessageId>
     ): Either<PaginationError, Map<String, List<LocalSearchMatchPosition>>>
 

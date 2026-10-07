@@ -23,8 +23,6 @@ import ch.protonmail.android.maillabel.domain.model.ExclusiveLocation
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * A search result row: the mailbox item it renders as, plus the one thing the mailbox model cannot tell
@@ -32,24 +30,32 @@ import kotlinx.collections.immutable.persistentListOf
  *
  * Wrapped here rather than added to [MailboxItemUiModel] because only this screen opens items against a
  * location derived from a filter, and the mailbox has no use for the flag.
+ *
+ * @param highlightText the words to highlight in the row. See [buildHighlightText].
  */
 @Immutable
 data class ContentSearchResultUiModel(
     val item: MailboxItemUiModel,
     val isInTrashOrSpam: Boolean,
-    val searchMatchedTerms: ImmutableList<String> = persistentListOf()
+    val highlightText: String
 ) {
 
     val id: String get() = item.id
-
-    /**
-     * The query plus the text search matched in this result, so fuzzy matches are highlighted too.
-     *
-     * The highlight splits this on whitespace. Matched terms are single words or addresses, so the split keeps
-     * them whole.
-     */
-    fun highlightText(query: String): String = (listOf(query) + searchMatchedTerms).joinToString(" ")
 }
+
+/**
+ * The query's words plus the text search matched in a result, so fuzzy matches are highlighted too.
+ *
+ * Built once per row rather than on every recomposition. The highlight splits it on whitespace again.
+ * Matched terms are single words or addresses, so the split keeps them whole.
+ */
+internal fun buildHighlightText(query: String, searchMatchedTerms: List<String>): String =
+    (query.split(Whitespace) + searchMatchedTerms)
+        .filter { it.isNotBlank() }
+        .distinctBy { it.lowercase() }
+        .joinToString(" ")
+
+private val Whitespace = Regex("\\s+")
 
 /**
  * Whether the item sits in Trash or Spam, the two locations Almost All Mail leaves out. A result can end

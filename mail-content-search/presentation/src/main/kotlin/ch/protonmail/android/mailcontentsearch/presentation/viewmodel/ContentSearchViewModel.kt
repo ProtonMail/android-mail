@@ -47,6 +47,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchO
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchResultUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
+import ch.protonmail.android.mailcontentsearch.presentation.model.buildHighlightText
 import ch.protonmail.android.mailcontentsearch.presentation.model.isInTrashOrSpam
 import ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -309,7 +310,7 @@ class ContentSearchViewModel @Inject constructor(
                         // Read while the domain item is still in hand: the mapped row keeps the location
                         // icons but not the label ids they were derived from.
                         isInTrashOrSpam = item.isInTrashOrSpam(),
-                        searchMatchedTerms = item.searchMatchedTerms.toImmutableList()
+                        highlightText = buildHighlightText(query, item.searchMatchedTerms)
                     )
                 }
             }
