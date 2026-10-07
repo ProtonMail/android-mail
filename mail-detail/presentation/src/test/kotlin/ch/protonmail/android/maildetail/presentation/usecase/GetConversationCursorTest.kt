@@ -23,8 +23,10 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationCursorError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.CursorId
+import ch.protonmail.android.mailcommon.domain.model.CursorResult
 import ch.protonmail.android.mailcommon.domain.repository.ConversationCursor
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maildetail.presentation.model.ConversationPagerSource
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import io.mockk.coEvery
@@ -68,7 +70,9 @@ internal class GetConversationCursorTest {
             messageId = messageId,
             locationViewModeIsConversation = true,
             labelId = labelId,
-            categoryLabelId = null
+            categoryLabelId = null,
+            pagerSource = ConversationPagerSource.Mailbox,
+            searchQuery = ""
         )
 
         // Then
@@ -109,7 +113,9 @@ internal class GetConversationCursorTest {
             messageId = messageId,
             locationViewModeIsConversation = false,
             labelId = labelId,
-            categoryLabelId = null
+            categoryLabelId = null,
+            pagerSource = ConversationPagerSource.Mailbox,
+            searchQuery = ""
         )
 
         // Then
@@ -150,7 +156,9 @@ internal class GetConversationCursorTest {
             messageId = messageId,
             locationViewModeIsConversation = true,
             labelId = labelId,
-            categoryLabelId = null
+            categoryLabelId = null,
+            pagerSource = ConversationPagerSource.Mailbox,
+            searchQuery = ""
         )
 
         // Then
@@ -188,7 +196,9 @@ internal class GetConversationCursorTest {
             messageId = messageId,
             locationViewModeIsConversation = false,
             labelId = labelId,
-            categoryLabelId = null
+            categoryLabelId = null,
+            pagerSource = ConversationPagerSource.Mailbox,
+            searchQuery = ""
         )
 
         // Then
@@ -201,5 +211,70 @@ internal class GetConversationCursorTest {
                 categoryLabelId = null
             )
         }
+    }
+
+    @Test
+    fun `gets a message cursor over the search results even when grouping by conversation`() = runTest {
+        // Given
+        val expected = mockk<ConversationCursor>()
+        coEvery {
+            messageRepository.getSearchCursor(CursorId(conversationId, messageId), userId, "invoice")
+        } returns expected.right()
+
+        // When
+        val result = getCursor(pagerSource = ConversationPagerSource.SearchResults, searchQuery = "invoice")
+
+        // Then
+        assertEquals(expected.right(), result)
+        coVerify(exactly = 0) { conversationRepository.getConversationCursor(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { messageRepository.getConversationCursor(any(), any(), any(), any()) }
+    }
+
+    @Test
+    fun `shows only the opened result when the search is no longer active`() = runTest {
+        // Given
+        coEvery {
+            messageRepository.getSearchCursor(any(), any(), any())
+        } returns ConversationCursorError.InvalidState.left()
+
+        // When
+        val result = getCursor(pagerSource = ConversationPagerSource.SearchResults, searchQuery = "invoice")
+
+        // Then
+        assertSingleItem(result.getOrNull())
+        coVerify(exactly = 0) { conversationRepository.getConversationCursor(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { messageRepository.getConversationCursor(any(), any(), any(), any()) }
+    }
+
+    @Test
+    fun `shows only the opened item without reading any cursor`() = runTest {
+        // When
+        val result = getCursor(pagerSource = ConversationPagerSource.SingleItem, searchQuery = "invoice")
+
+        // Then
+        assertSingleItem(result.getOrNull())
+        coVerify(exactly = 0) { messageRepository.getSearchCursor(any(), any(), any()) }
+        coVerify(exactly = 0) { conversationRepository.getConversationCursor(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { messageRepository.getConversationCursor(any(), any(), any(), any()) }
+    }
+
+    private suspend fun getCursor(pagerSource: ConversationPagerSource, searchQuery: String) = GetConversationCursor(
+        conversationRepository = conversationRepository,
+        messageRepository = messageRepository
+    ).invoke(
+        userId = userId,
+        conversationId = conversationId,
+        messageId = messageId,
+        locationViewModeIsConversation = true,
+        labelId = labelId,
+        categoryLabelId = null,
+        pagerSource = pagerSource,
+        searchQuery = searchQuery
+    )
+
+    private fun assertSingleItem(cursor: ConversationCursor?) {
+        assertEquals(CursorResult.Cursor(conversationId, messageId), cursor?.current)
+        assertEquals(CursorResult.End, cursor?.next)
+        assertEquals(CursorResult.End, cursor?.previous)
     }
 }
