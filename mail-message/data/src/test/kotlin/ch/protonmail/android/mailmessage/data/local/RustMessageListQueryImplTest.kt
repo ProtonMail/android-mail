@@ -45,6 +45,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageToLoad
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailpagination.domain.repository.PageInvalidationRepository
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.testdata.message.rust.LocalMessageIdSample
 import ch.protonmail.android.testdata.message.rust.LocalMessageTestData
 import io.mockk.Called
 import io.mockk.CapturingSlot
@@ -737,6 +738,64 @@ class RustMessageListQueryImplTest {
         coVerify(exactly = 1) { createRustSearchPaginator(mailbox, "invoice", any()) }
         coVerify { paginator.disconnect() }
         coVerify(exactly = 1) { createRustSearchPaginator(mailbox, "report", any()) }
+    }
+
+    @Test
+    fun `Search - gets the cursor from the active search for that keyword`() = runTest {
+        // Given
+        val messageId = LocalMessageIdSample.AugWeatherForecast
+        val expectedCursor = mockk<MailMessageCursorWrapper>()
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
+        coEvery { paginator.getCursor(messageId) } returns expectedCursor.right()
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustSearchPaginator(mailbox, "invoice", capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, PageKey.PageKeyForSearch(keyword = "invoice"))
+
+        // When
+        val actual = rustMessageListQuery.getSearchCursorFromActivePaginator(userId, "invoice", messageId)
+
+        // Then
+        assertEquals(expectedCursor.right(), actual)
+    }
+
+    @Test
+    fun `Search - gets no cursor while the active search is for another keyword`() = runTest {
+        // Given
+        val messageId = LocalMessageIdSample.AugWeatherForecast
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustSearchPaginator(mailbox, "invoice", capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, PageKey.PageKeyForSearch(keyword = "invoice"))
+
+        // When
+        val actual = rustMessageListQuery.getSearchCursorFromActivePaginator(userId, "report", messageId)
+
+        // Then
+        assertNull(actual)
+        coVerify(exactly = 0) { paginator.getCursor(any()) }
+    }
+
+    @Test
+    fun `Search - gets no cursor while the mailbox is the active paginator`() = runTest {
+        // Given
+        val messageId = LocalMessageIdSample.AugWeatherForecast
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustMessagesPaginator(mailbox, any(), capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey(labelId = inboxLabelId))
+
+        // When
+        val actual = rustMessageListQuery.getSearchCursorFromActivePaginator(userId, "invoice", messageId)
+
+        // Then
+        assertNull(actual)
+        coVerify(exactly = 0) { paginator.getCursor(any()) }
     }
 
     @Test

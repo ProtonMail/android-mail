@@ -212,6 +212,23 @@ internal class RustMessageRepositoryImplTest {
     }
 
     @Test
+    fun `getSearchCursor reads the cursor over the active search`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val anchorItem = CursorId(conversationId = ConversationId("99"), messageId = "100")
+        val conversationCursor = mockk<ConversationCursor>()
+        coEvery {
+            messageCursorRepository.getSearchCursor(anchorItem, userId, "invoice")
+        } returns conversationCursor.right()
+
+        // When
+        val result = repository.getSearchCursor(anchorItem, userId, "invoice")
+
+        // Then
+        assertEquals(conversationCursor.right(), result)
+    }
+
+    @Test
     fun `markRead should mark conversations as read`() = runTest {
         // Given
         val messageIds = listOf(LocalMessageIdSample.AugWeatherForecast.toMessageId())

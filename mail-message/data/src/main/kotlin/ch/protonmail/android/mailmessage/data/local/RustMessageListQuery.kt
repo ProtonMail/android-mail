@@ -60,6 +60,17 @@ interface RustMessageListQuery {
         anchorItemId: LocalItemId
     ): Either<PaginationError, MailMessageCursorWrapper>?
 
+    /**
+     * A cursor over the results of the active search for [keyword].
+     *
+     * Null when no search for [keyword] is active, as there are then no results to walk through.
+     */
+    suspend fun getSearchCursorFromActivePaginator(
+        userId: UserId,
+        keyword: String,
+        anchorItemId: LocalItemId
+    ): Either<PaginationError, MailMessageCursorWrapper>?
+
     fun observeScrollerFetchNewStatus(): Flow<MessageScrollerStatusUpdate>
 
     fun observeCategoryViewStatus(): Flow<CategoryViewStatus>

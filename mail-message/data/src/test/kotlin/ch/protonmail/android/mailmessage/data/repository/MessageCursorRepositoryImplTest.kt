@@ -566,4 +566,68 @@ internal class MessageCursorRepositoryImplTest {
         coVerify(exactly = 1) { firstPaginator.getCursor(firstConversationId) }
         coVerify(exactly = 1) { secondPaginator.getCursor(secondConversationId) }
     }
+
+    @Test
+    fun `getSearchCursor gets the cursor from the active search without a mailbox fallback`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val anchorItem = CursorId(ConversationId("100"), "102")
+        val anchorMessageId = LocalItemId("102".toULong())
+        coEvery {
+            rustMessageListQuery.getSearchCursorFromActivePaginator(userId, "invoice", anchorMessageId)
+        } returns cursorWrapper.right()
+
+        // When
+        val actual = repository.getSearchCursor(anchorItem, userId, "invoice")
+
+        // Then
+        assertEquals(CursorResult.Cursor(ConversationId("100"), "102"), actual.getOrNull()?.current)
+        assertEquals(CursorResult.Cursor(ConversationId("101")), actual.getOrNull()?.next)
+        coVerify(exactly = 0) { rustMessageListQuery.getCursorFromActivePaginator(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any(), any()) }
+    }
+
+    @Test
+    fun `getSearchCursor fails without falling back to a mailbox when the search is not active`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val anchorItem = CursorId(ConversationId("100"), "102")
+        coEvery { rustMessageListQuery.getSearchCursorFromActivePaginator(userId, "invoice", any()) } returns null
+
+        // When
+        val actual = repository.getSearchCursor(anchorItem, userId, "invoice")
+
+        // Then
+        assertEquals(ConversationCursorError.InvalidState.left(), actual)
+        coVerify(exactly = 0) { rustMessageListQuery.getCursorFromActivePaginator(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { rustMailboxFactory.create(any(), any()) }
+        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any(), any()) }
+    }
+
+    @Test
+    fun `getSearchCursor fails when the active search cannot resolve the anchor`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val anchorItem = CursorId(ConversationId("100"), "102")
+        coEvery {
+            rustMessageListQuery.getSearchCursorFromActivePaginator(userId, "invoice", any())
+        } returns PaginationError.Other(DataError.Local.NoDataCached).left()
+
+        // When
+        val actual = repository.getSearchCursor(anchorItem, userId, "invoice")
+
+        // Then
+        assertTrue(actual.isLeft())
+        coVerify(exactly = 0) { createRustMessagesPaginator(any(), any(), any()) }
+    }
+
+    @Test
+    fun `getSearchCursor fails without a message to anchor on`() = runTest {
+        // When
+        val actual = repository.getSearchCursor(CursorId(ConversationId("100")), UserIdSample.Primary, "invoice")
+
+        // Then
+        assertEquals(ConversationCursorError.InvalidState.left(), actual)
+        coVerify(exactly = 0) { rustMessageListQuery.getSearchCursorFromActivePaginator(any(), any(), any()) }
+    }
 }

@@ -33,4 +33,16 @@ interface MessageCursorRepository {
         labelId: LabelId,
         categoryLabelId: CategoryLabelId?
     ): Either<ConversationCursorError, ConversationCursor>
+
+    /**
+     * A cursor over the results of the active search for [keyword], anchored on a result's message.
+     *
+     * Fails with [ConversationCursorError.InvalidState] when that search is no longer active.
+     * There is no fallback to a mailbox, since swiping would then walk through unrelated messages.
+     */
+    suspend fun getSearchCursor(
+        anchorItemId: CursorId,
+        userId: UserId,
+        keyword: String
+    ): Either<ConversationCursorError, ConversationCursor>
 }

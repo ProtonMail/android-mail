@@ -107,6 +107,17 @@ interface MessageRepository {
     ): Either<ConversationCursorError, ConversationCursor>
 
     /**
+     * Like [getConversationCursor], but walks through the results of the active search for [keyword].
+     *
+     * Fails when that search is no longer active.
+     */
+    suspend fun getSearchCursor(
+        anchorItemId: CursorId,
+        userId: UserId,
+        keyword: String
+    ): Either<ConversationCursorError, ConversationCursor>
+
+    /**
      * Moves the given [messageIds] from the optional exclusive label to the [toLabel]
      * @param userId the user id of the affected messages
      * @param messageIds the messages to move with their optional exclusive label
