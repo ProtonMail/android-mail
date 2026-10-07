@@ -16,17 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontentsearch.presentation.model
+package ch.protonmail.android.uicomponents.text
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ContentSearchResultUiModelTest {
+class BuildSearchHighlightTextTest {
 
     @Test
     fun `should join the query words and the matched terms`() {
         // When
-        val actual = buildHighlightText(query = "new  governmnt", searchMatchedTerms = listOf("government"))
+        val actual = buildSearchHighlightText(query = "new  governmnt", searchMatchedTerms = listOf("government"))
 
         // Then
         assertEquals("new governmnt government", actual)
@@ -35,7 +35,10 @@ class ContentSearchResultUiModelTest {
     @Test
     fun `should drop terms that repeat a word ignoring case`() {
         // When
-        val actual = buildHighlightText(query = "Policy", searchMatchedTerms = listOf("policy", "POLICY", "budget"))
+        val actual = buildSearchHighlightText(
+            query = "Policy",
+            searchMatchedTerms = listOf("policy", "POLICY", "budget")
+        )
 
         // Then
         assertEquals("Policy budget", actual)
@@ -44,7 +47,7 @@ class ContentSearchResultUiModelTest {
     @Test
     fun `should be empty without a query or matched terms`() {
         // When
-        val actual = buildHighlightText(query = " ", searchMatchedTerms = emptyList())
+        val actual = buildSearchHighlightText(query = " ", searchMatchedTerms = emptyList())
 
         // Then
         assertEquals("", actual)

@@ -31,7 +31,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
  * Wrapped here rather than added to [MailboxItemUiModel] because only this screen opens items against a
  * location derived from a filter, and the mailbox has no use for the flag.
  *
- * @param highlightText the words to highlight in the row. See [buildHighlightText].
+ * @param highlightText the query's words plus the text search matched in this result, built once per row.
  */
 @Immutable
 data class ContentSearchResultUiModel(
@@ -42,20 +42,6 @@ data class ContentSearchResultUiModel(
 
     val id: String get() = item.id
 }
-
-/**
- * The query's words plus the text search matched in a result, so fuzzy matches are highlighted too.
- *
- * Built once per row rather than on every recomposition. The highlight splits it on whitespace again.
- * Matched terms are single words or addresses, so the split keeps them whole.
- */
-internal fun buildHighlightText(query: String, searchMatchedTerms: List<String>): String =
-    (query.split(Whitespace) + searchMatchedTerms)
-        .filter { it.isNotBlank() }
-        .distinctBy { it.lowercase() }
-        .joinToString(" ")
-
-private val Whitespace = Regex("\\s+")
 
 /**
  * Whether the item sits in Trash or Spam, the two locations Almost All Mail leaves out. A result can end
