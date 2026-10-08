@@ -62,7 +62,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.R
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ContentSearchSettingsState
 
 /**
- * How far this account's index has got, and the one control over it.
+ * How far this account's index has got, and the one control over it while it is still running.
  *
  * Shown only while content search is on for the account: there is no progress to report otherwise.
  */
@@ -114,34 +114,31 @@ internal fun IndexingCard(
                     IndexingStatusRow(status = status)
                 }
 
-                Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Huge))
+                status.actionLabel?.let { actionLabel ->
+                    Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Huge))
 
-                ProtonButton(
-                    onClick = { actions.forStatus(status)() },
-                    enabled = status.isActionEnabled,
-                    loading = state.isRetryingIndexing,
-                    elevation = null,
-                    shape = CircleShape,
-                    border = if (status.isActionEnabled || state.isRetryingIndexing) {
-                        BorderStroke(width = 1.dp, color = ProtonTheme.colors.borderNorm)
-                    } else {
-                        null
-                    },
-                    contentPadding = PaddingValues(
-                        horizontal = ProtonDimens.Spacing.Large,
-                        vertical = ProtonDimens.Spacing.Standard
-                    ),
-                    colors = ButtonDefaults.protonSecondaryButtonColors(
+                    ProtonButton(
+                        onClick = { actions.forStatus(status)() },
                         loading = state.isRetryingIndexing,
-                        backgroundColor = ProtonTheme.colors.interactionWeakNorm
-                    )
-                ) {
-                    if (!state.isRetryingIndexing) {
-                        Text(
-                            text = stringResource(id = status.actionLabel),
-                            style = ProtonTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Normal
+                        elevation = null,
+                        shape = CircleShape,
+                        border = BorderStroke(width = 1.dp, color = ProtonTheme.colors.borderNorm),
+                        contentPadding = PaddingValues(
+                            horizontal = ProtonDimens.Spacing.Large,
+                            vertical = ProtonDimens.Spacing.Standard
+                        ),
+                        colors = ButtonDefaults.protonSecondaryButtonColors(
+                            loading = state.isRetryingIndexing,
+                            backgroundColor = ProtonTheme.colors.interactionWeakNorm
                         )
+                    ) {
+                        if (!state.isRetryingIndexing) {
+                            Text(
+                                text = stringResource(id = actionLabel),
+                                style = ProtonTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
                     }
                 }
             }
@@ -205,43 +202,37 @@ private fun IndexingStatusRow(status: IndexingCardStatus, modifier: Modifier = M
  * The card's status, and the action offered for it.
  *
  * [UpToDate] is the one status with nothing to offer: an account with no backfill left cannot be
- * paused. Its button is shown but disabled, so the card keeps the same shape throughout.
+ * paused. It has no button, and the progress bar takes the freed width.
  */
 private enum class IndexingCardStatus(
     @param:StringRes val label: Int,
-    @param:StringRes val actionLabel: Int,
-    @param:DrawableRes val icon: Int?,
-    val isActionEnabled: Boolean
+    @param:StringRes val actionLabel: Int?,
+    @param:DrawableRes val icon: Int?
 ) {
     Failed(
         label = R.string.mail_settings_content_search_failed_status,
         actionLabel = R.string.mail_settings_content_search_failed_retry,
-        icon = R.drawable.ic_sync_problem,
-        isActionEnabled = true
+        icon = R.drawable.ic_sync_problem
     ),
     Paused(
         label = R.string.mail_settings_content_search_indexing_paused,
         actionLabel = R.string.mail_settings_content_search_indexing_resume,
-        icon = null,
-        isActionEnabled = true
+        icon = null
     ),
     WaitingForWifi(
         label = R.string.mail_settings_content_search_waiting_for_wifi_status,
         actionLabel = R.string.mail_settings_content_search_indexing_pause,
-        icon = R.drawable.ic_sync,
-        isActionEnabled = true
+        icon = R.drawable.ic_sync
     ),
     InProgress(
         label = R.string.mail_settings_content_search_indexing_in_progress,
         actionLabel = R.string.mail_settings_content_search_indexing_pause,
-        icon = R.drawable.ic_sync,
-        isActionEnabled = true
+        icon = R.drawable.ic_sync
     ),
     UpToDate(
         label = R.string.mail_settings_content_search_indexing_up_to_date,
-        actionLabel = R.string.mail_settings_content_search_indexing_pause,
-        icon = null,
-        isActionEnabled = false
+        actionLabel = null,
+        icon = null
     )
 }
 
