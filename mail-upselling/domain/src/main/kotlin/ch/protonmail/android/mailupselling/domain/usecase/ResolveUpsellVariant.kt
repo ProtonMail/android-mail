@@ -18,13 +18,14 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-enum class UpsellVariantPlan {
-    MAIL_PLUS,
-    UNLIMITED;
+enum class UpsellVariantPlan(val planName: String) {
+    MAIL_PLUS(PlanUpgradeIds.PlusPlanId),
+    UNLIMITED(PlanUpgradeIds.UnlimitedPlanId);
     companion object {
         val Default = MAIL_PLUS
     }

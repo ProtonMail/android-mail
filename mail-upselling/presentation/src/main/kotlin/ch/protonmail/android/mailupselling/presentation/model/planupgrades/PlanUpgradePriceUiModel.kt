@@ -47,7 +47,7 @@ data class PlanUpgradePriceUiModel(
 
     private fun formatAmount(amount: BigDecimal, minimumFractionDigits: Int): String {
         val format = NumberFormat.getNumberInstance(Locale.getDefault())
-        format.minimumFractionDigits = minimumFractionDigits
+        format.minimumFractionDigits = if (amount.stripTrailingZeros().scale() > 0) 2 else minimumFractionDigits
         format.maximumFractionDigits = 2
 
         return format.format(amount)

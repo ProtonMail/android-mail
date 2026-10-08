@@ -44,6 +44,9 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import kotlin.test.assertNull
 
 internal class UpsellEligibilityRepositoryImplTest {
@@ -129,5 +132,26 @@ internal class UpsellEligibilityRepositoryImplTest {
         coEvery { wrapper.plusToUnlimitedEligibility(any()) } returns PlusToUnlimitedEligibility.BLACK_FRIDAY.right()
 
         assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), repository.getPlusToUnlimitedEligibility(userId))
+    }
+
+    @Test
+    fun `passes the yearly billing eligibility through`() = runTest {
+        coEvery { wrapper.monthlyToYearlyEligibility() } returns true.right()
+
+        assertEquals(true.right(), repository.getMonthlyToYearlyEligibility(userId))
+    }
+
+    @Test
+    fun `is not eligible for yearly billing when Rust says no`() = runTest {
+        coEvery { wrapper.monthlyToYearlyEligibility() } returns false.right()
+
+        assertEquals(false.right(), repository.getMonthlyToYearlyEligibility(userId))
+    }
+
+    @Test
+    fun `fails when there is no user session for the yearly billing check`() = runTest {
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
+
+        assertEquals(DataError.Local.NoUserSession.left(), repository.getMonthlyToYearlyEligibility(userId))
     }
 }
