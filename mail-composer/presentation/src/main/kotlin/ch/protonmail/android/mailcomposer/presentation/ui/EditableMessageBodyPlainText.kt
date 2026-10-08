@@ -203,14 +203,12 @@ private fun buildEditorViewDrawingState(
 object EditableMessageBodyPlainText {
     data class Actions(
         val onEditorViewDrawingStateChanged: (EditorViewDrawingState) -> Unit,
-        val onEditorViewPositioned: (Rect) -> Unit,
-        val onMessageBodyChanged: (String) -> Unit
+        val onEditorViewPositioned: (Rect) -> Unit
     ) {
         companion object {
             val Empty = Actions(
                 onEditorViewDrawingStateChanged = {},
-                onEditorViewPositioned = {},
-                onMessageBodyChanged = {}
+                onEditorViewPositioned = {}
             )
         }
     }
