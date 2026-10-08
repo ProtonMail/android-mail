@@ -209,7 +209,6 @@ internal fun ComposerForm(
                             shouldRequestFocus = focusTextBody,
                             focusRequester = fieldFocusRequesters.getValue(FocusedFieldType.BODY),
                             actions = EditableMessageBodyPlainText.Actions(
-                                onMessageBodyChanged = actions.onBodyChanged,
                                 onEditorViewDrawingStateChanged = actions.onEditorViewMeasuresChanged,
                                 onEditorViewPositioned = actions.onEditorViewPositioned
                             )
@@ -227,7 +226,7 @@ internal fun ComposerForm(
                             webViewActions = EditableMessageBodyWebView.Actions(
                                 sanitizePastedText = actions.sanitizePastedText,
                                 loadImage = actions.loadImage,
-                                onMessageBodyChanged = actions.onBodyChanged,
+                                onMessageBodyChanged = actions.onHtmlBodyChanged,
                                 onWebViewParamsChanged = actions.onEditorViewMeasuresChanged,
                                 onBuildWebView = onBuildWebView(
                                     webViewCache,
@@ -305,7 +304,7 @@ private fun onBuildWebView(
 internal object ComposerForm {
     data class Actions(
         val onChangeSender: () -> Unit,
-        val onBodyChanged: (String) -> Unit,
+        val onHtmlBodyChanged: (String) -> Unit,
         val onEditorViewMeasuresChanged: (EditorViewDrawingState) -> Unit,
         val onHeaderPositioned: (boundsInWindow: Rect, height: Float) -> Unit,
         val onEditorViewPositioned: (boundsInWindow: Rect) -> Unit,

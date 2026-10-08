@@ -384,7 +384,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
                         changeFocusToField = effectsState.changeFocusToField,
                         initialFocusField = mainState.initialFocusedField,
                         actions = ComposerForm.Actions(
-                            onBodyChanged = { newBody ->
+                            onHtmlBodyChanged = { newBody ->
                                 viewModel.onHtmlBodyChanged(newBody)
                             },
                             onChangeSender = {
