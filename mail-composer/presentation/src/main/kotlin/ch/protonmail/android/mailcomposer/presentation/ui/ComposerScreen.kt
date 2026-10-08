@@ -75,7 +75,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.TimePickerBottomSheetContent
 import ch.protonmail.android.mailcommon.presentation.ui.TimePickerUiModel
-import ch.protonmail.android.mailcommon.presentation.ui.replaceText
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerState
@@ -386,7 +385,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions) {
                         initialFocusField = mainState.initialFocusedField,
                         actions = ComposerForm.Actions(
                             onBodyChanged = { newBody ->
-                                viewModel.bodyTextField.replaceText(newBody)
+                                viewModel.onHtmlBodyChanged(newBody)
                             },
                             onChangeSender = {
                                 bottomSheetType.value = BottomSheetType.ChangeSender
