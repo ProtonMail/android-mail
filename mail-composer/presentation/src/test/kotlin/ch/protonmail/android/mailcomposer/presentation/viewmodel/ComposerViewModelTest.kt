@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import android.net.Uri
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
@@ -143,6 +144,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.time.Duration.Companion.seconds
 
 internal class ComposerViewModelTest {
@@ -379,6 +381,36 @@ internal class ComposerViewModelTest {
         coVerify {
             storeDraftWithBodyMock(expectedDraftBody)
         }
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Test
+    fun `should keep no undo history when the html body changes`() = runTest {
+        // Given
+        val intermediateDraftBody = DraftBody("$RawDraftBody draft")
+        val expectedDraftBody = DraftBody("$RawDraftBody final")
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectStoreDraftSubjectSucceeds(Subject(""))
+        expectStoreDraftBodySucceeds(intermediateDraftBody)
+        expectStoreDraftBodySucceeds(expectedDraftBody)
+        expectNoInputDraftMessageId()
+        expectInputDraftAction { DraftAction.Compose }
+        expectNoObservedMessageAttachments()
+        expectNoFileShareVia()
+        expectNoRestoredState(savedStateHandle)
+        expectInitComposerWithNewEmptyDraftSucceeds(expectedUserId)
+        ignoreRecipientsUpdates()
+
+        val viewModel = viewModel()
+
+        // When
+        performInput { viewModel.onHtmlBodyChanged(intermediateDraftBody.value) }
+        performInput { viewModel.onHtmlBodyChanged(expectedDraftBody.value) }
+
+        // Then
+        assertEquals(expectedDraftBody.value, viewModel.bodyTextField.text.toString())
+        assertFalse(viewModel.bodyTextField.undoState.canUndo)
+        coVerify { storeDraftWithBodyMock(expectedDraftBody) }
     }
 
     @Test

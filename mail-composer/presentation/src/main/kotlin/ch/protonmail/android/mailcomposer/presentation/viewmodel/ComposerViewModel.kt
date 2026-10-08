@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import android.net.Uri
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.core.net.toUri
@@ -1034,6 +1035,19 @@ class ComposerViewModel @AssistedInject constructor(
         Timber
             .tag("ComposerViewModel")
             .d("Action ${action::class.java.simpleName} ${System.identityHashCode(action)} - $message")
+    }
+
+    /**
+     * Mirrors the WebView body into [bodyTextField], which keeps no undo history in HTML mode.
+     *
+     * Each programmatic edit adds the whole body to the undo history, up to 100 entries.
+     * On large drafts this retains ~100 copies of the body and runs out of memory.
+     * The WebView has its own undo, so nothing reads this history.
+     */
+    @OptIn(ExperimentalFoundationApi::class)
+    internal fun onHtmlBodyChanged(body: String) {
+        bodyTextField.replaceText(body)
+        bodyTextField.undoState.clearHistory()
     }
 
     fun sanitizePastedText(mimeType: String?, text: String): String {
