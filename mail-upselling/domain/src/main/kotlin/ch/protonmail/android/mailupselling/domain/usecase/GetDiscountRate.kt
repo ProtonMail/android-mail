@@ -20,17 +20,21 @@ package ch.protonmail.android.mailupselling.domain.usecase
 
 import java.math.BigDecimal
 import java.math.RoundingMode
+import me.proton.android.core.payment.domain.model.ProductOffer
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class GetDiscountRate @Inject constructor() {
 
-    operator fun invoke(shorterInstance: ProductOfferDetail, longerInstance: ProductOfferDetail): Int? {
-        val longerInstancePrice = BigDecimal(longerInstance.currentPrice)
-        val shorterInstancePrice = BigDecimal(shorterInstance.renewalPrice)
-        val longerInstanceCycle = BigDecimal(longerInstance.cycle)
-        val shorterInstanceCycle = BigDecimal(shorterInstance.cycle)
+    operator fun invoke(shorterInstance: ProductOfferDetail, longerInstance: ProductOfferDetail): Int? =
+        invoke(shorterInstance.offer, longerInstance.offer)
+
+    operator fun invoke(shorterOffer: ProductOffer, longerOffer: ProductOffer): Int? {
+        val longerInstancePrice = BigDecimal(longerOffer.currentPrice)
+        val shorterInstancePrice = BigDecimal(shorterOffer.renewalPrice)
+        val longerInstanceCycle = BigDecimal(longerOffer.cycle)
+        val shorterInstanceCycle = BigDecimal(shorterOffer.cycle)
 
         val ratio = runCatching {
             val longerInstanceRate = longerInstancePrice.divide(longerInstanceCycle, 2, RoundingMode.HALF_UP)
@@ -60,11 +64,11 @@ class GetDiscountRate @Inject constructor() {
     }
 }
 
-private val ProductOfferDetail.currentPrice: Long
-    get() = offer.current.amount
+private val ProductOffer.currentPrice: Long
+    get() = current.amount
 
-private val ProductOfferDetail.renewalPrice: Long
-    get() = offer.renew.amount
+private val ProductOffer.renewalPrice: Long
+    get() = renew.amount
 
-private val ProductOfferDetail.cycle: Int
-    get() = offer.current.cycle
+private val ProductOffer.cycle: Int
+    get() = current.cycle

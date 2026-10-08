@@ -18,7 +18,16 @@
 
 package ch.protonmail.android.mailupselling.presentation.extension
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.MonthlyToYearlyOffer
 import ch.protonmail.android.mailupselling.domain.model.ProductPriceWithCurrency
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceUiModel
 
 internal fun ProductPriceWithCurrency.toUiModel() = PlanUpgradePriceUiModel(amount, currencyCode)
+
+fun MonthlyToYearlyOffer.rowTitle(): TextUiModel =
+    TextUiModel(R.string.upselling_monthly_to_yearly_row_title, saving.formattedAmount())
+
+fun MonthlyToYearlyOffer.sidebarTitle(): TextUiModel =
+    TextUiModel(R.string.upselling_monthly_to_yearly_sidebar_title, saving.formattedAmount())

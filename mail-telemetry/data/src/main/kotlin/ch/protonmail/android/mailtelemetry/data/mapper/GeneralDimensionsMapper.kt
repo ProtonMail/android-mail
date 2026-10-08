@@ -48,11 +48,14 @@ fun UpsellEntryPoint.toLocal() = when (this) {
     UpsellEntryPoint.POST_ONBOARDING -> LocalUpsellEntryPoint.POST_ONBOARDING
     UpsellEntryPoint.SCHEDULE_SEND -> LocalUpsellEntryPoint.SCHEDULE_SEND
     UpsellEntryPoint.SNOOZE -> LocalUpsellEntryPoint.SNOOZE
+    UpsellEntryPoint.SETTINGS_UPSELL -> LocalUpsellEntryPoint.SETTINGS_UPSELL
 }
 
 fun UpsellModalVariant.toLocal() = when (this) {
     UpsellModalVariant.COMPARISON_PLUS -> LocalUpsellModalVariant.COMPARISON_PLUS
     UpsellModalVariant.COMPARISON_UNLIMITED -> LocalUpsellModalVariant.COMPARISON_UNLIMITED
+    UpsellModalVariant.MONTHLY_TO_YEARLY_PLUS -> LocalUpsellModalVariant.MONTHLY_TO_YEARLY_PLUS
+    UpsellModalVariant.MONTHLY_TO_YEARLY_UNLIMITED -> LocalUpsellModalVariant.MONTHLY_TO_YEARLY_UNLIMITED
 }
 
 fun UpsellExperimentFlag.toLocal() = LocalUpsellExperimentFlag(

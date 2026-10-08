@@ -273,3 +273,19 @@ data object CategoryOnboardingDisableCategorize : FeatureFlagDefinition(
     description = "Hides the Recategorise onboarding bottom sheet while backend preference learning is disabled.",
     defaultValue = false
 )
+
+data object MonthlyToYearlyUpsellExperiment : FeatureFlagDefinition(
+    key = "MailMobileMonthlyToYearlyUpsell",
+    name = "Monthly to yearly upsell experiment",
+    category = FeatureFlagCategory.Upselling,
+    description = "Turns the monthly to yearly billing upsell on or off. When off, no entry points are shown.",
+    defaultValue = false
+)
+
+data object MonthlyToYearlyUpsellOptOut : FeatureFlagDefinition(
+    key = "MailMonthlyToYearlyUpsellOptOut",
+    name = "Monthly to yearly upsell opt-out",
+    category = FeatureFlagCategory.Upselling,
+    description = "Set when a user hides the monthly to yearly upsell. It stays hidden on all their devices.",
+    defaultValue = false
+)

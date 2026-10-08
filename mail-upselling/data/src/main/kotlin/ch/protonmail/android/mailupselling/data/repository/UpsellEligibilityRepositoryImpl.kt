@@ -51,6 +51,11 @@ class UpsellEligibilityRepositoryImpl @Inject constructor(
             session.plusToUnlimitedEligibility(plusToUnlimitedExperimentFlag())
                 .map { it.toPlusToUnlimitedOffer() }
         }.flatten()
+
+    override suspend fun getMonthlyToYearlyEligibility(userId: UserId): Either<DataError, Boolean> =
+        executeWithUserSession(userId) { session ->
+            session.monthlyToYearlyEligibility()
+        }.flatten()
 }
 
 private fun PlusToUnlimitedEligibility.toPlusToUnlimitedOffer() = when (this) {

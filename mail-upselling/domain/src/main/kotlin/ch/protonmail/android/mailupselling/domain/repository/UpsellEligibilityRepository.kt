@@ -29,4 +29,6 @@ interface UpsellEligibilityRepository {
     suspend fun getEligibleUpsellPlan(userId: UserId): UpsellVariantPlan?
 
     suspend fun getPlusToUnlimitedEligibility(userId: UserId): Either<DataError, PlusToUnlimitedOffer>
+
+    suspend fun getMonthlyToYearlyEligibility(userId: UserId): Either<DataError, Boolean>
 }

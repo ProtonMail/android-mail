@@ -38,9 +38,9 @@ class PlanUpgradePriceUiModelTest {
     }
 
     @Test
-    fun `getShorthandFormat with currency shows symbol for single decimal`() {
+    fun `getShorthandFormat with currency pads a single decimal to two`() {
         val model = PlanUpgradePriceUiModel(BigDecimal(54.1), "USD")
-        assertEquals("$54.1", model.getShorthandFormat())
+        assertEquals("$54.10", model.getShorthandFormat())
     }
 
     @Test

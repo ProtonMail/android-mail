@@ -70,6 +70,8 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.MonthlyToYearlyUpsellExperiment
+import ch.protonmail.android.mailfeatureflags.domain.model.MonthlyToYearlyUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellExperiment
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellOptOut
@@ -394,4 +396,14 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun providePlusToUnlimitedOptOutDef(): FeatureFlagDefinition = PlusToUnlimitedUpsellOptOut
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideMonthlyToYearlyExperimentDef(): FeatureFlagDefinition = MonthlyToYearlyUpsellExperiment
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideMonthlyToYearlyOptOutDef(): FeatureFlagDefinition = MonthlyToYearlyUpsellOptOut
 }
