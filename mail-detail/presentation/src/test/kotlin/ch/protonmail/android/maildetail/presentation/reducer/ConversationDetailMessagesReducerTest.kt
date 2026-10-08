@@ -71,6 +71,12 @@ class ConversationDetailMessagesReducerTest(
             ConversationDetailMessageUiModelSample.SepWeatherForecast
         ).toImmutableList()
 
+        private val allMessagesFirstExpandedWithBanner = allMessagesFirstExpanded.map {
+            if (it is ConversationDetailMessageUiModel.Expanded) {
+                it.copy(messageBodyUiModel = it.messageBodyUiModel.copy(shouldShowImagesFailedToLoadBanner = true))
+            } else it
+        }.toImmutableList()
+
         private val fromLoadingState = listOf(
 
             Input(
@@ -252,6 +258,19 @@ class ConversationDetailMessagesReducerTest(
                             )
                         } else it
                     }.toImmutableList()
+                )
+            ),
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = allMessagesFirstExpandedWithBanner
+                ),
+                operation = ConversationDetailEvent.MessagesData(
+                    messagesUiModels = allMessagesFirstExpanded,
+                    requestScrollToMessageId = null,
+                    filterByLocation = null
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(
+                    messages = allMessagesFirstExpandedWithBanner
                 )
             ),
             Input(
