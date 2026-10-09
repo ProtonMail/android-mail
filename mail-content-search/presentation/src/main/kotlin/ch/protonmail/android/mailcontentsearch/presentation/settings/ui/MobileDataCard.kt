@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.presentation.settings.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,6 +40,7 @@ import ch.protonmail.android.mailcontentsearch.presentation.R
 @Composable
 internal fun MobileDataCard(
     modifier: Modifier = Modifier,
+    @StringRes title: Int,
     showLeadingIcon: Boolean,
     isEnabled: Boolean,
     onToggle: (Boolean) -> Unit
@@ -67,7 +69,7 @@ internal fun MobileDataCard(
 
             ProtonSettingsToggleItem(
                 modifier = Modifier.weight(1f),
-                name = stringResource(id = R.string.mail_settings_content_search_mobile_data_title),
+                name = stringResource(id = title),
                 hint = stringResource(id = R.string.mail_settings_content_search_mobile_data_hint),
                 value = isEnabled,
                 onToggle = onToggle

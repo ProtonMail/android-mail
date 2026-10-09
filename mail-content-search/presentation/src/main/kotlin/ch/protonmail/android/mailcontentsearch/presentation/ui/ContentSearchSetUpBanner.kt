@@ -66,11 +66,11 @@ internal fun ContentSearchSetUpBanner(actions: ContentSearchSetUpBannerActions, 
             Column {
                 Text(
                     text = stringResource(R.string.content_search_set_up_banner_title),
-                    style = ProtonTheme.typography.bodyMedium,
+                    style = ProtonTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold
                 )
 
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Tiny))
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
 
                 Text(
                     text = withLearnMoreLink(

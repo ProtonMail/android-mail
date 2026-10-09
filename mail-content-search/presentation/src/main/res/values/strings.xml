@@ -2,10 +2,10 @@
 <resources>
     <string name="mail_settings_content_search_header_title">Email content search</string>
     <string name="mail_settings_content_search_description">To let you search by message content, messages will be downloaded on this device.</string>
-    <string name="mail_settings_content_search_learn_more">Learn more..</string>
+    <string name="mail_settings_content_search_learn_more">Learn more…</string>
     <string name="mail_settings_content_search_toggle_title">Email content search</string>
-    <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
-    <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
+    <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
+    <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
     <string name="mail_settings_content_search_syncing_status">Preparing %1$d%%…</string>
     <string name="mail_settings_content_search_preparing_status">Preparing…</string>
     <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
@@ -23,27 +23,28 @@
     <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
     <string name="mail_settings_content_search_on_this_device_section">On this device</string>
     <string name="mail_settings_content_search_index_size">Index size</string>
-    <string name="mail_settings_content_search_clear_data_button">Clear local search data</string>
+    <string name="mail_settings_content_search_clear_data_button">Clear local search index</string>
     <string name="mail_settings_content_search_clear_data_description">Clearing local search data will disable message content search. You can turn it back on at anytime.</string>
-    <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search data</string>
+    <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search index</string>
     <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
     <string name="mail_settings_content_search_clear_data_dialog_confirm">Clear data</string>
     <string name="content_search_bottomsheet_title">Mobile data usage</string>
     <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
     <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
+    <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
 
     <!-- Content search screen -->
     <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
     <string name="content_search_no_results_description">Try different keywords or check your spelling.</string>
-    <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
-    <string name="content_search_no_results_learn_more">Learn more..</string>
+    <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
+    <string name="content_search_no_results_learn_more">Learn more…</string>
     <string name="content_search_no_results_set_up_action">Set up content search</string>
     <string name="content_search_failed_title">Search failed</string>
     <string name="content_search_failed_description">Something went wrong. Please try again.</string>
     <string name="content_search_failed_retry">Try again</string>
 
     <string name="content_search_set_up_banner_title">Search inside emails too</string>
-    <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
+    <string name="content_search_set_up_banner_description">Search the full text of your emails, not just senders and subjects.</string>
     <string name="content_search_set_up_banner_turn_on">Set up now</string>
     <string name="content_search_set_up_banner_not_now">Not now</string>
     <string name="content_search_indexing_complete_banner_title">All done!</string>
@@ -53,7 +54,7 @@
     <string name="content_search_clear_query_content_description">Clear search query</string>
     <string name="content_search_close_content_description">Close search</string>
     <string name="content_search_learn_more_link" translatable="false">https://proton.me/support/search#mobile</string>
-    <string name="content_search_first_run_description">Type a name, subject, or keyword to search</string>
+    <string name="content_search_first_run_description">Type anything to search privately…</string>
     <string name="content_search_results_title">Results</string>
     <plurals name="content_search_results_title_with_count">
         <item quantity="one">%1$d Result</item>
