@@ -38,7 +38,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.component.ProtonWavyProgressIndicator
@@ -92,7 +92,7 @@ internal fun IndexingProgressBanner(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = ProtonDimens.Spacing.ExtraLarge),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Start
     ) {
         ProtonWavyProgressIndicator(
             progress = { progress },
@@ -105,25 +105,15 @@ internal fun IndexingProgressBanner(
                 .clearAndSetSemantics {}
         )
 
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
+        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
         val spokenProgress = stringResource(spokenLabel, state.percentage)
 
+        // The whole label opens the details, so there is no separate "See details" link.
         Text(
             text = stringResource(label, state.percentage),
-            style = ProtonTheme.typography.bodyMedium,
+            style = ProtonTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
             color = accentColor,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.semantics { contentDescription = spokenProgress }
-        )
-
-        Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
-
-        Text(
-            text = stringResource(R.string.content_search_indexing_see_details),
-            style = ProtonTheme.typography.bodyMedium,
-            color = accentColor,
-            textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -131,7 +121,7 @@ internal fun IndexingProgressBanner(
                     role = Role.Button,
                     onClick = onSeeDetailsClick
                 )
-                .padding(ProtonDimens.Spacing.Small)
+                .semantics { contentDescription = spokenProgress }
         )
     }
 }
