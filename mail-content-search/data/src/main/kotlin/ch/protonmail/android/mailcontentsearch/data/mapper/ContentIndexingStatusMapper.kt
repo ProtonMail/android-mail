@@ -37,7 +37,10 @@ internal fun SyncStartOutcome.toStartOutcome(): ContentIndexingStartOutcome = wh
 
 internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {
     SyncStatus.PENDING -> ContentIndexingState.Idle
-    SyncStatus.ONGOING -> progress.toRunningState()
+    // Rust reports Offline while it waits for the network to come back. The backfill resumes on
+    // its own, so the UI keeps showing it as running with its real percentage.
+    SyncStatus.ONGOING,
+    SyncStatus.OFFLINE -> progress.toRunningState()
     SyncStatus.COMPLETED -> ContentIndexingState.Completed
     SyncStatus.FAILURE -> ContentIndexingState.Failed
     SyncStatus.PAUSED -> ContentIndexingState.Paused(progress)
@@ -79,6 +82,9 @@ internal fun SyncEvent.toIndexingState(stalledPercentage: Double? = null): Conte
     is SyncEvent.Paused -> ContentIndexingState.Paused(stalledPercentage)
     is SyncEvent.Completed -> ContentIndexingState.Completed
     is SyncEvent.Stopped -> ContentIndexingState.Cancelled
+
+    // Dropped so the UI keeps the last percentage. Rust resumes the backfill once the network is back.
+    is SyncEvent.Offline -> null
     is SyncEvent.Driver -> when (this.v1) {
         is SyncDriverEvent.Failure -> ContentIndexingState.Failed
         is SyncDriverEvent.Completed -> null
@@ -105,5 +111,6 @@ internal fun SyncEvent.isTerminal(): Boolean = when (this) {
     is SyncEvent.Worker -> this.v1 is SyncWorkerEvent.Failure
     is SyncEvent.Started,
     is SyncEvent.WaitingForUnmeteredConnection,
+    is SyncEvent.Offline,
     is SyncEvent.Progress -> false
 }

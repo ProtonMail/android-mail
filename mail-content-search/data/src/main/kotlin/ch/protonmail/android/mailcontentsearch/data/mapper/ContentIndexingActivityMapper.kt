@@ -68,6 +68,10 @@ internal fun SyncOrchestratorEvent.toIndexingActivity(): ContentIndexingActivity
     // candidate, exactly as Rust's own `sync_and_wait` treats it. The account is not forgotten: the
     // ones that matter are recorded in Rust and read back from the account's own status.
     is SyncOrchestratorEvent.UserFailure -> null
+
+    // The worker already stops when the connection drops, because it runs under a network
+    // constraint. Rust resumes on its own once the network is back.
+    is SyncOrchestratorEvent.Offline -> null
 }
 
 /**
@@ -90,6 +94,7 @@ internal fun SyncOrchestratorEvent.log() {
 
         is SyncOrchestratorEvent.ForwardModeEntered -> Timber.d("content-search: $v1 entered forward mode")
         is SyncOrchestratorEvent.WaitingOnUsers -> Timber.d("content-search: orchestrator waiting on accounts")
+        is SyncOrchestratorEvent.Offline -> Timber.d("content-search: orchestrator offline")
         is SyncOrchestratorEvent.Stopped -> Timber.d("content-search: orchestrator stopped")
         is SyncOrchestratorEvent.Completed -> Timber.d("content-search: orchestrator completed")
         is SyncOrchestratorEvent.Failure -> Timber.e("content-search: orchestrator failed: $v1")

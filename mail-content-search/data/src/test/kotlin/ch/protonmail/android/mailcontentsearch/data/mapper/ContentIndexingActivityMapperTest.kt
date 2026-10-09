@@ -172,6 +172,11 @@ internal class ContentIndexingActivityMapperTest {
         assertNull(SyncOrchestratorEvent.Started.toIndexingActivity())
     }
 
+    @Test
+    fun `offline is ignored because the worker already stops without a connection`() {
+        assertNull(SyncOrchestratorEvent.Offline.toIndexingActivity())
+    }
+
     private fun stats(pending: ULong, ongoing: ULong) = SyncOrchestartorStartStats(
         completed = 0uL,
         pending = pending,

@@ -85,6 +85,21 @@ internal class ContentIndexingStatusMapperTest {
     }
 
     @Test
+    fun `maps OFFLINE status to Running with the given progress`() {
+        assertEquals(ContentIndexingState.Running(42.0), SyncStatus.OFFLINE.toIndexingState(42.0))
+    }
+
+    @Test
+    fun `maps OFFLINE status with no progress to Initializing`() {
+        assertEquals(ContentIndexingState.Initializing, SyncStatus.OFFLINE.toIndexingState(null))
+    }
+
+    @Test
+    fun `Offline event maps to null so the last progress stays on screen`() {
+        assertNull(SyncEvent.Offline.toIndexingState())
+    }
+
+    @Test
     fun `maps Started event to Initializing`() {
         assertEquals(ContentIndexingState.Initializing, SyncEvent.Started.toIndexingState())
     }
@@ -175,6 +190,7 @@ internal class ContentIndexingStatusMapperTest {
     fun `non-terminal events are reported as non-terminal`() {
         assertFalse(SyncEvent.Started.isTerminal())
         assertFalse(SyncEvent.WaitingForUnmeteredConnection.isTerminal())
+        assertFalse(SyncEvent.Offline.isTerminal())
         assertFalse(SyncEvent.Progress(SyncProgress(processed = 10uL, total = 100uL, percentage = 10.0)).isTerminal())
         assertFalse(SyncEvent.Driver(SyncDriverEvent.Completed).isTerminal())
         assertFalse(SyncEvent.Worker(SyncWorkerEvent.Processed("name", 1u)).isTerminal())
