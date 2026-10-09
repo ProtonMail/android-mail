@@ -192,6 +192,7 @@ internal class ContentIndexingActivityMapperTest {
         completedUsers = completedUsers,
         total = 100uL,
         processed = 10uL,
-        percentage = 10.0
+        percentage = 10.0,
+        users = emptyList()
     )
 }
