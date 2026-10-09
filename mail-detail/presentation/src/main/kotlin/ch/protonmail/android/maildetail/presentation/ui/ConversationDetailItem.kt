@@ -299,18 +299,26 @@ private fun ColumnScope.ConversationDetailExpandedItem(
     // each report restarts the window, so it only fires after the reload has been quiet for the timeout - it
     // never cuts off a reload that is still reporting new heights (slow device, large message, remote images).
     val lastBodyReport = remember(id) { mutableIntStateOf(0) }
+    // The reloading body's latest reported height, and whether its load has fully finished. While a recycled card
+    // reloads it holds its previous height; these decide when that hold may end.
+    val latestBodyHeightPx = remember(id) { mutableIntStateOf(0) }
+    val isBodyLoadCompleted = remember(id) { mutableStateOf(false) }
 
-    // Safety release for the recycle-reload hold in onMessageBodyLoaded: if a reload never grows back to its
-    // previous WebView height (e.g. the content genuinely shrank), stop holding after a short window so the card
-    // can never stick at a stale height. Keyed on isWebViewLoading so it arms only while a reload is in progress
-    // and cancels the moment the fast path releases; on lastBodyReport so each height report resets the window;
-    // and gated on !isListScrolling so it never releases mid-scroll (the scroll-pin holds the card meanwhile).
+    // End of the recycle-reload hold when the body did not grow back to its previous height in onMessageBodyLoaded:
+    // only once the reload has fully finished and its height has settled (the content is genuinely shorter now), so
+    // a slow reload never releases the card while its body is still empty or partly laid out - that shrank the
+    // card, down to just its header, and grew it back seconds later, moving the content around it. A long safety
+    // window covers a reload that never reports finishing. Keyed on lastBodyReport so each height report restarts
+    // the wait, and gated on !isListScrolling so it never releases mid-scroll (the scroll-pin holds the card).
     if (viewPreviouslyLoaded) {
-        LaunchedEffect(id, isWebViewLoading.value, lastBodyReport.intValue, isListScrolling) {
-            if (isWebViewLoading.value && !isListScrolling) {
-                delay(RELOAD_SETTLE_TIMEOUT_MS)
-                isWebViewLoading.value = false
-            }
+        LaunchedEffect(
+            id, isWebViewLoading.value, isBodyLoadCompleted.value, lastBodyReport.intValue, isListScrolling
+        ) {
+            if (!isWebViewLoading.value || isListScrolling) return@LaunchedEffect
+            val canRelease = isBodyLoadCompleted.value && latestBodyHeightPx.intValue > 0
+            delay(if (canRelease) RELOAD_FINISHED_SETTLE_MS else RELOAD_HOLD_SAFETY_TIMEOUT_MS)
+            if (latestBodyHeightPx.intValue > 0) lastWebViewHeightPx.intValue = latestBodyHeightPx.intValue
+            isWebViewLoading.value = false
         }
     }
 
@@ -473,13 +481,17 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     // would always fall through to the timeout). A card that was not previously loaded releases
                     // immediately; the safety timeout above covers genuine shrinks. Use !viewPreviouslyLoaded so
                     // this agrees with the ReLoading gate and the safety-timer arm on the same "is loaded" check.
-                    val previousWebViewHeight = lastWebViewHeightPx.intValue
-                    val hasGrownBack = !viewPreviouslyLoaded || measuredHeight >= previousWebViewHeight
-                    if (measuredHeight > 0) lastWebViewHeightPx.intValue = measuredHeight
-                    if (hasGrownBack) {
+                    // While holding, keep the previous height as the target: lowering it to an intermediate report
+                    // made the next intermediate report count as "grown back" and release the card too early.
+                    latestBodyHeightPx.intValue = measuredHeight
+                    val isHoldingReload = viewPreviouslyLoaded && isWebViewLoading.value
+                    val hasGrownBack = measuredHeight >= lastWebViewHeightPx.intValue
+                    if (!isHoldingReload || hasGrownBack) {
+                        if (measuredHeight > 0) lastWebViewHeightPx.intValue = measuredHeight
                         isWebViewLoading.value = false
                     }
-                }
+                },
+                onMessageBodyLoadCompleted = { isBodyLoadCompleted.value = true }
             )
         }
     }
@@ -678,7 +690,11 @@ private const val MAX_STABLE_CARD_HEIGHT_PX = WEB_VIEW_FIXED_MAX_HEIGHT - NEAR_C
 
 // How long a recycled card holds its cached height while the WebView reloads before releasing regardless, so it
 // can never stick at a stale height if the reloaded content genuinely settles shorter.
-private const val RELOAD_SETTLE_TIMEOUT_MS = 1_000L
+// After a reloading body has fully finished, how long its height must stay unchanged before the hold ends.
+private const val RELOAD_FINISHED_SETTLE_MS = 500L
+
+// Last-resort end of the hold for a reload that never reports finishing, so a card can never stick.
+private const val RELOAD_HOLD_SAFETY_TIMEOUT_MS = 10_000L
 
 sealed class ItemState {
     object Loading : ItemState()
