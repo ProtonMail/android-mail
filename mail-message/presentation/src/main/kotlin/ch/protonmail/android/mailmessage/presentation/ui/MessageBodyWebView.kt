@@ -218,6 +218,8 @@ fun MessageBodyWebView(
                 // onPageCommitVisible is not guaranteed: a page that loads very fast (images already cached) while
                 // the card still holds the body at no height can finish without it, leaving the body hidden.
                 contentLoaded.value = true
+                // A finish below full progress is the late callback of a load that a reload interrupted.
+                if (view?.progress == FULL_PROGRESS) actions.onMessageBodyLoadCompleted(messageId)
             }
 
             // The renderer process - shared by every WebView in the app - has died, OOM-killed to reclaim
@@ -600,7 +602,10 @@ object MessageBodyWebView {
         val loadImage: (messageId: MessageId, url: String) -> MessageBodyImage?,
         val onPrint: (MessageId) -> Unit,
         val onDownloadImage: (messageId: MessageId, imageUrl: String) -> Unit,
-        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit,
+        // Called once the body's load has fully finished (images included), so a card holding its previous height
+        // while the body reloads knows the reload is done even if the new height is smaller.
+        val onMessageBodyLoadCompleted: (MessageId) -> Unit = {}
     )
 }
 
@@ -610,6 +615,7 @@ object MessageBodyWebViewTestTags {
 }
 
 private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
+private const val FULL_PROGRESS = 100
 
 // Max constraint for WebView height. If the height is greater
 // than this value, we will not fix the height of the WebView or it will crash.
