@@ -71,7 +71,6 @@
     <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
     <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
     <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
-    <string name="content_search_indexing_see_details">See details</string>
     <!-- Selection mode -->
     <string name="content_search_delete_dialog_title">Delete permanently?</string>
     <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
