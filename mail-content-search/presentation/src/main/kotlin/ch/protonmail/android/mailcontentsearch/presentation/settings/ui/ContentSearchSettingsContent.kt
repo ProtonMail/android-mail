@@ -92,6 +92,7 @@ internal fun ContentSearchSettingsContent(
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
                 MobileDataCard(
+                    title = R.string.mail_settings_content_search_mobile_data_title,
                     showLeadingIcon = false,
                     isEnabled = lastEnabledState.isAllowMobileDataEnabled,
                     onToggle = actions.onAllowMobileDataToggle
