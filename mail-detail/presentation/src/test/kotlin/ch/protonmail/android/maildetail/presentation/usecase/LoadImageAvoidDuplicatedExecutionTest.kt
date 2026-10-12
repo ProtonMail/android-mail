@@ -22,6 +22,8 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maildetail.presentation.util.MessageBodyImageCache
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.AttachmentDataError
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyImage
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -30,6 +32,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -42,8 +45,13 @@ class LoadImageAvoidDuplicatedExecutionTest {
     private val url = "url"
     private val loadMessageBodyImage = mockk<LoadMessageBodyImage>()
 
-    private val loadImageAvoidDuplicatedExecution = LoadImageAvoidDuplicatedExecution(loadMessageBodyImage)
+    private val isImageCacheEnabled = mockk<FeatureFlag<Boolean>> {
+        coEvery { this@mockk.get() } returns true
+    }
 
+    private val imageCache = MessageBodyImageCache(maxSizeBytes = 1024 * 1024)
+
+    private val loadImageAvoidDuplicatedExecution = buildLoadImageAvoidDuplicatedExecution(imageCache)
 
     @Test
     fun `returns image result when loading image was successful`() = runTest {
@@ -111,4 +119,117 @@ class LoadImageAvoidDuplicatedExecutionTest {
         // Then
         coVerify(exactly = 1) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
     }
+
+    @Test
+    fun `given an image was loaded, when it is requested again, then it is served from the cache`() = runTest {
+        // Given
+        val image = MessageBodyImage(data = "I'm an image".toByteArray(), mimeType = "image/png")
+        coEvery { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) } returns image.right()
+        loadImage()
+
+        // When
+        val result = loadImage()
+
+        // Then
+        assertEquals(image.right(), result)
+        coVerify(exactly = 1) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
+    }
+
+    @Test
+    fun `given the image proxy failed to load an image, when it is requested again, then the failure is returned`() =
+        runTest {
+            // Given
+            coEvery {
+                loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true)
+            } returns AttachmentDataError.ProxyFailed.left()
+            loadImage()
+
+            // When
+            val result = loadImage()
+
+            // Then
+            assertEquals(AttachmentDataError.ProxyFailed.left(), result)
+            coVerify(exactly = 1) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
+        }
+
+    @Test
+    fun `given an image failed to load for another reason, when it is requested again, then it is loaded again`() =
+        runTest {
+            // Given
+            coEvery {
+                loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true)
+            } returns AttachmentDataError.Other(DataError.Local.NoDataCached).left()
+            loadImage()
+
+            // When
+            loadImage()
+
+            // Then
+            coVerify(exactly = 2) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
+        }
+
+    @Test
+    fun `given the image proxy failed to load an image, when it is requested without the proxy, then it is loaded`() =
+        runTest {
+            // Given
+            coEvery {
+                loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true)
+            } returns AttachmentDataError.ProxyFailed.left()
+            val image = MessageBodyImage(data = "I'm an image".toByteArray(), mimeType = "image/png")
+            coEvery {
+                loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = false)
+            } returns image.right()
+            loadImage()
+
+            // When
+            val result = loadImageAvoidDuplicatedExecution(
+                userId, messageId, url, shouldLoadImagesSafely = false, coroutineContext = coroutineContext
+            )
+
+            // Then
+            assertEquals(image.right(), result)
+        }
+
+    @Test
+    fun `given the cache is disabled, when an image is requested again, then it is loaded again`() = runTest {
+        // Given
+        coEvery { isImageCacheEnabled.get() } returns false
+        val image = MessageBodyImage(data = "I'm an image".toByteArray(), mimeType = "image/png")
+        coEvery { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) } returns image.right()
+        val loadImageWithoutCache = buildLoadImageAvoidDuplicatedExecution()
+        loadImage(loadImageWithoutCache)
+
+        // When
+        loadImage(loadImageWithoutCache)
+
+        // Then
+        coVerify(exactly = 2) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
+    }
+
+    @Test
+    fun `given the cache was cleared, when an image is requested again, then it is loaded again`() = runTest {
+        // Given
+        val image = MessageBodyImage(data = "I'm an image".toByteArray(), mimeType = "image/png")
+        coEvery { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) } returns image.right()
+        loadImage()
+        loadImageAvoidDuplicatedExecution.clearCache()
+
+        // When
+        loadImage()
+
+        // Then
+        coVerify(exactly = 2) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
+    }
+
+    private suspend fun TestScope.loadImage(
+        useCase: LoadImageAvoidDuplicatedExecution = loadImageAvoidDuplicatedExecution
+    ) = useCase(userId, messageId, url, shouldLoadImagesSafely = true, coroutineContext = coroutineContext)
+
+    private fun buildLoadImageAvoidDuplicatedExecution(
+        cache: MessageBodyImageCache = MessageBodyImageCache(maxSizeBytes = 1024 * 1024)
+    ) = LoadImageAvoidDuplicatedExecution(
+        loadMessageBodyImage = loadMessageBodyImage,
+        imageCache = cache,
+        isImageCacheEnabled = isImageCacheEnabled
+    )
 }

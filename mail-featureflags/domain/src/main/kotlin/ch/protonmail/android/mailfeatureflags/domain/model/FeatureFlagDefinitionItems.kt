@@ -154,6 +154,14 @@ data object ConversationDetailMessageWebViewPoolEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object ConversationDetailMessageBodyImageCacheEnabled : FeatureFlagDefinition(
+    key = "MailAndroidV7MessageBodyImageCache",
+    name = "Conversation image cache",
+    category = FeatureFlagCategory.Details,
+    description = "Keep loaded message body images in memory while a conversation is open, so reloads skip the proxy.",
+    defaultValue = false
+)
+
 data object ShowRatingBoosterEnabled : FeatureFlagDefinition(
     key = "RatingAndroidMail",
     name = "Show rating booster",
