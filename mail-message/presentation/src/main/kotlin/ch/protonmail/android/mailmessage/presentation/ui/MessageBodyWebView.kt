@@ -215,6 +215,9 @@ fun MessageBodyWebView(
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 pool?.markLoading(messageId.id, false)
+                // onPageCommitVisible is not guaranteed: a page that loads very fast (images already cached) while
+                // the card still holds the body at no height can finish without it, leaving the body hidden.
+                contentLoaded.value = true
             }
 
             // The renderer process - shared by every WebView in the app - has died, OOM-killed to reclaim
