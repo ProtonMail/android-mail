@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">I dati di ricerca su questo dispositivo verranno rimossi. Dovrai scaricarli nuovamente per poter cercare nel contenuto delle email.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Cancella la cache</string>
   <string name="content_search_bottomsheet_title">Utilizzo dati mobili</string>
-  <string name="content_search_bottomsheet_description">Le email della tua casella di posta verranno scaricate e preparate per la ricerca.</string>
+  <string name="content_search_bottomsheet_description">Le tue email verranno scaricate per attivare la ricerca privata.</string>
   <string name="content_search_bottomsheet_start_indexing">Avvia l\'indicizzazione</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Nessun risultato per \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Configura adesso</string>
   <string name="content_search_set_up_banner_not_now">Non adesso</string>
   <string name="content_search_indexing_complete_banner_title">Tutto fatto!</string>
-  <string name="content_search_indexing_complete_banner_description">Ora puoi cercare parole all\'interno di tutte le tue email, non solo nei mittenti e negli oggetti.</string>
+  <string name="content_search_indexing_complete_banner_description">La ricerca nel contenuto è ora attiva per tutte le email: passate e future.</string>
   <string name="content_search_indexing_complete_banner_got_it">Capito</string>
   <string name="content_search_placeholder_text">Cerca</string>
   <string name="content_search_clear_query_content_description">Cancella la parola chiave</string>

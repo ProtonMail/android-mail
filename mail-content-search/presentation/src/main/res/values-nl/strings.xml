@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">De zoekgegevens op dit apparaat worden verwijderd. U moet deze opnieuw downloaden om de inhoud van e-mails te kunnen doorzoeken.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Gegevens wissen</string>
   <string name="content_search_bottomsheet_title">Mobiel datagebruik</string>
-  <string name="content_search_bottomsheet_description">E-mails uit uw mailbox worden gedownload en klaargemaakt om te worden doorzocht.</string>
+  <string name="content_search_bottomsheet_description">Uw e-mails worden gedownload om privézoekopdrachten mogelijk te maken.</string>
   <string name="content_search_bottomsheet_start_indexing">Begin met indexeren</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Geen resultaten voor \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Nu instellen</string>
   <string name="content_search_set_up_banner_not_now">Niet nu</string>
   <string name="content_search_indexing_complete_banner_title">Klaar!</string>
-  <string name="content_search_indexing_complete_banner_description">U kunt nu zoeken naar woorden in al uw e-mails, niet alleen naar afzenders en onderwerpen.</string>
+  <string name="content_search_indexing_complete_banner_description">Zoeken naar inhoud is nu ingeschakeld, voor elke e-mail – verleden en toekomst.</string>
   <string name="content_search_indexing_complete_banner_got_it">Begrepen</string>
   <string name="content_search_placeholder_text">Zoeken</string>
   <string name="content_search_clear_query_content_description">Zoekopdracht wissen</string>

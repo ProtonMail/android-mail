@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Limpar dados</string>
   <string name="content_search_bottomsheet_title">Mobile data usage</string>
-  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Set up now</string>
   <string name="content_search_set_up_banner_not_now">Not now</string>
   <string name="content_search_indexing_complete_banner_title">All done!</string>
-  <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
+  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
   <string name="content_search_indexing_complete_banner_got_it">Got it</string>
   <string name="content_search_placeholder_text">Pesquisar</string>
   <string name="content_search_clear_query_content_description">Limpar pesquisa</string>

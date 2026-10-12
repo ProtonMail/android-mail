@@ -39,11 +39,11 @@
   <string name="spotlight_screen_category_view_categories_subtitle">Classifiqueu el correu automàticament en categories útils.</string>
   <string name="spotlight_screen_category_view_categories_subtitle_b2b">Classificació automàtica del correu entrant.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Els missatges no llegits són més fàcils de trobar</string>
-  <string name="spotlight_screen_category_view_main_b2c_subtitle">El filtre de missatges no llegits ara és a la part inferior de la safata d\'entrada, el que fa més fàcil accedir-hi i alternar entre tots els correus i els missatges no llegits.</string>
+  <string name="spotlight_screen_category_view_main_b2c_subtitle">El filtre de missatges no llegits ara es troba a la part inferior de la safata d\'entrada, la qual cosa en facilita l\'accés i permet alternar més fàcilment entre tots els correus i els no llegits.</string>
   <string name="spotlight_screen_category_view_main_b2b_title">Estigueu al dia dels correus nous i\nno llegits</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">El filtre de correus no llegits ara és més visible i està a l\'abast de la mà, cosa que us permet escanejar ràpidament i actuar sobre els correus no llegits.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">La bústia d\'entrada,\norganitzada automàticament</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Ara la vostra safata d\'entrada està classificada en categories com Principal, Social, Promocions i més, el que facilita reduir el desordre i centrar-vos en els correus que importen.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">La safata d\'entrada ara s\'organitza en categories com ara «Principal», «Xarxes socials», «Promocions» i moltes més, cosa que facilita reduir el desordre i concentrar-vos en els correus importants.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Privat per disseny. Més informació</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Hola, categories.\nAdeu, distraccions.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Deixeu de distreure-us amb butlletins, actualitzacions i correus no urgents. Amb les noves categories de correu electrònic, només els missatges importants arriben a la safata d\'entrada principal.</string>
@@ -53,7 +53,7 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">La cerca ha millorat</string>
   <string name="spotlight_screen_content_search_subtitle">Trobeu allò que us importa sense renunciar a la privacitat.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Ara es poden cercar totes les paraules</string>
+  <string name="spotlight_screen_content_search_message_content_title">Totes les paraules, ara cercables</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Trobeu correus electrònics pel contingut del missatge, no només per l\'assumpte o el remitent.</string>
   <string name="spotlight_screen_content_search_encryption_title">Continuarà xifrat d\'extrem a extrem</string>
   <string name="spotlight_screen_content_search_encryption_subtitle">La indexació es fa al dispositiu, xifrada amb la vostra clau. No s\'envia res a Proton.</string>

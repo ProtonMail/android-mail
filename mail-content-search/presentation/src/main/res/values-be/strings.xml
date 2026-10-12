@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Даныя пошуку на гэтай прыладзе будуць выдалены. Вам спатрэбіцца спампаваць іх паўторна, каб шукаць па змесціве ў лісце.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ачысціць даныя</string>
   <string name="content_search_bottomsheet_title">Выкарыстанне мабільных даных</string>
-  <string name="content_search_bottomsheet_description">Лісты з вашай паштовай скрыні будуць спампаваны і падрыхтаваны для пошуку.</string>
+  <string name="content_search_bottomsheet_description">Ваш лісты будуць спампаваны, каб уключыць прыватны пошук.</string>
   <string name="content_search_bottomsheet_start_indexing">Пачаць індэксацыю</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Нічога не знойдзена для \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Наладзіць</string>
   <string name="content_search_set_up_banner_not_now">Не цяпер</string>
   <string name="content_search_indexing_complete_banner_title">Усё гатова!</string>
-  <string name="content_search_indexing_complete_banner_description">Цяпер вы можаце шукаць словы ва ўсіх сваіх лістах, а не толькі па адпраўніках і тэмах.</string>
+  <string name="content_search_indexing_complete_banner_description">Пошук па кантэксце ўключаны для кожнага ліста. Для тых, што ўжо ёсць у скрыні і тых, што будуць атрыманы.</string>
   <string name="content_search_indexing_complete_banner_got_it">Зразумела</string>
   <string name="content_search_placeholder_text">Пошук</string>
   <string name="content_search_clear_query_content_description">Ачысціць пошукавы запыт</string>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="nps_title">Cât de probabil este să recomandați Proton Mail unui prieten sau coleg?</string>
+  <string name="nps_subtext_low">0 = foarte improbabil</string>
+  <string name="nps_subtext_high">10 = foarte probabil</string>
+  <string name="nps_comment_placeholder">Vă rugăm să ne spuneți de ce ați acordat această evaluare.</string>
+  <string name="nps_share_button">Partajare anonimă</string>
+  <string name="nps_privacy_note">Nu vă transmitem niciodată numele, adresa de e-mail sau conținutul mesajului.</string>
+  <string name="nps_thank_you">Mulțumim pentru feedback. Acesta ne va ajuta să îmbunătățim Proton Mail.</string>
+  <string name="nps_score_content_description">Evaluare %1$d</string>
+</resources>

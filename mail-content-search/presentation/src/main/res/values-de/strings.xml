@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Die Suchdaten auf diesem Gerät werden gelöscht. Sie müssen erneut heruntergeladen werden, um E-Mail-Inhalte durchsuchen zu können.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Daten bereinigen</string>
   <string name="content_search_bottomsheet_title">Mobile Datennutzung</string>
-  <string name="content_search_bottomsheet_description">E-Mails aus deinem Postfach werden heruntergeladen und für die Suche vorbereitet.</string>
+  <string name="content_search_bottomsheet_description">Deine E-Mails werden heruntergeladen, um eine vertrauliche Suche zu ermöglichen.</string>
   <string name="content_search_bottomsheet_start_indexing">Indizierung starten</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Keine Ergebnisse für „%1$s“</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Jetzt einrichten</string>
   <string name="content_search_set_up_banner_not_now">Jetzt nicht</string>
   <string name="content_search_indexing_complete_banner_title">Fertig!</string>
-  <string name="content_search_indexing_complete_banner_description">Du kannst nun in allen deinen E-Mails nach Wörtern suchen, nicht nur in den Absendern und Betreffzeilen.</string>
+  <string name="content_search_indexing_complete_banner_description">Die Inhaltssuche ist nun für sämtliche E-Mails aktiviert – sowohl für vergangene als auch für zukünftige.</string>
   <string name="content_search_indexing_complete_banner_got_it">Verstanden</string>
   <string name="content_search_placeholder_text">Suchen</string>
   <string name="content_search_clear_query_content_description">Suchanfrage löschen</string>

@@ -53,18 +53,18 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Sök blev just bättre.</string>
   <string name="spotlight_screen_content_search_subtitle">Hitta det som är viktigt, utan att ge upp din integritet.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_message_content_title">Varje ord är nu sökbart</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Hitta e-postmeddelanden efter meddelandeinnehåll, inte bara ämne eller avsändare.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
+  <string name="spotlight_screen_content_search_encryption_title">Fortfarande end-to-end-krypterat</string>
   <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Fortsätt där du slutade</string>
   <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
-  <string name="spotlight_screen_whats_new_pill">What’s new</string>
-  <string name="spotlight_screen_content_search_button_continue">Continue</string>
-  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
-  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <string name="spotlight_screen_whats_new_pill">Vad som är nytt</string>
+  <string name="spotlight_screen_content_search_button_continue">Fortsätt</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Slå på</string>
+  <string name="spotlight_screen_content_search_button_not_now">Inte nu</string>
   <!-- How email content search works -->
-  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
+  <string name="spotlight_screen_content_search_how_it_works_title">Hur innehållssökning, fungerar</string>
   <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
   <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
   <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>

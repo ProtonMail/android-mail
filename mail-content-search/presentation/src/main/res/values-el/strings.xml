@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Τα δεδομένα αναζήτησης σε αυτήν τη συσκευή θα καταργηθούν. Θα χρειαστεί να τα κατεβάσετε ξανά για να αναζητήσετε περιεχόμενο ηλεκτρονικού ταχυδρομείου.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Εκκαθάριση δεδομένων</string>
   <string name="content_search_bottomsheet_title">Χρήση δεδομένων κινητής τηλεφωνίας</string>
-  <string name="content_search_bottomsheet_description">Τα μηνύματα ηλεκτρονικού ταχυδρομείου από το γραμματοκιβώτιό σας θα ληφθούν και θα προετοιμαστούν για αναζήτηση.</string>
+  <string name="content_search_bottomsheet_description">Τα μηνύματα ηλεκτρονικού ταχυδρομείου σας θα ληφθούν για να καταστεί δυνατή η ιδιωτική αναζήτηση.</string>
   <string name="content_search_bottomsheet_start_indexing">Έναρξη ευρετηριοποίησης</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Κανένα αποτέλεσμα για \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Ρυθμίστε το τώρα</string>
   <string name="content_search_set_up_banner_not_now">Όχι τώρα</string>
   <string name="content_search_indexing_complete_banner_title">Όλα έτοιμα!</string>
-  <string name="content_search_indexing_complete_banner_description">Τώρα μπορείτε να αναζητάτε λέξεις μέσα σε όλα τα μηνύματα ηλεκτρονικού ταχυδρομείου σας, όχι μόνο στους αποστολείς και στα θέματα.</string>
+  <string name="content_search_indexing_complete_banner_description">Η αναζήτηση περιεχομένου είναι πλέον ενεργή, για κάθε e-mail – του παρελθόντος και του μέλλοντος.</string>
   <string name="content_search_indexing_complete_banner_got_it">Το κατάλαβα</string>
   <string name="content_search_placeholder_text">Αναζήτηση</string>
   <string name="content_search_clear_query_content_description">Εκκαθάριση ερωτήματος αναζήτησης</string>

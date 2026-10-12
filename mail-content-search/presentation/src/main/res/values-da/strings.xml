@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Søgedata på denne enhed vil blive fjernet. Du bliver nødt til at downloade det igen for at søge i indhold i e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ryd data</string>
   <string name="content_search_bottomsheet_title">Forbrug af mobildata</string>
-  <string name="content_search_bottomsheet_description">E-mails fra din postkasse bliver downloadet og gjort klar til søgning.</string>
+  <string name="content_search_bottomsheet_description">Dine e-mails downloades for at muliggøre privat søgning.</string>
   <string name="content_search_bottomsheet_start_indexing">Start indeksering</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Ingen resultater for \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Konfigurer nu</string>
   <string name="content_search_set_up_banner_not_now">Ikke nu</string>
   <string name="content_search_indexing_complete_banner_title">Færdig!</string>
-  <string name="content_search_indexing_complete_banner_description">Du kan nu søge efter ord i alle dine e-mails, ikke kun i afsendere og emner.</string>
+  <string name="content_search_indexing_complete_banner_description">Indholdssøgning er nu slået til for alle e-mails – både tidligere og kommende.</string>
   <string name="content_search_indexing_complete_banner_got_it">Forstået</string>
   <string name="content_search_placeholder_text">Søg</string>
   <string name="content_search_clear_query_content_description">Ryd søgeforespørgsel</string>
@@ -53,8 +53,8 @@
   <string name="content_search_first_run_description">Skriv et navn, et emne eller et nøgleord for at søge</string>
   <string name="content_search_results_title">Resultater</string>
   <plurals name="content_search_results_title_with_count">
-    <item quantity="one">%1$d Resultat</item>
-    <item quantity="other">%1$d Resultater</item>
+    <item quantity="one">%1$d resultat</item>
+    <item quantity="other">%1$d resultater</item>
   </plurals>
   <string name="content_search_min_query_length_notice">Indtast 3 eller flere tegn for at se alle resultater.</string>
   <!-- Search history -->

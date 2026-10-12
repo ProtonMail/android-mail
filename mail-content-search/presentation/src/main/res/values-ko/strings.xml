@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">이 기기에서 검색 데이터가 삭제됩니다. 이메일 콘텐츠 검색을 다시 활성화하려면 재색인이 필요합니다.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">데이터 비우기</string>
   <string name="content_search_bottomsheet_title">모바일 데이터 사용량</string>
-  <string name="content_search_bottomsheet_description">메일함의 모든 이메일이 다운로드되며 곧 검색 가능합니다.</string>
+  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">색인 시작</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">\"%1$s\"에 대한 결과를 찾을 수 없음</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">지금 설정하기</string>
   <string name="content_search_set_up_banner_not_now">나중에</string>
   <string name="content_search_indexing_complete_banner_title">색인 완료!</string>
-  <string name="content_search_indexing_complete_banner_description">이제 보낸 사람이나 제목 뿐 아니라 모든 이메일 속 단어 하나하나까지 검색할 수 있습니다.</string>
+  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
   <string name="content_search_indexing_complete_banner_got_it">확인</string>
   <string name="content_search_placeholder_text">검색</string>
   <string name="content_search_clear_query_content_description">검색 쿼리 삭제</string>

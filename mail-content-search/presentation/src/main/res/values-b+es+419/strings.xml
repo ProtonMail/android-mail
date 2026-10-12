@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Se eliminarán los datos de búsqueda de este dispositivo. Deberá descargarlos de nuevo para buscar contenido de correo.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Borrar los datos</string>
   <string name="content_search_bottomsheet_title">Uso de datos móviles</string>
-  <string name="content_search_bottomsheet_description">Se descargarán y prepararán los correos de su buzón para ser buscados.</string>
+  <string name="content_search_bottomsheet_description">Sus correos se descargarán para activar la búsqueda privada.</string>
   <string name="content_search_bottomsheet_start_indexing">Iniciar la indexación</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No hay resultados para «%1$s»</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Configurar ahora</string>
   <string name="content_search_set_up_banner_not_now">Ahora no</string>
   <string name="content_search_indexing_complete_banner_title">¡Todo listo!</string>
-  <string name="content_search_indexing_complete_banner_description">Ahora puede buscar palabras dentro de sus correos, no solo remitentes y asuntos.</string>
+  <string name="content_search_indexing_complete_banner_description">La búsqueda de contenido ahora está activa para cada correo, anterior o futuro.</string>
   <string name="content_search_indexing_complete_banner_got_it">Entendido</string>
   <string name="content_search_placeholder_text">Buscar</string>
   <string name="content_search_clear_query_content_description">Borrar la consulta de búsqueda</string>

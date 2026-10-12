@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Bu aygıt üzerindeki arama verileri kaldırılacak. Gelişmiş e-posta içeriğini arama özelliğini kullanabilmek için verileri yeniden indirmeniz gerekecek.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Verileri temizle</string>
   <string name="content_search_bottomsheet_title">Mobil veri kullanımı</string>
-  <string name="content_search_bottomsheet_description">E-posta kutunuzdaki e-postalar indirilecek ve aranabilmeleri için hazırlanacak.</string>
+  <string name="content_search_bottomsheet_description">Gizliliği koruyan aramayı açmak için e-postalarınız indirilecek.</string>
   <string name="content_search_bottomsheet_start_indexing">Dizin oluşturmayı başlat</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">\"%1$s\" için bir sonuç yok</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Şimdi kur</string>
   <string name="content_search_set_up_banner_not_now">Şimdi değil</string>
   <string name="content_search_indexing_complete_banner_title">Her şey tamam!</string>
-  <string name="content_search_indexing_complete_banner_description">Şimdi yalnızca göndericileri ve konuları değil, tüm e-postalarınızın içindeki sözcükleri de arayabilirsiniz.</string>
+  <string name="content_search_indexing_complete_banner_description">Geçmişteki ve gelecekteki her e-posta için içerik araması artık açık.</string>
   <string name="content_search_indexing_complete_banner_got_it">Anladım</string>
   <string name="content_search_placeholder_text">Ara</string>
   <string name="content_search_clear_query_content_description">Arama sorgusunu temizle</string>
