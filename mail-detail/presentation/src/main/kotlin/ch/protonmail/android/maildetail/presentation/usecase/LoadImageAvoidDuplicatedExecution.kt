@@ -20,7 +20,11 @@ package ch.protonmail.android.maildetail.presentation.usecase
 
 import arrow.core.Either
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maildetail.presentation.util.MessageBodyImageCache
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageBodyImageCacheEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailmessage.domain.model.AttachmentDataError
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyImage
 import ch.protonmail.android.mailmessage.domain.usecase.LoadMessageBodyImage
@@ -33,11 +37,17 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class LoadImageAvoidDuplicatedExecution @Inject constructor(
-    private val loadMessageBodyImage: LoadMessageBodyImage
+    private val loadMessageBodyImage: LoadMessageBodyImage,
+    private val imageCache: MessageBodyImageCache,
+    @IsMessageBodyImageCacheEnabled private val isImageCacheEnabled: FeatureFlag<Boolean>
 ) {
 
     private val loadMessageBodyImageJobMap =
         mutableMapOf<String, Deferred<Either<AttachmentDataError, MessageBodyImage>>>()
+
+    // Read once, so the cache stays on or off for the whole life of the screen.
+    @Volatile
+    private var isCacheEnabled: Boolean? = null
 
     suspend operator fun invoke(
         userId: UserId,
@@ -46,6 +56,18 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
         shouldLoadImagesSafely: Boolean,
         coroutineContext: CoroutineContext
     ): Either<AttachmentDataError, MessageBodyImage> = runCatching {
+        val cacheKey = MessageBodyImageCache.Key.of(messageId, url, shouldLoadImagesSafely)
+        val shouldUseCache = isCacheEnabled()
+
+        // Checked on the calling thread, so a cached image or failure doesn't wait for the main thread.
+        if (shouldUseCache && imageCache.isProxyFailure(cacheKey)) {
+            return@runCatching AttachmentDataError.ProxyFailed.left()
+        }
+        val cachedImage = if (shouldUseCache) imageCache.get(cacheKey) else null
+        if (cachedImage != null) {
+            return@runCatching cachedImage.right()
+        }
+
         withContext(coroutineContext) {
             if (loadMessageBodyImageJobMap[url]?.isActive == true) {
                 loadMessageBodyImageJobMap[url]!!
@@ -54,6 +76,17 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
                     loadMessageBodyImageJobMap[url] = this
                 }
             }.await()
+        }.onRight { image ->
+            if (shouldUseCache) imageCache.put(cacheKey, image)
+        }.onLeft { error ->
+            if (shouldUseCache && error is AttachmentDataError.ProxyFailed) imageCache.putProxyFailure(cacheKey)
         }
     }.getOrElse { AttachmentDataError.Other(DataError.Local.NotFound).left() }
+
+    fun clearCache() {
+        imageCache.clear()
+    }
+
+    private suspend fun isCacheEnabled(): Boolean =
+        isCacheEnabled ?: isImageCacheEnabled.get().also { isCacheEnabled = it }
 }
