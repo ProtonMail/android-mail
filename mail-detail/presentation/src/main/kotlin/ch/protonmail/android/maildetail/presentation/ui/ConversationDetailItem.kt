@@ -398,7 +398,8 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     id = id.id,
                     itemState = itemState,
                     snap = viewPreviouslyLoaded,
-                    isListScrolling = isListScrolling
+                    isListScrolling = isListScrolling,
+                    isBodyLoadCompleted = isBodyLoadCompleted.value
                 )
                 .onSizeChanged {
                     columnHeight.intValue = it.height
@@ -632,7 +633,8 @@ fun Modifier.reveal(
     id: String,
     itemState: ItemState,
     snap: Boolean,
-    isListScrolling: Boolean
+    isListScrolling: Boolean,
+    isBodyLoadCompleted: Boolean
 ): Modifier {
     var lastHeightPx by rememberSaveable(id) { mutableIntStateOf(0) }
 
@@ -650,13 +652,16 @@ fun Modifier.reveal(
         ItemState.Visible -> if (isListScrolling && lastHeightPx > 0) lastHeightPx else null
     }
 
-    // Cache the height only when settled (visible, not scrolling), and never store an unsettled measurement:
-    // a WebView momentarily reports its max cap, which is also larger than Compose can lay out - keep the last
-    // real height instead. This keeps every held value safe to feed into requiredHeight().
+    // Cache the height only when settled (visible, not scrolling, body fully loaded), and never store an unsettled
+    // measurement: a WebView momentarily reports its max cap, which is also larger than Compose can lay out - keep
+    // the last real height instead. This keeps every held value safe to feed into requiredHeight(). A body that is
+    // still loading is not settled either: a card scrolled away mid-load kept its partial height, was pinned to it
+    // on the next scroll and then jumped to its real height, thousands of px, when the scroll stopped.
     // The modifier itself is kept stable (the settled/scrolling check is inside onSizeChanged, not around it) so
     // the modifier chain does not change shape on every scroll edge, which would relayout the card each fling.
     val cacheHeightModifier = Modifier.onSizeChanged { size ->
-        if (itemState == ItemState.Visible && !isListScrolling && size.height in 1 until MAX_STABLE_CARD_HEIGHT_PX) {
+        val isSettled = itemState == ItemState.Visible && isBodyLoadCompleted && !isListScrolling
+        if (isSettled && size.height in 1 until MAX_STABLE_CARD_HEIGHT_PX) {
             lastHeightPx = size.height
         }
     }
