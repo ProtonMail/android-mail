@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Podatki za iskanje v tej napravi bodo odstranjeni. Če želite uporabljati iskanje po vsebini sporočil, jih boste morali znova prenesti.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Počisti podatke</string>
   <string name="content_search_bottomsheet_title">Poraba mobilnih podatkov</string>
-  <string name="content_search_bottomsheet_description">Emails from your mailbox will be downloaded and prepared to be searched.</string>
+  <string name="content_search_bottomsheet_description">Vaša elektronska pošta bo prenesena, da se omogoči zasebno iskanje.</string>
   <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Nastavi zdaj</string>
   <string name="content_search_set_up_banner_not_now">Ne zdaj</string>
   <string name="content_search_indexing_complete_banner_title">Urejeno!</string>
-  <string name="content_search_indexing_complete_banner_description">Sedaj lahko iščete po besedilu znotraj vseh sporočil, ne le po pošiljateljih in zadevah.</string>
+  <string name="content_search_indexing_complete_banner_description">Iskanje po vsebini je zdaj omogočeno za vsako e-poštno sporočilo – tako pretekla kot prihodnja.</string>
   <string name="content_search_indexing_complete_banner_got_it">Razumem</string>
   <string name="content_search_placeholder_text">Iskanje</string>
   <string name="content_search_clear_query_content_description">Počisti iskalno poizvedbo</string>

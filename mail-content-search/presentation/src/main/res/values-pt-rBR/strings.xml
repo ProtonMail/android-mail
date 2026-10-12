@@ -21,7 +21,7 @@
   <string name="mail_settings_content_search_indexing_pause">Pausar</string>
   <string name="mail_settings_content_search_indexing_resume">Retomar</string>
   <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
-  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_on_this_device_section">Neste aparelho</string>
   <string name="mail_settings_content_search_index_size">Tamanho do índice</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar dados de pesquisa locais</string>
   <string name="mail_settings_content_search_clear_data_description">Limpar os dados de pesquisa local vai desativar a pesquisa pelo conteúdo das mensagens. Você pode ativar essa opção novamente a qualquer momento.</string>
@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Limpar dados</string>
   <string name="content_search_bottomsheet_title">Uso de dados móveis</string>
-  <string name="content_search_bottomsheet_description">Os e-mails da sua caixa de correio serão descarregados e preparados para serem pesquisados.</string>
+  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Iniciar indexagem</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Configurar agora</string>
   <string name="content_search_set_up_banner_not_now">Agora não</string>
   <string name="content_search_indexing_complete_banner_title">Tudo pronto!</string>
-  <string name="content_search_indexing_complete_banner_description">You can now search for words inside all your emails, not just senders and subjects.</string>
+  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
   <string name="content_search_indexing_complete_banner_got_it">Entendi</string>
   <string name="content_search_placeholder_text">Pesquisar</string>
   <string name="content_search_clear_query_content_description">Limpar consulta de pesquisa</string>

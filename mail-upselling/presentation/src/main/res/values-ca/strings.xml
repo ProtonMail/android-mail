@@ -48,7 +48,7 @@
   <string name="upselling_pu_pass_title">Mantingueu les contrasenyes segures i organitzades amb les caixes fortes</string>
   <string name="upselling_pu_subtitle">Aconseguiu el millor del Proton amb el pla Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
-  <string name="upselling_pu_row_generic_title">Porta la vostra privacitat més enllà</string>
+  <string name="upselling_pu_row_generic_title">Porteu la vostra privacitat més enllà</string>
   <string name="upselling_pu_row_generic_subtitle">Desbloquegeu més emmagatzematge</string>
   <string name="upselling_pu_row_threat_protection_title">Protegiu-vos de les amenaces</string>
   <string name="upselling_pu_row_threat_protection_subtitle">Protegiu el compte</string>
@@ -58,7 +58,7 @@
   <string name="upselling_pu_row_drive_subtitle">Aconseguiu 500 GB per a emmagatzemar fitxers i fotos</string>
   <string name="upselling_pu_row_vpn_browse_title">Navegueu de forma segura</string>
   <string name="upselling_pu_row_vpn_browse_subtitle">Obtingueu accés a una VPN ultraràpida</string>
-  <string name="upselling_pu_row_vpn_streaming_title">Tingueu accés als continguts en línia</string>
+  <string name="upselling_pu_row_vpn_streaming_title">Desbloquegeu el contingut en estríming</string>
   <string name="upselling_pu_row_vpn_streaming_subtitle">Vegeu contingut lliurement amb Proton VPN</string>
   <string name="upselling_pu_row_pass_title">Mantingueu les contrasenyes segures</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>

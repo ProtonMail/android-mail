@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Data pro vyhledávání budou z tohoto zařízení smazána. Chcete-li prohledávat obsah e-mailů, budete je muset stáhnout znovu.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Smazat data</string>
   <string name="content_search_bottomsheet_title">Využití mobilních dat</string>
-  <string name="content_search_bottomsheet_description">E-maily z vaší e-mailové schránky budou staženy a připraveny k prohledávání.</string>
+  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Zahájit indexování</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Žádné výsledky pro \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Nastavit nyní</string>
   <string name="content_search_set_up_banner_not_now">Nyní ne</string>
   <string name="content_search_indexing_complete_banner_title">Vše hotovo!</string>
-  <string name="content_search_indexing_complete_banner_description">Nyní můžete vyhledávat slova ve všech svých e-mailech, nejen v adresách odesílatelů a předmětech zpráv.</string>
+  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
   <string name="content_search_indexing_complete_banner_got_it">Rozumím</string>
   <string name="content_search_placeholder_text">Hledat</string>
   <string name="content_search_clear_query_content_description">Vyčistit vyhledávací dotaz</string>

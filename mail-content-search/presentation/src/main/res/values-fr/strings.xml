@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Les données de recherche sur cet appareil seront retirées. Vous devrez les télécharger à nouveau pour effectuer des recherches dans le contenu des e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Effacer les données</string>
   <string name="content_search_bottomsheet_title">Consommation de données mobiles</string>
-  <string name="content_search_bottomsheet_description">Les e-mails de votre messagerie seront téléchargés et préparés pour pouvoir faire l\'objet d\'une recherche.</string>
+  <string name="content_search_bottomsheet_description">Vos messages seront téléchargés pour permettre la recherche privée.</string>
   <string name="content_search_bottomsheet_start_indexing">Lancer l\'indexation</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Aucun résultat pour « %1$s »</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Configurer maintenant</string>
   <string name="content_search_set_up_banner_not_now">Plus tard</string>
   <string name="content_search_indexing_complete_banner_title">Terminé !</string>
-  <string name="content_search_indexing_complete_banner_description">Vous pouvez désormais rechercher des mots à l\'intérieur de vos messages, et pas seulement les expéditeurs et les objets.</string>
+  <string name="content_search_indexing_complete_banner_description">La recherche dans le contenu est désormais activé, pour chaque message, passé et futur.</string>
   <string name="content_search_indexing_complete_banner_got_it">J\'ai compris</string>
   <string name="content_search_placeholder_text">Rechercher</string>
   <string name="content_search_clear_query_content_description">Effacer la recherche</string>

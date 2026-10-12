@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="nps_title">З якой верагоднасцю вы парэкамендуеце Proton Mail сябрам або калегам?</string>
+  <string name="nps_subtext_low">0 = гэта вельмі малаверагодна</string>
+  <string name="nps_subtext_high">10 = гэта вельмі верагодна</string>
+  <string name="nps_comment_placeholder">Растлумачце, чаму вы так нас ацанілі.</string>
+  <string name="nps_share_button">Абагуліць ананімна</string>
+  <string name="nps_privacy_note">Наша кампанія ніколі не адпраўляе ваша імя, электронную пошту або змесціва паведамлення.</string>
+  <string name="nps_thank_you">Дзякуй, што падзяліліся водгукам! Ваш водгук дапаможа нам удасканаліць Proton Mail.</string>
+  <string name="nps_score_content_description">Рэйтынг %1$d</string>
+</resources>

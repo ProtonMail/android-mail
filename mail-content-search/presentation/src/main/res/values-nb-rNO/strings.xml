@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">Søkedataene på denne enheten vil bli fjernet. Du må laste dem ned på nytt for å søke i e-postinnhold.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Tøm data</string>
   <string name="content_search_bottomsheet_title">Bruk av mobildata</string>
-  <string name="content_search_bottomsheet_description">E-poster fra postkassen lastes ned og klargjøres for søk.</string>
+  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Begynn å indeksere</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Ingen treff for \"%1$s\"</string>
@@ -45,7 +45,7 @@
   <string name="content_search_set_up_banner_turn_on">Konfigurer nå</string>
   <string name="content_search_set_up_banner_not_now">Ikke nå</string>
   <string name="content_search_indexing_complete_banner_title">Fullført!</string>
-  <string name="content_search_indexing_complete_banner_description">Du kan nå søke etter ord i alle e-postene, ikke bare avsendere og emner.</string>
+  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
   <string name="content_search_indexing_complete_banner_got_it">Skjønner</string>
   <string name="content_search_placeholder_text">Søk</string>
   <string name="content_search_clear_query_content_description">Nullstill søk</string>
