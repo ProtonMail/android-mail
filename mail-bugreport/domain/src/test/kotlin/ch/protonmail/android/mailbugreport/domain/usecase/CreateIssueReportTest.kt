@@ -26,7 +26,11 @@ import kotlin.test.assertEquals
 
 internal class CreateIssueReportTest {
 
-    private val appInformation = AppInformation()
+    private val appInformation = AppInformation(
+        appVersionName = "7.12.0",
+        appInstallSourceSuffix = "+apk",
+        appVersionCode = 1
+    )
     private val createIssueReport = CreateIssueReport(appInformation)
 
     @Test
@@ -43,7 +47,7 @@ internal class CreateIssueReportTest {
             operatingSystem = IssueReportField.OperatingSystem("Android"),
             operatingSystemVersion = IssueReportField.OperatingSystemVersion("0"),
             client = IssueReportField.Client("Android Proton Mail"),
-            clientVersion = IssueReportField.ClientVersion("0.0.0 (0)"),
+            clientVersion = IssueReportField.ClientVersion("7.12.0+apk (1)"),
             title = IssueReportField.Title("Proton Mail Android App - Bug report"),
             summary = summary,
             stepsToReproduce = reproSteps,
@@ -75,7 +79,7 @@ internal class CreateIssueReportTest {
             operatingSystem = IssueReportField.OperatingSystem("Android"),
             operatingSystemVersion = IssueReportField.OperatingSystemVersion("0"),
             client = IssueReportField.Client("Android Proton Mail"),
-            clientVersion = IssueReportField.ClientVersion("0.0.0 (0)"),
+            clientVersion = IssueReportField.ClientVersion("7.12.0+apk (1)"),
             title = IssueReportField.Title("Proton Mail Android App - Bug report"),
             summary = summary,
             stepsToReproduce = reproSteps,

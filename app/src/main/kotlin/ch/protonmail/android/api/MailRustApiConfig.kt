@@ -21,12 +21,14 @@ package ch.protonmail.android.api
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailsession.domain.model.RustApiConfig
 import ch.protonmail.android.useragent.BuildUserAgent
+import ch.protonmail.android.useragent.GetAppVersion
 import okhttp3.HttpUrl
 import uniffi.mail_uniffi.ApiEnvId
 import javax.inject.Inject
 
 class MailRustApiConfig @Inject constructor(
     private val buildUserAgent: BuildUserAgent,
+    private val getAppVersion: GetAppVersion,
     private val baseApiUrl: HttpUrl
 ) : RustApiConfig {
 
@@ -37,7 +39,7 @@ class MailRustApiConfig @Inject constructor(
     override val product: String
         get() = "mail"
     override val appVersion: String
-        get() = BuildConfig.VERSION_NAME
+        get() = getAppVersion()
     override val userAgent: String
         get() = buildUserAgent()
     override val proxy: String?

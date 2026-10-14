@@ -5,6 +5,7 @@ import ch.protonmail.android.api.MailRustApiConfig
 import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import ch.protonmail.android.mailsession.domain.model.RustApiConfig
 import ch.protonmail.android.useragent.BuildUserAgent
+import ch.protonmail.android.useragent.GetAppVersion
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +20,11 @@ object ApiConfigurationModule {
 
     @Provides
     @Singleton
-    fun provideRustApiConfig(buildUserAgent: BuildUserAgent, httpUrl: HttpUrl): RustApiConfig =
-        MailRustApiConfig(buildUserAgent, httpUrl)
+    fun provideRustApiConfig(
+        buildUserAgent: BuildUserAgent,
+        getAppVersion: GetAppVersion,
+        httpUrl: HttpUrl
+    ): RustApiConfig = MailRustApiConfig(buildUserAgent, getAppVersion, httpUrl)
 
     @Provides
     @Singleton
