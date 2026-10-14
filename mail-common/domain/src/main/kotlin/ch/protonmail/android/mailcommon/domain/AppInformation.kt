@@ -21,9 +21,15 @@ package ch.protonmail.android.mailcommon.domain
 data class AppInformation(
     val appName: String = "Proton Mail",
     val appVersionName: String = "0.0.0",
+    val appInstallSourceSuffix: String = "",
     val appVersionCode: Int = 0,
     val appBuildType: String = "type",
     val appBuildFlavor: String = "flavor",
     val appHost: String = "host",
     val rustSdkVersion: String = "0.0.0"
-)
+) {
+
+    /** The version name tagged with its install source, e.g. `+apk` for sideloads. Not meant for display. */
+    val appVersionNameWithInstallSource: String
+        get() = "$appVersionName$appInstallSourceSuffix"
+}

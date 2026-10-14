@@ -4,6 +4,7 @@ import java.io.File
 import android.content.Context
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.R
+import ch.protonmail.android.useragent.GetAppVersion
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,8 +31,7 @@ object AccountModule {
     @Provides
     @Singleton
     @ClientVersionName
-    @Suppress("FunctionOnlyReturningConstant")
-    fun provideVersionName(): String = BuildConfig.VERSION_NAME
+    fun provideVersionName(getAppVersion: GetAppVersion): String = getAppVersion()
 
     @Provides
     @Singleton

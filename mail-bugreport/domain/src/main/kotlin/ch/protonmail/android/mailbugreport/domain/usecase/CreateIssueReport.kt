@@ -52,7 +52,8 @@ class CreateIssueReport @Inject constructor(
         )
     }
 
-    private fun formatAppVersionName() = "${appInformation.appVersionName} (${appInformation.appVersionCode})"
+    private fun formatAppVersionName() =
+        "${appInformation.appVersionNameWithInstallSource} (${appInformation.appVersionCode})"
 
     private companion object {
 
