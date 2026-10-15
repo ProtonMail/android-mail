@@ -26,10 +26,10 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
@@ -92,13 +92,16 @@ import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchV
 import ch.protonmail.android.mailcontentsearch.presentation.model.IndexingProgressState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesState
 import ch.protonmail.android.mailcontentsearch.presentation.model.RecentSearchesViewAction
+import ch.protonmail.android.mailcontentsearch.presentation.model.ResultsTotalUiState
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchSetUpPromptViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.ContentSearchViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.IndexingProgressViewModel
 import ch.protonmail.android.mailcontentsearch.presentation.viewmodel.RecentSearchesViewModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxSkeletonLoading
-import ch.protonmail.android.mailmailbox.presentation.paging.exception.PaginationErrorException
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.PaginationErrorException
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.flowOf
 import timber.log.Timber
@@ -482,7 +485,12 @@ private fun ContentSearchScreen(
                     focusRequests = searchFieldFocusRequests
                 )
 
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Small))
+                // The search's loading bar sits in the gap under the top bar, so it touches it.
+                Box(modifier = Modifier.fillMaxWidth().height(ProtonDimens.Spacing.Small)) {
+                    if (state.isSearchLive) {
+                        MailboxLoadingBar(state = state.resultsTotal.loadingBar, modifier = Modifier.fillMaxWidth())
+                    }
+                }
 
                 ContentSearchBody(
                     state = state,
@@ -650,7 +658,7 @@ private fun ContentSearchBody(
                 avatarImages = state.avatarImages,
                 downloadingAttachmentId = state.downloadingAttachmentId,
                 showMinQueryLengthNotice = state.query.trim().length < MIN_QUERY_LENGTH_FOR_FULL_RESULTS,
-                totalCount = phase.totalCount,
+                shownTotal = state.resultsTotal.shownCount,
                 listState = resultsListState,
                 modifier = modifier
             )
@@ -880,7 +888,8 @@ private fun ContentSearchScreenResultsPreview() {
         ContentSearchScreen(
             state = ContentSearchState.Initial.copy(
                 query = "weather",
-                phase = ContentSearchState.Phase.Results(count = results.size)
+                phase = ContentSearchState.Phase.Results(count = results.size),
+                resultsTotal = ResultsTotalUiState(loadingBar = LoadingBarUiState.Hide, count = results.size)
             ),
             recentsState = RecentSearchesState.Empty,
             indexingState = IndexingProgressState.Hidden,

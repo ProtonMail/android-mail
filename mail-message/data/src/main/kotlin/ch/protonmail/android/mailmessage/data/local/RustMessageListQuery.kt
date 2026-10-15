@@ -29,6 +29,7 @@ import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.data.wrapper.MailMessageCursorWrapper
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PaginatorTotal
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -41,7 +42,13 @@ interface RustMessageListQuery {
 
     suspend fun supportsIncludeFilter(): Boolean
 
-    suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+    /**
+     * The total Rust sends for the paginator of [pageKey] whenever it changes.
+     *
+     * Rust sends it even when the loaded items stay the same, as when a remote page lands past them.
+     * It is [PaginatorTotal.Pending] while a remote page that will change it is on its way.
+     */
+    fun observeTotalItemsCount(userId: UserId, pageKey: PageKey): Flow<PaginatorTotal>
 
     suspend fun getSearchMatchPositions(
         userId: UserId,

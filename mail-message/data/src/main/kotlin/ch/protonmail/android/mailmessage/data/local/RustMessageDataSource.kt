@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageScrollerFetchNewSta
 import ch.protonmail.android.mailmessage.domain.model.PreviousScheduleSendTime
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PaginatorTotal
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -57,7 +58,7 @@ interface RustMessageDataSource {
 
     suspend fun supportsIncludeFilter(): Boolean
 
-    suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+    fun observeTotalItemsCount(userId: UserId, pageKey: PageKey): Flow<PaginatorTotal>
 
     suspend fun getSearchMatchPositions(
         userId: UserId,

@@ -33,8 +33,6 @@ interface MessagePaginatorWrapper {
 
     suspend fun reload(): Either<PaginationError, Unit>
 
-    suspend fun totalItemsCount(): Either<PaginationError, Long>
-
     suspend fun getCursor(anchorItemId: LocalItemId): Either<PaginationError, MailMessageCursorWrapper>
 
     fun disconnect()

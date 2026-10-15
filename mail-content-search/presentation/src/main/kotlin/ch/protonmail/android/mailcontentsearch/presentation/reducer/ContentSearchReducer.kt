@@ -91,6 +91,7 @@ class ContentSearchReducer @Inject constructor(
 
             ContentSearchOperation.ReloadResults -> currentState.reloaded()
             is ContentSearchOperation.SearchFailed -> currentState.withFailedSearch(operation.error)
+            is ContentSearchOperation.ResultsTotalUpdated -> currentState.copy(resultsTotal = operation.resultsTotal)
 
             is ContentSearchOperation.AvatarImagesUpdated ->
                 currentState.copy(avatarImages = operation.avatarImages)

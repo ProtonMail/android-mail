@@ -41,8 +41,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
 import ch.protonmail.android.mailcommon.presentation.model.BottomSheetOperation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcontentsearch.domain.usecase.GetSearchResultsTotal
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveSearchResultsTotal
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchResultUiModel
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
@@ -64,6 +64,7 @@ import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBarControllerFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BottomBarStateFactory
@@ -126,7 +127,8 @@ class ContentSearchViewModel @Inject constructor(
     private val findLocalSystemLabelId: FindLocalSystemLabelId,
     private val observePageInvalidationEvents: ObservePageInvalidationEvents,
     private val observeContentSearchEnabled: ObserveContentSearchEnabled,
-    private val getSearchResultsTotal: GetSearchResultsTotal,
+    private val observeSearchResultsTotal: ObserveSearchResultsTotal,
+    private val loadingBarControllerFactory: MailboxLoadingBarControllerFactory,
     private val mailboxActionExecutor: MailboxActionExecutor,
     private val bottomBarStateFactory: BottomBarStateFactory,
     private val getBottomSheetActions: GetBottomSheetActions,
@@ -159,12 +161,15 @@ class ContentSearchViewModel @Inject constructor(
 
     private val submittedQuery = MutableStateFlow(savedStateHandle.get<String>(KEY_SUBMITTED_QUERY).orEmpty())
 
+    private val searches = combine(observePrimaryUserId().filterNotNull(), submittedQuery, ::Pair)
+        .distinctUntilChanged()
+
     /** When the search field takes its focus on its own. Outlives the screen's composition. */
     val searchFieldFocus = SearchFieldFocusHandOver()
 
     private var attachmentDownloadJob: Job? = null
 
-    private var resultsTotalJob: Job? = null
+    private val resultsTotalController = ResultsTotalController(loadingBarControllerFactory.create(viewModelScope))
 
     /** The ids last reported by the results list, used to spot the ones that leave it. */
     private var displayedItemIds: List<String> = emptyList()
@@ -172,11 +177,7 @@ class ContentSearchViewModel @Inject constructor(
     private var allMailLocalLabelId: LabelId = SystemLabelId.AllMail.labelId
     private var almostAllMailLocalLabelId: LabelId = SystemLabelId.AlmostAllMail.labelId
 
-    val items: Flow<PagingData<ContentSearchResultUiModel>> = combine(
-        observePrimaryUserId().filterNotNull(),
-        submittedQuery
-    ) { userId, query -> userId to query }
-        .distinctUntilChanged()
+    val items: Flow<PagingData<ContentSearchResultUiModel>> = searches
         .flatMapLatest { (userId, query) ->
             if (query.isBlank()) {
                 mutableState.update { it.copy(query = "", phase = ContentSearchState.Phase.Idle) }
@@ -200,6 +201,20 @@ class ContentSearchViewModel @Inject constructor(
 
         observePageInvalidationEvents()
             .onEach { applyOperation(ContentSearchOperation.ReloadResults) }
+            .launchIn(viewModelScope)
+
+        // Rust sends the total when it changes, even when no page loads. A remote page that lands past
+        // the loaded rows changes it without one.
+        searches
+            // A blank query has no paginator, so it gets no total.
+            .flatMapLatest { (userId, query) ->
+                observeSearchResultsTotal(userId, query).onStart { resultsTotalController.reset() }
+            }
+            .onEach(resultsTotalController::onTotal)
+            .launchIn(viewModelScope)
+
+        resultsTotalController.state
+            .onEach { applyOperation(ContentSearchOperation.ResultsTotalUpdated(it)) }
             .launchIn(viewModelScope)
 
         observePrimaryUserId()
@@ -718,41 +733,9 @@ class ContentSearchViewModel @Inject constructor(
         mutableState.update { current ->
             val phase = when {
                 current.query.isBlank() -> ContentSearchState.Phase.Idle
-                // The previous total is carried over so the header keeps its number while the next
-                // read runs, instead of dropping it on every page.
-                else -> ContentSearchState.Phase.Results(
-                    count = count,
-                    totalCount = (current.phase as? ContentSearchState.Phase.Results)?.totalCount
-                )
+                else -> ContentSearchState.Phase.Results(count = count)
             }
             current.copy(phase = phase)
-        }
-        refreshResultsTotal()
-    }
-
-    /**
-     * Reads how many results the search has in all, which the paging list cannot say.
-     *
-     * Read again on every page rather than once, because the number grows while the background
-     * remote sync appends to a search the local index answered first.
-     *
-     * The keyword is named on the way down, so a count only comes back while that search is the
-     * one paging. The mailbox shares the paginator it would otherwise be read from.
-     */
-    private fun refreshResultsTotal() {
-        val keyword = submittedQuery.value
-        if (keyword.isBlank()) return
-        resultsTotalJob?.cancel()
-        resultsTotalJob = viewModelScope.launch {
-            val userId = observePrimaryUserId().filterNotNull().first()
-            val total = getSearchResultsTotal(userId, keyword) ?: return@launch
-            mutableState.update { current ->
-                // The search may have moved on while Rust was answering, and its count does not
-                // describe the list on screen.
-                val phase = current.phase as? ContentSearchState.Phase.Results
-                if (phase == null || submittedQuery.value != keyword) return@update current
-                current.copy(phase = phase.copy(totalCount = total))
-            }
         }
     }
 

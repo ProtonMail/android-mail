@@ -250,6 +250,9 @@ class RustConversationsQueryImpl @Inject constructor(
                                 categoryViewStatusFlow.value = update.categoryView.toCategoryViewStatus()
                                 return@withLock
                             }
+
+                            // Only search sends totals, and search lists messages.
+                            is ConversationScrollerUpdate.TotalChanged -> return@withLock
                         }
 
                         Timber.d(
@@ -522,6 +525,7 @@ fun ConversationScrollerUpdate.debugTypeName(): String = when (this) {
     is ConversationScrollerUpdate.Status -> this.v1.debugTypeName()
     is ConversationScrollerUpdate.Error -> "Error"
     is ConversationScrollerUpdate.CategoryViewChanged -> "CategoryViewChanged"
+    is ConversationScrollerUpdate.TotalChanged -> "TotalChanged"
 }
 
 fun ConversationScrollerListUpdate.debugTypeName(): String = when (this) {

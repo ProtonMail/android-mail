@@ -75,8 +75,8 @@ class RustMessageRepositoryImpl @Inject constructor(
 
     override suspend fun supportsIncludeFilter() = rustMessageDataSource.supportsIncludeFilter()
 
-    override suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey) =
-        rustMessageDataSource.getTotalItemsCount(userId, pageKey)
+    override fun observeTotalItemsCount(userId: UserId, pageKey: PageKey) =
+        rustMessageDataSource.observeTotalItemsCount(userId, pageKey)
 
     override suspend fun getSenderImage(
         userId: UserId,

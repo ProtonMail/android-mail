@@ -37,6 +37,7 @@ import ch.protonmail.android.mailmessage.domain.model.SearchMatchPosition
 import ch.protonmail.android.mailmessage.domain.model.SenderImage
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PaginatorTotal
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -51,7 +52,13 @@ interface MessageRepository {
 
     suspend fun supportsIncludeFilter(): Boolean
 
-    suspend fun getTotalItemsCount(userId: UserId, pageKey: PageKey): Either<PaginationError, Long>?
+    /**
+     * The total of the paginator for [pageKey], sent again whenever it changes.
+     *
+     * It can change while the loaded items stay the same, as when a remote search page lands past them.
+     * It is [PaginatorTotal.Pending] while a remote page that will change it is on its way.
+     */
+    fun observeTotalItemsCount(userId: UserId, pageKey: PageKey): Flow<PaginatorTotal>
 
     /**
      * Where the search behind [pageKey] matched in each of [messageIds], keyed by message.
