@@ -42,6 +42,7 @@ import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
+import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.SenderImageSize
 import uniffi.mail_uniffi.UpdateCategoryViewResult
 import uniffi.mail_uniffi.UpsellExperimentFlag
@@ -118,7 +119,8 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
 
     suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, Boolean> =
         when (val result = userSession.plusToUnlimitedEligibility(flag)) {
-            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok -> result.v1.right()
+            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok ->
+                (result.v1 == PlusToUnlimitedEligibility.REGULAR).right()
             is MailUserSessionPlusToUnlimitedEligibilityResult.Error -> {
                 Timber.e("MailUserSession Plus to Unlimited eligibility:: ${result.v1}")
                 result.v1.toDataError().left()
