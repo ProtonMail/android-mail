@@ -36,8 +36,8 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
-import ch.protonmail.android.mailcontentsearch.domain.usecase.GetSearchResultsTotal
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchEnabled
+import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveSearchResultsTotal
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchViewAction
 import ch.protonmail.android.mailcontentsearch.presentation.reducer.ContentSearchReducer
@@ -51,7 +51,9 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomBarActions
 import ch.protonmail.android.mailmailbox.domain.usecase.GetBottomSheetActions
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxLoadingBarControllerFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BottomBarStateFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
@@ -68,6 +70,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
+import ch.protonmail.android.mailpagination.domain.model.PaginatorTotal
 import ch.protonmail.android.mailpagination.domain.usecase.ObservePageInvalidationEvents
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserIdWithValidSession
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -80,13 +83,18 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.test.kotlin.TestDispatcherProvider
@@ -94,6 +102,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -147,9 +156,9 @@ internal class ContentSearchViewModelTest {
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk.invoke(any()) } returns contentSearchEnabled
     }
-    private val searchResultsTotal = MutableStateFlow<Int?>(null)
-    private val getSearchResultsTotal = mockk<GetSearchResultsTotal> {
-        coEvery { this@mockk.invoke(any(), any()) } answers { searchResultsTotal.value }
+    private val observedSearchResultsTotal = MutableSharedFlow<PaginatorTotal>()
+    private val observeSearchResultsTotal = mockk<ObserveSearchResultsTotal> {
+        every { this@mockk.invoke(any(), any()) } returns observedSearchResultsTotal
     }
     // The executor owns the conversation-vs-message fork and is covered by its own test, so the
     // view model is asserted against it rather than through it to the individual use cases.
@@ -216,7 +225,8 @@ internal class ContentSearchViewModelTest {
             findLocalSystemLabelId = findLocalSystemLabelId,
             observePageInvalidationEvents = observePageInvalidationEvents,
             observeContentSearchEnabled = observeContentSearchEnabled,
-            getSearchResultsTotal = getSearchResultsTotal,
+            loadingBarControllerFactory = MailboxLoadingBarControllerFactory(),
+            observeSearchResultsTotal = observeSearchResultsTotal,
             mailboxActionExecutor = mailboxActionExecutor,
             bottomBarStateFactory = bottomBarStateFactory,
             getBottomSheetActions = getBottomSheetActions,
@@ -641,39 +651,64 @@ internal class ContentSearchViewModelTest {
     }
 
     @Test
-    fun `should show the total reported by the search, not the number of items paged in`() = runTest(testDispatcher) {
-        searchResultsTotal.value = 300
+    fun `should show the total only once the remote search ends`() = runTest(testDispatcher) {
         val sut = viewModel()
         val collectingItems = launch { sut.items.collect() }
+        val shownTotals = mutableListOf<Int?>()
+        val collectingTotals = launch {
+            sut.state.map { it.resultsTotal.shownCount }.distinctUntilChanged().toList(shownTotals)
+        }
         sut.type("invoice")
         sut.submit(ContentSearchViewAction.Search)
         advanceUntilIdle()
 
-        sut.submit(ContentSearchViewAction.ResultsLoaded(50))
-        advanceUntilIdle()
+        observedSearchResultsTotal.emit(PaginatorTotal.Pending)
+        runCurrent()
+        assertIs<LoadingBarUiState.Show>(sut.state.value.resultsTotal.loadingBar)
 
-        assertEquals(ContentSearchState.Phase.Results(count = 50, totalCount = 300), sut.state.value.phase)
+        // The bar finishes its cycle before it hides, and the number waits for it.
+        observedSearchResultsTotal.emit(PaginatorTotal.Known(14_314))
+        runCurrent()
+        assertNull(sut.state.value.resultsTotal.shownCount)
+
+        advanceUntilIdle()
+        assertEquals(LoadingBarUiState.Hide, sut.state.value.resultsTotal.loadingBar)
+        assertEquals(listOf(null, 14_314), shownTotals)
+        collectingTotals.cancel()
         collectingItems.cancel()
     }
 
     @Test
-    fun `should keep the previous total while the next one is read`() = runTest(testDispatcher) {
-        searchResultsTotal.value = 300
+    fun `should show a total that comes with no remote search straight away`() = runTest(testDispatcher) {
         val sut = viewModel()
         val collectingItems = launch { sut.items.collect() }
         sut.type("invoice")
         sut.submit(ContentSearchViewAction.Search)
         advanceUntilIdle()
-        sut.submit(ContentSearchViewAction.ResultsLoaded(50))
+
+        // Offline, Rust sends the local total without a pending one before it.
+        observedSearchResultsTotal.emit(PaginatorTotal.Known(1_036))
+        runCurrent()
+
+        assertEquals(1_036, sut.state.value.resultsTotal.shownCount)
+        collectingItems.cancel()
+    }
+
+    @Test
+    fun `should not show the previous search's total for a new search`() = runTest(testDispatcher) {
+        val sut = viewModel()
+        val collectingItems = launch { sut.items.collect() }
+        sut.type("invoice")
+        sut.submit(ContentSearchViewAction.Search)
+        advanceUntilIdle()
+        observedSearchResultsTotal.emit(PaginatorTotal.Known(300))
         advanceUntilIdle()
 
-        // Rust has no answer this time, so the header holds the count it was showing rather than
-        // dropping it for the page that just loaded.
-        searchResultsTotal.value = null
-        sut.submit(ContentSearchViewAction.ResultsLoaded(100))
+        sut.type("receipt")
+        sut.submit(ContentSearchViewAction.Search)
         advanceUntilIdle()
 
-        assertEquals(ContentSearchState.Phase.Results(count = 100, totalCount = 300), sut.state.value.phase)
+        assertNull(sut.state.value.resultsTotal.shownCount)
         collectingItems.cancel()
     }
 

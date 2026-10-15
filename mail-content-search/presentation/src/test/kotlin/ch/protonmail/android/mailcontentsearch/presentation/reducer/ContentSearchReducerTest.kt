@@ -21,11 +21,13 @@ package ch.protonmail.android.mailcontentsearch.presentation.reducer
 import ch.protonmail.android.mailattachments.presentation.reducer.AttachmentDownloadReducer
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarTarget
+import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.SelectionStateReducer
-import ch.protonmail.android.mailcommon.presentation.model.SelectionState
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchOperation
 import ch.protonmail.android.mailcontentsearch.presentation.model.ContentSearchState
+import ch.protonmail.android.mailcontentsearch.presentation.model.ResultsTotalUiState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.LoadingBarUiState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.BulkActionMessageFactory
 import ch.protonmail.android.mailmessage.presentation.mapper.MailLabelTextMapper
@@ -68,6 +70,17 @@ internal class ContentSearchReducerTest {
         assertEquals(setOf("1"), result.selectionState.selectedItems.map { it.id }.toSet())
         assertTrue(result.selectionState.selectedItems.single().isRead)
         assertTrue(result.selectionState.selectedItems.single().isStarred)
+    }
+
+    @Test
+    fun `a results total is kept even while the search loads`() {
+        val start = ContentSearchState.Initial.copy(phase = ContentSearchState.Phase.Loading)
+        val resultsTotal = ResultsTotalUiState(loadingBar = LoadingBarUiState.Hide, count = 14_314)
+
+        val result = reducer.newStateFrom(start, ContentSearchOperation.ResultsTotalUpdated(resultsTotal))
+
+        assertEquals(resultsTotal, result.resultsTotal)
+        assertEquals(ContentSearchState.Phase.Loading, result.phase)
     }
 
     @Test

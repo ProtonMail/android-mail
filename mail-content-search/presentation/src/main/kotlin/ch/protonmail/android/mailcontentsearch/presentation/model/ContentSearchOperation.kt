@@ -62,6 +62,9 @@ sealed interface ContentSearchOperation {
 
     data object ReloadResults : ContentSearchOperation
 
+    /** What the results header says about how many results the search has. */
+    data class ResultsTotalUpdated(val resultsTotal: ResultsTotalUiState) : ContentSearchOperation
+
     /** [error] is null when the failure did not come from the paginator. */
     data class SearchFailed(val error: PaginationError?) : ContentSearchOperation
 

@@ -20,24 +20,20 @@ package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PaginatorTotal
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * How many results the search for [keyword] has in all, which the paging list cannot say: it only
- * counts the pages loaded so far.
+ * How many results the search for [keyword] has in all, sent again whenever Rust's number changes.
  *
- * Null when there is no number to show — that search is not the one paging, or Rust could not
- * answer. The header keeps its previous count in that case rather than showing a wrong one.
+ * It is [PaginatorTotal.Pending] while the remote search is still running and will change it.
  */
-class GetSearchResultsTotal @Inject constructor(
+class ObserveSearchResultsTotal @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, keyword: String): Int? = messageRepository
-        .getTotalItemsCount(userId, PageKey.PageKeyForSearch(keyword = keyword))
-        ?.onLeft { Timber.w("content-search: failed to read the results total: $it") }
-        ?.getOrNull()
-        ?.toInt()
+    operator fun invoke(userId: UserId, keyword: String): Flow<PaginatorTotal> =
+        messageRepository.observeTotalItemsCount(userId, PageKey.PageKeyForSearch(keyword = keyword))
 }

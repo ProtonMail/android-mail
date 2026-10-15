@@ -73,7 +73,7 @@ internal fun ResultsList(
     avatarImages: AvatarImagesUiModel,
     downloadingAttachmentId: AttachmentIdUiModel?,
     showMinQueryLengthNotice: Boolean,
-    totalCount: Int?,
+    shownTotal: Int?,
     listState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier
 ) {
@@ -115,7 +115,7 @@ internal fun ResultsList(
         item {
             ResultsListHeader(
                 showMinQueryLengthNotice = showMinQueryLengthNotice,
-                totalCount = totalCount
+                shownTotal = shownTotal
             )
         }
 
@@ -146,7 +146,7 @@ internal fun ResultsList(
 @Composable
 private fun ResultsListHeader(
     showMinQueryLengthNotice: Boolean,
-    totalCount: Int?,
+    shownTotal: Int?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -156,13 +156,14 @@ private fun ResultsListHeader(
         )
     ) {
         Text(
-            text = if (totalCount == null) {
-                stringResource(R.string.content_search_results_title)
+            // No number until the search has its final one, so the header never shows one that changes.
+            text = if (shownTotal == null) {
+                stringResource(R.string.content_search_results_searching)
             } else {
                 pluralStringResource(
                     R.plurals.content_search_results_title_with_count,
-                    totalCount,
-                    totalCount
+                    shownTotal,
+                    shownTotal
                 )
             },
             style = ProtonTheme.typography.titleSmallNorm

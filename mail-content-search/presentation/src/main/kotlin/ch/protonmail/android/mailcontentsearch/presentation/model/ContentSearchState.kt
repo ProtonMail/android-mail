@@ -38,6 +38,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class ContentSearchState(
     val query: String,
     val phase: Phase,
+    val resultsTotal: ResultsTotalUiState,
     val includeFilter: IncludeFilter,
     val isConversationGrouping: Boolean,
     val openedFromLocation: LabelId,
@@ -74,10 +75,9 @@ data class ContentSearchState(
 
         /**
          * [count] is how many rows the paging list holds, so it decides whether there is a list to
-         * show at all. [totalCount] is how many results the search has in all, which is what the
-         * header displays. It is null until Rust has answered, and again whenever it cannot.
+         * show at all. The header shows how many results the search has in all, from [resultsTotal].
          */
-        data class Results(val count: Int, val totalCount: Int? = null) : Phase
+        data class Results(val count: Int) : Phase
 
         /** The search could not run. The user can retry it. */
         data object Failed : Phase
@@ -88,6 +88,7 @@ data class ContentSearchState(
         val Initial = ContentSearchState(
             query = "",
             phase = Phase.Idle,
+            resultsTotal = ResultsTotalUiState.Initial,
             includeFilter = IncludeFilter.None,
             isConversationGrouping = false,
             openedFromLocation = SystemLabelId.AlmostAllMail.labelId,

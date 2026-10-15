@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmessage.data.wrapper.SearchMessagePaginatorWrap
 import ch.protonmail.android.mailpagination.domain.model.IncludeFilter
 import ch.protonmail.android.mailpagination.domain.model.PageInvalidationEvent
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PaginatorTotal
 import ch.protonmail.android.mailpagination.domain.model.PageToLoad
 import ch.protonmail.android.mailpagination.domain.model.PaginationError
 import ch.protonmail.android.mailpagination.domain.repository.PageInvalidationRepository
@@ -59,9 +60,11 @@ import io.mockk.slot
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
@@ -70,6 +73,7 @@ import uniffi.mail_uniffi.Message
 import uniffi.mail_uniffi.MessageScrollerListUpdate
 import uniffi.mail_uniffi.MessageScrollerLiveQueryCallback
 import uniffi.mail_uniffi.MessageScrollerUpdate
+import uniffi.mail_uniffi.ScrollerTotal
 import kotlin.test.Test
 
 class RustMessageListQueryImplTest {
@@ -601,46 +605,65 @@ class RustMessageListQueryImplTest {
     }
 
     @Test
-    fun `Search - reads the items count from the paginator for that keyword`() = runTest {
+    fun `Search - sends the total Rust reports, a pending one included`() = runTest {
         // Given
         val key = PageKey.PageKeyForSearch(keyword = "invoice")
         val callback = slot<MessageScrollerLiveQueryCallback>()
-        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
-        coEvery { paginator.totalItemsCount() } returns 300L.right()
+        val paginator = searchPaginatorWithNextEmitting(callback, expectedMessages)
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
-        coEvery {
-            createRustSearchPaginator(mailbox, "invoice", capture(callback))
-        } returns paginator.right()
+        coEvery { createRustSearchPaginator(mailbox, "invoice", capture(callback)) } returns paginator.right()
         rustMessageListQuery.getMessages(userId, key)
 
         // When
-        val actual = rustMessageListQuery.getTotalItemsCount(userId, key)
+        callback.captured.onUpdate(MessageScrollerUpdate.TotalChanged(ScrollerTotal.Known(14_314uL)))
+        callback.captured.onUpdate(MessageScrollerUpdate.TotalChanged(ScrollerTotal.Pending))
+        advanceUntilIdle()
 
         // Then
-        assertEquals(300L.right(), actual)
+        assertEquals(PaginatorTotal.Pending, rustMessageListQuery.observeTotalItemsCount(userId, key).first())
     }
 
     @Test
-    fun `Search - reads no items count while another paginator is the active one`() = runTest {
-        // Given the mailbox has taken the shared paginator over from the search
-        val searchKey = PageKey.PageKeyForSearch(keyword = "invoice")
+    fun `Search - sends no total for another keyword`() = runTest {
+        // Given
+        val key = PageKey.PageKeyForSearch(keyword = "invoice")
         val callback = slot<MessageScrollerLiveQueryCallback>()
-        val paginator = paginatorWrapperWithNextEmitting(callback, expectedMessages)
-        coEvery { paginator.totalItemsCount() } returns 300L.right()
+        val paginator = searchPaginatorWithNextEmitting(callback, expectedMessages)
 
         coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
-        coEvery {
-            createRustMessagesPaginator(mailbox, any(), capture(callback))
-        } returns paginator.right()
-        rustMessageListQuery.getMessages(userId, PageKey.DefaultPageKey(labelId = inboxLabelId))
+        coEvery { createRustSearchPaginator(mailbox, "invoice", capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, key)
 
         // When
-        val actual = rustMessageListQuery.getTotalItemsCount(userId, searchKey)
+        callback.captured.onUpdate(MessageScrollerUpdate.TotalChanged(ScrollerTotal.Known(14_314uL)))
+        advanceUntilIdle()
 
-        // Then the mailbox count is not handed to the search screen
+        // Then
+        val otherKey = PageKey.PageKeyForSearch(keyword = "receipt")
+        val actual = withTimeoutOrNull(1_000) { rustMessageListQuery.observeTotalItemsCount(userId, otherKey).first() }
         assertNull(actual)
-        coVerify(exactly = 0) { paginator.totalItemsCount() }
+    }
+
+    @Test
+    fun `Search - drops the total when another paginator replaces the search`() = runTest {
+        // Given
+        val key = PageKey.PageKeyForSearch(keyword = "invoice")
+        val callback = slot<MessageScrollerLiveQueryCallback>()
+        val paginator = searchPaginatorWithNextEmitting(callback, expectedMessages)
+
+        coEvery { rustMailboxFactory.create(userId) } returns mailbox.right()
+        coEvery { createRustSearchPaginator(mailbox, any(), capture(callback)) } returns paginator.right()
+        rustMessageListQuery.getMessages(userId, key)
+        callback.captured.onUpdate(MessageScrollerUpdate.TotalChanged(ScrollerTotal.Known(14_314uL)))
+        advanceUntilIdle()
+
+        // When
+        rustMessageListQuery.getMessages(userId, PageKey.PageKeyForSearch(keyword = "receipt"))
+
+        // Then a later search for the same keyword does not start from the old number
+        val actual = withTimeoutOrNull(1_000) { rustMessageListQuery.observeTotalItemsCount(userId, key).first() }
+        assertNull(actual)
     }
 
     @Test
