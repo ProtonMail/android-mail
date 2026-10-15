@@ -60,6 +60,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -819,6 +820,7 @@ private fun ContentSearchIdlePage(
     bannerHeight: Dp = 0.dp,
     indexingBanner: (@Composable () -> Unit)? = null
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     when (recentsState) {
         // Nothing yet: hold an empty page rather than flashing the first-run state and then replacing it
         // with the history a moment later.
@@ -847,7 +849,9 @@ private fun ContentSearchIdlePage(
             downloadingAttachmentId = state.downloadingAttachmentId,
             actions = recentsActions.copy(
                 // Tapping a chip both bumps it in the history and runs its search.
+                // Like the keyboard's search key, it also hides the keyboard.
                 onTermClicked = { term ->
+                    keyboardController?.hide()
                     recentsActions.onTermClicked(term)
                     actions.onSuggestionSelected(term)
                 }
