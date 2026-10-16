@@ -165,4 +165,30 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
             actual
         )
     }
+
+    @Test
+    fun `should return the Unlimited promo table for black friday wave 1`() {
+        // When
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.BlackFriday.Wave1, UpsellingEntryPoint.Feature.Navbar)
+
+        // Then
+        assertEquals(
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(ComparisonTableEntitlements.FallPromoEntitlements),
+            actual
+        )
+    }
+
+    @Test
+    fun `should return the Mail Plus black friday table for black friday wave 2`() {
+        // When
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.BlackFriday.Wave2, UpsellingEntryPoint.Feature.Navbar)
+
+        // Then
+        assertEquals(
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                ComparisonTableEntitlements.BlackFridayMailPlusEntitlements
+            ),
+            actual
+        )
+    }
 }

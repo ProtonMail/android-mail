@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.isNightMode
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
@@ -46,7 +47,7 @@ internal data class UpsellingVariantColors(
     val cycleCardContainerColor: Color,
     val cycleCardBorderColor: Color,
     val cycleCardTextColor: Color,
-    val cycleCardDiscountBadgeBackground: Color,
+    val cycleCardDiscountBadgeBackground: Brush,
     val cycleCardDiscountBadgeTextColor: Color,
     val cycleCardDiscountBadgeHasShadow: Boolean,
     // Footer
@@ -55,23 +56,27 @@ internal data class UpsellingVariantColors(
 
 @Composable
 internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVariantColors = when {
-    variant is PlanUpgradeVariant.BlackFriday -> UpsellingVariantColors(
-        checkmarkTint = Color.Black,
-        checkmarkBackground = Color.White,
-        plusBadgeBorderBrush = BlackFriday.borderBrush,
-        plusBadgeBackground = Color.Black.copy(alpha = 0.20f),
-        plusBadgeTextColor = Color.White,
-        tableTextColor = Color.White,
-        tableDividerColor = Color.White.copy(alpha = 0.12f),
-        tableHighlightColor = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
-        cycleCardContainerColor = Color.Black.copy(alpha = 0.2f),
-        cycleCardBorderColor = Color.White,
-        cycleCardTextColor = Color.White,
-        cycleCardDiscountBadgeBackground = Color.White.copy(alpha = 0.12f),
-        cycleCardDiscountBadgeTextColor = Color.White,
-        cycleCardDiscountBadgeHasShadow = false,
-        autoRenewalColor = Color.White
-    )
+    variant is PlanUpgradeVariant.BlackFriday -> {
+        val nightMode = isNightMode()
+        val textColor = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30
+        UpsellingVariantColors(
+            checkmarkTint = if (nightMode) Color.Black else Color.White,
+            checkmarkBackground = if (nightMode) Color.White else ProtonTheme.colors.brandPlus30,
+            plusBadgeBorderBrush = BlackFriday.accentBrush,
+            plusBadgeBackground = if (nightMode) Color.Black.copy(alpha = 0.2f) else Color.White,
+            plusBadgeTextColor = textColor,
+            tableTextColor = textColor,
+            tableDividerColor = textColor.copy(alpha = 0.12f),
+            tableHighlightColor = textColor.copy(alpha = 0.08f),
+            cycleCardContainerColor = if (nightMode) Color.White.copy(alpha = 0.1f) else Color.Transparent,
+            cycleCardBorderColor = textColor,
+            cycleCardTextColor = textColor,
+            cycleCardDiscountBadgeBackground = BlackFriday.accentBrush,
+            cycleCardDiscountBadgeTextColor = BlackFriday.discountBadgeTextColor,
+            cycleCardDiscountBadgeHasShadow = nightMode,
+            autoRenewalColor = textColor
+        )
+    }
 
     variant is PlanUpgradeVariant.SpringPromo -> {
         val nightMode = isNightMode()
@@ -88,7 +93,9 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             cycleCardContainerColor = Color.Transparent,
             cycleCardBorderColor = accentColor,
             cycleCardTextColor = accentColor,
-            cycleCardDiscountBadgeBackground = if (nightMode) Color.White.copy(alpha = 0.20f) else Color.White,
+            cycleCardDiscountBadgeBackground = SolidColor(
+                if (nightMode) Color.White.copy(alpha = 0.20f) else Color.White
+            ),
             cycleCardDiscountBadgeTextColor = accentColor,
             cycleCardDiscountBadgeHasShadow = true,
             autoRenewalColor = accentColor
@@ -110,7 +117,7 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             cycleCardContainerColor = Color.Transparent,
             cycleCardBorderColor = textColor,
             cycleCardTextColor = textColor,
-            cycleCardDiscountBadgeBackground = FallPromo.accentColor,
+            cycleCardDiscountBadgeBackground = SolidColor(FallPromo.accentColor),
             cycleCardDiscountBadgeTextColor = Color.White,
             cycleCardDiscountBadgeHasShadow = false,
             autoRenewalColor = textColor
@@ -132,7 +139,7 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
             cycleCardContainerColor = Color.Transparent,
             cycleCardBorderColor = textColor,
             cycleCardTextColor = textColor,
-            cycleCardDiscountBadgeBackground = SummerCampaign.accentColor,
+            cycleCardDiscountBadgeBackground = SolidColor(SummerCampaign.accentColor),
             cycleCardDiscountBadgeTextColor = Color.White,
             cycleCardDiscountBadgeHasShadow = false,
             autoRenewalColor = textColor
@@ -151,7 +158,7 @@ internal fun planUpgradeVariantColors(variant: PlanUpgradeVariant): UpsellingVar
         cycleCardContainerColor = Color.Black.copy(alpha = 0.2f),
         cycleCardBorderColor = Color.White,
         cycleCardTextColor = Color.White,
-        cycleCardDiscountBadgeBackground = Color.White.copy(alpha = 0.12f),
+        cycleCardDiscountBadgeBackground = SolidColor(Color.White.copy(alpha = 0.12f)),
         cycleCardDiscountBadgeTextColor = Color.White,
         cycleCardDiscountBadgeHasShadow = false,
         autoRenewalColor = Color.White

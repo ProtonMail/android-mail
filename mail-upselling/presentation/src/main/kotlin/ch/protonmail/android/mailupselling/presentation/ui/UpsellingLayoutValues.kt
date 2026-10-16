@@ -19,12 +19,8 @@
 package ch.protonmail.android.mailupselling.presentation.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -196,43 +192,21 @@ object UpsellingLayoutValues {
 
     object BlackFriday {
 
-        val mainColor = Color(0xFFD8FF00)
-        val upsellingButtonTint = Color(0xFF0F0F0F)
-        val borderBrush = Brush.linearGradient(
-            colors = listOf(mainColor, mainColor)
+        @Suppress("MagicNumber")
+        val accentBrush = Brush.linearGradient(
+            0f to Color(0xFFFFFAD7),
+            0.587f to Color(0xFFFFC283),
+            1f to Color(0xFFFF8383)
         )
+        val discountBadgeTextColor = Color(0xFF1B1340)
+        val closeButtonColor = Color.Black
+        val closeButtonBackgroundColor = Color.White.copy(alpha = 0.8f)
 
         @Composable
-        @Suppress("MagicNumber")
-        fun Modifier.upsellingBackground() = this
-            .background(Color(0xFF1B1340))
-            // The "beam effect" behind in the background
-            .drawBehind {
-                drawRect(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            Color(0xFF6841B8).copy(alpha = 1f),
-                            Color(0xFF1B102C).copy(alpha = 0.2f)
-                        ),
-                        center = Offset(-size.width * 0.1f, size.height * 0.95f),
-                        radius = size.height * 0.5f
-                    )
-                )
+        fun backgroundColor(): Color = if (isNightMode()) Color.Black else Color.White
 
-                // Diagonal lines on top
-                val strokeWidth = 1.dp.toPx()
-                val spacing = 20.dp.toPx()
-                var startX = -size.height
-                while (startX < size.width) {
-                    drawLine(
-                        color = Color.White.copy(alpha = 0.05f),
-                        start = Offset(startX, 0f),
-                        end = Offset(startX + size.height, size.height),
-                        strokeWidth = strokeWidth
-                    )
-                    startX += spacing
-                }
-            }
+        @Composable
+        fun backgroundGradient(): Brush = backgroundColor().let { Brush.verticalGradient(listOf(it, it)) }
     }
 
     private val onboardingColoredBrush = Brush.linearGradient(

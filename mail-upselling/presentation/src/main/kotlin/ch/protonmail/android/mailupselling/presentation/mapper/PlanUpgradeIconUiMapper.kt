@@ -37,8 +37,8 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
 
         val drawableRes = when (variant) {
             PlanUpgradeVariant.SocialProof -> R.drawable.ic_mail_social_proof
-            PlanUpgradeVariant.BlackFriday.Wave1 -> R.drawable.upselling_bf_header_wave1
-            PlanUpgradeVariant.BlackFriday.Wave2 -> R.drawable.upselling_bf_header_wave2
+            PlanUpgradeVariant.BlackFriday.Wave1,
+            PlanUpgradeVariant.BlackFriday.Wave2 -> R.drawable.black_friday_bg
 
             PlanUpgradeVariant.SpringPromo.Wave1,
             PlanUpgradeVariant.SpringPromo.Wave2 -> R.drawable.spring_promo_header

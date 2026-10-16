@@ -94,10 +94,9 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
 
             is UpsellingVisibility.Promotional.BlackFriday ->
                 UpsellingBlackFridayMailButton(
-                    visibility,
                     modifier = modifier,
                     onButtonClick = {
-                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO, UpsellModalVariant.COMPARISON_PLUS)
+                        onButtonClick(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO, visibility.toUpsellModalVariant())
                     }
                 )
 
@@ -191,41 +190,19 @@ private fun UpsellingUnlimitedButton(onButtonClick: () -> Unit, modifier: Modifi
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun UpsellingBlackFridayMailButton(
-    visibility: UpsellingVisibility.Promotional.BlackFriday,
-    onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun UpsellingBlackFridayMailButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
-    val (primaryIcon, secondaryIcon) = visibility.getHeaderIcons()
 
-    Surface(
-        modifier = modifier
-            .semantics { contentDescription = accessibilityDescription },
-        color = UpsellingLayoutValues.BlackFriday.mainColor,
-        onClick = dropUnlessResumed { onButtonClick() },
-        shape = ProtonTheme.shapes.large
+    IconButton(
+        modifier = modifier,
+        onClick = onButtonClick
     ) {
-        Row(
-            modifier = Modifier
-                .padding(vertical = ProtonDimens.Spacing.Small)
-                .padding(horizontal = ProtonDimens.Spacing.Compact),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = primaryIcon,
-                contentDescription = NO_CONTENT_DESCRIPTION,
-                tint = UpsellingLayoutValues.BlackFriday.upsellingButtonTint
-            )
-            Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Tiny))
-            Icon(
-                painter = secondaryIcon,
-                contentDescription = NO_CONTENT_DESCRIPTION,
-                tint = UpsellingLayoutValues.BlackFriday.upsellingButtonTint
-            )
-        }
+        Icon(
+            painter = painterResource(R.drawable.ic_upselling_black_friday),
+            contentDescription = accessibilityDescription,
+            tint = null
+        )
     }
 }
 
@@ -346,24 +323,9 @@ fun UpsellingMailButtonPreview() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
 @Composable
-fun UpsellingBFMailButtonWave1Preview() {
+fun UpsellingBFMailButtonPreview() {
     ProtonTheme {
-        UpsellingBlackFridayMailButton(
-            visibility = UpsellingVisibility.Promotional.BlackFriday.Wave1,
-            onButtonClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 0xFF000000)
-@Composable
-fun UpsellingBFMailButtonWave2Preview() {
-    ProtonTheme {
-        UpsellingBlackFridayMailButton(
-            visibility = UpsellingVisibility.Promotional.BlackFriday.Wave2,
-            onButtonClick = {}
-        )
+        UpsellingBlackFridayMailButton(onButtonClick = {})
     }
 }
 
