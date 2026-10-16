@@ -99,7 +99,7 @@ class HumanVerificationViewModel @Inject constructor(
             )
         ) {
             is NewChallengeLoaderResult.Error -> {
-                CoreLogger.e(LogTag.DEFAULT, result.v1.toString())
+                CoreLogger.e(LogTag.DEFAULT, "Challenge loader failed: ${result.v1.javaClass.simpleName}")
                 null
             }
 
