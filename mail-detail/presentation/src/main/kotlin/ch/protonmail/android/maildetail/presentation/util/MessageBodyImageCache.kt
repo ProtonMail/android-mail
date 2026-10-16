@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.util
 
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyImage
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -36,11 +37,17 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
     private var sizeBytes = 0L
     private val proxyFailures = mutableSetOf<Key>()
 
+    // Usage since the last clear, logged when the cache is cleared.
+    private var hits = 0
+    private var misses = 0
+    private var evictions = 0
+    private var peakSizeBytes = 0L
+
     @Inject
     constructor() : this(defaultMaxSizeBytes())
 
     @Synchronized
-    fun get(key: Key): MessageBodyImage? = entries[key]
+    fun get(key: Key): MessageBodyImage? = entries[key].also { if (it != null) hits++ else misses++ }
 
     @Synchronized
     fun put(key: Key, image: MessageBodyImage) {
@@ -51,6 +58,7 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
         entries.put(key, image)?.let { sizeBytes -= it.data.size }
         sizeBytes += imageSize
         trimToSize()
+        peakSizeBytes = maxOf(peakSizeBytes, sizeBytes)
     }
 
     @Synchronized
@@ -63,9 +71,24 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
 
     @Synchronized
     fun clear() {
+        logUsage()
         entries.clear()
         sizeBytes = 0
         proxyFailures.clear()
+        hits = 0
+        misses = 0
+        evictions = 0
+        peakSizeBytes = 0
+    }
+
+    private fun logUsage() {
+        val lookups = hits + misses
+        if (lookups == 0) return
+        Timber.d(
+            "ImageCache: cleared hits=%d misses=%d hitRate=%d%% evictions=%d proxyFailures=%d peakKb=%d maxKb=%d",
+            hits, misses, hits * PERCENT / lookups, evictions, proxyFailures.size,
+            peakSizeBytes / KB, maxSizeBytes / KB
+        )
     }
 
     private fun trimToSize() {
@@ -73,6 +96,7 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
         while (sizeBytes > maxSizeBytes && iterator.hasNext()) {
             sizeBytes -= iterator.next().data.size
             iterator.remove()
+            evictions++
         }
     }
 
@@ -112,6 +136,8 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
         const val MIN_SIZE_BYTES = 4L * 1024 * 1024
         const val MAX_SIZE_BYTES = 32L * 1024 * 1024
         const val REMOTE_URL_PREFIX = "proton-http"
+        const val KB = 1024
+        const val PERCENT = 100
 
         fun defaultMaxSizeBytes() =
             (Runtime.getRuntime().maxMemory() / MAX_HEAP_FRACTION).coerceIn(MIN_SIZE_BYTES, MAX_SIZE_BYTES)
