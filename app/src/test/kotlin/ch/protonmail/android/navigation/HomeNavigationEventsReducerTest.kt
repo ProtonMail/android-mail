@@ -159,6 +159,9 @@ class HomeNavigationEventsReducerTest {
         val mailToIntent = mockk<Intent> {
             every { action } returns Intent.ACTION_SEND
             every { dataString } returns mailToUri
+            every { getStringArrayExtra(any()) } returns null
+            every { getStringExtra(any()) } returns null
+            every { getCharSequenceExtra(any()) } returns null
         }
         val event = HomeNavigationEvent.MailToIntentReceived(
             intent = mailToIntent
@@ -174,6 +177,52 @@ class HomeNavigationEventsReducerTest {
         val expectedEffect = Effect.of(expectedNavigation)
 
         assertEquals(expectedEffect, result.navigateToEffect)
+    }
+
+    @Test
+    fun `navigate to composer with the address sent as an extra of an empty mailto intent`() {
+        // Given
+        val initialState = HomeState.Initial
+        val mailToIntent = mockk<Intent> {
+            every { action } returns Intent.ACTION_SENDTO
+            every { dataString } returns "mailto:"
+            every { getStringArrayExtra(any()) } returns null
+            every { getStringArrayExtra(Intent.EXTRA_EMAIL) } returns arrayOf("support@example.com")
+            every { getStringExtra(any()) } returns null
+            every { getCharSequenceExtra(any()) } returns null
+            every { getCharSequenceExtra(Intent.EXTRA_SUBJECT) } returns "Thank you"
+        }
+        val event = HomeNavigationEvent.MailToIntentReceived(intent = mailToIntent)
+
+        // When
+        val result = reducer.reduce(initialState, event)
+
+        // Then
+        val expectedMailTo = "mailto:?to=support%40example.com&subject=Thank%20you"
+        val expectedDraftAction = DraftAction.MailTo(URLEncoder.encode(expectedMailTo, Charsets.UTF_8.name()))
+        val expectedDestination = Destination.Screen.MessageActionComposer(action = expectedDraftAction)
+        assertEquals(Effect.of(NavigationEffect.NavigateTo(expectedDestination)), result.navigateToEffect)
+    }
+
+    @Test
+    fun `navigate to composer with the plain mailto when its extras cannot be read`() {
+        // Given
+        val initialState = HomeState.Initial
+        val mailToUri = "mailto:proton@protonmail.com"
+        val mailToIntent = mockk<Intent> {
+            every { action } returns Intent.ACTION_SENDTO
+            every { dataString } returns mailToUri
+            every { getStringArrayExtra(any()) } throws RuntimeException("ClassNotFoundException when unmarshalling")
+        }
+        val event = HomeNavigationEvent.MailToIntentReceived(intent = mailToIntent)
+
+        // When
+        val result = reducer.reduce(initialState, event)
+
+        // Then
+        val expectedDraftAction = DraftAction.MailTo(URLEncoder.encode(mailToUri, Charsets.UTF_8.name()))
+        val expectedDestination = Destination.Screen.MessageActionComposer(action = expectedDraftAction)
+        assertEquals(Effect.of(NavigationEffect.NavigateTo(expectedDestination)), result.navigateToEffect)
     }
 
     @Test
