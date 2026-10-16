@@ -67,6 +67,8 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
         if (cachedImage != null) {
             return@runCatching cachedImage.right()
         }
+        // The cache can be cleared while the image loads, for example when the conversation leaves the screen.
+        val cacheGeneration = imageCache.generation
 
         withContext(coroutineContext) {
             if (loadMessageBodyImageJobMap[url]?.isActive == true) {
@@ -77,9 +79,11 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
                 }
             }.await()
         }.onRight { image ->
-            if (shouldUseCache) imageCache.put(cacheKey, image)
+            if (shouldUseCache) imageCache.put(cacheKey, image, cacheGeneration)
         }.onLeft { error ->
-            if (shouldUseCache && error is AttachmentDataError.ProxyFailed) imageCache.putProxyFailure(cacheKey)
+            if (shouldUseCache && error is AttachmentDataError.ProxyFailed) {
+                imageCache.putProxyFailure(cacheKey, cacheGeneration)
+            }
         }
     }.getOrElse { AttachmentDataError.Other(DataError.Local.NotFound).left() }
 
