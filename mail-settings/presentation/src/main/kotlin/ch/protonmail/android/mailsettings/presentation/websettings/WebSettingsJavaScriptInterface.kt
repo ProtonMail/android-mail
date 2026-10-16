@@ -26,7 +26,6 @@ import ch.protonmail.android.mailsettings.presentation.websettings.UpsellJsHelpe
 import ch.protonmail.android.mailsettings.presentation.websettings.UpsellJsHelper.UpsellLabelsActionName
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
-import timber.log.Timber
 
 @Keep
 class WebSettingsJavaScriptInterface(
@@ -36,22 +35,14 @@ class WebSettingsJavaScriptInterface(
 
     @JavascriptInterface
     fun postMessage(message: String) {
-        Timber.d("web-settings: JavaScript interface called with message: $message")
-
         // Enforce the navigation to run on the Main thread
         Handler(Looper.getMainLooper()).post {
-            Timber.d("web-settings: Triggering '$message' callback")
-
             when (message) {
                 UpsellLabelsActionName ->
                     onUpsell(UpsellingEntryPoint.Feature.Folders, upsellingVisibility)
 
                 UpsellFoldersActionName ->
                     onUpsell(UpsellingEntryPoint.Feature.Folders, upsellingVisibility)
-
-                else -> {
-                    Timber.d("web-settings: Unsupported flow for: $message")
-                }
             }
         }
     }
