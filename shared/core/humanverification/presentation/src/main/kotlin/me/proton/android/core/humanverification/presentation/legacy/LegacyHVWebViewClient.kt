@@ -75,8 +75,7 @@ internal class LegacyHVWebViewClient(
         errorResponse: WebResourceResponse?
     ) {
         super.onReceivedHttpError(view, request, errorResponse)
-        val logMessage = "Request failed (HTTP): ${request?.method} ${request?.url} with " +
-            "status ${errorResponse?.statusCode} ${errorResponse?.reasonPhrase}"
+        val logMessage = "Request failed (HTTP): ${request?.method} with status ${errorResponse?.statusCode}"
         CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
         onWebError(errorResponse?.let { WebResponseError.Http(it) })
     }
@@ -87,8 +86,7 @@ internal class LegacyHVWebViewClient(
         error: WebResourceError?
     ) {
         super.onReceivedError(view, request, error)
-        val logMessage = "Request failed: ${request?.method} ${request?.url} with " +
-            "code ${error?.errorCode} ${error?.description}"
+        val logMessage = "Request failed: ${request?.method} with code ${error?.errorCode}"
         CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
         onWebError(error?.let { WebResponseError.Resource(it) })
     }
@@ -132,11 +130,6 @@ internal class LegacyHVWebViewClient(
         headers: List<Pair<String, String>>,
         acceptSelfSignedCertificates: Boolean
     ): WebResourceResponse? = runCatching {
-        CoreLogger.i(
-            LogTag.DEFAULT,
-            "$method $url headers=$headers acceptSelfSignedCertificates=$acceptSelfSignedCertificates"
-        )
-
         val response = networkRequestOverrider.overrideRequest(
             url,
             method,
@@ -145,8 +138,7 @@ internal class LegacyHVWebViewClient(
         )
 
         if (response.httpStatusCode !in HTTP_SUCCESS_RANGE) {
-            val logMessage = "Request with override failed: $method $url with " +
-                "code ${response.httpStatusCode} ${response.reasonPhrase}"
+            val logMessage = "Request with override failed: $method with code ${response.httpStatusCode}"
             CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
         }
 
@@ -178,7 +170,7 @@ internal class LegacyHVWebViewClient(
             response.contents
         )
     }.onFailure {
-        CoreLogger.e(LogTag.DEFAULT, it, "Cannot load url=$url")
+        CoreLogger.e(LogTag.DEFAULT, it, "Cannot load verification request")
     }.getOrNull()
 
     private fun SslError.isAlternativeSelfSignedCert(): Boolean = when {

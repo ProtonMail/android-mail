@@ -21,7 +21,6 @@ package ch.protonmail.android.mailsettings.presentation.websettings
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.WebSettingsConfig
 import ch.protonmail.android.mailsettings.presentation.BuildConfig
-import timber.log.Timber
 
 fun WebSettingsConfig.toPrivacyAndSecuritySettingsUrl(selector: String, theme: Theme): String =
     toSettingsUrl(selector, theme, privacySecuritySettingsAction)
@@ -39,14 +38,10 @@ fun WebSettingsConfig.toEmailCategoriesSettingsUrl(selector: String, theme: Them
     toSettingsUrl(selector, theme, emailCategoriesSettingsAction)
 
 fun WebSettingsConfig.toAccountSettingsUrl(selector: String, theme: Theme): String =
-    toSettingsUrl(selector, theme, accountSettingsAction).also {
-        Timber.d("web-settings: Account settings URL: $it")
-    }
+    toSettingsUrl(selector, theme, accountSettingsAction)
 
 fun WebSettingsConfig.toEmailSignatureUrl(selector: String, theme: Theme): String =
-    toSettingsUrl(selector, theme, emailSignatureAction).also {
-        Timber.d("web-settings: Email signature settings URL: $it")
-    }
+    toSettingsUrl(selector, theme, emailSignatureAction)
 
 private fun Theme.getUriParam(): String = when (this) {
     Theme.SYSTEM_DEFAULT -> SYSTEM_DEFAULT_THEME_PLACEHOLDER

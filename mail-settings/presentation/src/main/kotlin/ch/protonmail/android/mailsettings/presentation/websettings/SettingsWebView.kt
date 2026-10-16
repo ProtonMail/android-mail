@@ -90,7 +90,7 @@ fun SettingWebView(
                 handler: SslErrorHandler?,
                 error: SslError?
             ) {
-                Timber.e("web-settings: onReceivedSslError: $error")
+                Timber.e("web-settings: SSL error code: ${error?.primaryError}")
                 super.onReceivedSslError(view, handler, error)
             }
 
@@ -99,7 +99,7 @@ fun SettingWebView(
                 request: WebResourceRequest?,
                 error: WebResourceError?
             ) {
-                Timber.e("web-settings: onReceivedError: $error")
+                Timber.e("web-settings: Resource error code: ${error?.errorCode}")
                 super.onReceivedError(view, request, error)
             }
 
@@ -109,7 +109,7 @@ fun SettingWebView(
                 errorResponse: WebResourceResponse?
             ) {
                 errorResponse?.let {
-                    Timber.e("web-settings: HTTP error: ${it.statusCode}, ${it.reasonPhrase}, URL: ${request?.url}")
+                    Timber.e("web-settings: HTTP error: ${it.statusCode}")
                 }
                 super.onReceivedHttpError(view, request, errorResponse)
             }

@@ -91,8 +91,7 @@ class HumanVerificationWebViewClient(
         errorResponse: WebResourceResponse?
     ) {
         super.onReceivedHttpError(view, request, errorResponse)
-        val logMessage = "Request failed: ${request?.method} ${request?.url} with " +
-            "status ${errorResponse?.statusCode} ${errorResponse?.reasonPhrase}"
+        val logMessage = "Request failed: ${request?.method} with status ${errorResponse?.statusCode}"
         CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
         onResourceLoadingError(errorResponse?.let { WebResponseError.Http(it) })
     }
@@ -103,8 +102,7 @@ class HumanVerificationWebViewClient(
         error: WebResourceError?
     ) {
         super.onReceivedError(view, request, error)
-        val logMessage = "Request failed: ${request?.method} ${request?.url} with " +
-            "code ${error?.errorCode} ${error?.description}"
+        val logMessage = "Request failed: ${request?.method} with code ${error?.errorCode}"
         CoreLogger.i(LogTag.HV_REQUEST_ERROR, logMessage)
         onResourceLoadingError(error?.let { WebResponseError.Resource(it) })
     }
