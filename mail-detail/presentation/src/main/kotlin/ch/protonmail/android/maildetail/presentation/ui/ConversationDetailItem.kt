@@ -94,6 +94,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.WEB_VIEW_FIXED_MAX_HEIG
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
 import kotlinx.coroutines.delay
+import timber.log.Timber
 
 @Composable
 @Suppress("LongParameterList")
@@ -317,6 +318,12 @@ private fun ColumnScope.ConversationDetailExpandedItem(
             if (!isWebViewLoading.value || isListScrolling) return@LaunchedEffect
             val canRelease = isBodyLoadCompleted.value && latestBodyHeightPx.intValue > 0
             delay(if (canRelease) RELOAD_FINISHED_SETTLE_MS else RELOAD_HOLD_SAFETY_TIMEOUT_MS)
+            if (!canRelease) {
+                Timber.d(
+                    "ReloadHold: safety timeout id=%s held=%d body=%d",
+                    id.id, lastWebViewHeightPx.intValue, latestBodyHeightPx.intValue
+                )
+            }
             if (latestBodyHeightPx.intValue > 0) lastWebViewHeightPx.intValue = latestBodyHeightPx.intValue
             isWebViewLoading.value = false
         }
