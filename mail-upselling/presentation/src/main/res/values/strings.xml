@@ -107,6 +107,7 @@
     <string name="upselling_free_plan" translatable="false">Free</string>
     <string name="upselling_plus_plan" translatable="false">Plus</string>
     <string name="upselling_unlimited_plan" translatable="false">Unlimited</string>
+    <string name="upselling_mail_plus_plan" translatable="false">Mail Plus</string>
     <string name="upselling_comparison_table_not_present" translatable="false">–</string>
     <string name="upselling_comparison_table_storage">Storage</string>
     <string name="upselling_comparison_table_storage_value_free">1 GB</string>

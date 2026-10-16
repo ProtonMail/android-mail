@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailupselling.presentation.extension.toUpsellModalVariant
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
@@ -75,7 +76,8 @@ internal fun UpsellingPlanButtonsFooter(
                     instance = plans.longerCycle,
                     buttonVariant = MailPurchaseButtonVariant.SpringPromo,
                     actions = actions,
-                    colors = variantColors
+                    colors = variantColors,
+                    modalVariant = plans.variant.toUpsellModalVariant()
                 )
             }
 
@@ -85,7 +87,8 @@ internal fun UpsellingPlanButtonsFooter(
                     instance = plans.longerCycle,
                     buttonVariant = MailPurchaseButtonVariant.FallPromo,
                     actions = actions,
-                    colors = variantColors
+                    colors = variantColors,
+                    modalVariant = plans.variant.toUpsellModalVariant()
                 )
             }
 
@@ -95,25 +98,19 @@ internal fun UpsellingPlanButtonsFooter(
                     instance = plans.longerCycle,
                     buttonVariant = MailPurchaseButtonVariant.SummerCampaign,
                     actions = actions,
-                    colors = variantColors
+                    colors = variantColors,
+                    modalVariant = plans.variant.toUpsellModalVariant()
                 )
             }
 
             shouldShowBlackFridayFooter -> when {
                 plans.longerCycle is PlanUpgradeInstanceUiModel.Promotional.BlackFriday &&
-                    plans.variant == PlanUpgradeVariant.BlackFriday.Wave1 -> PaymentButtonsSeasonalPromo(
+                    plans.variant is PlanUpgradeVariant.BlackFriday -> PaymentButtonsSeasonalPromo(
                     instance = plans.longerCycle,
                     buttonVariant = MailPurchaseButtonVariant.BlackFriday,
                     actions = actions,
-                    colors = variantColors
-                )
-
-                plans.shorterCycle is PlanUpgradeInstanceUiModel.Promotional.BlackFriday &&
-                    plans.variant == PlanUpgradeVariant.BlackFriday.Wave2 -> PaymentButtonsSeasonalPromo(
-                    instance = plans.shorterCycle,
-                    buttonVariant = MailPurchaseButtonVariant.BlackFriday,
-                    actions = actions,
-                    colors = variantColors
+                    colors = variantColors,
+                    modalVariant = plans.variant.toUpsellModalVariant()
                 )
             }
 

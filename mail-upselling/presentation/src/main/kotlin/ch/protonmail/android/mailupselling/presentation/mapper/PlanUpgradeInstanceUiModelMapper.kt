@@ -164,7 +164,7 @@ private fun ProductOfferDetail.getRenewalText(context: Context): String? {
 
     return when {
         offer.isBaseOffer -> null
-        offer.tags.value.contains("bf-promo") -> getBlackFridayRenewal()
+        offer.tags.value.contains("bf26") -> getBlackFridayRenewal()
         offer.tags.value.contains("introductory-price") -> getIntroPricingRenewal()
         offer.tags.value.contains("spring26") -> getBlackFridayRenewal()
         offer.tags.value.contains("summer26") -> getBlackFridayRenewal()

@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -125,7 +126,7 @@ private fun CycleName(
 ) {
     val paymentButtonParams = UpsellingLayoutValues.PaymentButtons
     val planNameColor = colors?.cycleCardTextColor ?: paymentButtonParams.planNameColor
-    val badgeBackground = colors?.cycleCardDiscountBadgeBackground ?: paymentButtonParams.discountTagBackground
+    val badgeBrush = colors?.cycleCardDiscountBadgeBackground ?: SolidColor(paymentButtonParams.discountTagBackground)
     val badgeTextColor = colors?.cycleCardDiscountBadgeTextColor ?: paymentButtonParams.discountTagTextColor
     val badgeHasShadow = colors?.cycleCardDiscountBadgeHasShadow ?: false
 
@@ -156,7 +157,7 @@ private fun CycleName(
                             ) else Modifier
                         )
                         .background(
-                            color = badgeBackground,
+                            brush = badgeBrush,
                             shape = paymentButtonParams.discountBadgeShape
                         )
                         .padding(horizontal = ProtonDimens.Spacing.Compact, vertical = ProtonDimens.Spacing.Small),
@@ -248,7 +249,7 @@ private fun getSecondaryPriceInfo(uiModel: PlanUpgradeInstanceUiModel): Secondar
 
                 PlanUpgradeCycle.Yearly -> {
                     SecondaryPriceInfo(
-                        text = stringResource(R.string.upselling_month_only, pricePerCycle.getFullFormat())
+                        text = stringResource(R.string.upselling_month_only, pricePerCycle.getFullFormatWithCents())
                     )
                 }
             }

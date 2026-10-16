@@ -37,6 +37,7 @@ fun PlanUpgradeInstanceUiModel.toTelemetryPayload(
 
 fun PlanUpgradeVariant.toUpsellModalVariant() = when (this) {
     is PlanUpgradeVariant.Normal.Unlimited -> UpsellModalVariant.COMPARISON_UNLIMITED
+    is PlanUpgradeVariant.BlackFriday.Wave1 -> UpsellModalVariant.COMPARISON_UNLIMITED
     else -> UpsellModalVariant.COMPARISON_PLUS
 }
 

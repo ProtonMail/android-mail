@@ -67,8 +67,7 @@ internal fun ComparisonTableEntitlement(
             style = ProtonTheme.typography.bodyMedium,
             fontWeight = FontWeight.Normal,
             color = colors.tableTextColor,
-            textAlign = TextAlign.Start,
-            maxLines = 2
+            textAlign = TextAlign.Start
         )
 
         val (freeText, freeTextColor) = when (val freeElement = uiModel.freeValue) {

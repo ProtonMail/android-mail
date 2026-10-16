@@ -53,7 +53,8 @@ class ObservePlanUpgrades @Inject constructor(
         userId ?: return@flatMapLatest flowOf(emptyList())
 
         val flowSupportsBlackFriday = entryPoint is BlackFridaySupported
-        val isBlackFridayOngoing = getCurrentBlackFridayPhase() != BlackFridayPhase.None
+        val blackFridayPhase = getCurrentBlackFridayPhase()
+        val isBlackFridayOngoing = blackFridayPhase != BlackFridayPhase.None
         val supportsBlackFridayPromo = flowSupportsBlackFriday &&
             isBlackFridayOngoing &&
             isEligibleForBlackFridayPromotion(userId)
@@ -83,6 +84,10 @@ class ObservePlanUpgrades @Inject constructor(
             supportsBlackFridayPromo -> PlanUpgradeSupportedTags.BlackFriday
             else -> PlanUpgradeSupportedTags.IntroductoryPrice
         }
+        val promoTargetPlan = when (offersTag) {
+            PlanUpgradeSupportedTags.BlackFriday -> blackFridayPhase.targetPlan()
+            else -> offersTag.targetPlan
+        }
 
         val forceUnlimited = entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited
         val showUnlimited = forceUnlimited || resolveUpsellVariant(userId) == UpsellVariantPlan.UNLIMITED
@@ -96,10 +101,16 @@ class ObservePlanUpgrades @Inject constructor(
                 eligibleOffers.filterForPlan(PlanUpgradeIds.UnlimitedPlanId)
             } else {
                 val eligibleOffers = upgrades.filterForTags(primaryTag = offersTag.value)
-                val targetPlan = if (hasPromoOffers) offersTag.targetPlan else PlanUpgradeIds.PlusPlanId
+                val targetPlan = if (hasPromoOffers) promoTargetPlan else PlanUpgradeIds.PlusPlanId
                 eligibleOffers.filterForPlan(targetPlan)
             }
         }
+    }
+
+    private fun BlackFridayPhase.targetPlan() = when (this) {
+        BlackFridayPhase.Active.Wave1 -> PlanUpgradeIds.UnlimitedPlanId
+        BlackFridayPhase.Active.Wave2 -> PlanUpgradeIds.PlusPlanId
+        BlackFridayPhase.None -> PlanUpgradeIds.PlusPlanId
     }
 
     private fun List<ProductOfferDetail>.filterForPlan(planName: String) = filter { it.metadata.planName == planName }

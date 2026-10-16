@@ -139,6 +139,18 @@ internal fun ComparisonTableHeaderRow(
                         verticalPadding = ProtonDimens.Spacing.Standard
                     )
 
+                    variant == PlanUpgradeVariant.BlackFriday.Wave1 -> PlanBadge(
+                        colors = colors,
+                        labelRes = R.string.upselling_unlimited_plan,
+                        verticalPadding = ProtonDimens.Spacing.Standard
+                    )
+
+                    variant == PlanUpgradeVariant.BlackFriday.Wave2 -> PlanBadge(
+                        colors = colors,
+                        labelRes = R.string.upselling_mail_plus_plan,
+                        verticalPadding = ProtonDimens.Spacing.Standard
+                    )
+
                     variant is UnlimitedPlanVariant -> UnlimitedBadge()
                     else -> PlanBadge(colors = colors, labelRes = R.string.upselling_plus_plan)
                 }

@@ -80,6 +80,18 @@ class PlanUpgradePriceUiModelTest {
     }
 
     @Test
+    fun `getFullFormatWithCents keeps two decimals for whole numbers`() {
+        val model = PlanUpgradePriceUiModel(BigDecimal("5.00"), "USD")
+        assertEquals("USD 5.00", model.getFullFormatWithCents())
+    }
+
+    @Test
+    fun `getFullFormatWithCents keeps two decimals for decimal numbers`() {
+        val model = PlanUpgradePriceUiModel(BigDecimal("6.49"), "USD")
+        assertEquals("USD 6.49", model.getFullFormatWithCents())
+    }
+
+    @Test
     fun `formatting works correctly for zero amount`() {
         val model = PlanUpgradePriceUiModel(BigDecimal(0.0), "USD")
         assertEquals("$0", model.getShorthandFormat())

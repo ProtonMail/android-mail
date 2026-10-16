@@ -273,6 +273,18 @@ internal object UpsellingContentPreviewData {
         longerCycle = FallPromoYearlyPromo
     )
 
+    val BlackFridayWave1List = PlanUpgradeInstanceListUiModel.Data.BlackFriday(
+        blackFridayVariant = PlanUpgradeVariant.BlackFriday.Wave1,
+        shorterCycle = UnlimitedPlanModelMonthly,
+        longerCycle = blackFridayYearlyPromo("Proton Unlimited", "bf-unlimited-yearly", "77.88", "119.88")
+    )
+
+    val BlackFridayWave2List = PlanUpgradeInstanceListUiModel.Data.BlackFriday(
+        blackFridayVariant = PlanUpgradeVariant.BlackFriday.Wave2,
+        shorterCycle = MailPlusPlanModelMonthly,
+        longerCycle = blackFridayYearlyPromo("Mail Plus", "bf-plus-yearly", "29.88", "47.88")
+    )
+
     val SimpleListEntitlements = PlanUpgradeEntitlementsListUiModel.SimpleList(
         listOf(
             PlanUpgradeEntitlementListUiModel.Local(
@@ -344,14 +356,29 @@ internal object UpsellingContentPreviewData {
 
     val BlackFriday = UpsellingScreenContentState.Data(
         PlanUpgradeUiModel(
-            icon = PlanUpgradeIconUiModel(R.drawable.upselling_bf_header_wave2),
+            icon = PlanUpgradeIconUiModel(R.drawable.black_friday_bg),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Proton Unlimited")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = FallPromoComparisonTableEntitlements,
+            variant = PlanUpgradeVariant.BlackFriday.Wave1,
+            list = BlackFridayWave1List
+        )
+    )
+
+    val BlackFridayWave2 = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.black_friday_bg),
             title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
             description = PlanUpgradeDescriptionUiModel.Simple(
                 TextUiModel.Text("To unlock more storage and premium features")
             ),
-            entitlements = ComparisonTableEntitlements,
-            variant = PlanUpgradeVariant.BlackFriday.Wave1,
-            list = BlackFridayList
+            entitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                ComparisonTableEntitlementsData.BlackFridayMailPlusEntitlements
+            ),
+            variant = PlanUpgradeVariant.BlackFriday.Wave2,
+            list = BlackFridayWave2List
         )
     )
 
@@ -424,4 +451,34 @@ internal object UpsellingContentPreviewData {
             )
         )
     }
+
+    private fun blackFridayYearlyPromo(
+        name: String,
+        productId: String,
+        promotionalPrice: String,
+        renewalPrice: String
+    ) = PlanUpgradeInstanceUiModel.Promotional(
+        promoKind = PromoKind.BlackFriday,
+        params = PlanUpgradeInstanceUiModel.Promotional.Params(
+            name = name,
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(promotionalPrice), currencyCode = "USD"),
+            promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(promotionalPrice), currencyCode = "USD"),
+            renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(renewalPrice), currencyCode = "USD"),
+            discountRate = 50,
+            cycle = PlanUpgradeCycle.Yearly,
+            yearlySaving = null,
+            product = Product(
+                planName = name,
+                productId = productId,
+                accountId = "456",
+                cycle = 12,
+                header = ProductDetailHeader(name, "12 months", "USD $promotionalPrice", "/year", false),
+                offerToken = ProductOfferToken(""),
+                entitlements = emptyList(),
+                renewalText = "Auto-renews at \$$renewalPrice/year",
+                amount = 0L,
+                currency = "USD"
+            )
+        )
+    )
 }
