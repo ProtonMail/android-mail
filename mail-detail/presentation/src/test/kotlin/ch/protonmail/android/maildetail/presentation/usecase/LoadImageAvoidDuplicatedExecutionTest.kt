@@ -221,6 +221,24 @@ class LoadImageAvoidDuplicatedExecutionTest {
         coVerify(exactly = 2) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
     }
 
+    @Test
+    fun `given the cache was cleared while an image loaded, when it is requested again, then it is loaded again`() =
+        runTest {
+            // Given
+            val image = MessageBodyImage(data = "I'm an image".toByteArray(), mimeType = "image/png")
+            coEvery { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) } coAnswers {
+                loadImageAvoidDuplicatedExecution.clearCache()
+                image.right()
+            }
+            loadImage()
+
+            // When
+            loadImage()
+
+            // Then
+            coVerify(exactly = 2) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
+        }
+
     private suspend fun TestScope.loadImage(
         useCase: LoadImageAvoidDuplicatedExecution = loadImageAvoidDuplicatedExecution
     ) = useCase(userId, messageId, url, shouldLoadImagesSafely = true, coroutineContext = coroutineContext)

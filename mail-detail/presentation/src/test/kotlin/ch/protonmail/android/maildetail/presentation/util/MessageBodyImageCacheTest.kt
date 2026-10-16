@@ -34,7 +34,7 @@ class MessageBodyImageCacheTest {
     fun `given an image was cached, when it is requested, then it is returned`() {
         // Given
         val image = imageOfSize(10)
-        cache.put(keyA, image)
+        cache.put(keyA, image, cache.generation)
 
         // When
         val result = cache.get(keyA)
@@ -47,11 +47,11 @@ class MessageBodyImageCacheTest {
     fun `given the cache is full, when another image is cached, then the least recently used image is dropped`() {
         // Given
         val keys = (1..9).map { keyFor("proton-https://example.com/$it.png") }
-        keys.take(8).forEach { cache.put(it, imageOfSize(10)) }
+        keys.take(8).forEach { cache.put(it, imageOfSize(10), cache.generation) }
         cache.get(keys.first())
 
         // When
-        cache.put(keys.last(), imageOfSize(10))
+        cache.put(keys.last(), imageOfSize(10), cache.generation)
 
         // Then
         assertNull(cache.get(keys[1]))
@@ -65,7 +65,7 @@ class MessageBodyImageCacheTest {
         val largeImage = imageOfSize(11)
 
         // When
-        cache.put(keyA, largeImage)
+        cache.put(keyA, largeImage, cache.generation)
 
         // Then
         assertNull(cache.get(keyA))
@@ -74,7 +74,7 @@ class MessageBodyImageCacheTest {
     @Test
     fun `given images were cached, when the cache is cleared, then no image is returned`() {
         // Given
-        cache.put(keyA, imageOfSize(10))
+        cache.put(keyA, imageOfSize(10), cache.generation)
 
         // When
         cache.clear()
@@ -86,10 +86,36 @@ class MessageBodyImageCacheTest {
     @Test
     fun `given a proxy failure was cached, when the cache is cleared, then it is no longer a failure`() {
         // Given
-        cache.putProxyFailure(keyA)
+        cache.putProxyFailure(keyA, cache.generation)
 
         // When
         cache.clear()
+
+        // Then
+        assertFalse(cache.isProxyFailure(keyA))
+    }
+
+    @Test
+    fun `given the cache was cleared while an image loaded, when the image is cached, then it is not kept`() {
+        // Given
+        val generationAtLoadStart = cache.generation
+        cache.clear()
+
+        // When
+        cache.put(keyA, imageOfSize(10), generationAtLoadStart)
+
+        // Then
+        assertNull(cache.get(keyA))
+    }
+
+    @Test
+    fun `given the cache was cleared while an image loaded, when its proxy failure is cached, then it is not kept`() {
+        // Given
+        val generationAtLoadStart = cache.generation
+        cache.clear()
+
+        // When
+        cache.putProxyFailure(keyA, generationAtLoadStart)
 
         // Then
         assertFalse(cache.isProxyFailure(keyA))
