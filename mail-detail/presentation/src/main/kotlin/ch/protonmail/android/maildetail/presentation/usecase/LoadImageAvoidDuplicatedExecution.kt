@@ -42,8 +42,9 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
     @IsMessageBodyImageCacheEnabled private val isImageCacheEnabled: FeatureFlag<Boolean>
 ) {
 
+    // Keyed like the cache, so a load is only shared by requests that would cache its result under the same key.
     private val loadMessageBodyImageJobMap =
-        mutableMapOf<String, Deferred<Either<AttachmentDataError, MessageBodyImage>>>()
+        mutableMapOf<MessageBodyImageCache.Key, Deferred<Either<AttachmentDataError, MessageBodyImage>>>()
 
     // Read once, so the cache stays on or off for the whole life of the screen.
     @Volatile
@@ -58,6 +59,9 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
     ): Either<AttachmentDataError, MessageBodyImage> = runCatching {
         val cacheKey = MessageBodyImageCache.Key.of(messageId, url, shouldLoadImagesSafely)
         val shouldUseCache = isCacheEnabled()
+        // Read before the lookup: the cache can be cleared while the image loads, for example when the
+        // conversation leaves the screen, and a load that started before a clear must not write after it.
+        val cacheGeneration = imageCache.generation
 
         // Checked on the calling thread, so a cached image or failure doesn't wait for the main thread.
         if (shouldUseCache && imageCache.isProxyFailure(cacheKey)) {
@@ -67,17 +71,20 @@ class LoadImageAvoidDuplicatedExecution @Inject constructor(
         if (cachedImage != null) {
             return@runCatching cachedImage.right()
         }
-        // The cache can be cleared while the image loads, for example when the conversation leaves the screen.
-        val cacheGeneration = imageCache.generation
 
         withContext(coroutineContext) {
-            if (loadMessageBodyImageJobMap[url]?.isActive == true) {
-                loadMessageBodyImageJobMap[url]!!
-            } else {
-                async { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely) }.apply {
-                    loadMessageBodyImageJobMap[url] = this
+            val job = loadMessageBodyImageJobMap[cacheKey]?.takeIf { it.isActive }
+                ?: async { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely) }.also {
+                    loadMessageBodyImageJobMap[cacheKey] = it
                 }
-            }.await()
+            try {
+                job.await()
+            } finally {
+                // A finished load is not shared any more, so drop it rather than keep every result.
+                if (job.isCompleted && loadMessageBodyImageJobMap[cacheKey] === job) {
+                    loadMessageBodyImageJobMap.remove(cacheKey)
+                }
+            }
         }.onRight { image ->
             if (shouldUseCache) imageCache.put(cacheKey, image, cacheGeneration)
         }.onLeft { error ->

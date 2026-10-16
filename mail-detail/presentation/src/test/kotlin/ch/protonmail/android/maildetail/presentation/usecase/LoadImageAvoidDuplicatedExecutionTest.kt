@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.usecase
 
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -31,6 +32,8 @@ import ch.protonmail.android.mailmessage.domain.usecase.LoadMessageBodyImage
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -239,6 +242,64 @@ class LoadImageAvoidDuplicatedExecutionTest {
             coVerify(exactly = 2) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true) }
         }
 
+    @Test
+    fun `given a proxied load is in flight, when the image is requested without the proxy, then it is loaded`() =
+        runTest {
+            // Given
+            val proxiedResult = CompletableDeferred<Either<AttachmentDataError, MessageBodyImage>>()
+            coEvery {
+                loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = true)
+            } coAnswers { proxiedResult.await() }
+            val image = MessageBodyImage(data = "I'm an image".toByteArray(), mimeType = "image/png")
+            coEvery {
+                loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = false)
+            } returns image.right()
+            launch { loadImage() }
+            advanceUntilIdle()
+
+            // When
+            val result = async {
+                loadImageAvoidDuplicatedExecution(
+                    userId, messageId, url, shouldLoadImagesSafely = false, coroutineContext = coroutineContext
+                )
+            }
+            proxiedResult.complete(AttachmentDataError.ProxyFailed.left())
+
+            // Then
+            assertEquals(image.right(), result.await())
+            coVerify(exactly = 1) { loadMessageBodyImage(userId, messageId, url, shouldLoadImagesSafely = false) }
+        }
+
+    @Test
+    fun `given two messages load the same embedded image, when both are in flight, then each gets its own image`() =
+        runTest {
+            // Given
+            val otherMessageId = MessageIdSample.AugWeatherForecast
+            val image = MessageBodyImage(data = "Invoice logo".toByteArray(), mimeType = "image/png")
+            val otherImage = MessageBodyImage(data = "Forecast logo".toByteArray(), mimeType = "image/png")
+            val loadsReleased = CompletableDeferred<Unit>()
+            coEvery {
+                loadMessageBodyImage(userId, messageId, EMBEDDED_URL, shouldLoadImagesSafely = true)
+            } coAnswers { loadsReleased.await().let { image.right() } }
+            coEvery {
+                loadMessageBodyImage(userId, otherMessageId, EMBEDDED_URL, shouldLoadImagesSafely = true)
+            } coAnswers { loadsReleased.await().let { otherImage.right() } }
+
+            // When
+            val result = async {
+                loadImageAvoidDuplicatedExecution(userId, messageId, EMBEDDED_URL, true, coroutineContext)
+            }
+            val otherResult = async {
+                loadImageAvoidDuplicatedExecution(userId, otherMessageId, EMBEDDED_URL, true, coroutineContext)
+            }
+            advanceUntilIdle()
+            loadsReleased.complete(Unit)
+
+            // Then
+            assertEquals(image.right(), result.await())
+            assertEquals(otherImage.right(), otherResult.await())
+        }
+
     private suspend fun TestScope.loadImage(
         useCase: LoadImageAvoidDuplicatedExecution = loadImageAvoidDuplicatedExecution
     ) = useCase(userId, messageId, url, shouldLoadImagesSafely = true, coroutineContext = coroutineContext)
@@ -250,4 +311,9 @@ class LoadImageAvoidDuplicatedExecutionTest {
         imageCache = cache,
         isImageCacheEnabled = isImageCacheEnabled
     )
+
+    private companion object {
+
+        const val EMBEDDED_URL = "cid:logo"
+    }
 }
