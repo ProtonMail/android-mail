@@ -19,6 +19,7 @@
 package ch.protonmail.android.navigation.reducer
 
 import java.net.URLEncoder
+import ch.protonmail.android.mailcommon.data.file.getMailToUri
 import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
@@ -101,7 +102,13 @@ class HomeNavigationEventsReducer @Inject constructor() {
         state: HomeState,
         event: HomeNavigationEvent.MailToIntentReceived
     ): HomeState {
-        val draftAction = DraftAction.MailTo(URLEncoder.encode(event.intent.dataString, Charsets.UTF_8.name()))
+        // Reading the extras of another app's intent can throw, e.g. on a Parcelable class we don't have.
+        // The plain mailto URI still opens the composer.
+        val mailToUri = runCatching { event.intent.getMailToUri() }.getOrElse {
+            Timber.tag("intent-navigation").w(it, "Could not read the mailto intent extras")
+            event.intent.dataString.orEmpty()
+        }
+        val draftAction = DraftAction.MailTo(URLEncoder.encode(mailToUri, Charsets.UTF_8.name()))
         val navigate = NavigationEffect.NavigateTo(
             Destination.Screen.MessageActionComposer(
                 action = draftAction
