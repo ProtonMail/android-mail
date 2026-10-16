@@ -43,6 +43,11 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
     private var evictions = 0
     private var peakSizeBytes = 0L
 
+    // Bumped on every clear, so a load that started before a clear does not write into the cache after it.
+    @get:Synchronized
+    var generation = 0
+        private set
+
     @Inject
     constructor() : this(defaultMaxSizeBytes())
 
@@ -50,7 +55,12 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
     fun get(key: Key): MessageBodyImage? = entries[key].also { if (it != null) hits++ else misses++ }
 
     @Synchronized
-    fun put(key: Key, image: MessageBodyImage) {
+    fun put(
+        key: Key,
+        image: MessageBodyImage,
+        generation: Int
+    ) {
+        if (generation != this.generation) return
         val imageSize = image.data.size.toLong()
         // A single large image would flush most of the cache, so it is not kept.
         if (imageSize > maxSizeBytes / MAX_ENTRY_FRACTION) return
@@ -65,7 +75,8 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
     fun isProxyFailure(key: Key): Boolean = key in proxyFailures
 
     @Synchronized
-    fun putProxyFailure(key: Key) {
+    fun putProxyFailure(key: Key, generation: Int) {
+        if (generation != this.generation) return
         if (proxyFailures.size < MAX_PROXY_FAILURES) proxyFailures.add(key)
     }
 
@@ -79,6 +90,7 @@ class MessageBodyImageCache(private val maxSizeBytes: Long) {
         misses = 0
         evictions = 0
         peakSizeBytes = 0
+        generation++
     }
 
     private fun logUsage() {
