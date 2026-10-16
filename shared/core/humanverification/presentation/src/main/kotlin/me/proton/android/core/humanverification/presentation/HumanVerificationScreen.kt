@@ -21,6 +21,7 @@ package me.proton.android.core.humanverification.presentation
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Color
+import android.webkit.ConsoleMessage
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -313,6 +314,8 @@ private fun HumanVerificationWebView(
     }
     val webChromeClient = remember {
         object : AccompanistWebChromeClient() {
+            override fun onConsoleMessage(message: ConsoleMessage): Boolean = true
+
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
                 progress = newProgress
