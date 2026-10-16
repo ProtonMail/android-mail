@@ -20,13 +20,10 @@ package me.proton.android.core.humanverification.presentation.legacy
 
 import java.io.InputStream
 import androidx.annotation.VisibleForTesting
-import me.proton.android.core.humanverification.presentation.LogTag
-import me.proton.core.util.kotlin.CoreLogger
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
@@ -39,11 +36,6 @@ internal class LegacyNetworkRequestOverrider(
     private val insecureClient: OkHttpClient by lazy {
         with(okHttpClient.newBuilder()) {
             initSPKIleafPinning(this, ALTERNATIVE_API_SPKI_PINS)
-            addInterceptor(
-                HttpLoggingInterceptor { message ->
-                    CoreLogger.d(LogTag.DEFAULT, message)
-                }.apply { level = HttpLoggingInterceptor.Level.BODY }
-            )
             connectTimeout(HTTP_CLIENT_TIMEOUT)
             readTimeout(HTTP_CLIENT_TIMEOUT)
             writeTimeout(HTTP_CLIENT_TIMEOUT)

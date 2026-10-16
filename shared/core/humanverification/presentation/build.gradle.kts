@@ -75,7 +75,6 @@ dependencies {
     implementation(libs.proton.core.utilKotlin)
     implementation(libs.lottie.compose)
     implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
 
     implementation(project(":design-system"))
     implementation(project(":mail-session:domain"))
