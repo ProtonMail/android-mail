@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.presentation.ui
 import java.io.ByteArrayInputStream
 import android.content.Context
 import android.net.Uri
+import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -55,6 +56,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -161,6 +163,8 @@ fun MessageBodyWebView(
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     val contentLoaded = remember(messageId) { mutableStateOf(false) }
+    // When the current load started, to log loads that take long to finish, images included.
+    val loadStartMs = remember(messageId) { mutableLongStateOf(0L) }
 
     val client = remember(messageId, messageBodyUiModel.messageBody) {
         object : WebViewClient() {
@@ -219,7 +223,11 @@ fun MessageBodyWebView(
                 // the card still holds the body at no height can finish without it, leaving the body hidden.
                 contentLoaded.value = true
                 // A finish below full progress is the late callback of a load that a reload interrupted.
-                if (view?.progress == FULL_PROGRESS) actions.onMessageBodyLoadCompleted(messageId)
+                if (view?.progress == FULL_PROGRESS) {
+                    logSlowLoad(messageId, loadStartMs.longValue)
+                    loadStartMs.longValue = 0L
+                    actions.onMessageBodyLoadCompleted(messageId)
+                }
             }
 
             // The renderer process - shared by every WebView in the app - has died, OOM-killed to reclaim
@@ -253,6 +261,7 @@ fun MessageBodyWebView(
 
     ConsumableLaunchedEffect(messageBodyUiModel.reloadMessageEffect) {
         pool?.markLoading(messageId.id, true)
+        loadStartMs.longValue = SystemClock.uptimeMillis()
         webView.reload()
     }
 
@@ -282,6 +291,7 @@ fun MessageBodyWebView(
         }
 
         pool?.markLoading(messageId.id, true)
+        loadStartMs.longValue = SystemClock.uptimeMillis()
         when (val body = messageBodyUiModel.messageBody) {
             is MessageBodyContent.Text -> {
                 webView.loadDataWithBaseURL(null, body.value, MimeType.Html.value, "utf-8", null)
@@ -616,6 +626,15 @@ object MessageBodyWebViewTestTags {
 
 private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
 private const val FULL_PROGRESS = 100
+
+// A body load (images included) slower than this is logged.
+private const val SLOW_LOAD_THRESHOLD_MS = 3_000L
+
+private fun logSlowLoad(messageId: MessageId, startMs: Long) {
+    if (startMs == 0L) return
+    val durationMs = SystemClock.uptimeMillis() - startMs
+    if (durationMs > SLOW_LOAD_THRESHOLD_MS) Timber.d("BodyLoad: slow message=%s ms=%d", messageId.id, durationMs)
+}
 
 // Max constraint for WebView height. If the height is greater
 // than this value, we will not fix the height of the WebView or it will crash.
