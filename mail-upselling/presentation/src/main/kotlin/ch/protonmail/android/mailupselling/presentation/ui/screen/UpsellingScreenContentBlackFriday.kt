@@ -342,16 +342,28 @@ private fun BlackFridayPreview(state: UpsellingScreenContentState.Data) {
 }
 
 @Preview(name = "en (default)")
+@Preview(name = "cs", locale = "cs")
+@Preview(name = "da", locale = "da")
 @Preview(name = "de", locale = "de")
 @Preview(name = "es-ES", locale = "es-rES")
 @Preview(name = "es-419", locale = "b+es+419")
+@Preview(name = "fi", locale = "fi")
 @Preview(name = "fr", locale = "fr")
+@Preview(name = "id", locale = "in")
 @Preview(name = "it", locale = "it")
+@Preview(name = "ja", locale = "ja")
+@Preview(name = "ko", locale = "ko")
+@Preview(name = "nb-NO", locale = "nb-rNO")
 @Preview(name = "nl", locale = "nl")
 @Preview(name = "pl", locale = "pl")
 @Preview(name = "pt-BR", locale = "pt-rBR")
+@Preview(name = "pt-PT", locale = "pt-rPT")
+@Preview(name = "ro", locale = "ro")
 @Preview(name = "ru", locale = "ru")
+@Preview(name = "sv-SE", locale = "sv-rSE")
 @Preview(name = "tr", locale = "tr")
+@Preview(name = "zh-CN", locale = "zh-rCN")
+@Preview(name = "zh-TW", locale = "zh-rTW")
 private annotation class BlackFridayLocalePreviews
 
 @BlackFridayLocalePreviews
@@ -364,4 +376,10 @@ private fun BlackFriday_Wave1_Locales() {
 @Composable
 private fun BlackFriday_Wave2_Locales() {
     BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayWave2)
+}
+
+@BlackFridayLocalePreviews
+@Composable
+private fun BlackFriday_PlusToUnlimited_Locales() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayPlusToUnlimited)
 }

@@ -34,14 +34,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -69,9 +66,10 @@ internal fun ComparisonTableHeaderRow(
     baseColumnLabel: TextUiModel,
     titleLabel: TextUiModel? = null,
     paidColumnLabel: TextUiModel? = null,
+    baseColumnWidth: Dp,
+    onBaseColumnPlaced: (Dp) -> Unit,
     onPaidColumnPlaced: (Dp) -> Unit
 ) {
-    var paidColumnWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
     val labelsOffset = if (paidColumnLabel != null) ProtonDimens.Spacing.Tiny else 0.dp
 
@@ -102,7 +100,8 @@ internal fun ComparisonTableHeaderRow(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .widthIn(min = paidColumnWidth)
+                .widthIn(min = baseColumnWidth)
+                .onSizeChanged { with(localDensity) { onBaseColumnPlaced(it.width.toDp()) } }
         ) {
             Text(
                 modifier = Modifier
@@ -121,10 +120,7 @@ internal fun ComparisonTableHeaderRow(
             modifier = Modifier
                 .onGloballyPositioned {
                     with(localDensity) {
-                        val columnWidth = it.size.width.toDp()
-
-                        onPaidColumnPlaced(columnWidth)
-                        paidColumnWidth = columnWidth
+                        onPaidColumnPlaced(it.size.width.toDp())
                     }
                 }
         ) {
@@ -221,6 +217,8 @@ private fun ComparisonTableHeaderRowPreview() {
             variant = PlanUpgradeVariant.IntroductoryPrice,
             colors = planUpgradeVariantColors(PlanUpgradeVariant.IntroductoryPrice),
             baseColumnLabel = TextUiModel.TextRes(R.string.upselling_free_plan),
+            baseColumnWidth = 0.dp,
+            onBaseColumnPlaced = {},
             onPaidColumnPlaced = {}
         )
     }
