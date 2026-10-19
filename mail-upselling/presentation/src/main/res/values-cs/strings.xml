@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Vyberte svůj tarif</string>
   <string name="upselling_pu_whats_included">Co je v ceně</string>
   <string name="upselling_pu_cta">Získejte Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Plaťte ročně a ušetřete %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Změnit fakturační cyklus</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Ušetřete %s</string>
+  <string name="upselling_monthly_to_yearly_title">Ušetřete hodně s roční platbou</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Zajistit si slevu na %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 rok</string>
+  <string name="upselling_monthly_to_yearly_currently">Aktuálně</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-měsíční tarif</string>
+  <string name="upselling_monthly_to_yearly_cta">Změnit a uložit %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Ponechat měsíčně</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Zvyšte úroveň svého online soukromí s Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Chraňte svůj účet před hrozbami pomocí programu Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Prémiový přístup k aplikacím Mail, VPN, Drive, Pass a Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Neomezený počet aliasů pro skrytí vaší identity</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Vysokorychlostní VPN s pokrytím ve více než 110 zemích</string>
+  <string name="upselling_comparison_table_password_manager">Šifrovaný správce hesel</string>
+  <string name="upselling_comparison_table_threat_protection">Pokročilá ochrana před hrozbami</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomezený počet složek, štítků</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Zvolte předplatné</string>

@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Trieu un pla</string>
   <string name="upselling_pu_whats_included">Què s\'hi inclou</string>
   <string name="upselling_pu_cta">Aconseguiu el Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Pagueu anualment i estalvieu %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Canvieu el vostre cicle de facturació</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Estalvieu el %s</string>
+  <string name="upselling_monthly_to_yearly_title">Estalvieu força amb la facturació anual</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Assegureu-vos un descompte a %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 any</string>
+  <string name="upselling_monthly_to_yearly_currently">Actualment</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">pla de 12 mesos</string>
+  <string name="upselling_monthly_to_yearly_cta">Canviar i desar %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Continuar amb el mensual</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Aneu un pas més enllà en la privacitat en línia amb el Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Protegiu el compte d\'amenaces amb el Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Accés prèmium a Mail, VPN, Drive, Pass i Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Àlies il·limitats per a amagar la identitat</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultraràpida amb més de 110 països</string>
+  <string name="upselling_comparison_table_password_manager">Gestor de contrasenyes xifrades</string>
+  <string name="upselling_comparison_table_threat_protection">Protecció avançada contra amenaces</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetes, filtres i etiquetes il·limitats</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Trieu una subscripció</string>

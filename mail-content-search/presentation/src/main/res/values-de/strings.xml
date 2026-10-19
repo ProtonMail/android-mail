@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Damit nach dem Inhalt der Nachrichten gesucht werden kann, werden die Nachrichten auf dieses Gerät heruntergeladen.</string>
   <string name="mail_settings_content_search_learn_more">Mehr erfahren …</string>
   <string name="mail_settings_content_search_toggle_title">Suchen nach Inhalten in E-Mails</string>
-  <string name="mail_settings_content_search_mobile_data_title">Mit Mobilfunkdaten herunterladen</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Mobilfunkdaten verwenden, um Downloads fortzusetzen, falls die WLAN-Verbindung unterbrochen wird.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Herunterladen über Mobilfunkverbindung zulassen</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Das Herunterladen wird über Mobilfunkverbindung fortgesetzt, wenn die WLAN-Verbindung unterbrochen wird.</string>
   <string name="mail_settings_content_search_syncing_status">%1$d%% wird vorbereitet …</string>
   <string name="mail_settings_content_search_preparing_status">Wird vorbereitet …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Auf WLAN-Verbindung wird gewartet …</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Die neuesten E-Mails werden zuerst indiziert. Alle indizierten Nachrichten können bereits während des Indizierungsvorgangs durchsucht werden.</string>
   <string name="mail_settings_content_search_on_this_device_section">Auf diesem Gerät</string>
   <string name="mail_settings_content_search_index_size">Größe des Index</string>
-  <string name="mail_settings_content_search_clear_data_button">Lokale Suchdaten löschen</string>
+  <string name="mail_settings_content_search_clear_data_button">Lokalen Suchindex leeren</string>
   <string name="mail_settings_content_search_clear_data_description">Durch das Löschen der lokalen Suchdaten wird die Suche nach Nachrichteninhalten deaktiviert. Sie können diese Funktion jederzeit wieder aktivieren.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Lokale Suchdaten löschen</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Lokalen Suchindex leeren</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Die Suchdaten auf diesem Gerät werden gelöscht. Sie müssen erneut heruntergeladen werden, um E-Mail-Inhalte durchsuchen zu können.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Daten bereinigen</string>
   <string name="content_search_bottomsheet_title">Mobile Datennutzung</string>
   <string name="content_search_bottomsheet_description">Deine E-Mails werden heruntergeladen, um eine vertrauliche Suche zu ermöglichen.</string>
   <string name="content_search_bottomsheet_start_indexing">Indizierung starten</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Mobilfunkdaten nutzen</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Keine Ergebnisse für „%1$s“</string>
   <string name="content_search_no_results_description">Probiere andere Suchbegriffe aus oder überprüfe die Schreibweise.</string>
-  <string name="content_search_no_results_set_up_description">Aktiviere die Inhaltssuche, um auch den Inhalt von Nachrichten durchsuchen zu können.</string>
+  <string name="content_search_no_results_set_up_description">Bisher wurden nur Betreffzeilen und Absender durchsucht. Durch Aktivieren der Inhaltssuche kann zusätzlich auch der Inhalt der E-Mails durchsucht werden.</string>
   <string name="content_search_no_results_learn_more">Mehr erfahren …</string>
   <string name="content_search_no_results_set_up_action">Inhaltssuche einrichten</string>
   <string name="content_search_failed_title">Suche fehlgeschlagen</string>
   <string name="content_search_failed_description">Es ist ein Fehler aufgetreten. Bitte erneut versuchen.</string>
   <string name="content_search_failed_retry">Erneut versuchen</string>
   <string name="content_search_set_up_banner_title">Auch in E-Mails suchen</string>
-  <string name="content_search_set_up_banner_description">Finde Wörter und Ausdrücke in Ihren E-Mails – nicht nur E-Mail-Absender und Betreffzeilen.</string>
+  <string name="content_search_set_up_banner_description">Den gesamten Text der E-Mails durchsuchen, nicht nur Absender und Betreffzeilen.</string>
   <string name="content_search_set_up_banner_turn_on">Jetzt einrichten</string>
   <string name="content_search_set_up_banner_not_now">Jetzt nicht</string>
   <string name="content_search_indexing_complete_banner_title">Fertig!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Suchen</string>
   <string name="content_search_clear_query_content_description">Suchanfrage löschen</string>
   <string name="content_search_close_content_description">Suche schließen</string>
-  <string name="content_search_first_run_description">Gib einen Namen, ein Betreff oder ein Stichwort ein, um die Suche zu beginnen</string>
+  <string name="content_search_first_run_description">Suche vertraulich nach beliebigen Begriffen …</string>
   <string name="content_search_results_title">Ergebnisse</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Ergebnis</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">Indizierung wurde unterbrochen • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">E-Mails werden indizieren • %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indizierung wurde unterbrochen • %1$d%%</string>
-  <string name="content_search_indexing_see_details">Details anzeigen</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Dauerhaft löschen?</string>
   <string name="content_search_delete_dialog_message">Diese Nachrichten werden dauerhaft gelöscht. Dieser Vorgang kann nicht widerrufen werden.</string>

@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Søk etter e-postinnhold</string>
   <string name="mail_settings_content_search_description">For at du skal kunne søke etter meldingsinnhold, lastes meldinger ned på denne enheten.</string>
-  <string name="mail_settings_content_search_learn_more">Lær mer..</string>
+  <string name="mail_settings_content_search_learn_more">Learn more…</string>
   <string name="mail_settings_content_search_toggle_title">Søk etter e-postinnhold</string>
-  <string name="mail_settings_content_search_mobile_data_title">Last ned med mobildata</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Bruk mobildata for å fortsette nedlastingene når Wi-Fi-nettverket er borte.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Forbereder %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Forbereder…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Venter på Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Nylige e-poster indekseres først. Alle indekserte meldinger er søkbare mens indeksering pågår.</string>
   <string name="mail_settings_content_search_on_this_device_section">På denne enheten</string>
   <string name="mail_settings_content_search_index_size">Indeksstørrelse</string>
-  <string name="mail_settings_content_search_clear_data_button">Tøm lokale søkedata</string>
+  <string name="mail_settings_content_search_clear_data_button">Clear local search index</string>
   <string name="mail_settings_content_search_clear_data_description">Hvis du tømmer lokale søkedata, deaktiveres søk etter meldingsinnhold. Du kan aktivere det igjen når som helst.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Tøm lokale søkedata</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search index</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Søkedataene på denne enheten vil bli fjernet. Du må laste dem ned på nytt for å søke i e-postinnhold.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Tøm data</string>
   <string name="content_search_bottomsheet_title">Bruk av mobildata</string>
   <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Begynn å indeksere</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Ingen treff for \"%1$s\"</string>
   <string name="content_search_no_results_description">Prøv andre nøkkelord eller sjekk stavemåten.</string>
-  <string name="content_search_no_results_set_up_description">Slå på innholdssøk for å se i meldinger også.</string>
-  <string name="content_search_no_results_learn_more">Lær mer..</string>
+  <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
+  <string name="content_search_no_results_learn_more">Learn more…</string>
   <string name="content_search_no_results_set_up_action">Konfigurer innholdssøk</string>
   <string name="content_search_failed_title">Søket mislyktes</string>
   <string name="content_search_failed_description">Noe gikk galt. Forsøk igjen.</string>
   <string name="content_search_failed_retry">Prøv igjen</string>
   <string name="content_search_set_up_banner_title">Søk i e-poster også</string>
-  <string name="content_search_set_up_banner_description">Finn ord og uttrykk i e-postene, ikke bare avsendere og emner.</string>
+  <string name="content_search_set_up_banner_description">Search the full text of your emails, not just senders and subjects.</string>
   <string name="content_search_set_up_banner_turn_on">Konfigurer nå</string>
   <string name="content_search_set_up_banner_not_now">Ikke nå</string>
   <string name="content_search_indexing_complete_banner_title">Fullført!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Søk</string>
   <string name="content_search_clear_query_content_description">Nullstill søk</string>
   <string name="content_search_close_content_description">Lukk søk</string>
-  <string name="content_search_first_run_description">Skriv inn et navn, emne eller nøkkelord for å søke</string>
+  <string name="content_search_first_run_description">Type anything to search privately…</string>
   <string name="content_search_results_title">Treff</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d treff</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">Indeksering avbrutt • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indekserer e-post, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indeksering avbrutt, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Se detaljer</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Slette permanent?</string>
   <string name="content_search_delete_dialog_message">Disse meldingene vil bli slettet permanent. Denne handlingen kan ikke angres.</string>

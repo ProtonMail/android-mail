@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">Pentru a vă permite să căutați după conținutul mesajelor, acestea vor fi descărcate pe acest dispozitiv.</string>
   <string name="mail_settings_content_search_learn_more">Detalii…</string>
   <string name="mail_settings_content_search_toggle_title">Căutare în conținut mesaje</string>
-  <string name="mail_settings_content_search_mobile_data_title">Descărcare folosind datele mobile</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Se folosesc datele mobile pentru a continua descărcările dacă se pierde conexiunea Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Permitere descărcare prin date mobile</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Descărcarea continuă prin datele mobile dacă se pierde conexiunea Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Se pregătește %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Se pregătește…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Se așteaptă Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Mesajele recente sunt indexate primele. Toate mesajele indexate pot fi căutate în timp ce procesul de indexare este în desfășurare.</string>
   <string name="mail_settings_content_search_on_this_device_section">Pe acest dispozitiv</string>
   <string name="mail_settings_content_search_index_size">Mărime index</string>
-  <string name="mail_settings_content_search_clear_data_button">Golire date de căutare locale</string>
+  <string name="mail_settings_content_search_clear_data_button">Golire index de căutare locală</string>
   <string name="mail_settings_content_search_clear_data_description">Ștergerea datelor de căutare locală va dezactiva căutarea în conținutul mesajelor. O puteți reactiva oricând.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Golire date de căutare locale</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Golire index de căutare locală</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Datele de căutare de pe acest dispozitiv vor fi eliminate. Va trebui să le redescărcați pentru a căuta în conținutul mesajelor.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Golire date</string>
   <string name="content_search_bottomsheet_title">Utilizare date mobile</string>
   <string name="content_search_bottomsheet_description">E-mailurile vor fi descărcate pentru a permite căutarea privată.</string>
   <string name="content_search_bottomsheet_start_indexing">Pornire indexare</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Folosire date mobile</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Nu există rezultate pentru „%1$s”</string>
   <string name="content_search_no_results_description">Încercați cuvinte cheie diferite sau verificați-vă ortografia.</string>
-  <string name="content_search_no_results_set_up_description">Activați căutarea în conținut pe a căuta și în conținutul mesajelor.</string>
+  <string name="content_search_no_results_set_up_description">S-a căutat doar în subiecte și expeditori. Activați căutarea în conținut pentru a căuta și în interiorul mesajelor.</string>
   <string name="content_search_no_results_learn_more">Detalii…</string>
   <string name="content_search_no_results_set_up_action">Setare căutare în conținut</string>
   <string name="content_search_failed_title">Căutare eșuată</string>
   <string name="content_search_failed_description">Ceva nu a funcționat bine. Reîncercați.</string>
   <string name="content_search_failed_retry">Reîncercare</string>
   <string name="content_search_set_up_banner_title">Căutare și în conținutul mesajelor</string>
-  <string name="content_search_set_up_banner_description">Găsiți cuvinte și expresii în interiorul mesajelor, nu doar în expeditori și subiecte.</string>
+  <string name="content_search_set_up_banner_description">Căutați în textul complet al e-mailurilor, nu doar în expeditori și subiecte.</string>
   <string name="content_search_set_up_banner_turn_on">Setare acum</string>
   <string name="content_search_set_up_banner_not_now">Nu acum</string>
   <string name="content_search_indexing_complete_banner_title">Totul e gata!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Căutare</string>
   <string name="content_search_clear_query_content_description">Golire text căutat</string>
   <string name="content_search_close_content_description">Închidere căutare</string>
-  <string name="content_search_first_run_description">Introduceți un nume, un subiect sau un cuvânt cheie pentru a căuta.</string>
+  <string name="content_search_first_run_description">Introduceți orice pentru a căuta privat…</string>
   <string name="content_search_results_title">Rezultate</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">Rezultate: %1$d</item>
@@ -68,7 +69,6 @@
   <string name="content_search_indexing_interrupted">Indexare întreruptă • %1$d %%</string>
   <string name="content_search_indexing_progress_content_description">Se indexează mesajele, %1$d %%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexare întreruptă, %1$d %%</string>
-  <string name="content_search_indexing_see_details">Afișare detalii</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Ștergeți permanent?</string>
   <string name="content_search_delete_dialog_message">Acest mesaj va fi șters permanent. Această acțiune nu poate fi inversată.</string>

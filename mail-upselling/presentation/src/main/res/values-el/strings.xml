@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Επιλέξτε το πλάνο σας</string>
   <string name="upselling_pu_whats_included">Τι περιλαμβάνεται</string>
   <string name="upselling_pu_cta">Αποκτήστε το Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Πληρώστε ετησίως και εξοικονομήστε %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Αλλάξτε τον κύκλο χρέωσής σας</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Εξοικονομήστε %s</string>
+  <string name="upselling_monthly_to_yearly_title">Κερδίστε σημαντικά με την ετήσια χρέωση</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Εξασφαλίστε μια έκπτωση στο %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 έτος</string>
+  <string name="upselling_monthly_to_yearly_currently">Τρέχουσα</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Πλάνο 12 μηνών</string>
+  <string name="upselling_monthly_to_yearly_cta">Αλλάξτε και εξοικονομήστε %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Παραμείνετε στη μηνιαία βάση</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Αναβαθμίστε την ιδιωτικότητά σας στο διαδίκτυο με το Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Προστατέψτε τον λογαριασμό σας από απειλές με το Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Premium πρόσβαση σε Mail, VPN, Drive, Pass και Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Απεριόριστα ψευδώνυμα για να αποκρύψετε την ταυτότητά σας</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Εξαιρετικά γρήγορο VPN με 110+ χώρες</string>
+  <string name="upselling_comparison_table_password_manager">Κρυπτογραφημένος διαχειριστής κωδικών πρόσβασης</string>
+  <string name="upselling_comparison_table_threat_protection">Προηγμένη προστασία απειλών</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Απεριόριστοι φάκελοι, φίλτρα, ετικέτες</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Επιλογή συνδρομής</string>

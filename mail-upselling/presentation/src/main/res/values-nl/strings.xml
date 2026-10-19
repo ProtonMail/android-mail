@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Kies uw abonnement</string>
   <string name="upselling_pu_whats_included">Wat is inbegrepen</string>
   <string name="upselling_pu_cta">Kies Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Betaal jaarlijks en bespaar %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Wijzig uw factureringscyclus</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Bespaar %s</string>
+  <string name="upselling_monthly_to_yearly_title">Bespaar flink met jaarlijkse facturering</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Verzeker u van een korting op %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 jaar</string>
+  <string name="upselling_monthly_to_yearly_currently">Momenteel</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Abonnement van 12 maanden</string>
+  <string name="upselling_monthly_to_yearly_cta">Wijzig en sla op %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Behoud maandelijks</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Verbeter uw online privacy verder met Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Bescherm uw account tegen bedreigingen met Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Premium toegang tot Mail, VPN, Drive, Pass en Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Onbeperkt aliassen om je identiteit te verbergen</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultrasnelle VPN in 110+ landen</string>
+  <string name="upselling_comparison_table_password_manager">Versleutelde wachtwoordbeheerder</string>
+  <string name="upselling_comparison_table_threat_protection">Geavanceerde bedreigingsbeveiliging</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Onbeperkt mappen, filters, labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonnement kiezen</string>

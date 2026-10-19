@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">För att du ska kunna söka efter meddelandeinnehåll kommer meddelanden att laddas ner på denna enhet.</string>
   <string name="mail_settings_content_search_learn_more">Lär dig mer …</string>
   <string name="mail_settings_content_search_toggle_title">Email content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Download using mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Use mobile data to continue downloads when Wi-Fi is lost.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Förbereder %1$d %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Väntar på Wi-Fi …</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
   <string name="mail_settings_content_search_on_this_device_section">På denna enhet</string>
   <string name="mail_settings_content_search_index_size">Index size</string>
-  <string name="mail_settings_content_search_clear_data_button">Rensa lokal sökdata</string>
+  <string name="mail_settings_content_search_clear_data_button">Rensa lokalt sökindex</string>
   <string name="mail_settings_content_search_clear_data_description">Om du rensar lokal sökdata kommer det att inaktivera innehållssökning för meddelanden. Du kan aktivera det igen när som helst.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokal sökdata</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Rensa lokalt sökindex</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Rensa data</string>
   <string name="content_search_bottomsheet_title">Mobile data usage</string>
   <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Starta indexering</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
+  <string name="content_search_no_results_title_for_query">Inga resultat för ”%1$s”</string>
   <string name="content_search_no_results_description">Prova andra nyckelord eller kontrollera din stavning.</string>
-  <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
+  <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
   <string name="content_search_no_results_learn_more">Lär dig mer …</string>
-  <string name="content_search_no_results_set_up_action">Set up content search</string>
+  <string name="content_search_no_results_set_up_action">Ställ in innehållssökning</string>
   <string name="content_search_failed_title">Sökning misslyckades</string>
   <string name="content_search_failed_description">Något gick fel. Försök igen.</string>
   <string name="content_search_failed_retry">Försök igen</string>
   <string name="content_search_set_up_banner_title">Sök inuti e-post också</string>
-  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
+  <string name="content_search_set_up_banner_description">Search the full text of your emails, not just senders and subjects.</string>
   <string name="content_search_set_up_banner_turn_on">Ställ in nu</string>
   <string name="content_search_set_up_banner_not_now">Inte nu</string>
   <string name="content_search_indexing_complete_banner_title">Allt klart!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Sök</string>
   <string name="content_search_clear_query_content_description">Rensa sökfråga</string>
   <string name="content_search_close_content_description">Stäng sök</string>
-  <string name="content_search_first_run_description">Skriv ett namn, ämne eller nyckelord för att söka</string>
+  <string name="content_search_first_run_description">Type anything to search privately…</string>
   <string name="content_search_results_title">Resultat</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Se detaljer</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Ta bort permanent?</string>
   <string name="content_search_delete_dialog_message">Dessa meddelanden kommer att tas bort permanent. Denna åtgärd kan inte ångras.</string>

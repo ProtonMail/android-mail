@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Alegeți planul</string>
   <string name="upselling_pu_whats_included">Ce este inclus</string>
   <string name="upselling_pu_cta">Luați Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Plătiți anual și economisiți %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Modificați-vă ciclul de facturare</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Economisiți %s</string>
+  <string name="upselling_monthly_to_yearly_title">Economisiți semnificativ cu facturare anuală</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Asigurați-vă o reducere la %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">Un an</string>
+  <string name="upselling_monthly_to_yearly_currently">Actual</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Plan 12 luni</string>
+  <string name="upselling_monthly_to_yearly_cta">Modificare și salvare %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Păstrare lunar</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Îmbunătățiți-vă confidențialitatea online cu Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Protejați-vă contul de amenințări cu Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Acces premium la Mail, VPN, Drive, Pass și Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Aliasuri nelimitate pentru a vă ascunde identitatea</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarapid cu peste 110 țări</string>
+  <string name="upselling_comparison_table_password_manager">Manager criptat de parole</string>
+  <string name="upselling_comparison_table_threat_protection">Protecție avansată împotriva amenințărilor</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Foldere, filtre și etichete nelimitate</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Alegere abonament</string>

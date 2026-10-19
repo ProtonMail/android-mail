@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">เพื่อให้สามารถค้นหาจากเนื้อหาข้อความได้ จะดาวน์โหลดข้อความลงบนอุปกรณ์นี้</string>
-  <string name="mail_settings_content_search_learn_more">เรียนรู้เพิ่มเติม..</string>
+  <string name="mail_settings_content_search_learn_more">Learn more…</string>
   <string name="mail_settings_content_search_toggle_title">Email content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">ดาวน์โหลดโดยใช้ข้อมูลมือถือ</string>
-  <string name="mail_settings_content_search_mobile_data_hint">ใช้ข้อมูลมือถือเพื่อดาวน์โหลดต่อเมื่อสัญญาณ Wi-Fi หลุด</string>
+  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">กำลังเตรียม %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">กำลังเตรียมการ…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">รอสัญญาณ Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
   <string name="mail_settings_content_search_on_this_device_section">On this device</string>
   <string name="mail_settings_content_search_index_size">Index size</string>
-  <string name="mail_settings_content_search_clear_data_button">ล้างข้อมูลการค้นหาในเครื่อง</string>
+  <string name="mail_settings_content_search_clear_data_button">Clear local search index</string>
   <string name="mail_settings_content_search_clear_data_description">การล้างข้อมูลการค้นหาในเครื่องจะปิดใช้งานการค้นหาเนื้อหาข้อความ สามารถเปิดกลับมาใช้งานได้ทุกเมื่อ</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">ล้างข้อมูลการค้นหาในเครื่อง</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search index</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">ข้อมูลการค้นหาในอุปกรณ์นี้จะถูกลบออก จะต้องดาวน์โหลดอีกครั้งเพื่อค้นหาเนื้อหาอีเมล</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">ล้างข้อมูล</string>
   <string name="content_search_bottomsheet_title">Mobile data usage</string>
   <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
   <string name="content_search_no_results_description">ลองใช้คำสำคัญอื่นหรือตรวจสอบตัวสะกด</string>
-  <string name="content_search_no_results_set_up_description">Turn on content search to look inside messages too.</string>
-  <string name="content_search_no_results_learn_more">Learn more..</string>
+  <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
+  <string name="content_search_no_results_learn_more">Learn more…</string>
   <string name="content_search_no_results_set_up_action">Set up content search</string>
   <string name="content_search_failed_title">Search failed</string>
   <string name="content_search_failed_description">Something went wrong. Please try again.</string>
   <string name="content_search_failed_retry">Try again</string>
   <string name="content_search_set_up_banner_title">Search inside emails too</string>
-  <string name="content_search_set_up_banner_description">Find words and phrases inside your emails, not just senders and subjects.</string>
+  <string name="content_search_set_up_banner_description">Search the full text of your emails, not just senders and subjects.</string>
   <string name="content_search_set_up_banner_turn_on">Set up now</string>
   <string name="content_search_set_up_banner_not_now">Not now</string>
   <string name="content_search_indexing_complete_banner_title">All done!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">ค้นหา</string>
   <string name="content_search_clear_query_content_description">ล้างคำค้นหา</string>
   <string name="content_search_close_content_description">ปิดการค้นหา</string>
-  <string name="content_search_first_run_description">พิมพ์ชื่อ หัวเรื่อง หรือคำสำคัญเพื่อค้นหา</string>
+  <string name="content_search_first_run_description">Type anything to search privately…</string>
   <string name="content_search_results_title">Results</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="other">%1$d Results</item>
@@ -66,7 +67,6 @@
   <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
-  <string name="content_search_indexing_see_details">See details</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">ลบถาวรหรือไม่</string>
   <string name="content_search_delete_dialog_message">ข้อความเหล่านี้จะถูกลบอย่างถาวร ไม่สามารถยกเลิกการดำเนินการนี้ได้</string>
