@@ -28,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,9 +54,13 @@ import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingInfin
 internal fun ComparisonTableEntitlement(
     uiModel: ComparisonTableEntitlementItemUiModel,
     colors: UpsellingVariantColors,
+    freeCellWidth: Dp,
     plusCellWidth: Dp,
+    onFreeCellPlaced: (Dp) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val localDensity = LocalDensity.current
+
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -82,7 +88,8 @@ internal fun ComparisonTableEntitlement(
 
         Text(
             modifier = Modifier
-                .widthIn(min = plusCellWidth)
+                .widthIn(min = freeCellWidth)
+                .onSizeChanged { with(localDensity) { onFreeCellPlaced(it.width.toDp()) } }
                 .align(Alignment.CenterVertically),
             text = freeText,
             style = ProtonTheme.typography.labelMedium,
@@ -134,7 +141,9 @@ private fun ComparisonTableEntitlementPreview() {
         ComparisonTableEntitlement(
             ComparisonTableEntitlements.MailPlusEntitlements.last(),
             colors = planUpgradeVariantColors(PlanUpgradeVariant.BlackFriday.Wave1),
-            plusCellWidth = 30.dp
+            freeCellWidth = 30.dp,
+            plusCellWidth = 30.dp,
+            onFreeCellPlaced = {}
         )
     }
 }
