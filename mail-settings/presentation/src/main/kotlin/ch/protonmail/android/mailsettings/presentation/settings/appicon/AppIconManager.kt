@@ -18,21 +18,18 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.appicon
 
-import android.content.Context
-import android.content.pm.PackageManager
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.model.AppIconData
-import ch.protonmail.android.mailsettings.presentation.settings.appicon.model.getComponentName
+import ch.protonmail.android.mailsettings.presentation.settings.appicon.model.activityAliasName
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.usecase.CreateLaunchIntent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 internal class AppIconManager @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+    private val activityAliasProxy: ActivityAliasProxy,
     private val appInformation: AppInformation,
     private val createLaunchIntent: CreateLaunchIntent,
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy
@@ -47,20 +44,10 @@ internal class AppIconManager @Inject constructor(
         val activityAliasPrefix = activityAliasPrefix()
 
         // Disable current icon
-        getCurrentIconData().let { currentIcon ->
-            appContext.packageManager.setComponentEnabledSetting(
-                currentIcon.getComponentName(activityAliasPrefix, appContext),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-        }
+        activityAliasProxy.setEnabled(getCurrentIconData().activityAliasName(activityAliasPrefix), enabled = false)
 
         // Enable new icon
-        appContext.packageManager.setComponentEnabledSetting(
-            desiredAppIcon.getComponentName(activityAliasPrefix, appContext),
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP
-        )
+        activityAliasProxy.setEnabled(desiredAppIcon.activityAliasName(activityAliasPrefix), enabled = true)
 
         currentIconState.value = desiredAppIcon
         createLaunchIntent.invalidateCache()
@@ -69,9 +56,7 @@ internal class AppIconManager @Inject constructor(
     fun getCurrentIconData(): AppIconData {
         val activityAliasPrefix = activityAliasPrefix()
         val activeIcon = AppIconData.ALL_ICONS.firstOrNull { iconData ->
-            appContext.packageManager.getComponentEnabledSetting(
-                iconData.getComponentName(activityAliasPrefix, appContext)
-            ) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            activityAliasProxy.isEnabled(iconData.activityAliasName(activityAliasPrefix))
         }
 
         return activeIcon ?: AppIconData.DEFAULT

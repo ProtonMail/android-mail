@@ -18,8 +18,11 @@
 
 package ch.protonmail.android.maildetail.presentation.usecase
 
+import android.content.Context
+import android.text.format.Formatter
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.print.GetPrintHeaderStyle
 import ch.protonmail.android.maildetail.presentation.usecase.print.GetPrintHeaderStyleError
@@ -30,25 +33,34 @@ import ch.protonmail.android.mailmessage.presentation.sample.AttachmentMetadataU
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.collections.immutable.toImmutableList
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@RunWith(RobolectricTestRunner::class)
 internal class PrintMessageHeaderBuilderTest {
 
     private lateinit var builder: PrintMessageHeaderBuilder
     private val getPrintHeaderStyle = mockk<GetPrintHeaderStyle>()
+    private val context = mockk<Context> {
+        every { getString(R.string.from) } returns "From:"
+        every { getString(R.string.to) } returns "To:"
+        every { getString(R.string.cc) } returns "Cc:"
+        every { getString(R.string.bcc) } returns "Bcc:"
+        every { getString(R.string.date) } returns "Date:"
+        every { resources.getQuantityString(R.plurals.attachment, 2, 2) } returns "2 Attachments"
+    }
 
     @BeforeTest
     fun setup() {
-        builder = PrintMessageHeaderBuilder(RuntimeEnvironment.getApplication().applicationContext, getPrintHeaderStyle)
+        mockkStatic(Formatter::class)
+        val attachmentsSize = AttachmentMetadataUiModelSamples.Invoice.size +
+            AttachmentMetadataUiModelSamples.Calendar.size
+        every { Formatter.formatShortFileSize(context, attachmentsSize) } returns "6.9 kB"
+        builder = PrintMessageHeaderBuilder(context, getPrintHeaderStyle)
     }
 
     @AfterTest

@@ -20,8 +20,10 @@ package ch.protonmail.android.mailsettings.presentation.appicon
 
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailsettings.presentation.settings.appicon.ActivityAliasProxy
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.AppIconManager
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.model.AppIconData
+import ch.protonmail.android.mailsettings.presentation.settings.appicon.model.activityAliasName
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.usecase.CreateLaunchIntent
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -30,20 +32,25 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@RunWith(RobolectricTestRunner::class)
 internal class AppIconManagerTest {
 
     private val mockAppInformation: AppInformation = mockk()
     private val mockCreateLaunchIntent: CreateLaunchIntent = mockk()
     private val mockNotificationManager: NotificationManagerCompatProxy = mockk()
+
+    // Stands in for PackageManager's component state.
+    private val enabledAliases = mutableSetOf<String>()
+    private val activityAliasProxy: ActivityAliasProxy = mockk {
+        every { isEnabled(any()) } answers { firstArg<String>() in enabledAliases }
+        every { setEnabled(any(), any()) } answers {
+            if (secondArg()) enabledAliases += firstArg<String>() else enabledAliases -= firstArg<String>()
+        }
+    }
 
     private lateinit var appIconManager: AppIconManager
 
@@ -54,7 +61,7 @@ internal class AppIconManagerTest {
         every { mockCreateLaunchIntent.invalidateCache() } just runs
 
         appIconManager = AppIconManager(
-            appContext = RuntimeEnvironment.getApplication().applicationContext,
+            activityAliasProxy = activityAliasProxy,
             appInformation = mockAppInformation,
             createLaunchIntent = mockCreateLaunchIntent,
             notificationManagerCompatProxy = mockNotificationManager
@@ -74,6 +81,18 @@ internal class AppIconManagerTest {
 
     @Test
     fun `getCurrentIconData returns enabled icon`() {
+        // Given
+        enabledAliases += NEW_ICON.activityAliasName(ALIAS_PREFIX)
+
+        // When
+        val currentIcon = appIconManager.getCurrentIconData()
+
+        // Then
+        assertEquals(NEW_ICON, currentIcon)
+    }
+
+    @Test
+    fun `getCurrentIconData falls back to the default icon when no alias is enabled`() {
         // When
         val currentIcon = appIconManager.getCurrentIconData()
 
@@ -83,12 +102,15 @@ internal class AppIconManagerTest {
 
     @Test
     fun `setNewAppIcon updates icon state and executes side effects`() = runTest {
+        // Given
+        enabledAliases += DEFAULT_ICON.activityAliasName(ALIAS_PREFIX)
+
         // When
         appIconManager.setNewAppIcon(NEW_ICON)
 
         // Then
-        val updatedIcon = appIconManager.getCurrentIconData()
-        assert(updatedIcon == NEW_ICON)
+        assertEquals(NEW_ICON, appIconManager.getCurrentIconData())
+        assertEquals(setOf(NEW_ICON.activityAliasName(ALIAS_PREFIX)), enabledAliases)
         verify { mockNotificationManager.dismissAllNotifications() }
         verify { mockCreateLaunchIntent.invalidateCache() }
     }
@@ -96,6 +118,7 @@ internal class AppIconManagerTest {
     private companion object {
 
         const val MOCK_FLAVOR = "dev"
+        const val ALIAS_PREFIX = "ch.protonmail.android.dev"
         val DEFAULT_ICON = AppIconData.DEFAULT
         val NEW_ICON = AppIconData.CALCULATOR
     }

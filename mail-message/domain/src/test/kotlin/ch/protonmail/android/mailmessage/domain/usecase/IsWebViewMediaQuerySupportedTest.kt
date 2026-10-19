@@ -19,6 +19,7 @@ package ch.protonmail.android.mailmessage.domain.usecase
 
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.net.Uri
 import androidx.webkit.WebViewCompat
 import io.mockk.every
 import io.mockk.mockk
@@ -26,13 +27,10 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import org.junit.After
 import org.junit.Before
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.test.assertFalse
 
-@RunWith(RobolectricTestRunner::class)
 class IsWebViewMediaQuerySupportedTest {
 
     private lateinit var context: Context
@@ -42,12 +40,15 @@ class IsWebViewMediaQuerySupportedTest {
     fun setUp() {
         context = mockk(relaxed = true)
         useCase = IsWebViewMediaQuerySupported(context)
+        // WebViewCompat's static initializer calls Uri.parse, a stub in the mockable android.jar.
+        mockkStatic(Uri::class)
+        every { Uri.parse(any()) } returns mockk()
         mockkStatic(WebViewCompat::class)
     }
 
     @After
     fun tearDown() {
-        unmockkStatic(WebViewCompat::class)
+        unmockkStatic(WebViewCompat::class, Uri::class)
     }
 
     @Test

@@ -18,9 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.appicon.model
 
-import android.content.ComponentName
-import android.content.Context
-
 internal data class AppIconData(
     val id: AppIconId,
     val componentName: String,
@@ -61,7 +58,4 @@ internal data class AppIconData(
     }
 }
 
-internal fun AppIconData.getComponentName(activityAliasPrefix: String, context: Context): ComponentName {
-    val applicationContext = context.applicationContext
-    return ComponentName(applicationContext, activityAliasPrefix + componentName)
-}
+internal fun AppIconData.activityAliasName(activityAliasPrefix: String): String = activityAliasPrefix + componentName

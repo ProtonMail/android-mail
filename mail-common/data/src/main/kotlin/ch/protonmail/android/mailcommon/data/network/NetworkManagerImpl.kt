@@ -78,21 +78,16 @@ class NetworkManagerImpl @Inject constructor(
 
         // The capabilities follow immediately, so there is nothing to publish yet.
         override fun onAvailable(network: Network) {
-            super.onAvailable(network)
             trackDescribedNetwork(network)
         }
 
         override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-            super.onCapabilitiesChanged(network, networkCapabilities)
-
             trackDescribedNetwork(network)
             describedStatus = networkCapabilities.toDescribedStatus()
             publish()
         }
 
         override fun onLost(network: Network) {
-            super.onLost(network)
-
             // Only if the network we hold is the one that went away. A handover can report the old
             // network as lost after the new one was described, and wiping on that reports
             // `Disconnected` over a live connection.
@@ -114,8 +109,6 @@ class NetworkManagerImpl @Inject constructor(
          * a block left over from a replaced network is cleared in [trackDescribedNetwork].
          */
         override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
-            super.onBlockedStatusChanged(network, blocked)
-
             accessBlocked = blocked
             publish()
         }

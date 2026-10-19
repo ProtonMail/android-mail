@@ -28,14 +28,11 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanU
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PromoKind
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
+import io.mockk.mockk
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@RunWith(RobolectricTestRunner::class)
 internal class PlanUpgradeInstanceUiModelMapperTest {
 
     private val getDiscountRate = GetDiscountRate()
@@ -45,7 +42,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
 
     @BeforeTest
     fun setup() {
-        context = RuntimeEnvironment.getApplication().applicationContext
+        context = mockk(relaxed = true)
         mapper = PlanUpgradeInstanceUiModelMapper(context, getDiscountRate, getYearlySaving)
     }
 

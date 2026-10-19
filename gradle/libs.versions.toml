@@ -71,7 +71,6 @@ paparazzi = "2.0.0-alpha02"
 proton-core = "36.4.2"
 proton-rust-core = "0.169.35"
 proton-android-payment = "1.5.0"
-robolectric = "4.15.1" # 4.16.0 requires Java 21
 kotlinpoet-ksp = "2.2.0"
 leakcanary = "2.14"
 okhttp = "5.3.2"
@@ -206,7 +205,6 @@ play-installreferrer = { module = "com.android.installreferrer:installreferrer",
 play-review-core = { module = "com.google.android.play:review", version.ref = "play-review" }
 play-review-ext = { module = "com.google.android.play:review-ktx", version.ref = "play-review" }
 plumber = { module = "com.squareup.leakcanary:plumber-android", version.ref = "leakcanary" }
-robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 zxing-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing-embedded" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 
@@ -354,7 +352,6 @@ test = [
     "kotlin-test-junit",
     "kotlin-coroutines-test",
     "mockk",
-    "robolectric",
     "proton-core-testAndroid",
     "proton-core-testKotlin"
 ]

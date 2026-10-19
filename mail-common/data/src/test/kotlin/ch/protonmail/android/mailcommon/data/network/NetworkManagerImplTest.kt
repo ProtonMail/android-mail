@@ -23,7 +23,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.os.Build
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.network.NetworkStatus
 import io.mockk.Runs
@@ -37,15 +36,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@RunWith(RobolectricTestRunner::class)
-@Config(minSdk = Build.VERSION_CODES.Q)
 internal class NetworkManagerImplTest {
 
     private val context = mockk<Context>()

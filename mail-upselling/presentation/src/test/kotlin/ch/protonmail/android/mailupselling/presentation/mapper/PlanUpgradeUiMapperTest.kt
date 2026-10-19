@@ -57,12 +57,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import java.math.BigDecimal
 
-@RunWith(RobolectricTestRunner::class)
 internal class PlanUpgradeUiMapperTest {
 
     private val iconUiMapper = mockk<PlanUpgradeIconUiMapper>()
@@ -107,7 +103,7 @@ internal class PlanUpgradeUiMapperTest {
             entitlementsUiMapper = entitlementsUiMapper
         )
 
-        context = RuntimeEnvironment.getApplication().applicationContext
+        context = mockk(relaxed = true)
     }
 
     @AfterTest
