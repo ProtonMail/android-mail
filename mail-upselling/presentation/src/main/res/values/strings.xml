@@ -129,6 +129,8 @@
     <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
     <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
     <string name="upselling_comparison_table_ultrafast_vpn">Ultrafast VPN with 110+ countries</string>
+    <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+    <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
     <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
     <string name="upselling_comparison_table_email_addresses_value_unlimited" translatable="false">15</string>
 

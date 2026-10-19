@@ -26,16 +26,19 @@ import ch.protonmail.android.mailupselling.domain.model.FallPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.FallPromoSupported
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
+import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SpringPromoSupported
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignSupported
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import me.proton.android.core.payment.domain.model.ProductOfferDetail
 import me.proton.android.core.payment.domain.model.filterForTags
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObservePlanUpgrades @Inject constructor(
@@ -46,11 +49,19 @@ class ObservePlanUpgrades @Inject constructor(
     private val getCurrentSummerCampaignPhase: GetCurrentSummerCampaignPhase,
     private val getCurrentFallPromoPhase: GetCurrentFallPromoPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
-    private val resolveUpsellVariant: ResolveUpsellVariant
+    private val resolveUpsellVariant: ResolveUpsellVariant,
+    private val upsellEligibilityRepository: UpsellEligibilityRepository
 ) {
 
     operator fun invoke(entryPoint: UpsellingEntryPoint.Feature) = observePrimaryUserId().flatMapLatest { userId ->
         userId ?: return@flatMapLatest flowOf(emptyList())
+
+        if (entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited && isPlusToUnlimitedBlackFriday(userId)) {
+            return@flatMapLatest cache.observe(userId).map { upgrades ->
+                upgrades.filterForTags(primaryTag = PlanUpgradeSupportedTags.BlackFriday.value)
+                    .filterForPlan(PlanUpgradeIds.UnlimitedPlanId)
+            }
+        }
 
         val flowSupportsBlackFriday = entryPoint is BlackFridaySupported
         val blackFridayPhase = getCurrentBlackFridayPhase()
@@ -105,6 +116,11 @@ class ObservePlanUpgrades @Inject constructor(
                 eligibleOffers.filterForPlan(targetPlan)
             }
         }
+    }
+
+    private suspend fun isPlusToUnlimitedBlackFriday(userId: UserId): Boolean {
+        val eligibility = upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId).getOrNull()
+        return eligibility == PlusToUnlimitedOffer.BlackFriday && isEligibleForBlackFridayPromotion(userId)
     }
 
     private fun BlackFridayPhase.targetPlan() = when (this) {

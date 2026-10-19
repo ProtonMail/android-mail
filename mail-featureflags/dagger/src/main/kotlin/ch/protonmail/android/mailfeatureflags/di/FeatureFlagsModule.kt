@@ -47,6 +47,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPur
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsShowRatingBoosterEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPlusToUnlimitedUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSpringOffer2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign2026Wave2Enabled
@@ -221,6 +222,12 @@ object FeatureFlagsModule {
     @IsFallPromo2026Wave2Enabled
     fun provideFallPromo2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = FallPromo2026Wave2Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsPlusToUnlimitedUpsellEnabled
+    fun providePlusToUnlimitedUpsellEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = PlusToUnlimitedUpsellExperiment.key, false)
 
     @Provides
     @Singleton

@@ -281,6 +281,13 @@ private fun UpsellingScreenContentBlackFriday_Wave2() {
     BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayWave2)
 }
 
+@Preview
+@AdaptivePreviews
+@Composable
+private fun BlackFriday_PlusToUnlimited() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayPlusToUnlimited)
+}
+
 @Preview(showSystemUi = true)
 @AdaptivePreviews
 @Composable

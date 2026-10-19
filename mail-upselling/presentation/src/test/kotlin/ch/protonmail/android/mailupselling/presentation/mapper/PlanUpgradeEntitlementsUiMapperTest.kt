@@ -167,6 +167,24 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
     }
 
     @Test
+    fun `should return the Plus to Unlimited black friday table for the plus-to-unlimited entry point`() {
+        // When
+        val actual = mapper.toTableUiModel(
+            PlanUpgradeVariant.BlackFriday.Wave1,
+            UpsellingEntryPoint.Feature.PlusUnlimited
+        )
+
+        // Then
+        assertEquals(
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = ComparisonTableEntitlements.PlusToUnlimitedEntitlements,
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+            ),
+            actual
+        )
+    }
+
+    @Test
     fun `should return the Unlimited promo table for black friday wave 1`() {
         // When
         val actual = mapper.toTableUiModel(PlanUpgradeVariant.BlackFriday.Wave1, UpsellingEntryPoint.Feature.Navbar)

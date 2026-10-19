@@ -42,6 +42,12 @@ class PlanUpgradeEntitlementsUiMapper @Inject constructor() {
         mapToComparisonTable(variant, entryPoint)
 
     private fun mapToComparisonTable(variant: PlanUpgradeVariant, entryPoint: UpsellingEntryPoint.Feature) = when {
+        entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited && variant is PlanUpgradeVariant.BlackFriday ->
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = PlusToUnlimitedEntitlements,
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+            )
+
         entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited ->
             PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
                 items = PlusToUnlimitedEntitlements,

@@ -238,27 +238,12 @@ internal object ComparisonTableEntitlements {
             paidValue = ComparisonTableEntitlement.Paid.Present
         ),
         ComparisonTableEntitlementItemUiModel(
-            title = TextUiModel.TextRes(R.string.upselling_comparison_table_premium_products),
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_password_manager),
             freeValue = ComparisonTableEntitlement.Free.NotPresent,
             paidValue = ComparisonTableEntitlement.Paid.Present
         ),
         ComparisonTableEntitlementItemUiModel(
-            title = TextUiModel.TextRes(R.string.upselling_comparison_table_dark_web_monitoring),
-            freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Paid.Present
-        ),
-        ComparisonTableEntitlementItemUiModel(
-            title = TextUiModel.TextRes(R.string.upselling_comparison_table_custom_email_domain),
-            freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Paid.Present
-        ),
-        ComparisonTableEntitlementItemUiModel(
-            title = TextUiModel.TextRes(R.string.upselling_comparison_table_desktop_app),
-            freeValue = ComparisonTableEntitlement.Free.NotPresent,
-            paidValue = ComparisonTableEntitlement.Paid.Present
-        ),
-        ComparisonTableEntitlementItemUiModel(
-            title = TextUiModel.TextRes(R.string.upselling_comparison_table_priority_support),
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_threat_protection),
             freeValue = ComparisonTableEntitlement.Free.NotPresent,
             paidValue = ComparisonTableEntitlement.Paid.Present
         )
