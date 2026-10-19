@@ -39,16 +39,16 @@
   <string name="upselling_pu_whats_included">Kaj je vključeno</string>
   <string name="upselling_pu_cta">Pridobite Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
-  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
-  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
-  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
-  <string name="upselling_monthly_to_yearly_currently">Currently</string>
-  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
+  <string name="upselling_monthly_to_yearly_row_title">Plačujte letno in prihranite %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Spremenite obračunsko obdobje.</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Prihranite %s</string>
+  <string name="upselling_monthly_to_yearly_title">Prihranite več z letnim plačilom.</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Zagotovite si popust v višini %s.</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 leto</string>
+  <string name="upselling_monthly_to_yearly_currently">Trenutno</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-mesečna naročnina</string>
+  <string name="upselling_monthly_to_yearly_cta">Spremenite paket in prihranite %s.</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Obdrži mesečno</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Nadgradite svojo spletno zasebnost s Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Zaščitite svoj račun pred grožnjami s Proton Sentinel</string>
@@ -115,8 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Premijski dostop do storitev Mail, VPN, Drive, Pass in Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Neomejeno število vzdevkov, s katerimi lahko skrijete identiteto</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Izredno hitri VPN v več kot 110 državah</string>
-  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
-  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
+  <string name="upselling_comparison_table_password_manager">Šifriran upravitelj gesel</string>
+  <string name="upselling_comparison_table_threat_protection">Napredna zaščita pred grožnjami</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomejeno število map, filtrov in oznak</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Izberite naročnino</string>

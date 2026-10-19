@@ -23,9 +23,9 @@
   <string name="mail_settings_content_search_indexing_description">Nejprve se indexují nejnovější e-maily. Veškeré indexované zprávy lze prohledávat již během indexování.</string>
   <string name="mail_settings_content_search_on_this_device_section">Na tomto zařízení</string>
   <string name="mail_settings_content_search_index_size">Velikost indexu</string>
-  <string name="mail_settings_content_search_clear_data_button">Smazat místní index vyhledávání</string>
+  <string name="mail_settings_content_search_clear_data_button">Vyčistit index místního vyhledávání</string>
   <string name="mail_settings_content_search_clear_data_description">Smazání dat z místního vyhledávání deaktivuje vyhledávání v obsahu zpráv. Tuto funkci můžete kdykoli znovu zapnout.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Smazat místní index vyhledávání</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Vyčistit index místního vyhledávání</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Data pro vyhledávání budou z tohoto zařízení smazána. Chcete-li prohledávat obsah e-mailů, budete je muset stáhnout znovu.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Smazat data</string>
   <string name="content_search_bottomsheet_title">Využití mobilních dat</string>
@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Vyčistit vyhledávací dotaz</string>
   <string name="content_search_close_content_description">Zavřít hledání</string>
   <string name="content_search_first_run_description">Napište cokoliv pro soukromé vyhledávání…</string>
-  <string name="content_search_results_title">Výsledky</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d výsledek</item>
     <item quantity="few">%1$d výsledky</item>

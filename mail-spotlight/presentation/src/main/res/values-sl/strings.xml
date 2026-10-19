@@ -52,23 +52,23 @@
   <string name="spotlight_screen_category_view_button_dismiss">Ohrani prejeto kot prej</string>
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Iskanje je postalo še boljše.</string>
-  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_subtitle">Najdite, kar potrebujete, ne da bi žrtvovali zasebnost.</string>
+  <string name="spotlight_screen_content_search_message_content_title">Zdaj je mogoče iskati po vsaki besedi.</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Poiščite sporočila po vsebini, ne le po zadevi ali pošiljatelju.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Še vedno šifrirano od konca do konca</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Indeksiranje se opravi na vaši napravi, šifrirano z vašim ključem. Protonu se ne pošlje nič.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Nadaljujte, kjer ste ostali</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Nedavna iskanja in njihove rezultate lahko hitro ponovite. Shranjeni so na vaši napravi, da se ohrani šifriranje od konca do konca.</string>
   <string name="spotlight_screen_whats_new_pill">Kaj je novega</string>
   <string name="spotlight_screen_content_search_button_continue">Nadaljuj</string>
   <string name="spotlight_screen_content_search_button_turn_on">Vklopi</string>
   <string name="spotlight_screen_content_search_button_not_now">Ne zdaj</string>
   <!-- How email content search works -->
   <string name="spotlight_screen_content_search_how_it_works_title">Kako deluje iskanje po vsebini</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Vaša e-poštna sporočila se prenesejo v ta telefon.</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Podatki iskalnega indeksa v tej napravi bodo odstranjeni. Če boste želeli znova iskati po vsebini e-poštnih sporočil, jih boste morali ponovno prenesti.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Zasebni indeks se ustvari neposredno v vaši napravi.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Na vaši napravi se lokalno ustvari lahek iskalni indeks. Predstavljajte si ga kot zemljevid, ki vam pomaga najti sporočila, ki jih iščete.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Indeksiranje se bo izvedlo v ozadju</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indeksiranje sporočil traja nekaj časa, vendar lahko e-pošto uporabljate kot običajno, medtem ko poteka v ozadju.</string>
 </resources>

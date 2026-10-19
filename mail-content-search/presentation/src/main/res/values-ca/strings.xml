@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Neteja la consulta de cerca</string>
   <string name="content_search_close_content_description">Tanca la cerca</string>
   <string name="content_search_first_run_description">Escriviu qualsevol text per a cercar de manera privada…</string>
-  <string name="content_search_results_title">Resultats</string>
+  <string name="content_search_results_searching">S\'està cercant…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
     <item quantity="other">%1$d resultats</item>

@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">검색 쿼리 삭제</string>
   <string name="content_search_close_content_description">검색 닫기</string>
   <string name="content_search_first_run_description">Type anything to search privately…</string>
-  <string name="content_search_results_title">결과</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="other">%1$d개 결과</item>
   </plurals>

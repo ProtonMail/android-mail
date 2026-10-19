@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Arama sorgusunu temizle</string>
   <string name="content_search_close_content_description">Aramayı kapat</string>
   <string name="content_search_first_run_description">Gizliliğinizi koruyarak aranacak bir şey yazın…</string>
-  <string name="content_search_results_title">Sonuçlar</string>
+  <string name="content_search_results_searching">Aranıyor…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d sonuç</item>
     <item quantity="other">%1$d sonuç</item>

@@ -46,7 +46,7 @@
   <string name="upselling_monthly_to_yearly_subtitle">Zajistit si slevu na %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 rok</string>
   <string name="upselling_monthly_to_yearly_currently">Aktuálně</string>
-  <string name="upselling_monthly_to_yearly_yearly_plan">12-měsíční tarif</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12měsíční tarif</string>
   <string name="upselling_monthly_to_yearly_cta">Změnit a uložit %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Ponechat měsíčně</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
