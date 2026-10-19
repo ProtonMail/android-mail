@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Ricerca nel contenuto delle email</string>
   <string name="mail_settings_content_search_description">Per consentirti di effettuare ricerche in base al contenuto dei messaggi, questi ultimi verranno scaricati su questo dispositivo.</string>
-  <string name="mail_settings_content_search_learn_more">Scopri di più..</string>
+  <string name="mail_settings_content_search_learn_more">Per saperne di più</string>
   <string name="mail_settings_content_search_toggle_title">Ricerca nel contenuto delle email</string>
-  <string name="mail_settings_content_search_mobile_data_title">Scarica tramite rete mobile</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Usa la rete mobile per continuare i download quando il Wi-Fi non è disponibile</string>
+  <string name="mail_settings_content_search_mobile_data_title">Consenti download tramite rete dati</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Il download continua tramite rete dati se viene persa la connessione Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Preparazione di %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparazione in corso…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">In attesa di una rete Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Le email più recenti vengono indicizzate per prime. Tutti i messaggi indicizzati sono ricercabili mentre l\'indicizzazione è in corso.</string>
   <string name="mail_settings_content_search_on_this_device_section">Su questo dispositivo</string>
   <string name="mail_settings_content_search_index_size">Dimensione indice</string>
-  <string name="mail_settings_content_search_clear_data_button">Cancella dati della ricerca locale</string>
+  <string name="mail_settings_content_search_clear_data_button">Cancella l\'indice di ricerca locale</string>
   <string name="mail_settings_content_search_clear_data_description">La cancellazione dei dati della ricerca locale disattiverà la ricerca contenuto dei messaggi. Puoi riattivarla in qualsiasi momento.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Cancella i dati della ricerca locale</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Cancella l\'indice di ricerca locale</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">I dati di ricerca su questo dispositivo verranno rimossi. Dovrai scaricarli nuovamente per poter cercare nel contenuto delle email.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Cancella la cache</string>
   <string name="content_search_bottomsheet_title">Utilizzo dati mobili</string>
   <string name="content_search_bottomsheet_description">Le tue email verranno scaricate per attivare la ricerca privata.</string>
   <string name="content_search_bottomsheet_start_indexing">Avvia l\'indicizzazione</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Usa i dati mobili</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Nessun risultato per \"%1$s\"</string>
   <string name="content_search_no_results_description">Prova parole chiave diverse o controlla l\'ortografia.</string>
-  <string name="content_search_no_results_set_up_description">Attiva la ricerca nei contenuti per cercare anche all\'interno dei messaggi.</string>
-  <string name="content_search_no_results_learn_more">Scopri di più..</string>
+  <string name="content_search_no_results_set_up_description">Abbiamo effettuato la ricerca solo negli oggetti e nei mittenti. Abilita la ricerca nel contenuto per cercare anche all\'interno delle email.</string>
+  <string name="content_search_no_results_learn_more">Per saperne di più</string>
   <string name="content_search_no_results_set_up_action">Configura la ricerca di contenuti</string>
   <string name="content_search_failed_title">Ricerca non riuscita</string>
   <string name="content_search_failed_description">Qualcosa è andato storto. Riprova.</string>
   <string name="content_search_failed_retry">Riprova</string>
   <string name="content_search_set_up_banner_title">Cerca anche all\'interno delle email</string>
-  <string name="content_search_set_up_banner_description">Trova parole e frasi all\'interno delle tue email, non solo mittenti e oggetti.</string>
+  <string name="content_search_set_up_banner_description">Cerca nel testo completo delle tue email, non solo tra mittenti e oggetti.</string>
   <string name="content_search_set_up_banner_turn_on">Configura adesso</string>
   <string name="content_search_set_up_banner_not_now">Non adesso</string>
   <string name="content_search_indexing_complete_banner_title">Tutto fatto!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Cerca</string>
   <string name="content_search_clear_query_content_description">Cancella la parola chiave</string>
   <string name="content_search_close_content_description">Chiudi ricerca</string>
-  <string name="content_search_first_run_description">Digita un nome, un oggetto o una parola chiave per cercare</string>
+  <string name="content_search_first_run_description">Digita qualsiasi cosa per cercare in privato…</string>
   <string name="content_search_results_title">Risultati</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Risultato</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">Indicizzazione interrotta • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indicizzazione della posta, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indicizzazione interrotta, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Vedi dettagli</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Eliminare definitivamente?</string>
   <string name="content_search_delete_dialog_message">Questi messaggi verranno eliminati definitivamente. Questa azione non può essere annullata.</string>

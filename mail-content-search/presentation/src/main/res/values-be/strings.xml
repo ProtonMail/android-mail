@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Шукаць па змесціве ў лісце</string>
   <string name="mail_settings_content_search_description">Паведамленні будуць спампаваныя на гэту прыладу, каб вы маглі шукаць па іх змесціве.</string>
-  <string name="mail_settings_content_search_learn_more">Даведацца больш..</string>
+  <string name="mail_settings_content_search_learn_more">Даведацца больш…</string>
   <string name="mail_settings_content_search_toggle_title">Шукаць па змесціве ў лісце</string>
-  <string name="mail_settings_content_search_mobile_data_title">Спампоўванне з дапамогай мабільных даных</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Выкарыстоўвайце мабільныя даныя, каб працягнуць спампоўванне пры адсутнасці сеткі Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Дазволіць спампоўванне праз мабільныя даныя</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Спампоўванне будзе працягнута праз мабільныя даныя, калі сетка Wi-Fi стане недаступнай.</string>
   <string name="mail_settings_content_search_syncing_status">Падрыхтоўка %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Падрыхтоўка…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Чаканне Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Нядаўнія лісты будуць праіндэксаваны першымі. Усе праіндэксаваныя паведамленні даступны для пошуку, пакуль ідзе індэксацыя.</string>
   <string name="mail_settings_content_search_on_this_device_section">На гэтай прыладзе</string>
   <string name="mail_settings_content_search_index_size">Памер індэкса</string>
-  <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальныя даныя пошуку</string>
+  <string name="mail_settings_content_search_clear_data_button">Ачысціць лакальны індэкс пошуку?</string>
   <string name="mail_settings_content_search_clear_data_description">Ачыстка лакальных даных пошуку адключыць пошук па змесціве. Вы можаце зноў змяніць налады пошуку ў любы час.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальныя даныя пошуку</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Ачысціць лакальны індэкс пошуку?</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Даныя пошуку на гэтай прыладзе будуць выдалены. Вам спатрэбіцца спампаваць іх паўторна, каб шукаць па змесціве ў лісце.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Ачысціць даныя</string>
   <string name="content_search_bottomsheet_title">Выкарыстанне мабільных даных</string>
   <string name="content_search_bottomsheet_description">Ваш лісты будуць спампаваны, каб уключыць прыватны пошук.</string>
   <string name="content_search_bottomsheet_start_indexing">Пачаць індэксацыю</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Выкарыстанне мабільных даных</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Нічога не знойдзена для \"%1$s\"</string>
   <string name="content_search_no_results_description">Паспрабуйце іншыя ключавыя словы або праверце правапіс.</string>
-  <string name="content_search_no_results_set_up_description">Уключыце пошук па змесціве, каб шукаць таксама ўнутры паведамленняў.</string>
-  <string name="content_search_no_results_learn_more">Даведацца больш...</string>
+  <string name="content_search_no_results_set_up_description">Цяпер можна шукаць па тэме і адпраўніку. Уключыце пошук па змесціве, каб шукаць таксама ўнутры лістоў.</string>
+  <string name="content_search_no_results_learn_more">Даведацца больш…</string>
   <string name="content_search_no_results_set_up_action">Наладзіць пошук па змесціве</string>
   <string name="content_search_failed_title">Не ўдалося знайсці</string>
   <string name="content_search_failed_description">Нешта пайшло не так. Паўтарыце спробу.</string>
   <string name="content_search_failed_retry">Паўтарыце спробу</string>
   <string name="content_search_set_up_banner_title">Таксама даступны пошук унутры ліста</string>
-  <string name="content_search_set_up_banner_description">Пошук слоў і фраз унутры ліста, а не толькі па адпраўніку і тэме.</string>
+  <string name="content_search_set_up_banner_description">Шукайце па поўным тэксце вашых лістоў, а не толькі па адпраўніку і тэме.</string>
   <string name="content_search_set_up_banner_turn_on">Наладзіць</string>
   <string name="content_search_set_up_banner_not_now">Не цяпер</string>
   <string name="content_search_indexing_complete_banner_title">Усё гатова!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Пошук</string>
   <string name="content_search_clear_query_content_description">Ачысціць пошукавы запыт</string>
   <string name="content_search_close_content_description">Закрыць пошук</string>
-  <string name="content_search_first_run_description">Увядзіце назву, тэму або ключавое слова для пошуку</string>
+  <string name="content_search_first_run_description">Увядзіце што-небудзь для прыватнага пошуку…</string>
   <string name="content_search_results_title">Вынікі</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d вынік</item>
@@ -69,7 +70,6 @@
   <string name="content_search_indexing_interrupted">Індэксацыя перарвана • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Індэксацыя лістоў, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Індэксацыя перарвана, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Паглядзець падрабязнасці</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Выдаліць незваротна?</string>
   <string name="content_search_delete_dialog_message">Гэтыя паведамленні будуць незваротна выдалены. Гэта дзеянне немагчыма будзе адрабіць.</string>

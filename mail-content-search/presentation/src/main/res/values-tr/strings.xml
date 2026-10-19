@@ -4,8 +4,8 @@
   <string name="mail_settings_content_search_description">İleti içeriğine göre arama yapabilmek için iletiler bu aygıta indirilecek.</string>
   <string name="mail_settings_content_search_learn_more">Ayrıntılı bilgi alın…</string>
   <string name="mail_settings_content_search_toggle_title">E-posta içeriği arama</string>
-  <string name="mail_settings_content_search_mobile_data_title">Mobil veri ile indir</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı olmadığında indirmeleri sürdürmek için mobil veriyi kullanır.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Mobil veri ile indirmeye izin ver</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi bağlantısı kesilirse indirme işlemi mobil veri ile sürdürülür.</string>
   <string name="mail_settings_content_search_syncing_status">Hazırlanıyor %1$d[%1$i]…</string>
   <string name="mail_settings_content_search_preparing_status">Hazırlanıyor…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi bekleniyor…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">İlk olarak son gelen e-postalar dizine eklenir. Dizin oluşturma işlemi sürerken dizine eklenmiş tüm iletiler aranabilir.</string>
   <string name="mail_settings_content_search_on_this_device_section">Bu aygıtta</string>
   <string name="mail_settings_content_search_index_size">Dizin boyutu</string>
-  <string name="mail_settings_content_search_clear_data_button">Yerel arama verilerini sil</string>
+  <string name="mail_settings_content_search_clear_data_button">Yerel arama dizinini temizle</string>
   <string name="mail_settings_content_search_clear_data_description">Yerel arama verilerini silmek ileti içeriği aramasını kapatır. Bu özelliği istediğiniz zaman yeniden açabilirsiniz.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Yerel arama verilerini temizle</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Yerel arama dizinini temizle</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Bu aygıt üzerindeki arama verileri kaldırılacak. Gelişmiş e-posta içeriğini arama özelliğini kullanabilmek için verileri yeniden indirmeniz gerekecek.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Verileri temizle</string>
   <string name="content_search_bottomsheet_title">Mobil veri kullanımı</string>
   <string name="content_search_bottomsheet_description">Gizliliği koruyan aramayı açmak için e-postalarınız indirilecek.</string>
   <string name="content_search_bottomsheet_start_indexing">Dizin oluşturmayı başlat</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Mobil veri kullanılsın</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">\"%1$s\" için bir sonuç yok</string>
   <string name="content_search_no_results_description">Farklı anahtar sözcükler deneyin veya yazımınızı denetleyin.</string>
-  <string name="content_search_no_results_set_up_description">İletilerin içeriklerinin de aranması için içerik aramasını açın.</string>
+  <string name="content_search_no_results_set_up_description">Yalnızca konular ve göndericiler arandı. E-postaların içeriklerini de aramak için içerik aramayı açın.</string>
   <string name="content_search_no_results_learn_more">Ayrıntılı bilgi alın…</string>
   <string name="content_search_no_results_set_up_action">İçerik aramayı kurun</string>
   <string name="content_search_failed_title">Arama yapılamadı</string>
   <string name="content_search_failed_description">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
   <string name="content_search_failed_retry">Yeniden dene</string>
   <string name="content_search_set_up_banner_title">E-postaların içerikleri de aranabilsin</string>
-  <string name="content_search_set_up_banner_description">E-postalarınızda yalnızca göndericileri ve konuları değil, içindeki sözcükleri ve ifadeleri de bulun.</string>
+  <string name="content_search_set_up_banner_description">E-postalarınızın yalnızca göndericilerini ve konularını değil içeriklerini de arayın.</string>
   <string name="content_search_set_up_banner_turn_on">Şimdi kur</string>
   <string name="content_search_set_up_banner_not_now">Şimdi değil</string>
   <string name="content_search_indexing_complete_banner_title">Her şey tamam!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Ara</string>
   <string name="content_search_clear_query_content_description">Arama sorgusunu temizle</string>
   <string name="content_search_close_content_description">Aramayı kapat</string>
-  <string name="content_search_first_run_description">Aranacak bir ad, konu veya anahtar sözcük yazın</string>
+  <string name="content_search_first_run_description">Gizliliğinizi koruyarak aranacak bir şey yazın…</string>
   <string name="content_search_results_title">Sonuçlar</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d sonuç</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">Dizin oluşturma duraklatıldı • %1$d[%1$i]</string>
   <string name="content_search_indexing_progress_content_description">E-posta dizini hazırlanıyor, %1$d[%1$i]</string>
   <string name="content_search_indexing_interrupted_content_description">Dizin oluşturma duraklatıldı • %1$d[%1$i]</string>
-  <string name="content_search_indexing_see_details">Ayrıntıları görüntüle</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Kalıcı olarak silinsin mi?</string>
   <string name="content_search_delete_dialog_message">Bu iletiler kalıcı olarak silinecek. Bu işlem geri alınamaz.</string>

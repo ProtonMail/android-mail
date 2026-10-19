@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">选择您的套餐</string>
   <string name="upselling_pu_whats_included">包含内容</string>
   <string name="upselling_pu_cta">开通 Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">使用 Proton Unlimited，进一步提升在线隐私</string>
   <string name="upselling_pu_threat_protection_title">使用 Proton Sentinel 保护您的帐户免受威胁</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
   <string name="upselling_comparison_table_ultrafast_vpn">覆盖 110 多个国家/地区的超快 VPN</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">选择套餐</string>

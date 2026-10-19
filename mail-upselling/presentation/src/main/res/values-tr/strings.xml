@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Tarifenizi seçin</string>
   <string name="upselling_pu_whats_included">Neler bulunuyor</string>
   <string name="upselling_pu_cta">Proton Unlimited edinin</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Yıllık ödeyin ve %s kazanç sağlayın</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Faturala döneminizi değiştirin</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">%s kazanın</string>
+  <string name="upselling_monthly_to_yearly_title">Yıllık faturalama ile büyük kazanç sağlayın</string>
+  <string name="upselling_monthly_to_yearly_subtitle">%s için indirim alın</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 yıl</string>
+  <string name="upselling_monthly_to_yearly_currently">Şu anda</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12 aylık tarife</string>
+  <string name="upselling_monthly_to_yearly_cta">Değiştir ve %s kazanç sağla</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Aylık tarifede kal</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimited ile çevrim içi gizliliğinizi bir adım öteye taşıyın</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinel ile hesabınızı tehditlere karşı koruyun</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Ücretli Mail, VPN, Drive, Pass ve Calendar uygulamalarına erişim</string>
   <string name="upselling_comparison_table_unlimited_aliases">Kimliğinizi gizlemek için sınırsız sayıda takma ad</string>
   <string name="upselling_comparison_table_ultrafast_vpn">110 üzerinde ülkede Ultra hızlı VPN</string>
+  <string name="upselling_comparison_table_password_manager">Şifrelenmiş parola yöneticisi</string>
+  <string name="upselling_comparison_table_threat_protection">Gelişmiş tehdit koruması</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Sınırsız sayıda klasör, süzgeç ve etiket</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonelik seçin</string>

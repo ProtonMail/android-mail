@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Выберыце свой тарыфны план</string>
   <string name="upselling_pu_whats_included">Што ўключана</string>
   <string name="upselling_pu_cta">Атрымаць Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Плаціце штогод і эканомце %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Змяніце перыяд аплаты</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Эканомія %s</string>
+  <string name="upselling_monthly_to_yearly_title">Эканомце яшчэ больш са штогадовай аплатай</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Атрымайце скідку ў памеры %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 год</string>
+  <string name="upselling_monthly_to_yearly_currently">Бягучая</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Тарыфны план на 12 месяцаў</string>
+  <string name="upselling_monthly_to_yearly_cta">Змяніце і зэканомце %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Застацца на памесячнай аплаце</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Палепшыце сваю прыватнасць у інтэрнэце з Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Абараніце свой уліковы запіс ад пагроз з дапамогай Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Прэміяльны доступ да Mail, VPN, Drive, Pass і Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Неабмежаваная колькасць псеўданімаў, каб схаваць вашу ідэнтычнасць</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Звышхуткі VPN у больш чым 110 краінах свету</string>
+  <string name="upselling_comparison_table_password_manager">Зашыфраваны менеджар пароляў</string>
+  <string name="upselling_comparison_table_threat_protection">Пашыраная абарона ад пагроз</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Неабмежаваная колькасць папак, фільтраў і метак</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Выберыце падпіску</string>

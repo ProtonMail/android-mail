@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Välj ditt paket</string>
   <string name="upselling_pu_whats_included">Vad som är inkluderat</string>
   <string name="upselling_pu_cta">Skaffa Proton Unlimited</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Betala årligen och spara %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Spara %s</string>
+  <string name="upselling_monthly_to_yearly_title">Spara stort med årlig fakturering</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 år</string>
+  <string name="upselling_monthly_to_yearly_currently">Nuvarande</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Ändra och spara %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Ta din integritet online ett steg längre med Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Skydda ditt konto från hot med Proton Sentinel</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Premiumåtkomst till Mail, VPN, Drive, Pass och Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Obegränsade alias för att dölja din identitet</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultrasnabb VPN med över 110 länder</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Avancerat hotskydd</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Obegränsat antal mappar, filter, etiketter</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Välj prenumeration</string>

@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Cerca al contingut dels correus electrònics</string>
   <string name="mail_settings_content_search_description">Per tal que pugueu cercar al contingut dels missatges, aquests es baixaran al dispositiu.</string>
-  <string name="mail_settings_content_search_learn_more">Més informació..</string>
+  <string name="mail_settings_content_search_learn_more">Més informació…</string>
   <string name="mail_settings_content_search_toggle_title">Cerca al contingut dels correus electrònics</string>
-  <string name="mail_settings_content_search_mobile_data_title">Descarrega amb dades mòbils</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Utilitzeu les dades mòbils per continuar les descàrregues quan es perdi la connexió Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Permet la descàrrega mitjançant dades mòbils</string>
+  <string name="mail_settings_content_search_mobile_data_hint">La descàrrega continuarà mitjançant dades mòbils si es perd la connexió Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">S\'està esperant la connexió Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Els correus electrònics recents s\'indexen primer. Es pot cercar en tots els missatges indexats mentre s\'estan indexant.</string>
   <string name="mail_settings_content_search_on_this_device_section">En aquest dispositiu</string>
   <string name="mail_settings_content_search_index_size">Mida de l\'índex</string>
-  <string name="mail_settings_content_search_clear_data_button">Neteja les dades de cerca local</string>
+  <string name="mail_settings_content_search_clear_data_button">Neteja l\'índex de cerca local</string>
   <string name="mail_settings_content_search_clear_data_description">Si netegeu les dades de cerca local, es desactivarà la cerca del contingut dels missatges. Podeu tornar-la a activar en qualsevol moment.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Neteja les dades de cerca local</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Neteja l\'índex de cerca local</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Se suprimiran les dades de cerca d\'aquest dispositiu. Haureu de tornar-les a baixar per a cercar al contingut del correu electrònic.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Neteja les dades</string>
   <string name="content_search_bottomsheet_title">Ús de dades mòbils</string>
   <string name="content_search_bottomsheet_description">Els vostres correus electrònics es descarregaran per permetre la cerca privada.</string>
   <string name="content_search_bottomsheet_start_indexing">Inicia la indexació</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Utilitza dades mòbils</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">No s\'han trobat resultats per a \"%1$s\"</string>
   <string name="content_search_no_results_description">Proveu amb paraules clau diferents o comproveu l\'ortografia.</string>
-  <string name="content_search_no_results_set_up_description">Activeu la cerca de contingut per a cercar també dins dels missatges.</string>
-  <string name="content_search_no_results_learn_more">Més informació...</string>
+  <string name="content_search_no_results_set_up_description">Només s\'ha cercat als assumptes i als remitents. Activeu la cerca de contingut per a cercar també a l\'interior dels correus electrònics.</string>
+  <string name="content_search_no_results_learn_more">Més informació…</string>
   <string name="content_search_no_results_set_up_action">Configureu la cerca de contingut</string>
   <string name="content_search_failed_title">S\'ha produït un error en la cerca</string>
   <string name="content_search_failed_description">S\'ha produït un error. Torneu-ho a provar.</string>
   <string name="content_search_failed_retry">Torneu-ho a provar</string>
   <string name="content_search_set_up_banner_title">Cerqueu també dins dels correus electrònics</string>
-  <string name="content_search_set_up_banner_description">Trobeu paraules i frases dins dels correus electrònics, no només remitents i assumptes.</string>
+  <string name="content_search_set_up_banner_description">Cerqueu al text complet dels correus electrònics, no només als remitents i als assumptes.</string>
   <string name="content_search_set_up_banner_turn_on">Configureu-ho ara</string>
   <string name="content_search_set_up_banner_not_now">Ara no</string>
   <string name="content_search_indexing_complete_banner_title">Tot fet!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Cerca</string>
   <string name="content_search_clear_query_content_description">Neteja la consulta de cerca</string>
   <string name="content_search_close_content_description">Tanca la cerca</string>
-  <string name="content_search_first_run_description">Escriviu un nom, assumpte o paraula clau per a cercar</string>
+  <string name="content_search_first_run_description">Escriviu qualsevol text per a cercar de manera privada…</string>
   <string name="content_search_results_title">Resultats</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">S\'ha interromput la indexació • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">S\'està indexant el correu, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">S\'ha interromput la indexació, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Mostra els detalls</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Voleu eliminar-ho permanentment?</string>
   <string name="content_search_delete_dialog_message">Aquests missatges s\'eliminaran permanentment. Aquesta acció no es pot desfer.</string>

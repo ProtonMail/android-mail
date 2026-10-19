@@ -36,7 +36,7 @@
   <string name="spotlight_screen_category_view_unread_filter_subtitle">Daha kolay erişilmesi için sayfanın altına taşındı.</string>
   <string name="spotlight_screen_category_view_unread_filter_subtitle_b2b">Daha kolay erişim için yeni görünüm ve konumlandırma.</string>
   <string name="spotlight_screen_category_view_categories_title">E-posta kategorileri</string>
-  <string name="spotlight_screen_category_view_categories_subtitle">E-postaların size yardımcı olacak şekilde sınıflandırılmasını sağlayın.</string>
+  <string name="spotlight_screen_category_view_categories_subtitle">İşinizi kolaylaştırmak için e-postaları sınıflandırın.</string>
   <string name="spotlight_screen_category_view_categories_subtitle_b2b">Gelen e-postaların otomatik olarak sıralanması.</string>
   <string name="spotlight_screen_category_view_main_b2c_title">Okunmamış iletilere ulaşmak artık daha kolay</string>
   <string name="spotlight_screen_category_view_main_b2c_subtitle">Okunmamış iletiler süzgeci artık gelen kutunuzun altında bulunuyor. Böylece tüm e-postalara ve okunmamış iletilere daha kolay erişebilir ve bunlar arasında geçiş yapabilirsiniz.</string>

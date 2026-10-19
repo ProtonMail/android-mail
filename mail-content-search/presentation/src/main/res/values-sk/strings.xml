@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Vyhľadávanie v obsahu emailov</string>
   <string name="mail_settings_content_search_description">Aby ste mohli vyhľadávať podľa obsahu správ, správy sa stiahnu do tohto zariadenia.</string>
-  <string name="mail_settings_content_search_learn_more">Zistiť viac..</string>
+  <string name="mail_settings_content_search_learn_more">Zistiť viac…</string>
   <string name="mail_settings_content_search_toggle_title">Vyhľadávanie v obsahu emailov</string>
-  <string name="mail_settings_content_search_mobile_data_title">Stiahnuť cez mobilné dáta</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Použiť mobilné dáta na pokračovanie v sťahovaní v prípade výpadku Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Povoliť sťahovanie cez mobilné dáta</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Ak dôjde k prerušeniu pripojenia cez Wi-Fi, sťahovanie pokračuje cez mobilné dáta.</string>
   <string name="mail_settings_content_search_syncing_status">Príprava %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Príprava…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čakám na Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Najnovšie emaily sa indexujú ako prvé. Všetky indexované správy je možné vyhľadávať už počas prebiehajúceho indexovania.</string>
   <string name="mail_settings_content_search_on_this_device_section">V tomto zariadení</string>
   <string name="mail_settings_content_search_index_size">Veľkosť indexu</string>
-  <string name="mail_settings_content_search_clear_data_button">Vymazať údaje z lokálneho vyhľadávania</string>
+  <string name="mail_settings_content_search_clear_data_button">Vyčistiť index lokálneho vyhľadávania</string>
   <string name="mail_settings_content_search_clear_data_description">Vymazaním údajov z lokálneho vyhľadávania sa deaktivuje vyhľadávanie v obsahu správ. Túto funkciu môžete kedykoľvek opäť zapnúť.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Vymazať údaje z lokálneho vyhľadávania</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Vyčistiť index lokálneho vyhľadávania</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Údaje vyhľadávania na tomto zariadení budú odstránené. Pre vyhľadávanie v obsahu emailov ich budete musieť stiahnuť znova.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Vymazať údaje</string>
   <string name="content_search_bottomsheet_title">Spotreba mobilných dát</string>
   <string name="content_search_bottomsheet_description">Vaše emaily sa stiahnu, aby bolo možné vyhľadávanie v súkromí.</string>
   <string name="content_search_bottomsheet_start_indexing">Spustiť indexovanie</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Použiť mobilné dáta</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Žiadne výsledky pre \"%1$s\"</string>
   <string name="content_search_no_results_description">Skúste použiť iné kľúčové slová alebo skontrolujte pravopis.</string>
-  <string name="content_search_no_results_set_up_description">Zapnite vyhľadávanie obsahu, aby ste mohli prehľadávať aj obsah správ.</string>
-  <string name="content_search_no_results_learn_more">Zistiť viac..</string>
+  <string name="content_search_no_results_set_up_description">Vyhľadávali sme len v predmetoch a odosielateľoch. Ak chcete vyhľadávať aj v texte emailov, aktivujte vyhľadávanie v obsahu.</string>
+  <string name="content_search_no_results_learn_more">Zistiť viac…</string>
   <string name="content_search_no_results_set_up_action">Nastaviť vyhľadávanie v obsahu</string>
   <string name="content_search_failed_title">Vyhľadávanie zlyhalo</string>
   <string name="content_search_failed_description">Niečo sa pokazilo. Skúste to znova, prosím.</string>
   <string name="content_search_failed_retry">Skúste to znova</string>
   <string name="content_search_set_up_banner_title">Vyhľadávajte aj v obsahu emailov</string>
-  <string name="content_search_set_up_banner_description">Vyhľadávajte slová a frázy priamo v emailoch, nielen v menách odosielateľov a predmetoch správ.</string>
+  <string name="content_search_set_up_banner_description">Vyhľadávajte v plnom texte svojich e-mailov, nielen podľa odosielateľov a predmetov.</string>
   <string name="content_search_set_up_banner_turn_on">Nastaviť teraz</string>
   <string name="content_search_set_up_banner_not_now">Teraz nie</string>
   <string name="content_search_indexing_complete_banner_title">Hotovo!</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Hľadať</string>
   <string name="content_search_clear_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
   <string name="content_search_close_content_description">Zavrieť vyhľadávanie</string>
-  <string name="content_search_first_run_description">Do vyhľadávania zadajte názov, tému alebo kľúčové slovo</string>
+  <string name="content_search_first_run_description">Napíšte čokoľvek a vyhľadávajte súkromne…</string>
   <string name="content_search_results_title">Výsledky</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d výsledok</item>
@@ -69,7 +70,6 @@
   <string name="content_search_indexing_interrupted">Indexovanie prerušené • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indexovanie emailov, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexovanie prerušené, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Zobraziť podrobnosti</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Vymazať natrvalo?</string>
   <string name="content_search_delete_dialog_message">Tieto správy budú natrvalo vymazané. Túto akciu nie je možné vrátiť späť.</string>

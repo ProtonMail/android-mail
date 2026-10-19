@@ -38,6 +38,17 @@
   <string name="upselling_pu_choose_plan">Abonnement wählen</string>
   <string name="upselling_pu_whats_included">Was ist enthalten?</string>
   <string name="upselling_pu_cta">Proton Unlimited holen</string>
+  <!-- Upselling: Monthly to Yearly -->
+  <string name="upselling_monthly_to_yearly_row_title">Spare bei jährlicher Zahlungsweise %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Abrechnungszeitraum ändern</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Spare %s</string>
+  <string name="upselling_monthly_to_yearly_title">Spare viel Geld mit einer jährlichen Abrechnung</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Sichere dir einen Rabatt auf %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 Jahr</string>
+  <string name="upselling_monthly_to_yearly_currently">Aktuell</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-Monats-Abonnement</string>
+  <string name="upselling_monthly_to_yearly_cta">Ändern und %s sparen</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Bei monatlicher Abrechnung bleiben</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Sichere deine Privatsphäre im Internet noch besser mit Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Schütze dein Konto vor Bedrohungen mit dem Hochsicherheitsprogramm „Proton Sentinel“</string>
@@ -104,6 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Premium-Zugang zu Mail, VPN, Drive, Pass und Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Unbegrenzte Aliase, um deine Identität zu verbergen</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultraschnelles VPN mit Zugang zu mehr als 110 Ländern</string>
+  <string name="upselling_comparison_table_password_manager">Verschlüsselte Passwortverwaltung</string>
+  <string name="upselling_comparison_table_threat_protection">Erweiterter Bedrohungsschutz</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unbegrenzte Ordner, Filter, Labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Abonnement wählen</string>

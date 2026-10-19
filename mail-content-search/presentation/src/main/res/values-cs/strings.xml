@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Vyhledávání v obsahu e-mailů</string>
   <string name="mail_settings_content_search_description">Aby bylo možné vyhledávat v obsahu zpráv, e-maily se stáhnou do tohoto zařízení.</string>
-  <string name="mail_settings_content_search_learn_more">Více informací..</string>
+  <string name="mail_settings_content_search_learn_more">Více informací…</string>
   <string name="mail_settings_content_search_toggle_title">Vyhledávání v obsahu e-mailů</string>
-  <string name="mail_settings_content_search_mobile_data_title">Stáhnout přes mobilní data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Použít mobilní data k pokračování ve stahování v případě výpadku Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Povolit stahování přes mobilní data</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Pokud dojde k výpadku Wi-Fi, stahování pokračuje přes mobilní data.</string>
   <string name="mail_settings_content_search_syncing_status">Příprava %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Příprava…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Čekání na síť Wi-Fi…</string>
@@ -23,34 +23,35 @@
   <string name="mail_settings_content_search_indexing_description">Nejprve se indexují nejnovější e-maily. Veškeré indexované zprávy lze prohledávat již během indexování.</string>
   <string name="mail_settings_content_search_on_this_device_section">Na tomto zařízení</string>
   <string name="mail_settings_content_search_index_size">Velikost indexu</string>
-  <string name="mail_settings_content_search_clear_data_button">Smazat místní data vyhledávání</string>
+  <string name="mail_settings_content_search_clear_data_button">Smazat místní index vyhledávání</string>
   <string name="mail_settings_content_search_clear_data_description">Smazání dat z místního vyhledávání deaktivuje vyhledávání v obsahu zpráv. Tuto funkci můžete kdykoli znovu zapnout.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Smazat místní data vyhledávání</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Smazat místní index vyhledávání</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Data pro vyhledávání budou z tohoto zařízení smazána. Chcete-li prohledávat obsah e-mailů, budete je muset stáhnout znovu.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Smazat data</string>
   <string name="content_search_bottomsheet_title">Využití mobilních dat</string>
-  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
+  <string name="content_search_bottomsheet_description">Vaše e-maily budou staženy pro aktivaci soukromého vyhledávání.</string>
   <string name="content_search_bottomsheet_start_indexing">Zahájit indexování</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Použít mobilní data</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Žádné výsledky pro \"%1$s\"</string>
   <string name="content_search_no_results_description">Zkuste zadat jiná klíčová slova nebo zkontrolujte pravopis.</string>
-  <string name="content_search_no_results_set_up_description">Zapněte vyhledávání v obsahu, abyste mohli prohledávat i obsah zpráv.</string>
-  <string name="content_search_no_results_learn_more">Více informací...</string>
+  <string name="content_search_no_results_set_up_description">Prohledány pouze předměty a odesílatelé. Povolte vyhledávání v obsahu pro prohledání celých e-mailů.</string>
+  <string name="content_search_no_results_learn_more">Více informací…</string>
   <string name="content_search_no_results_set_up_action">Nastavit vyhledávání obsahu</string>
   <string name="content_search_failed_title">Vyhledávání selhalo</string>
   <string name="content_search_failed_description">Něco se pokazilo. Zkuste to prosím znovu.</string>
   <string name="content_search_failed_retry">Zkusit znovu</string>
   <string name="content_search_set_up_banner_title">Prohledávat také obsah e-mailů</string>
-  <string name="content_search_set_up_banner_description">Vyhledávejte slova a fráze přímo v e-mailech, nejen v jménech odesílatelů a předmětech zpráv.</string>
+  <string name="content_search_set_up_banner_description">Prohledávejte celý obsah e-mailů, ne jen odesílatele a předmět.</string>
   <string name="content_search_set_up_banner_turn_on">Nastavit nyní</string>
   <string name="content_search_set_up_banner_not_now">Nyní ne</string>
   <string name="content_search_indexing_complete_banner_title">Vše hotovo!</string>
-  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
+  <string name="content_search_indexing_complete_banner_description">Vyhledávání obsahu je nyní k dispozici pro všechny e-maily — minulé i budoucí.</string>
   <string name="content_search_indexing_complete_banner_got_it">Rozumím</string>
   <string name="content_search_placeholder_text">Hledat</string>
   <string name="content_search_clear_query_content_description">Vyčistit vyhledávací dotaz</string>
   <string name="content_search_close_content_description">Zavřít hledání</string>
-  <string name="content_search_first_run_description">Zadejte jméno, předmět nebo klíčové slovo k vyhledání</string>
+  <string name="content_search_first_run_description">Napište cokoliv pro soukromé vyhledávání…</string>
   <string name="content_search_results_title">Výsledky</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d výsledek</item>
@@ -69,7 +70,6 @@
   <string name="content_search_indexing_interrupted">Indexování přerušeno • %1$d%%</string>
   <string name="content_search_indexing_progress_content_description">Indexování pošty, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexování přerušeno, %1$d%%</string>
-  <string name="content_search_indexing_see_details">Zobrazit detaily</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Trvale smazat?</string>
   <string name="content_search_delete_dialog_message">Tyto zprávy budou trvale smazány. Tuto akci nelze vrátit zpět.</string>

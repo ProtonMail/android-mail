@@ -2,10 +2,10 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Recherche dans le contenu des e-mails</string>
   <string name="mail_settings_content_search_description">Pour vous permettre d\'effectuer des recherches dans le contenu de message, les messages seront téléchargés sur cet appareil.</string>
-  <string name="mail_settings_content_search_learn_more">En savoir plus..</string>
+  <string name="mail_settings_content_search_learn_more">En savoir plus…</string>
   <string name="mail_settings_content_search_toggle_title">Recherche dans le contenu des e-mails</string>
-  <string name="mail_settings_content_search_mobile_data_title">Téléchargement via les données mobiles</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Utilisez les données mobiles pour poursuivre les téléchargements en cas de perte de connexion Wi-Fi.</string>
+  <string name="mail_settings_content_search_mobile_data_title">Autoriser le téléchargement via les données mobiles</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Le téléchargement se poursuit via les données mobiles en cas de perte de connexion Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Préparation en cours de %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Préparation en cours…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">En attente du Wi-Fi…</string>
@@ -23,25 +23,26 @@
   <string name="mail_settings_content_search_indexing_description">Les messages récents sont indexés en priorité. Tous les messages indexés peuvent faire l\'objet d\'une recherche pendant que l\'indexation est en cours.</string>
   <string name="mail_settings_content_search_on_this_device_section">Sur cet appareil</string>
   <string name="mail_settings_content_search_index_size">Taille de l\'index</string>
-  <string name="mail_settings_content_search_clear_data_button">Effacer les données locales de recherche</string>
+  <string name="mail_settings_content_search_clear_data_button">Effacer l\'index de recherche locale</string>
   <string name="mail_settings_content_search_clear_data_description">La suppression des données locales de recherche désactivera la recherche dans le contenu des messages. Vous pouvez réactiver cette fonctionnalité à tout moment.</string>
-  <string name="mail_settings_content_search_clear_data_dialog_title">Effacer les données de recherche locales</string>
+  <string name="mail_settings_content_search_clear_data_dialog_title">Effacer l\'index de recherche locale</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">Les données de recherche sur cet appareil seront retirées. Vous devrez les télécharger à nouveau pour effectuer des recherches dans le contenu des e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Effacer les données</string>
   <string name="content_search_bottomsheet_title">Consommation de données mobiles</string>
   <string name="content_search_bottomsheet_description">Vos messages seront téléchargés pour permettre la recherche privée.</string>
   <string name="content_search_bottomsheet_start_indexing">Lancer l\'indexation</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Utiliser les données mobiles</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Aucun résultat pour « %1$s »</string>
   <string name="content_search_no_results_description">Essayez différents mots-clés ou vérifiez l\'orthographe.</string>
-  <string name="content_search_no_results_set_up_description">Activez la recherche dans le contenu pour chercher aussi dans les messages.</string>
-  <string name="content_search_no_results_learn_more">En savoir plus..</string>
+  <string name="content_search_no_results_set_up_description">Nous avons recherché seulement les objets et les expéditeurs. Activer la recherche dans le contenu pour rechercher également à l\'intérieur des messages.</string>
+  <string name="content_search_no_results_learn_more">En savoir plus…</string>
   <string name="content_search_no_results_set_up_action">Configurer la recherche dans le contenu</string>
   <string name="content_search_failed_title">La recherche n\'a pas abouti</string>
   <string name="content_search_failed_description">Une erreur s\'est produite. Nous vous invitons à réessayer.</string>
   <string name="content_search_failed_retry">Réessayer</string>
   <string name="content_search_set_up_banner_title">Recherchez aussi dans les messages</string>
-  <string name="content_search_set_up_banner_description">Trouvez des mots et des phrases dans vos messages, et pas seulement sur les expéditeurs ou les objets.</string>
+  <string name="content_search_set_up_banner_description">Recherchez tout le texte de vos messages, pas seulement les expéditeurs et les objets.</string>
   <string name="content_search_set_up_banner_turn_on">Configurer maintenant</string>
   <string name="content_search_set_up_banner_not_now">Plus tard</string>
   <string name="content_search_indexing_complete_banner_title">Terminé !</string>
@@ -50,7 +51,7 @@
   <string name="content_search_placeholder_text">Rechercher</string>
   <string name="content_search_clear_query_content_description">Effacer la recherche</string>
   <string name="content_search_close_content_description">Fermer la recherche</string>
-  <string name="content_search_first_run_description">Tapez un nom, objet ou mot-clé pour chercher</string>
+  <string name="content_search_first_run_description">Saisissez ce que vous voulez pour rechercher en privé…</string>
   <string name="content_search_results_title">Résultats</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Résultat</item>
@@ -67,7 +68,6 @@
   <string name="content_search_indexing_interrupted">Indexation interrompue • %1$d %%</string>
   <string name="content_search_indexing_progress_content_description">Indexation des messages, %1$d %%</string>
   <string name="content_search_indexing_interrupted_content_description">Indexation interrompue, %1$d %%</string>
-  <string name="content_search_indexing_see_details">Voir les détails</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Supprimer définitivement ?</string>
   <string name="content_search_delete_dialog_message">Ces messages seront définitivement supprimés. Cette action ne peut pas être annulée.</string>
