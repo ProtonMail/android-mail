@@ -18,33 +18,28 @@
 
 package ch.protonmail.android.mailattachments.presentation.ui
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import io.mockk.every
-import io.mockk.mockk
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(RobolectricTestRunner::class)
+// Instrumented: the flags are only observable on a real Intent built by Intent.createChooser.
+@RunWith(AndroidJUnit4::class)
 internal class OpenAttachmentContractTest {
 
-    private val context = mockk<Context> {
-        every { getString(any()) } returns "Open with"
-    }
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val contract = OpenAttachmentContract()
+    private val input = OpenAttachmentInput(
+        uri = Uri.parse("content://test/file.pdf"),
+        mimeType = "application/pdf"
+    )
 
     @Test
-    fun `createIntent should include FLAG_ACTIVITY_NEW_TASK`() {
-        // Given
-        val input = OpenAttachmentInput(
-            uri = Uri.parse("content://test/file.pdf"),
-            mimeType = "application/pdf"
-        )
-
+    fun createIntentShouldIncludeFlagActivityNewTask() {
         // When
         val chooserIntent = contract.createIntent(context, input)
         val innerIntent = chooserIntent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
@@ -55,13 +50,7 @@ internal class OpenAttachmentContractTest {
     }
 
     @Test
-    fun `createIntent should include FLAG_GRANT_READ_URI_PERMISSION`() {
-        // Given
-        val input = OpenAttachmentInput(
-            uri = Uri.parse("content://test/file.pdf"),
-            mimeType = "application/pdf"
-        )
-
+    fun createIntentShouldIncludeFlagGrantReadUriPermission() {
         // When
         val chooserIntent = contract.createIntent(context, input)
         val innerIntent = chooserIntent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)

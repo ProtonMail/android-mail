@@ -33,6 +33,7 @@ android {
     defaultConfig {
         minSdk = AppConfiguration.minSdk.get()
         lint.targetSdk = AppConfiguration.targetSdk.get()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -60,6 +61,8 @@ dependencies {
     implementation(project(":mail-common:presentation"))
 
     testImplementation(libs.bundles.test)
-    testImplementation(libs.androidx.test.core)
     testImplementation(project(":test:utils"))
+
+    androidTestImplementation(libs.bundles.test.androidTest)
+    androidTestImplementation(libs.androidx.test.androidjunit)
 }
