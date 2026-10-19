@@ -382,6 +382,22 @@ internal object UpsellingContentPreviewData {
         )
     )
 
+    val BlackFridayPlusToUnlimited = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.black_friday_bg),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Proton Unlimited")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = ComparisonTableEntitlementsData.PlusToUnlimitedEntitlements,
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+            ),
+            variant = PlanUpgradeVariant.BlackFriday.Wave1,
+            list = BlackFridayWave1List
+        )
+    )
+
     val SpringPromo = UpsellingScreenContentState.Data(
         PlanUpgradeUiModel(
             icon = PlanUpgradeIconUiModel(R.drawable.spring_promo_header),

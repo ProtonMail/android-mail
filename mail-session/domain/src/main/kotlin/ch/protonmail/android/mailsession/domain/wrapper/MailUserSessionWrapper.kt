@@ -117,10 +117,9 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
 
     fun observeEventLoopErrors(callback: EventLoopErrorObserver) = userSession.observeEventLoopErrors(callback)
 
-    suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, Boolean> =
+    suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, PlusToUnlimitedEligibility> =
         when (val result = userSession.plusToUnlimitedEligibility(flag)) {
-            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok ->
-                (result.v1 == PlusToUnlimitedEligibility.REGULAR).right()
+            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok -> result.v1.right()
             is MailUserSessionPlusToUnlimitedEligibilityResult.Error -> {
                 Timber.e("MailUserSession Plus to Unlimited eligibility:: ${result.v1}")
                 result.v1.toDataError().left()

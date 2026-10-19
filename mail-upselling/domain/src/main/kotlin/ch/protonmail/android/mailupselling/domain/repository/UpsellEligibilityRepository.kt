@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
 import me.proton.core.domain.entity.UserId
 
@@ -27,5 +28,5 @@ interface UpsellEligibilityRepository {
 
     suspend fun getEligibleUpsellPlan(userId: UserId): UpsellVariantPlan?
 
-    suspend fun getPlusToUnlimitedEligibility(userId: UserId): Either<DataError, Boolean>
+    suspend fun getPlusToUnlimitedEligibility(userId: UserId): Either<DataError, PlusToUnlimitedOffer>
 }

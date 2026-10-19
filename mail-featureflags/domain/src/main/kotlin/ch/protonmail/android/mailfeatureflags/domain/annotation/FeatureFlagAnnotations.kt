@@ -131,3 +131,7 @@ annotation class IsSdkUpgradesPurchaseEnabled
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsCategoryOnboardingDisableCategorizeEnabled
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsPlusToUnlimitedUpsellEnabled
