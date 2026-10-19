@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Εκκαθάριση ερωτήματος αναζήτησης</string>
   <string name="content_search_close_content_description">Κλείσιμο αναζήτησης</string>
   <string name="content_search_first_run_description">Πληκτρολογήστε οτιδήποτε για ιδιωτική αναζήτηση…</string>
-  <string name="content_search_results_title">Αποτελέσματα</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Αποτέλεσμα</item>
     <item quantity="other">%1$d Αποτελέσματα</item>

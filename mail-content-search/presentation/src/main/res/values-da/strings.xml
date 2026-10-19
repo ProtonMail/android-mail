@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Ryd søgeforespørgsel</string>
   <string name="content_search_close_content_description">Luk søgning</string>
   <string name="content_search_first_run_description">Indtast noget for at søge privat...</string>
-  <string name="content_search_results_title">Resultater</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
     <item quantity="other">%1$d resultater</item>

@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Cancella la parola chiave</string>
   <string name="content_search_close_content_description">Chiudi ricerca</string>
   <string name="content_search_first_run_description">Digita qualsiasi cosa per cercare in privato…</string>
-  <string name="content_search_results_title">Risultati</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Risultato</item>
     <item quantity="other">%1$d Risultati</item>

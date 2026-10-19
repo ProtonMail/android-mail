@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Zoekopdracht wissen</string>
   <string name="content_search_close_content_description">Zoekopdracht sluiten</string>
   <string name="content_search_first_run_description">Type anything to search privately…</string>
-  <string name="content_search_results_title">Resultaten</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Resultaat</item>
     <item quantity="other">%1$d Resultaten</item>

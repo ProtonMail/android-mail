@@ -4,7 +4,7 @@
   <string name="mail_settings_content_search_description">För att du ska kunna söka efter meddelandeinnehåll kommer meddelanden att laddas ner på denna enhet.</string>
   <string name="mail_settings_content_search_learn_more">Lär dig mer …</string>
   <string name="mail_settings_content_search_toggle_title">Email content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
+  <string name="mail_settings_content_search_mobile_data_title">Tillåt nedladdning via mobildata</string>
   <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
   <string name="mail_settings_content_search_syncing_status">Förbereder %1$d %% …</string>
   <string name="mail_settings_content_search_preparing_status">Förbereder …</string>
@@ -31,7 +31,7 @@
   <string name="content_search_bottomsheet_title">Mobile data usage</string>
   <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Starta indexering</string>
-  <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Använd mobildata</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Inga resultat för ”%1$s”</string>
   <string name="content_search_no_results_description">Prova andra nyckelord eller kontrollera din stavning.</string>
@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Rensa sökfråga</string>
   <string name="content_search_close_content_description">Stäng sök</string>
   <string name="content_search_first_run_description">Type anything to search privately…</string>
-  <string name="content_search_results_title">Resultat</string>
+  <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
     <item quantity="other">%1$d resultat</item>
