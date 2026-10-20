@@ -89,10 +89,10 @@ class ObservePlanUpgrades @Inject constructor(
             isEligibleForBlackFridayPromotion(userId)
 
         val offersTag = when {
+            supportsBlackFridayPromo -> PlanUpgradeSupportedTags.BlackFriday
             supportsFallPromo -> PlanUpgradeSupportedTags.FallPromo
             supportsSummerCampaign -> PlanUpgradeSupportedTags.SummerCampaign
             supportsSpringPromo -> PlanUpgradeSupportedTags.SpringOffer
-            supportsBlackFridayPromo -> PlanUpgradeSupportedTags.BlackFriday
             else -> PlanUpgradeSupportedTags.IntroductoryPrice
         }
         val promoTargetPlan = when (offersTag) {
