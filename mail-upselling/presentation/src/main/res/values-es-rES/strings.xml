@@ -115,8 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Acceso premium a Mail, VPN, Drive, Pass y Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Alias ilimitados para ocultar tu identidad</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarrápida con más de 110 países</string>
-  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
-  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
+  <string name="upselling_comparison_table_password_manager">Gestor de contraseñas cifrado</string>
+  <string name="upselling_comparison_table_threat_protection">Protección avanzada contra amenazas</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetas, filtros y etiquetas ilimitados</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Elegir suscripción</string>
