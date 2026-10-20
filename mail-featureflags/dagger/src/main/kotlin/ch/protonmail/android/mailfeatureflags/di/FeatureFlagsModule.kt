@@ -35,6 +35,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026W
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageBodyImageCacheEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageWebViewPoolEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsEnabledInApp
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsUserTargeted
@@ -57,6 +58,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailMessageBodyImageCacheEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailMessageWebViewPoolEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
@@ -129,6 +131,17 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideMessageWebViewPoolDefinition(): FeatureFlagDefinition = ConversationDetailMessageWebViewPoolEnabled
+
+    @Provides
+    @Singleton
+    @IsMessageBodyImageCacheEnabled
+    fun provideMessageBodyImageCacheEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(ConversationDetailMessageBodyImageCacheEnabled.key, false)
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideMessageBodyImageCacheDefinition(): FeatureFlagDefinition = ConversationDetailMessageBodyImageCacheEnabled
 
     @Provides
     @IntoSet
