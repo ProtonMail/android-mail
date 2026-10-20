@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s pelo 1º mês, depois %s por mês</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Faça upgrade à Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Não mostrar mais esta oferta</string>
   <string name="upselling_stay_on_mail_plus">Seguir o Mail Plus</string>
   <string name="upselling_pu_choose_plan">Escolha seu plano</string>
   <string name="upselling_pu_whats_included">O que está incluído</string>
   <string name="upselling_pu_cta">Obter o Proton Unlimited</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Economize %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 ano</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Plano de 12 meses</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <string name="upselling_pu_generic_title">Leve sua privacidade online a um novo patamar com a Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Proteja sua conta contra ameaças com o Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Obtenha aliases ilimitados para proteger a sua identidade</string>
@@ -101,6 +112,8 @@
   <string name="upselling_comparison_table_premium_access">Acesso premium ao Mail, VPN, Drive, Pass e Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Aliases ilimitados para ocultar sua identidade</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarrápida em mais de 110 países</string>
+  <string name="upselling_comparison_table_password_manager">Gerenciador de senhas criptografado</string>
+  <string name="upselling_comparison_table_threat_protection">Proteção avançada contra ameaças</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Pastas, filtros e marcadores ilimitados</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Escolha uma assinatura</string>

@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s for den første måneden, deretter %s per måned</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Oppgrader til Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Ikke vis dette tilbudet igjen</string>
   <string name="upselling_stay_on_mail_plus">Behold Mail Plus</string>
   <string name="upselling_pu_choose_plan">Velg abonnementet ditt</string>
   <string name="upselling_pu_whats_included">Hva som er inkludert</string>
   <string name="upselling_pu_cta">Skaff deg Proton Unlimited</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <string name="upselling_pu_generic_title">Ta personvernet ditt videre med Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Beskytt kontoen mot trusler med Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Skaff deg et ubegrenset antall alias for å beskytte identiteten din</string>
@@ -98,8 +109,12 @@
   <string name="upselling_comparison_table_folders_labels">Mapper og etiketter</string>
   <string name="upselling_comparison_table_premium_products">Premium VPN, passordbehandler og skylagring</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Overvåking av det mørke nettet</string>
+  <string name="upselling_comparison_table_premium_access">Premium tilgang til Mail, VPN, Drive, Pass og Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Ubegrensede aliaser for å skjule identiteten</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Ultraraskt VPN med over 110 land</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Ubegrenset antall mapper, etiketter, filtre</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Velg abonnement</string>
   <string name="upselling_select_plan_year">12 måneder</string>

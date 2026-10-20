@@ -21,6 +21,7 @@ package ch.protonmail.android.navigation.route
 import android.net.Uri
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -52,8 +53,10 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsettings.presentation.appsettings.AppSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.ui.screen.MonthlyToYearlyUpsellBottomSheet
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.transitions.RouteTransitionSpec
 import ch.protonmail.android.navigation.transitions.composableWithTransitions
@@ -127,6 +130,9 @@ internal fun NavGraphBuilder.addMailbox(
                 },
                 onNavigateToUpselling = { entryPoint, type ->
                     navController.navigate(Destination.Screen.FeatureUpselling(entryPoint, type))
+                },
+                onNavigateToMonthlyToYearlyUpsell = {
+                    navController.navigate(Destination.Dialog.MonthlyToYearlyUpsell(UpsellEntryPoint.NAVBAR_UPSELL))
                 },
                 showMissingFeature = showFeatureMissingSnackbar,
                 onEnterSearchMode = {
@@ -261,6 +267,15 @@ internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostContro
     }
 }
 
+internal fun NavGraphBuilder.addMonthlyToYearlyUpsellSheet(navController: NavHostController) {
+    dialog(
+        route = Destination.Dialog.MonthlyToYearlyUpsell.route,
+        dialogProperties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        MonthlyToYearlyUpsellBottomSheet(onDismiss = { navController.navigateBack() })
+    }
+}
+
 internal fun NavGraphBuilder.addSettings(navController: NavHostController, activityActions: MainActivity.Actions) {
     composableWithTransitions(
         route = Destination.Screen.Settings.route,
@@ -305,6 +320,11 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                                 UpsellingEntryPoint.Feature.PlusUnlimited,
                                 UpsellingVisibility.Normal.Unlimited
                             )
+                        )
+                    },
+                    onMonthlyToYearlyUpsellClick = {
+                        navController.navigate(
+                            Destination.Dialog.MonthlyToYearlyUpsell(UpsellEntryPoint.SETTINGS_UPSELL)
                         )
                     }
                 )

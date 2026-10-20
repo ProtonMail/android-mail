@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen.footer
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -28,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -115,7 +112,8 @@ internal fun PaymentButtonsPlusToUnlimited(
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
-        StayOnMailPlusButton(
+        UpsellingSecondaryButton(
+            text = stringResource(R.string.upselling_stay_on_mail_plus),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = ProtonDimens.Spacing.Large),
@@ -123,27 +121,6 @@ internal fun PaymentButtonsPlusToUnlimited(
         )
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
-    }
-}
-
-@Composable
-private fun StayOnMailPlusButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Box(
-        modifier = modifier
-            .height(ProtonDimens.Spacing.Massive)
-            .background(
-                color = UpsellingLayoutValues.UpsellingPlanButtonsFooter.backgroundColor,
-                shape = RoundedCornerShape(ProtonDimens.CornerRadius.Huge)
-            )
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(R.string.upselling_stay_on_mail_plus),
-            style = ProtonTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = UpsellingLayoutValues.PaymentButtons.planNameColor
-        )
     }
 }
 

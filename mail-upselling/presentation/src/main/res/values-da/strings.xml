@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s for den 1. måned, derefter %s pr. måned</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Opgrader til Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Vis ikke dette tilbud igen</string>
   <string name="upselling_stay_on_mail_plus">Bliv på Mail Plus</string>
   <string name="upselling_pu_choose_plan">Vælg dit abonnement</string>
   <string name="upselling_pu_whats_included">Hvad der er inkluderet</string>
   <string name="upselling_pu_cta">Få Proton Unlimited</string>
+  <string name="upselling_monthly_to_yearly_row_title">Betal årligt og spar %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Skift din faktureringsperiode</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Spar %s</string>
+  <string name="upselling_monthly_to_yearly_title">Spar stort med årlig fakturering</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Låst en rabat på %s fast</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 år</string>
+  <string name="upselling_monthly_to_yearly_currently">Nuværende</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-måneders abonnement</string>
+  <string name="upselling_monthly_to_yearly_cta">Skift og spar %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Forbliv på månedlig</string>
   <string name="upselling_pu_generic_title">Opgrader dit digitale privatliv yderligere med Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Beskyt din konto mod trusler med Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Få ubegrænsede aliasser til at beskytte din identitet</string>
@@ -135,6 +146,8 @@
   <string name="upselling_comparison_table_premium_access">Premium-adgang til Mail, VPN, Drive, Pass og Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Ubegrænsede aliasser til at skjule din identitet</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Lynhurtig VPN med 110+ lande</string>
+  <string name="upselling_comparison_table_password_manager">Krypteret adgangskodeadministrator</string>
+  <string name="upselling_comparison_table_threat_protection">Avanceret trusselsbeskyttelse</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Ubegrænsede mapper, filtre, etiketter</string>
   <!-- Snackbar texts -->
 </resources>

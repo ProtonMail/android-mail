@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">첫 달 %s, 이후 매월 %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimited로 업그레이드</string>
+  <string name="upselling_do_not_show_again">이 제안을 다시 보지 않기</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus 유지하기</string>
   <string name="upselling_pu_choose_plan">플랜을 선택하세요</string>
   <string name="upselling_pu_whats_included">포함된 항목</string>
   <string name="upselling_pu_cta">Proton Unlimited로 업그레이드</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <string name="upselling_pu_generic_title">Proton Unlimited로 더 나은 온라인 프라이버시를 경험하세요</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinel로 계정을 위협으로부터 보호하세요</string>
   <string name="upselling_pu_aliases_title">신원 보호를 위한 무제한 별칭을 받아보세요</string>
@@ -135,6 +146,8 @@
   <string name="upselling_comparison_table_premium_access">Mail, VPN, Drive, Pass 및 Calendar 프리미엄 접근</string>
   <string name="upselling_comparison_table_unlimited_aliases">신원 보호를 위한 무제한 별칭</string>
   <string name="upselling_comparison_table_ultrafast_vpn">110개 이상 국가의 초고속 VPN</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">무제한 폴더, 필터, 라벨</string>
   <!-- Snackbar texts -->
 </resources>
