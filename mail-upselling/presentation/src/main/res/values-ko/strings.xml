@@ -150,4 +150,5 @@
   <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">무제한 폴더, 필터, 라벨</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday_sale">블랙 프라이데이 세일</string>
 </resources>

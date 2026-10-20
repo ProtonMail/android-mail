@@ -150,4 +150,5 @@
   <string name="upselling_comparison_table_threat_protection">Pokročilá ochrana před hrozbami</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomezený počet složek, filtrů a štítků</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday_sale">Black Friday sleva</string>
 </resources>

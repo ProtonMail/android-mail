@@ -40,21 +40,26 @@ import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimite
 @Composable
 fun SidebarPlusToUnlimitedUpsellRow(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val viewModel = hiltViewModelOrNull<PlusToUnlimitedUpsellViewModel>()
-    val theme = viewModel?.theme?.collectAsStateWithLifecycle()?.value
+    val state = viewModel?.state?.collectAsStateWithLifecycle()?.value
 
     // Set min to 1.dp to allow lazyColumns to render it.
     Box(modifier = modifier.heightIn(min = 1.dp)) {
-        AnimatedVisibility(visible = theme != null, enter = scaleIn(), exit = scaleOut()) {
-            theme?.let {
-                ProtonSidebarItem(
-                    icon = painterResource(R.drawable.ic_infinity),
-                    iconTint = Color.Unspecified,
-                    text = stringResource(it.rowTitleRes),
-                    onClick = {
-                        viewModel?.recordUpsellButtonTapped()
-                        onClick()
-                    }
-                )
+        AnimatedVisibility(visible = state != null, enter = scaleIn(), exit = scaleOut()) {
+            state?.let {
+                val onRowClick = {
+                    viewModel?.recordUpsellButtonTapped()
+                    onClick()
+                }
+                if (it.isBlackFriday) {
+                    SidebarUpsellRowBlackFriday(onButtonClick = onRowClick)
+                } else {
+                    ProtonSidebarItem(
+                        icon = painterResource(R.drawable.ic_infinity),
+                        iconTint = Color.Unspecified,
+                        text = stringResource(it.theme.rowTitleRes),
+                        onClick = onRowClick
+                    )
+                }
             }
         }
     }

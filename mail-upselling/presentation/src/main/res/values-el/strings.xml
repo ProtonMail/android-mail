@@ -150,4 +150,5 @@
   <string name="upselling_snackbar_error_no_user_id">Προέκυψε κάποιο σφάλμα.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Δεν είναι δυνατή η λήψη συνδρομών.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday_sale">Προσφορά Black Friday</string>
 </resources>

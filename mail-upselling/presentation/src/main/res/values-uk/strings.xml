@@ -150,4 +150,5 @@
   <string name="upselling_snackbar_error_no_user_id">Сталася помилка.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Не вдається отримати інформацію про передплати.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday_sale">Розпродаж до Чорної п\'ятниці</string>
 </resources>
