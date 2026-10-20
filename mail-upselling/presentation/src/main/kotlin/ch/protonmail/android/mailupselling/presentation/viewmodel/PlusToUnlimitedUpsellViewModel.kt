@@ -34,7 +34,7 @@ import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
 import ch.protonmail.android.mailupselling.presentation.extension.toOfferId
-import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
+import ch.protonmail.android.mailupselling.presentation.model.PlusToUnlimitedEntryPointState
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,9 +58,7 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
     private val recordUpsellButtonTapped: RecordUpsellButtonTapped
 ) : ViewModel() {
 
-    private var activeOffer: PlusToUnlimitedOffer? = null
-
-    val theme: StateFlow<UpsellContentTheme?> = observePrimaryUserId()
+    val state: StateFlow<PlusToUnlimitedEntryPointState?> = observePrimaryUserId()
         .filterNotNull()
         .flatMapLatest { userId ->
             observePlusToUnlimitedEligibility(userId)
@@ -70,9 +68,14 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
                     verdict.getOrNull() ?: lastKnown
                 }
                 .map { offer ->
-                    activeOffer = offer
-                    val eligible = offer != null && offer != PlusToUnlimitedOffer.None
-                    if (eligible) resolveActiveUpsellTheme(userId) else null
+                    if (offer == null || offer == PlusToUnlimitedOffer.None) {
+                        null
+                    } else {
+                        PlusToUnlimitedEntryPointState(
+                            theme = resolveActiveUpsellTheme(userId),
+                            isBlackFriday = offer == PlusToUnlimitedOffer.BlackFriday
+                        )
+                    }
                 }
         }
         .stateIn(
@@ -89,10 +92,8 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
                 planBeforeUpgrade = resolvePlanBeforeUpgrade(),
                 modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
                 upsellExperimentFlag = UpsellExperimentFlag(flagName = PlusToUnlimitedUpsellExperiment.key),
-                promoCampaign = if (activeOffer == PlusToUnlimitedOffer.BlackFriday) {
-                    PlanUpgradeVariant.BlackFriday.Wave1.toOfferId()
-                } else {
-                    theme.value?.telemetryId
+                promoCampaign = state.value?.let {
+                    if (it.isBlackFriday) PlanUpgradeVariant.BlackFriday.Wave1.toOfferId() else it.theme.telemetryId
                 }
             )
         )

@@ -31,6 +31,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapp
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
+import ch.protonmail.android.mailupselling.presentation.model.PlusToUnlimitedEntryPointState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -91,8 +92,8 @@ internal class PlusToUnlimitedUpsellViewModelTest {
             flowOf(PlusToUnlimitedOffer.Regular.right())
 
         // When / Then
-        viewModel().theme.test {
-            assertEquals(UpsellContentTheme.Drive, awaitItem())
+        viewModel().state.test {
+            assertEquals(PlusToUnlimitedEntryPointState(UpsellContentTheme.Drive, isBlackFriday = false), awaitItem())
         }
     }
 
@@ -103,8 +104,8 @@ internal class PlusToUnlimitedUpsellViewModelTest {
             flowOf(PlusToUnlimitedOffer.BlackFriday.right())
 
         // When / Then
-        viewModel().theme.test {
-            assertEquals(UpsellContentTheme.Drive, awaitItem())
+        viewModel().state.test {
+            assertEquals(PlusToUnlimitedEntryPointState(UpsellContentTheme.Drive, isBlackFriday = true), awaitItem())
         }
     }
 
@@ -115,7 +116,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
             flowOf(PlusToUnlimitedOffer.None.right())
 
         // When / Then
-        viewModel().theme.test {
+        viewModel().state.test {
             assertEquals(null, awaitItem())
         }
     }
@@ -127,8 +128,8 @@ internal class PlusToUnlimitedUpsellViewModelTest {
             flowOf(PlusToUnlimitedOffer.Regular.right(), DataError.Local.Unknown.left())
 
         // When / Then
-        viewModel().theme.test {
-            assertEquals(UpsellContentTheme.Drive, awaitItem())
+        viewModel().state.test {
+            assertEquals(PlusToUnlimitedEntryPointState(UpsellContentTheme.Drive, isBlackFriday = false), awaitItem())
             expectNoEvents()
         }
     }
@@ -141,7 +142,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
         val viewModel = viewModel()
 
         // When
-        viewModel.theme.test {
+        viewModel.state.test {
             awaitItem()
             viewModel.recordUpsellButtonTapped()
         }
@@ -169,7 +170,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
         val viewModel = viewModel()
 
         // When
-        viewModel.theme.test {
+        viewModel.state.test {
             awaitItem()
             viewModel.recordUpsellButtonTapped()
         }

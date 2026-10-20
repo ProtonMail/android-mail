@@ -133,7 +133,7 @@ private fun SidebarUnlimitedUpsellRow(onButtonClick: () -> Unit, modifier: Modif
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun SidebarUpsellRowBlackFriday(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun SidebarUpsellRowBlackFriday(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     val iconModifier = Modifier
         .width(ProtonDimens.IconSize.Default)
         .padding(vertical = ProtonDimens.Spacing.Small)

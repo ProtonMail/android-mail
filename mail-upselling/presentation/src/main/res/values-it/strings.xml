@@ -150,4 +150,5 @@
   <string name="upselling_snackbar_error_no_user_id">Si è verificato un errore</string>
   <string name="upselling_snackbar_error_no_subscriptions">Caricamento degli abbonamenti non riuscito</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday_sale">Sconti Black Friday</string>
 </resources>
