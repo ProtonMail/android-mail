@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">最初の1ヶ月間%s、その後は月額%s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimitedへアップグレード</string>
+  <string name="upselling_do_not_show_again">Do not show this offer again</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus を使い続ける</string>
   <string name="upselling_pu_choose_plan">プランを選択</string>
   <string name="upselling_pu_whats_included">含まれるもの</string>
   <string name="upselling_pu_cta">Proton Unlimitedを入手</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <string name="upselling_pu_generic_title">Proton Unlimitedでオンラインプライバシーをさらに強化</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinelでアカウントを脅威から保護する</string>
   <string name="upselling_pu_aliases_title">無制限のエイリアスを入手してユーザー情報を保護</string>
@@ -135,6 +146,8 @@
   <string name="upselling_comparison_table_premium_access">Mail、VPN、Drive、Pass、Calendarへのプレミアムアクセス</string>
   <string name="upselling_comparison_table_unlimited_aliases">お客様のユーザー情報を隠す無制限のエイリアス</string>
   <string name="upselling_comparison_table_ultrafast_vpn">110か国以上に対応した超高速VPN</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">無制限のフォルダー、フィルター、ラベル</string>
   <!-- Snackbar texts -->
 </resources>

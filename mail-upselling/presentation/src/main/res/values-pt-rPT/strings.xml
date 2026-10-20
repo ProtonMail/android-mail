@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s no 1.º mês, depois %s por mês</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Atualizar para o Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Do not show this offer again</string>
   <string name="upselling_stay_on_mail_plus">Continuar no Mail Plus</string>
   <string name="upselling_pu_choose_plan">Escolha o seu plano</string>
   <string name="upselling_pu_whats_included">O que está incluído</string>
   <string name="upselling_pu_cta">Obter o Proton Unlimited</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <string name="upselling_pu_generic_title">Leve a sua privacidade online mais longe com o Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Proteja a sua conta de ameaças com o Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Obtenha aliases ilimitados para proteger a sua identidade</string>
@@ -98,8 +109,12 @@
   <string name="upselling_comparison_table_folders_labels">Pastas e etiquetas</string>
   <string name="upselling_comparison_table_premium_products">VPN premium, gestor de palavras-passe e armazenamento na nuvem</string>
   <string name="upselling_comparison_table_dark_web_monitoring">Monitorização da Dark Web</string>
+  <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultra-rápida com mais de 110 países</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Escolha a subscrição</string>
   <string name="upselling_select_plan_year">12 meses</string>

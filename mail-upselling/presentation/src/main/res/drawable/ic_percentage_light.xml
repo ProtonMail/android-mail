@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportWidth="20"
+    android:viewportHeight="20">
+    <path
+        android:pathData="M5.625 7.5C6.66053 7.5 7.5 6.66053 7.5 5.625C7.5 4.58947 6.66053 3.75 5.625 3.75C4.58947 3.75 3.75 4.58947 3.75 5.625C3.75 6.66053 4.58947 7.5 5.625 7.5ZM5.625 8.75C7.35089 8.75 8.75 7.35089 8.75 5.625C8.75 3.89911 7.35089 2.5 5.625 2.5C3.89911 2.5 2.5 3.89911 2.5 5.625C2.5 7.35089 3.89911 8.75 5.625 8.75Z"
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd" />
+    <path
+        android:pathData="M14.375 16.25C15.4105 16.25 16.25 15.4105 16.25 14.375C16.25 13.3395 15.4105 12.5 14.375 12.5C13.3395 12.5 12.5 13.3395 12.5 14.375C12.5 15.4105 13.3395 16.25 14.375 16.25ZM14.375 17.5C16.1009 17.5 17.5 16.1009 17.5 14.375C17.5 12.6491 16.1009 11.25 14.375 11.25C12.6491 11.25 11.25 12.6491 11.25 14.375C11.25 16.1009 12.6491 17.5 14.375 17.5Z"
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd" />
+    <path
+        android:pathData="M17.3169 2.68306C17.561 2.92714 17.561 3.32286 17.3169 3.56694L3.56694 17.3169C3.32286 17.561 2.92714 17.561 2.68306 17.3169C2.43898 17.0729 2.43898 16.6771 2.68306 16.4331L16.4331 2.68306C16.6771 2.43898 17.0729 2.43898 17.3169 2.68306Z"
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd" />
+</vector>

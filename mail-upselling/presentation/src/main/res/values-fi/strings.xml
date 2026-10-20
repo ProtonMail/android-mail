@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s ensimmäisen kuukauden ajan, sitten %s kuukaudessa</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Päivitä Proton Unlimited -tilaukseen</string>
+  <string name="upselling_do_not_show_again">Älä näytä tätä tarjousta uudelleen</string>
   <string name="upselling_stay_on_mail_plus">Jatka Mail Plussan käyttöä</string>
   <string name="upselling_pu_choose_plan">Valitse tilauksesi</string>
   <string name="upselling_pu_whats_included">Sisältää</string>
   <string name="upselling_pu_cta">Hanki Proton Unlimited</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
+  <string name="upselling_monthly_to_yearly_currently">Currently</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <string name="upselling_pu_generic_title">Vie verkkoyksityisyyttäsi pidemmälle Proton Unlimitedilla</string>
   <string name="upselling_pu_threat_protection_title">Suojaa tilisi uhilta Proton Sentinelillä</string>
   <string name="upselling_pu_aliases_title">Hanki rajattomasti aliaksia ja suojaa henkilöllisyytesi</string>
@@ -135,6 +146,8 @@
   <string name="upselling_comparison_table_premium_access">Premium-käyttöoikeus palveluihin Mail, VPN, Drive, Pass ja Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Rajattomasti aliaksia henkilöllisyytesi piilottamiseen</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Huippunopea VPN yli 110 maalla</string>
+  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
+  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Rajattomasti kansioita, suodattimia ja tunnisteita</string>
   <!-- Snackbar texts -->
 </resources>

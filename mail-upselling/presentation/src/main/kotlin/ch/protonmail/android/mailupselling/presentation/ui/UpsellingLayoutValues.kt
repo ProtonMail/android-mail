@@ -166,6 +166,15 @@ object UpsellingLayoutValues {
         }
     }
 
+    object MonthlyToYearly {
+
+        val illustrationHeight = 110.dp
+        val priceRowHeight = 68.dp
+        val dragHandleColor = Color.White.copy(alpha = 0.3f)
+        val pricingDividerColor = Color.White.copy(alpha = 0.12f)
+        val secondaryTextColor = Color.White.copy(alpha = 0.7f)
+    }
+
     object FallPromo {
 
         val accentColor = Color(0xFFFF4C81)

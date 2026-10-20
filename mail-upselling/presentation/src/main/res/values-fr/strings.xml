@@ -33,10 +33,21 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s pour le 1er mois, puis %s par mois</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Mettez à niveau vers Proton Unlimited</string>
+  <string name="upselling_do_not_show_again">Ne plus montrer cette offre</string>
   <string name="upselling_stay_on_mail_plus">Rester sur Mail Plus</string>
   <string name="upselling_pu_choose_plan">Choisissez votre abonnement</string>
   <string name="upselling_pu_whats_included">Ce qui est inclus</string>
   <string name="upselling_pu_cta">Obtenir Proton Unlimited</string>
+  <string name="upselling_monthly_to_yearly_row_title">Payez annuellement et économisez %s</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Modifiez votre cycle de facturation</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Économisez %s </string>
+  <string name="upselling_monthly_to_yearly_title">Économisez davantage en optant pour la facturation annuelle</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Profitez d’une réduction sur %s</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 an</string>
+  <string name="upselling_monthly_to_yearly_currently">En cours</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Abonnement de 12 mois</string>
+  <string name="upselling_monthly_to_yearly_cta">Modifiez et économisez %s</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Conserver la facturation mensuelle</string>
   <string name="upselling_pu_generic_title">Protégez davantage votre vie privée en ligne avec Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Protégez votre compte contre les menaces avec Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Obtenez un nombre illimité d\'alias pour protéger votre identité</string>
@@ -101,6 +112,8 @@
   <string name="upselling_comparison_table_premium_access">Accès premium à Mail, VPN, Drive, Pass et Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Alias illimités pour masquer votre identité</string>
   <string name="upselling_comparison_table_ultrafast_vpn">VPN ultrarapide avec plus de 110 pays</string>
+  <string name="upselling_comparison_table_password_manager">Gestionnaire de mots de passe chiffré</string>
+  <string name="upselling_comparison_table_threat_protection">Protection avancée contre les menaces</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Dossiers, filtres et labels illimités</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Choisir un abonnement</string>

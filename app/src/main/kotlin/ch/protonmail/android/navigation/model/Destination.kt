@@ -48,6 +48,7 @@ import ch.protonmail.android.maildetail.presentation.ui.RawMessageDataScreen.RAW
 import ch.protonmail.android.maillabel.domain.model.CategoryLabelId
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailpinlock.presentation.autolock.model.AutoLockInsertionMode
@@ -62,6 +63,7 @@ import ch.protonmail.android.mailspotlight.presentation.model.SpotlightUserType
 import ch.protonmail.android.mailspotlight.presentation.ui.SPOTLIGHT_USER_TYPE_KEY
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.viewmodel.MonthlyToYearlyUpsellSheetViewModel.Companion.EntryPointKey
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingTypeKey
 import me.proton.core.domain.entity.UserId
@@ -268,6 +270,11 @@ sealed class Destination(val route: String) {
         object RemoveAccount : Destination("remove/${USER_ID_KEY.wrap()}") {
 
             operator fun invoke(userId: UserId?) = route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
+        }
+
+        object MonthlyToYearlyUpsell : Destination("upselling/monthlyToYearly/${EntryPointKey.wrap()}") {
+
+            operator fun invoke(entryPoint: UpsellEntryPoint) = route.replace(EntryPointKey.wrap(), entryPoint.name)
         }
     }
 }
