@@ -94,6 +94,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.WEB_VIEW_FIXED_MAX_HEIG
 import ch.protonmail.android.mailpadlocks.presentation.model.EncryptionInfoUiModel
 import ch.protonmail.android.mailtrackingprotection.presentation.model.BlockedElementsUiModel
 import kotlinx.coroutines.delay
+import timber.log.Timber
 
 @Composable
 @Suppress("LongParameterList")
@@ -299,18 +300,32 @@ private fun ColumnScope.ConversationDetailExpandedItem(
     // each report restarts the window, so it only fires after the reload has been quiet for the timeout - it
     // never cuts off a reload that is still reporting new heights (slow device, large message, remote images).
     val lastBodyReport = remember(id) { mutableIntStateOf(0) }
+    // The reloading body's latest reported height, and whether its load has fully finished. While a recycled card
+    // reloads it holds its previous height; these decide when that hold may end.
+    val latestBodyHeightPx = remember(id) { mutableIntStateOf(0) }
+    val isBodyLoadCompleted = remember(id) { mutableStateOf(false) }
 
-    // Safety release for the recycle-reload hold in onMessageBodyLoaded: if a reload never grows back to its
-    // previous WebView height (e.g. the content genuinely shrank), stop holding after a short window so the card
-    // can never stick at a stale height. Keyed on isWebViewLoading so it arms only while a reload is in progress
-    // and cancels the moment the fast path releases; on lastBodyReport so each height report resets the window;
-    // and gated on !isListScrolling so it never releases mid-scroll (the scroll-pin holds the card meanwhile).
+    // End of the recycle-reload hold when the body did not grow back to its previous height in onMessageBodyLoaded:
+    // only once the reload has fully finished and its height has settled (the content is genuinely shorter now), so
+    // a slow reload never releases the card while its body is still empty or partly laid out - that shrank the
+    // card, down to just its header, and grew it back seconds later, moving the content around it. A long safety
+    // window covers a reload that never reports finishing. Keyed on lastBodyReport so each height report restarts
+    // the wait, and gated on !isListScrolling so it never releases mid-scroll (the scroll-pin holds the card).
     if (viewPreviouslyLoaded) {
-        LaunchedEffect(id, isWebViewLoading.value, lastBodyReport.intValue, isListScrolling) {
-            if (isWebViewLoading.value && !isListScrolling) {
-                delay(RELOAD_SETTLE_TIMEOUT_MS)
-                isWebViewLoading.value = false
+        LaunchedEffect(
+            id, isWebViewLoading.value, isBodyLoadCompleted.value, lastBodyReport.intValue, isListScrolling
+        ) {
+            if (!isWebViewLoading.value || isListScrolling) return@LaunchedEffect
+            val canRelease = isBodyLoadCompleted.value && latestBodyHeightPx.intValue > 0
+            delay(if (canRelease) RELOAD_FINISHED_SETTLE_MS else RELOAD_HOLD_SAFETY_TIMEOUT_MS)
+            if (!canRelease) {
+                Timber.d(
+                    "ReloadHold: safety timeout id=%s held=%d body=%d",
+                    id.id, lastWebViewHeightPx.intValue, latestBodyHeightPx.intValue
+                )
             }
+            if (latestBodyHeightPx.intValue > 0) lastWebViewHeightPx.intValue = latestBodyHeightPx.intValue
+            isWebViewLoading.value = false
         }
     }
 
@@ -390,7 +405,8 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     id = id.id,
                     itemState = itemState,
                     snap = viewPreviouslyLoaded,
-                    isListScrolling = isListScrolling
+                    isListScrolling = isListScrolling,
+                    isBodyLoadCompleted = isBodyLoadCompleted.value
                 )
                 .onSizeChanged {
                     columnHeight.intValue = it.height
@@ -473,13 +489,17 @@ private fun ColumnScope.ConversationDetailExpandedItem(
                     // would always fall through to the timeout). A card that was not previously loaded releases
                     // immediately; the safety timeout above covers genuine shrinks. Use !viewPreviouslyLoaded so
                     // this agrees with the ReLoading gate and the safety-timer arm on the same "is loaded" check.
-                    val previousWebViewHeight = lastWebViewHeightPx.intValue
-                    val hasGrownBack = !viewPreviouslyLoaded || measuredHeight >= previousWebViewHeight
-                    if (measuredHeight > 0) lastWebViewHeightPx.intValue = measuredHeight
-                    if (hasGrownBack) {
+                    // While holding, keep the previous height as the target: lowering it to an intermediate report
+                    // made the next intermediate report count as "grown back" and release the card too early.
+                    latestBodyHeightPx.intValue = measuredHeight
+                    val isHoldingReload = viewPreviouslyLoaded && isWebViewLoading.value
+                    val hasGrownBack = measuredHeight >= lastWebViewHeightPx.intValue
+                    if (!isHoldingReload || hasGrownBack) {
+                        if (measuredHeight > 0) lastWebViewHeightPx.intValue = measuredHeight
                         isWebViewLoading.value = false
                     }
-                }
+                },
+                onMessageBodyLoadCompleted = { isBodyLoadCompleted.value = true }
             )
         }
     }
@@ -620,7 +640,8 @@ fun Modifier.reveal(
     id: String,
     itemState: ItemState,
     snap: Boolean,
-    isListScrolling: Boolean
+    isListScrolling: Boolean,
+    isBodyLoadCompleted: Boolean
 ): Modifier {
     var lastHeightPx by rememberSaveable(id) { mutableIntStateOf(0) }
 
@@ -638,13 +659,16 @@ fun Modifier.reveal(
         ItemState.Visible -> if (isListScrolling && lastHeightPx > 0) lastHeightPx else null
     }
 
-    // Cache the height only when settled (visible, not scrolling), and never store an unsettled measurement:
-    // a WebView momentarily reports its max cap, which is also larger than Compose can lay out - keep the last
-    // real height instead. This keeps every held value safe to feed into requiredHeight().
+    // Cache the height only when settled (visible, not scrolling, body fully loaded), and never store an unsettled
+    // measurement: a WebView momentarily reports its max cap, which is also larger than Compose can lay out - keep
+    // the last real height instead. This keeps every held value safe to feed into requiredHeight(). A body that is
+    // still loading is not settled either: a card scrolled away mid-load kept its partial height, was pinned to it
+    // on the next scroll and then jumped to its real height, thousands of px, when the scroll stopped.
     // The modifier itself is kept stable (the settled/scrolling check is inside onSizeChanged, not around it) so
     // the modifier chain does not change shape on every scroll edge, which would relayout the card each fling.
     val cacheHeightModifier = Modifier.onSizeChanged { size ->
-        if (itemState == ItemState.Visible && !isListScrolling && size.height in 1 until MAX_STABLE_CARD_HEIGHT_PX) {
+        val isSettled = itemState == ItemState.Visible && isBodyLoadCompleted && !isListScrolling
+        if (isSettled && size.height in 1 until MAX_STABLE_CARD_HEIGHT_PX) {
             lastHeightPx = size.height
         }
     }
@@ -678,7 +702,11 @@ private const val MAX_STABLE_CARD_HEIGHT_PX = WEB_VIEW_FIXED_MAX_HEIGHT - NEAR_C
 
 // How long a recycled card holds its cached height while the WebView reloads before releasing regardless, so it
 // can never stick at a stale height if the reloaded content genuinely settles shorter.
-private const val RELOAD_SETTLE_TIMEOUT_MS = 1_000L
+// After a reloading body has fully finished, how long its height must stay unchanged before the hold ends.
+private const val RELOAD_FINISHED_SETTLE_MS = 500L
+
+// Last-resort end of the hold for a reload that never reports finishing, so a card can never stick.
+private const val RELOAD_HOLD_SAFETY_TIMEOUT_MS = 10_000L
 
 sealed class ItemState {
     object Loading : ItemState()

@@ -197,6 +197,12 @@ fun ConversationDetailScreen(
         )
     }
 
+    // Images are kept only while this conversation is on screen: a page swiped away leaves the composition (its
+    // ViewModel stays), so swiping back to it loads its images again, as without the cache.
+    DisposableEffect(viewModel) {
+        onDispose { viewModel.clearLoadedImages() }
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()

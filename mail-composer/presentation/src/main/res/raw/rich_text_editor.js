@@ -20,7 +20,7 @@ document.getElementById('$EDITOR_ID').addEventListener('paste', function (event)
     event.preventDefault();
     event.stopPropagation();
 
-    const cd = event.clipboardData || event.originalEvent?.clipboardData || window.clipboardData;
+    const cd = event.clipboardData || (event.originalEvent && event.originalEvent.clipboardData) || window.clipboardData;
     if (!cd) {
         debugLog("No clipboard data available on paste event.");
         return;
@@ -251,7 +251,7 @@ function updateCaretPosition() {
 document.addEventListener('click', function (e) {
     const quote = e.target.closest('.protonmail_quote');
     if (quote) {
-        const parentQuote = quote.parentElement?.closest('.protonmail_quote');
+        const parentQuote = quote.parentElement && quote.parentElement.closest('.protonmail_quote');
         if (!parentQuote && !quote.hasAttribute('data-expanded')) {
             quote.setAttribute('data-expanded', '');
             e.preventDefault();
@@ -273,7 +273,7 @@ document.addEventListener('keydown', function (e) {
             let quoteToMove = null;
 
             allQuotes.forEach(quote => {
-                const isTopLevel = !quote.parentElement?.closest('.protonmail_quote');
+                const isTopLevel = !(quote.parentElement && quote.parentElement.closest('.protonmail_quote'));
                 if (isTopLevel) {
                     const position = currentElement.compareDocumentPosition(quote);
                     if (position & Node.DOCUMENT_POSITION_FOLLOWING) {
@@ -339,12 +339,12 @@ document.addEventListener('selectionchange', function () {
         let element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
 
         // Allow normal editing when the quote is expanded
-        const expandedQuote = element?.closest('.protonmail_quote[data-expanded]');
+        const expandedQuote = element && element.closest('.protonmail_quote[data-expanded]');
         if (expandedQuote) {
             return;
         }
 
-        const collapsedQuote = element?.closest('.protonmail_quote:not([data-expanded])');
+        const collapsedQuote = element && element.closest('.protonmail_quote:not([data-expanded])');
 
         if (collapsedQuote) {
             selection.removeAllRanges();

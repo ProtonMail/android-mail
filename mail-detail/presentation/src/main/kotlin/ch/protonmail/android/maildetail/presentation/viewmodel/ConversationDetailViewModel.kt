@@ -1839,6 +1839,19 @@ class ConversationDetailViewModel @AssistedInject constructor(
     private fun <T> Flow<T>.restartableOn(signal: Flow<Unit>): Flow<T> = signal.onStart { emit(Unit) }
         .flatMapLatest { this@restartableOn }
 
+    /**
+     * Drops the images kept for this conversation, so they are only kept while it is shown: swiping to another
+     * conversation and back loads them again.
+     */
+    fun clearLoadedImages() {
+        loadImageAvoidDuplicatedExecution.clearCache()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        loadImageAvoidDuplicatedExecution.clearCache()
+    }
+
     @AssistedFactory
     interface Factory {
 

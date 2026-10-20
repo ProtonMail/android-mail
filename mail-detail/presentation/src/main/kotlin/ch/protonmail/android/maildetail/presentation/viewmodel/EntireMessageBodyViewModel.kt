@@ -111,6 +111,11 @@ class EntireMessageBodyViewModel @Inject constructor(
     }
 
 
+    override fun onCleared() {
+        super.onCleared()
+        loadImageAvoidDuplicatedExecution.clearCache()
+    }
+
     private fun requireMessageId(): MessageId {
         val messageIdParam = savedStateHandle.get<String>(EntireMessageBodyScreen.MESSAGE_ID_KEY)
             ?: throw IllegalStateException("No Message id given")

@@ -30,6 +30,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.ScheduleSendBannerUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
@@ -43,7 +44,7 @@ class ConversationDetailMessagesReducer @Inject constructor() {
     ): ConversationDetailsMessagesState = when (operation) {
 
         is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
-            messages = operation.messagesUiModels
+            messages = currentState.keepImagesFailedBanner(operation.messagesUiModels)
         )
 
         is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
@@ -243,6 +244,34 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 }
             )
         )
+    }
+
+    /**
+     * Keeps the "images failed to load" banner on for messages that already show it. Rebuilt messages always
+     * start without it, so each update dropped it and the next failed image (on every reload of the body) added
+     * it back: the card shrank and grew by the banner height after it had settled, moving the content.
+     */
+    private fun ConversationDetailsMessagesState.keepImagesFailedBanner(
+        newMessages: ImmutableList<ConversationDetailMessageUiModel>
+    ): ImmutableList<ConversationDetailMessageUiModel> {
+        val currentMessages = (this as? ConversationDetailsMessagesState.Data)?.messages.orEmpty()
+        val failed = currentMessages
+            .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
+            .filter { it.messageBodyUiModel.shouldShowImagesFailedToLoadBanner }
+            .map { it.messageId }
+            .toSet()
+        if (failed.isEmpty()) return newMessages
+
+        return newMessages.map { message ->
+            when {
+                message !is ConversationDetailMessageUiModel.Expanded -> message
+                message.messageId !in failed -> message
+                message.messageBodyUiModel.shouldShowImagesFailedToLoadBanner -> message
+                else -> message.copy(
+                    messageBodyUiModel = message.messageBodyUiModel.copy(shouldShowImagesFailedToLoadBanner = true)
+                )
+            }
+        }.toImmutableList()
     }
 
     private fun ConversationDetailsMessagesState.toNewStateForImageProxyFailed(
