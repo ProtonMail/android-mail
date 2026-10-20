@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Suchanfrage löschen</string>
   <string name="content_search_close_content_description">Suche schließen</string>
   <string name="content_search_first_run_description">Suche vertraulich nach beliebigen Begriffen …</string>
-  <string name="content_search_results_searching">Searching…</string>
+  <string name="content_search_results_searching">Suche wird ausgeführt …</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Ergebnis</item>
     <item quantity="other">%1$d Ergebnisse</item>

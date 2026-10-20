@@ -52,7 +52,7 @@
   <string name="content_search_clear_query_content_description">Clear search query</string>
   <string name="content_search_close_content_description">Close search</string>
   <string name="content_search_first_run_description">Type anything to search privately…</string>
-  <string name="content_search_results_searching">Searching…</string>
+  <string name="content_search_results_searching">搜尋中…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="other">%1$d Results</item>
   </plurals>

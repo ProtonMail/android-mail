@@ -115,8 +115,8 @@
   <string name="upselling_comparison_table_premium_access">Преміальний доступ до Mail, VPN, Drive, Pass та Calendar</string>
   <string name="upselling_comparison_table_unlimited_aliases">Необмежена кількість псевдонімів, щоби приховати ваші особисті дані</string>
   <string name="upselling_comparison_table_ultrafast_vpn">Надшвидкий VPN із понад 110 країнами</string>
-  <string name="upselling_comparison_table_password_manager">Encrypted password manager</string>
-  <string name="upselling_comparison_table_threat_protection">Advanced threat protection</string>
+  <string name="upselling_comparison_table_password_manager">Зашифрований менеджер паролів</string>
+  <string name="upselling_comparison_table_threat_protection">Розширений захист від загроз</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Необмежена кількість тек, фільтрів, міток</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Оберіть передплату</string>
