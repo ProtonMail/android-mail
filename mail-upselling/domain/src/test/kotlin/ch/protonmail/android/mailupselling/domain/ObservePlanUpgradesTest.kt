@@ -246,6 +246,28 @@ internal class ObservePlanUpgradesTest {
     }
 
     @Test
+    fun `should prefer the black friday offers when an older promo flag is still on`() = runTest {
+        // Given
+        coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.Active.Wave1
+        coEvery { getCurrentSpringPromoPhase() } returns SpringPromoPhase.Active.Wave1
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns true
+        coEvery { resolveUpsellVariant(userId) } returns UpsellVariantPlan.MAIL_PLUS
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(blackFridayUpgrades)
+
+        // When
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
+
+        // Then
+        assertEquals(
+            listOf(
+                UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail.offer,
+                UpsellingTestData.UnlimitedMailProduct.YearlyBFProductDetail.offer
+            ),
+            actualPlans.map { it.offer }
+        )
+    }
+
+    @Test
     fun `should return the mail plus black friday offers during black friday wave 2`() = runTest {
         // Given
         coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.Active.Wave2
