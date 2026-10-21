@@ -67,9 +67,11 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
     private val isSetUpBannerSetAside = MutableStateFlow(false)
 
     val canSetUpContentSearch: StateFlow<Boolean> = primaryUserId
-        .flatMapLatest { userId -> observeContentSearchEnabled(userId) }
-        .distinctUntilChanged()
-        .map { isEnabled -> !isEnabled && isContentSearchFeatureEnabled() }
+        .flatMapLatest { userId ->
+            observeContentSearchEnabled(userId)
+                .distinctUntilChanged()
+                .map { isEnabled -> !isEnabled && isContentSearchFeatureEnabled(userId) }
+        }
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MILLIS), false)
 
@@ -86,7 +88,7 @@ class ContentSearchSetUpPromptViewModel @Inject constructor(
                 observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer),
                 isSetUpBannerSetAside
             ) { isEnabled, isDismissed, isSetAside ->
-                !isEnabled && !isDismissed && !isSetAside && isContentSearchFeatureEnabled()
+                !isEnabled && !isDismissed && !isSetAside && isContentSearchFeatureEnabled(userId)
             }
         }
         .distinctUntilChanged()

@@ -122,7 +122,7 @@ class IndexingProgressViewModel @Inject constructor(
      * account that has content search on and has not been told needs its indexing status.
      */
     private suspend fun hasIndexingToAnnounce(userId: UserId): Boolean {
-        if (!isContentSearchFeatureEnabled()) return false
+        if (!isContentSearchFeatureEnabled(userId)) return false
         if (!observeContentSearchEnabled(userId).first()) return false
         if (observeContentSearchPromptDismissed(userId, ContentSearchPrompt.IndexingComplete).first()) return false
 
@@ -148,7 +148,7 @@ class IndexingProgressViewModel @Inject constructor(
     private fun observeBannerFor(userId: UserId): Flow<IndexingProgressState> = observeContentSearchEnabled(userId)
         .distinctUntilChanged()
         .flatMapLatest { enabled ->
-            if (enabled && isContentSearchFeatureEnabled()) {
+            if (enabled && isContentSearchFeatureEnabled(userId)) {
                 observeContentSearchIndexingStatus(userId)
             } else {
                 flowOf(null)

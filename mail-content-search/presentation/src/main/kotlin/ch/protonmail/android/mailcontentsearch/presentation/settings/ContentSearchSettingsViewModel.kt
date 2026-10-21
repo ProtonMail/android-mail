@@ -106,7 +106,7 @@ class ContentSearchSettingsViewModel @Inject constructor(
     }
 
     private suspend fun loadInitialState(userId: UserId): Boolean? {
-        if (!isContentSearchFeatureEnabled()) {
+        if (!isContentSearchFeatureEnabled(userId)) {
             emitNewStateFor(Error.LoadingError)
             return null
         }

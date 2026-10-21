@@ -28,12 +28,14 @@ import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import uniffi.mail_uniffi.MailUserSession
 
 internal class ContentSearchSettingsRepositoryImplTest {
 
@@ -52,6 +54,21 @@ internal class ContentSearchSettingsRepositoryImplTest {
         syncService = syncServiceWrapper,
         ioDispatcher = dispatcher
     )
+
+    @Test
+    fun `isFeatureEnabled returns the value reported by the Rust user session`() = runTest {
+        // Given
+        val rustUserSession = mockk<MailUserSession> {
+            every { isContentSearchFfEnabled() } returns true
+        }
+        every { wrapper.getRustUserSession() } returns rustUserSession
+
+        // When
+        val result = repository.isFeatureEnabled(userId)
+
+        // Then
+        assertEquals(true.right(), result)
+    }
 
     @Test
     fun `isEnabled returns the value reported by the sync service`() = runTest {

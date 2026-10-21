@@ -44,6 +44,11 @@ class ContentSearchSettingsRepositoryImpl @Inject constructor(
 
     private val enabledChanges = MutableSharedFlow<UserId>(extraBufferCapacity = 8)
 
+    override suspend fun isFeatureEnabled(userId: UserId): Either<DataError, Boolean> =
+        executeWithUserSession(userId) { wrapper ->
+            wrapper.getRustUserSession().isContentSearchFfEnabled()
+        }
+
     override suspend fun isEnabled(userId: UserId): Either<DataError, Boolean> =
         executeWithUserSession(userId) { wrapper ->
             syncService.isEnabled(wrapper)

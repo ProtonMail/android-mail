@@ -66,7 +66,7 @@ internal class IndexingProgressViewModelTest {
         every { this@mockk() } returns flowOf(userId)
     }
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk() } returns true
+        coEvery { this@mockk(any()) } returns true
     }
     private val observeContentSearchEnabled = mockk<ObserveContentSearchEnabled> {
         every { this@mockk(userId) } returns flowOf(true)
@@ -132,7 +132,7 @@ internal class IndexingProgressViewModelTest {
     @Test
     fun `shows nothing when content search is unavailable on this device`() = runTest(dispatcher) {
         // Given
-        coEvery { isContentSearchFeatureEnabled() } returns false
+        coEvery { isContentSearchFeatureEnabled(any()) } returns false
         indexingStatus.value = ContentIndexingState.Running(percentage = 30.0)
 
         // When

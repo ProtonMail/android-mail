@@ -135,7 +135,7 @@ class HomeViewModelTest {
     }
 
     private val isContentSearchFeatureEnabled = mockk<IsContentSearchFeatureEnabled> {
-        coEvery { this@mockk.invoke() } returns true
+        coEvery { this@mockk.invoke(any()) } returns true
     }
 
     private val formatFullDate = mockk<FormatFullDate>()
@@ -701,7 +701,7 @@ class HomeViewModelTest {
     @Test
     fun `says nothing about an account content search is unavailable for`() = runTest {
         // Given
-        coEvery { isContentSearchFeatureEnabled() } returns false
+        coEvery { isContentSearchFeatureEnabled(any()) } returns false
         primaryIndexingStatus.emit(ContentIndexingState.Failed)
 
         // When

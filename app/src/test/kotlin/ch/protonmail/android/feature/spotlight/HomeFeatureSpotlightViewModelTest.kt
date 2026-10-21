@@ -68,7 +68,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when feature spotlight flag is disabled`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns false
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
 
         val viewModel = buildViewModel()
 
@@ -83,7 +83,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when the content search feature is disabled`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockIsContentSearchFeatureEnabled() } returns false
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns false
 
         val viewModel = buildViewModel()
 
@@ -98,7 +98,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Show when preference is show`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
 
@@ -115,7 +115,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when preference is hide`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = false).right())
 
@@ -131,7 +131,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide when feature flag is enabled and preference returns error`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(PreferencesError.left())
 
@@ -147,7 +147,7 @@ internal class HomeFeatureSpotlightViewModelTest {
     fun `should emit Hide and mark seen when feature flag is enabled and app is recent install`() = runTest {
         // Given
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockIsContentSearchFeatureEnabled() } returns true
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returns true
         every { mockIsRecentAppInstall() } returns true
 
         val viewModel = buildViewModel()
@@ -169,7 +169,7 @@ internal class HomeFeatureSpotlightViewModelTest {
         val primaryUserId = MutableStateFlow<UserId?>(firstUser)
         every { mockObservePrimaryUserId() } returns primaryUserId
         coEvery { mockFeatureFlag.get() } returns true
-        coEvery { mockIsContentSearchFeatureEnabled() } returnsMany listOf(false, true)
+        coEvery { mockIsContentSearchFeatureEnabled(any()) } returnsMany listOf(false, true)
         every { mockIsRecentAppInstall() } returns false
         every { mockObserveFeatureSpotlightDisplay() } returns flowOf(FeatureSpotlightDisplay(show = true).right())
 
