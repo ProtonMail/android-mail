@@ -43,7 +43,15 @@ sealed interface ContentIndexingState {
     data class Paused(val percentage: Double? = null) : ContentIndexingState
     data object Completed : ContentIndexingState
     data object Cancelled : ContentIndexingState
-    data object Failed : ContentIndexingState
+
+    /**
+     * Rust has stopped the account's backfill on an error. It records the failure, so it outlives
+     * the process and only a retry clears it.
+     *
+     * [percentageBackfilled] is how far the backfill had got when it failed. Only the status read carries it.
+     * Null for a failure event, or when Rust has not sized the backfill yet.
+     */
+    data class Failed(val percentageBackfilled: Double? = null) : ContentIndexingState
 }
 
 /**

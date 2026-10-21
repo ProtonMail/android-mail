@@ -59,7 +59,12 @@ internal class ContentIndexingStatusMapperTest {
 
     @Test
     fun `maps FAILURE status to Failed`() {
-        assertEquals(ContentIndexingState.Failed, SyncStatus.FAILURE.toIndexingState(null))
+        assertEquals(ContentIndexingState.Failed(), SyncStatus.FAILURE.toIndexingState(null))
+    }
+
+    @Test
+    fun `keeps the progress on a FAILURE status`() {
+        assertEquals(ContentIndexingState.Failed(42.5), SyncStatus.FAILURE.toIndexingState(42.5))
     }
 
     @Test
@@ -153,7 +158,7 @@ internal class ContentIndexingStatusMapperTest {
     @Test
     fun `maps Driver Failure event to Failed`() {
         assertEquals(
-            ContentIndexingState.Failed,
+            ContentIndexingState.Failed(),
             SyncEvent.Driver(SyncDriverEvent.Failure("boom")).toIndexingState()
         )
     }
@@ -172,7 +177,7 @@ internal class ContentIndexingStatusMapperTest {
     fun `maps Worker Failure event to Failed`() {
         // Given
         assertEquals(
-            ContentIndexingState.Failed,
+            ContentIndexingState.Failed(),
             SyncEvent.Worker(SyncWorkerEvent.Failure("name", 1u, "boom")).toIndexingState()
         )
     }

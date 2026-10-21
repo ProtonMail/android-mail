@@ -37,7 +37,7 @@ internal fun ContentIndexingState.isActive(): Boolean = when (this) {
     ContentIndexingState.Idle,
     ContentIndexingState.Completed,
     ContentIndexingState.Cancelled,
-    ContentIndexingState.Failed -> false
+    is ContentIndexingState.Failed -> false
 }
 
 internal fun ContentIndexingState.isCompleted(): Boolean = this is ContentIndexingState.Completed

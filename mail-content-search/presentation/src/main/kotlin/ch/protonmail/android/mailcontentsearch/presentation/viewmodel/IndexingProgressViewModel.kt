@@ -176,8 +176,12 @@ class IndexingProgressViewModel @Inject constructor(
 
             ContentIndexingState.Completed -> if (lastPercentage != null) FullyIndexed else IndexingProgressState.Hidden
 
-            ContentIndexingState.Failed ->
-                lastPercentage?.let { IndexingProgressState.Error(it) } ?: IndexingProgressState.Hidden
+            // Rust's recorded percentage comes first, so the error still shows when the screen opens
+            // on an account that failed earlier. A live failure event has none and keeps the last one.
+            is ContentIndexingState.Failed ->
+                (indexingState.percentageBackfilled?.toBanner() ?: lastPercentage)
+                    ?.let { IndexingProgressState.Error(it) }
+                    ?: IndexingProgressState.Hidden
 
             // Paused, idle, cancelled: nothing to report that the settings screen does not say better.
             // A banner already on screen freezes at its last percentage rather than vanishing.

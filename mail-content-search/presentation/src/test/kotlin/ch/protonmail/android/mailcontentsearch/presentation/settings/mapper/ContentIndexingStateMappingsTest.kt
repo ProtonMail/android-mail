@@ -101,7 +101,7 @@ internal class ContentIndexingStateMappingsTest {
             ContentIndexingState.Running(percentage = 42.5),
             ContentIndexingState.Completed,
             ContentIndexingState.Cancelled,
-            ContentIndexingState.Failed
+            ContentIndexingState.Failed()
         ).forEach { state ->
             assertFalse(state.isWaitingForUnmeteredConnection(), "$state should not be waiting on Wi-Fi")
         }
@@ -110,7 +110,7 @@ internal class ContentIndexingStateMappingsTest {
     @Test
     fun `a failed account is reported as failed and nothing else`() {
         // Given
-        val state = ContentIndexingState.Failed
+        val state = ContentIndexingState.Failed()
 
         // Then
         assertTrue(state.isFailed())
@@ -139,7 +139,7 @@ internal class ContentIndexingStateMappingsTest {
             ContentIndexingState.Idle,
             ContentIndexingState.Completed,
             ContentIndexingState.Cancelled,
-            ContentIndexingState.Failed
+            ContentIndexingState.Failed()
         ).forEach { state ->
             assertNull(state.toPercentage(), "$state should not report a percentage")
             assertFalse(state.isActive(), "$state should not be active")

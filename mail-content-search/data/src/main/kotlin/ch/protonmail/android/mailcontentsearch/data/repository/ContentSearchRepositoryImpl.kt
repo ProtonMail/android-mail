@@ -219,12 +219,12 @@ class ContentSearchRepositoryImpl @Inject constructor(
     private suspend fun currentIndexingState(wrapper: MailUserSessionWrapper): ContentIndexingState {
         val status = syncService.userStatus(wrapper).getOrElse { error ->
             Timber.e("content-search: the account could not report its indexing status: $error")
-            return ContentIndexingState.Failed
+            return ContentIndexingState.Failed()
         }
         val progress = syncService.userProgress(wrapper).getOrElse { error ->
             if (syncService.isEnabled(wrapper).getOrElse { false }) {
                 Timber.e("content-search: the account could not report its indexing progress: $error")
-                return ContentIndexingState.Failed
+                return ContentIndexingState.Failed()
             }
             Timber.d("content-search: no indexing progress for an account with content search off: $error")
             null
