@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Pedido de reposição da palavra-passe feito</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">Foi solicitada uma reposição de palavra-passe para <b>%1$s</b>. Pode alterar a sua palavra-passe em %2$d hora.\n\nSe não fez este pedido, cancele-o agora.</item>
-    <item quantity="other">Foi solicitada uma reposição de palavra-passe para <b>%1$s</b>. Pode alterar a sua palavra-passe em %2$d horas.\n\nSe não fez este pedido, cancele-o agora.</item>
+    <item quantity="one">Um pedido de reposição da palavra-passe foi feito por <b>%1$s</b>. Pode mudar a sua palavra-passe em %2$d hora.\n\nSe não fez este pedido, cancele agora.</item>
+    <item quantity="other">Um pedido de reposição da palavra-passe foi feito por <b>%1$s</b>. Pode mudar a sua palavra-passe em %2$d horas.\n\n Se não fez este pedido, cancele agora.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Cancelar a reposição da palavra-passe?</string>

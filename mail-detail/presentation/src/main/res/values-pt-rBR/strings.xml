@@ -32,8 +32,8 @@
   <string name="bcc">Cco:</string>
   <string name="date">Data:</string>
   <plurals name="attachment">
-    <item quantity="one">%d anexo</item>
-    <item quantity="other">%d anexos</item>
+    <item quantity="one">%d Anexo</item>
+    <item quantity="other">%d Anexos</item>
   </plurals>
   <string name="undisclosed_recipients">...</string>
   <string name="collapsed_header_draft">(Rascunho)</string>

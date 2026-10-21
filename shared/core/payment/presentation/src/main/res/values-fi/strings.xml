@@ -27,16 +27,16 @@
   <string name="payment_pay_annually">Maksa vuosittain</string>
   <string name="payment_pay_biennially">Maksa kahden vuoden välein</string>
   <plurals name="payment_pay_other">
-    <item quantity="one">Maksa %d kuukaudeksi</item>
-    <item quantity="other">Maksa %d kuukaudeksi</item>
+    <item quantity="one">Maksa %d kuukaudesta</item>
+    <item quantity="other">Maksa %d kuukaudesta</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Uusiutuu automaattisesti hintaan %1$s/kk.</string>
-  <string name="payment_bf_renew_annually">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Uusiutuu automaattisesti hintaan %1$s/vuosi.</string>
-  <string name="payment_welcome_offer_renew_monthly">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/kuukausi</string>
-  <string name="payment_welcome_offer_renew_annually">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/vuosi</string>
+  <string name="payment_bf_renew_monthly">Alennukset perustuvat kuukausittaiseen standardihintaan. Uudistuu automaattisesti hintaan %1$s/kk.</string>
+  <string name="payment_bf_renew_annually">Alennukset perustuvat kuukausittaiseen standardihintaan. Uudistuu automaattisesti hintaan %1$s/vuosi.</string>
+  <string name="payment_welcome_offer_renew_monthly">Tervetuliaistarjous. Uudistuu automaattisesti hintaan %1$s/kuukausi.</string>
+  <string name="payment_welcome_offer_renew_annually">Tervetuliaistarjous. Uudistuu automaattisesti hintaan %1$s/vuosi.</string>
   <string name="payment_welcome_offer_renew_biennially">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/2 vuotta</string>
   <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s/kuukausi</item>
+    <item quantity="one">Tervetuliaistarjous. Uudistuu automaattisesti hintaan %1$s/kuukausi.</item>
     <item quantity="other">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %1$s joka %2$s kuukauden välein.</item>
   </plurals>
   <string name="payment_subscription_title">Tilaus</string>

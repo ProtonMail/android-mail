@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Ключы бяспекі</string>
   <string name="mail_settings_change_password">Кіраванне паролямі</string>
   <string name="mail_settings_signature">Подпіс</string>
-  <string name="mail_settings_storage_quota">%1$d%% з %2$s</string>
+  <string name="mail_settings_storage_quota">%1$d%% ад %2$s</string>
   <string name="mail_settings_theme">Тэма</string>
   <string name="mail_settings_app_icon">Значок праграмы</string>
   <string name="mail_settings_alternative_routing">Альтэрнатыўная маршрутызацыя</string>

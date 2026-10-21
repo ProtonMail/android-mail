@@ -27,7 +27,7 @@
   <string name="multiple_contact_emails">%1$s, peste %2$d</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d membru</item>
-    <item quantity="few">%1$d membri</item>
+    <item quantity="few">%1$d de membri</item>
     <item quantity="other">%1$d de membri</item>
   </plurals>
   <string name="search_contacts_description">Căutare contacte</string>

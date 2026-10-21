@@ -19,7 +19,7 @@
 <resources>
   <string name="expiration_expired">만료됨</string>
   <string name="expiration_days_arg">%d일</string>
-  <string name="expiration_hours_arg">%d시간</string>
+  <string name="expiration_hours_arg">%d시</string>
   <string name="expiration_minutes_arg">%d분</string>
   <string name="retry">재시도</string>
   <string name="x_error_not_logged_in">로그인하지 않음</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">전체 회신</string>
   <string name="action_forward">전달</string>
   <string name="action_reply_description">답장</string>
-  <string name="action_reply_to_description">%s에 답장</string>
+  <string name="action_reply_to_description">%s님에게 답장하기</string>
   <string name="action_reply_all_description">전체 답장</string>
   <string name="action_forward_description">전달</string>
   <string name="action_mark_read_description">읽음으로 표시</string>

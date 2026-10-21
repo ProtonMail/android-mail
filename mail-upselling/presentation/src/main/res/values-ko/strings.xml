@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">포함된 항목</string>
   <string name="upselling_pu_cta">Proton Unlimited로 업그레이드</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">연간 결제로 %s를 절약하세요</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">%s 절약</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">%s에 대한 할인을 확정하세요</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">변경하고 %s 절약하세요</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimited로 더 나은 온라인 프라이버시를 경험하세요</string>
@@ -127,7 +127,7 @@
   <string name="upselling_onboarding_choose_plan_monthly">월간</string>
   <string name="upselling_onboarding_choose_plan_yearly">연간</string>
   <string name="upselling_onboarding_best_value">최고의 가치</string>
-  <string name="upselling_onboarding_yearly_savings">연간 결제하여 %s 절약하기</string>
+  <string name="upselling_onboarding_yearly_savings">연간 결제로 %s를 절약하세요</string>
   <string name="upselling_onboarding_entitlements_show_more">더 보기</string>
   <string name="upselling_onboarding_entitlements_show_less">덜 보기</string>
   <string name="upselling_onboarding_button_continue_free">Free 플랜으로 계속하기</string>
@@ -143,11 +143,11 @@
   <string name="upselling_auto_renew_text_promo">환영 할인. 취소 전까지 %s%s(으)로 자동갱신됩니다.</string>
   <string name="upselling_auto_renew_text_bfriday">할인은 표준 월간 요금을 기준으로 합니다. 취소할 때까지 %s%s로 자동 갱신됩니다.</string>
   <string name="upselling_auto_renew_text_promo_short">환영 할인. %s%s에 자동갱신됩니다.</string>
-  <string name="upselling_auto_renew_text_standard">취소하지 않는 한 %s%s에 갱신됩니다.</string>
+  <string name="upselling_auto_renew_text_standard">취소하지 않는 한 %s%s에 자동 갱신됩니다.</string>
   <string name="upselling_social_proof_reviews">2천개 이상의 리뷰</string>
   <string name="upselling_description_social_proof">수백만 명의 구독자가 극찬하는 경험을 위해 업그레이드하세요.</string>
   <string name="upselling_month">/월</string>
-  <string name="upselling_month_only">오직 %s/월</string>
+  <string name="upselling_month_only">단돈 월 %s</string>
   <string name="upselling_year">/연간</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">오류가 발생했습니다.</string>

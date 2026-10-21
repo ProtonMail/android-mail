@@ -20,7 +20,7 @@
   <string name="edm_code_not_recognized">代碼未能識別。請再試一次。</string>
   <string name="edm_code_verifying">正在驗證…</string>
   <string name="edm_missing_camera_permission_headline">允許存取相機</string>
-  <string name="edm_missing_camera_permission_body">若要使用 QR Code 登入，你需要允許 %1$s 存取你的相機。你可以在你的裝置設定中進行此操作。</string>
+  <string name="edm_missing_camera_permission_body">如要使用 QR Code 登入，您需要允許 %1$s 存取您的相機。您可以在裝置設定中變更此設定。</string>
   <string name="edm_missing_camera_permission_footer">一切由你掌控：你隨時可以在你的裝置設定中進行變更。</string>
   <string name="edm_missing_camera_permission_settings">設定</string>
   <string name="intro_origin_sign_in_title">登入服務</string>

@@ -33,7 +33,7 @@
   <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
+  <string name="content_search_no_results_title_for_query">Không tìm thấy kết quả cho \"%1$s\"</string>
   <string name="content_search_no_results_description">Hãy thử từ khóa khác hoặc kiểm tra chính tả.</string>
   <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
   <string name="content_search_no_results_learn_more">Learn more…</string>
@@ -54,7 +54,7 @@
   <string name="content_search_first_run_description">Type anything to search privately…</string>
   <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
-    <item quantity="other">%1$d Results</item>
+    <item quantity="other">%1$d kết quả</item>
   </plurals>
   <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
@@ -63,10 +63,10 @@
   <string name="content_search_previously_found_title">Đã tìm thấy trước đó</string>
   <string name="content_search_dismiss_recent_search_content_description">Xóa “%1$s” khỏi các tìm kiếm gần đây</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
-  <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
-  <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
-  <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
+  <string name="content_search_indexing_progress">Đang lập chỉ mục thư • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Lập chỉ mục bị gián đoạn • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Đang lập chỉ mục thư, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Lập chỉ mục bị gián đoạn, %1$d%%</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Xóa vĩnh viễn?</string>
   <string name="content_search_delete_dialog_message">Các thư này sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</string>

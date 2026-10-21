@@ -18,10 +18,10 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="other">%d個が選択済み</item>
+    <item quantity="other">%d個選択済み</item>
   </plurals>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d 個の添付ファイル</item>
+    <item quantity="other">%d 件の添付ファイル</item>
   </plurals>
   <string name="attachments">添付ファイル</string>
   <string name="attachment_type_description">%1$s ファイル</string>

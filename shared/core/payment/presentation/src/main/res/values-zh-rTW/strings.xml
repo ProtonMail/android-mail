@@ -20,19 +20,19 @@
   <string name="payment_error_title">出了點問題</string>
   <string name="payment_error_description">我們無法載入此頁面。請重新整理頁面或檢查您的網際網路連線。</string>
   <string name="proton_error_non_processable_actions">一項或多項操作無法處理。請登出並重新登入您的帳號。</string>
-  <string name="payment_purchase_button_get">取得 %1$s</string>
+  <string name="payment_purchase_button_get">選用 %1$s</string>
   <string name="payment_purchase_button_subscribed">已訂閱 %1$s</string>
   <string name="payment_purchase_button_product_not_found">在商店中找不到產品</string>
   <string name="payment_pay_monthly">每月付款</string>
   <string name="payment_pay_annually">每年付款</string>
   <string name="payment_pay_biennially">每兩年付款</string>
   <plurals name="payment_pay_other">
-    <item quantity="other">支付%d個月</item>
+    <item quantity="other">%d月繳</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">折扣以標準月費計算。將以每月 %1$s 自動續訂。</string>
-  <string name="payment_bf_renew_annually">折扣以標準月費計算。將以每年 %1$s 自動續訂。</string>
-  <string name="payment_welcome_offer_renew_monthly">歡迎優惠。自動續約為每月 %1$s</string>
-  <string name="payment_welcome_offer_renew_annually">歡迎優惠。自動續約為每年 %1$s</string>
+  <string name="payment_bf_renew_monthly">折扣以標準月費為準。將以每月 %1$s 自動續訂</string>
+  <string name="payment_bf_renew_annually">折扣以標準月費為準。將以每年 %1$s 自動續訂</string>
+  <string name="payment_welcome_offer_renew_monthly">迎新優惠。以 %1$s/月自動續期</string>
+  <string name="payment_welcome_offer_renew_annually">迎新優惠。以 %1$s/年自動續期</string>
   <string name="payment_welcome_offer_renew_biennially">歡迎優惠。自動續約為每兩年 %1$s</string>
   <plurals name="payment_welcome_offer_renew_other">
     <item quantity="other">歡迎優惠。自動續約為每%2$s個月 %1$s</item>

@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">安全性密鑰</string>
   <string name="mail_settings_change_password">密碼管理</string>
   <string name="mail_settings_signature">簽名</string>
-  <string name="mail_settings_storage_quota">%2$s 中的 %1$d%%</string>
+  <string name="mail_settings_storage_quota">%2$s 的 %1$d%%</string>
   <string name="mail_settings_theme">布景主題</string>
   <string name="mail_settings_app_icon">應用程式圖示</string>
   <string name="mail_settings_alternative_routing">替代路由</string>

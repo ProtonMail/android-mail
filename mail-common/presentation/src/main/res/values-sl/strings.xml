@@ -19,7 +19,7 @@
 <resources>
   <string name="expiration_expired">Poteklo</string>
   <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%d ur</string>
+  <string name="expiration_hours_arg">%d u</string>
   <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Poskusite znova</string>
   <string name="x_error_not_logged_in">Niste prijavljeni</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Odgovori vsem</string>
   <string name="action_forward">Posreduj</string>
   <string name="action_reply_description">Odgovori</string>
-  <string name="action_reply_to_description">Odgovori na %s</string>
+  <string name="action_reply_to_description">Odgovori %s</string>
   <string name="action_reply_all_description">Odgovori vsem</string>
   <string name="action_forward_description">Posreduj</string>
   <string name="action_mark_read_description">Označi kot prebrano</string>

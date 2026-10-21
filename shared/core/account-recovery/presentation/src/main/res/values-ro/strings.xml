@@ -20,9 +20,9 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Solicitare resetare parolă</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">A fost solicitată o resetare a parolei pentru <b>%1$s</b>. Vă puteți schimba parola peste %2$d oră.\n\nDacă nu ați făcut această solicitare, anulați-o acum.</item>
-    <item quantity="few">A fost solicitată o resetare a parolei pentru <b>%1$s</b>. Vă puteți schimba parola peste %2$d ore.\n\nDacă nu ați făcut această solicitare, anulați-o acum.</item>
-    <item quantity="other">A fost solicitată o resetare a parolei pentru <b>%1$s</b>. Vă puteți schimba parola peste %2$d de ore.\n\nDacă nu ați făcut această solicitare, anulați-o acum.</item>
+    <item quantity="one">A fost solicitată o resetare a parolei pentru <b>%1$s</b>. Vă puteți schimba parola timp de %2$d oră.\n\nDacă nu ați făcut această solicitare, anulați-o acum.</item>
+    <item quantity="few">A fost solicitată o resetare a parolei pentru <b>%1$s</b>. Vă puteți schimba parola timp de %2$d ore.\n\nDacă nu ați făcut această solicitare, anulați-o acum.</item>
+    <item quantity="other">A fost solicitată o resetare a parolei pentru <b>%1$s</b>. Vă puteți schimba parola timp de %2$d de ore.\n\nDacă nu ați făcut această solicitare, anulați-o acum.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Anulați resetarea parolei?</string>
@@ -37,7 +37,7 @@
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Resetare parolă disponibilă</string>
   <string name="account_recovery_password_started_subtitle">Pentru a vă reseta parola, reveniți la dispozitivul, aplicația sau navigatorul web de pe care ați făcut cererea de resetare a parolei.\n\nVa trebui să faceți acest lucru înainte de %s.\n\nDacă nu ați solicitat resetarea parolei, anulați solicitarea acum.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Acum vă puteți reseta parola.\n\nVa trebui să faceți acest lucru înainte de %s.\n\nDacă nu ați solicitat resetarea parolei, anulați solicitarea acum.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Acum vă puteți reseta parola.\n\nVa trebui să faceți acest lucru înainte de %s.\n\nDacă nu ați solicitata resetarea parolei, anulați solicitarea acum.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Resetarea parolei a expirat</string>
   <string name="account_recovery_window_ended_subtitle">Va trebui să solicitați o nouă resetare a parolei pentru %s.</string>
@@ -50,10 +50,10 @@
   <string name="account_recovery_info_grace_subtitle">Vă puteți reseta parola peste %1s.</string>
   <string name="account_recovery_info_grace_description">Pentru a ne asigura că dvs. încercați să vă resetați parola, așteptăm 72 de ore înainte de a aproba solicitările.\n\nDacă nu ați solicitat o resetare a parolei, anulați această solicitare acum.</string>
   <string name="account_recovery_info_cancelled_title">Resetarea parolei a fost anulată</string>
-  <string name="account_recovery_info_cancelled_subtitle">S-a solicitat o resetare a parolei în data de %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">S-a solicitat o resetare a parolei la %1s.</string>
   <string name="account_recovery_info_cancelled_description">Dacă nu recunoașteți această solicitare, ar putea însemna că altcineva vă poate accesa contul Proton.\n\nSecurizați-vă contul acum.</string>
   <string name="account_recovery_info_insecure_title">Resetare parola disponibilă</string>
-  <string name="account_recovery_info_insecure_subtitle">Acum vă puteți reseta parola. Resetarea parolei este disponibilă până la data de %1s.</string>
+  <string name="account_recovery_info_insecure_subtitle">Acum vă puteți reseta parola. Resetarea parolei este disponibilă până %1s.</string>
   <string name="account_recovery_info_insecure_description">Nu ați făcut această solicitare?\n\nDacă nu ați solicitat resetarea parolei, anulați solicitarea acum.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Resetați parola?</string>

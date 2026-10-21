@@ -141,7 +141,7 @@ igen.</string>
   <string name="rsvp_widget_organizer">(Arrangør)</string>
   <string name="rsvp_widget_you">Dig</string>
   <plurals name="rsvp_widget_participants">
-    <item quantity="one">%1$d deltager</item>
+    <item quantity="one">%1$d Deltager</item>
     <item quantity="other">%1$d deltagere</item>
   </plurals>
   <string name="rsvp_widget_happening_now">Foregår <b>nu</b></string>

@@ -21,7 +21,7 @@
   <string name="account_recovery_grace_period_info_title">Запытана скіданне пароля</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
     <item quantity="one">Скіданне пароля было запытана для <b>%1$s</b>. Вы можаце змяніць свой пароль на працягу %2$d гадзіны.\n\nКалі вы не рабілі гэты запыт, скасуйце яго.</item>
-    <item quantity="few">Скіданне пароля было запытана для <b>%1$s</b>. Вы можаце змяніць свой пароль на працягу %2$d гадзін.\n\nКалі вы не рабілі гэты запыт, скасуйце яго зараз.</item>
+    <item quantity="few">Скіданне пароля было запытана для <b>%1$s</b>. Вы можаце змяніць свой пароль на працягу %2$d гадзін.\n\nКалі вы не рабілі гэты запыт, скасуйце яго.</item>
     <item quantity="many">Скіданне пароля было запытана для <b>%1$s</b>. Вы можаце змяніць свой пароль на працягу %2$d гадзін.\n\nКалі вы не рабілі гэты запыт, скасуйце яго.</item>
     <item quantity="other">Скіданне пароля было запытана для <b>%1$s</b>. Вы можаце змяніць свой пароль на працягу %2$d гадзін.\n\nКалі вы не рабілі гэты запыт, скасуйце яго.</item>
   </plurals>
@@ -41,7 +41,7 @@
   <string name="account_recovery_password_started_self_initiated_subtitle">Цяпер вы можаце скінуць свой пароль.\n\nВам неабходна будзе зрабіць гэта да %s.\n\nКалі вы не запытвалі скіданне пароля, скасуйце запыт.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Скіданне пароля пратэрмінавана</string>
-  <string name="account_recovery_window_ended_subtitle">Вам неабходна запытаць новае скіданне пароля для %s.</string>
+  <string name="account_recovery_window_ended_subtitle">Вам неабходна запытаць новы скід пароля для %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Скасаваць запыт</string>
   <string name="account_recovery_dismiss">Зразумела</string>
@@ -51,10 +51,10 @@
   <string name="account_recovery_info_grace_subtitle">Вы можаце скінуць свой пароль у %1s</string>
   <string name="account_recovery_info_grace_description">Каб пераканацца што менавіта вы спрабуеце скінуць свой пароль, мы пачакаем 72 гадзіны перад тым, як ухваліць запыт.\n\nКалі вы не запытвалі скіданне пароля, скасуйце запыт.</string>
   <string name="account_recovery_info_cancelled_title">Скіданне пароля скасавана</string>
-  <string name="account_recovery_info_cancelled_subtitle">Запыт на скіданне пароля быў зроблены %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Запыт на скід пароля быў зроблены %1s.</string>
   <string name="account_recovery_info_cancelled_description">Калі вы не можаце распазнаць гэты запыт, то гэта можа значаць, што нехта яшчэ мог атрымаць доступ да вашага ўліковага запісу Proton.\n\nПаклапаціцеся пра яго бяспеку.</string>
   <string name="account_recovery_info_insecure_title">Даступна скіданне пароля</string>
-  <string name="account_recovery_info_insecure_subtitle">Цяпер вы можаце скінуць свой пароль. Скіданне пароля даступна да %1s.</string>
+  <string name="account_recovery_info_insecure_subtitle">Цяпер вы можаце скінуць свой пароль. Гэта аперацыя будзе даступна да %1s.</string>
   <string name="account_recovery_info_insecure_description">Не рабілі гэты запыт?\n\nКалі вы не запытвалі скіданне пароля, скасуйце запыт.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Скінуць пароль?</string>

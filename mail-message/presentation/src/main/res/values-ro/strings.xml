@@ -18,14 +18,14 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">Selectate: %d</item>
-    <item quantity="few">Selectate: %d</item>
+    <item quantity="one">%d selectat</item>
+    <item quantity="few">%d selectate</item>
     <item quantity="other">Selectate: %d</item>
   </plurals>
   <plurals name="attachment_count_label">
-    <item quantity="one">Atașamente: %d</item>
-    <item quantity="few">Atașamente: %d</item>
-    <item quantity="other">Atașamente: %d</item>
+    <item quantity="one">%d fișier atașat</item>
+    <item quantity="few">%d fișiere atașate</item>
+    <item quantity="other">%d de fișiere atașate</item>
   </plurals>
   <string name="attachments">atașamente</string>
   <string name="attachment_type_description">Fișier %1$s</string>

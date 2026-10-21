@@ -32,8 +32,8 @@
   <string name="bcc">Piilokopio:</string>
   <string name="date">Päiväys:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Liite</item>
-    <item quantity="other">%d Liitettä</item>
+    <item quantity="one">%d liite</item>
+    <item quantity="other">%d liitettä</item>
   </plurals>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Luonnos)</string>

@@ -73,7 +73,7 @@
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Enviar de todos modos</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Añadir protección por contraseña</string>
   <string name="composer_send_expiring_message_to_external_may_fail">No hemos podido confirmar que todos los destinatarios utilicen Proton Mail. Solo las direcciones de Proton admiten la expiración de mensajes. En este caso, te sugerimos añadir una contraseña en su lugar.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">Algunos destinatarios (%1$s) no admiten la expiración por defecto. Añade una contraseña para activar la expiración para los destinatarios que no son de Proton Mail.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Algunos destinatarios (%1$s) no admiten la expiración por defecto. Añade una contraseña para activarla para los destinatarios que no son de Proton Mail.</string>
   <string name="composer_send_expiring_message_to_external_will_fail_for_all">Ninguno de los destinatarios admite la expiración por defecto. Añade una contraseña para activar la expiración para destinatarios que no usan Proton Mail.</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Notificación de envío</string>

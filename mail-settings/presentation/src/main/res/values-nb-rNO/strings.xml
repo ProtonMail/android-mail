@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Sikkerhetsnøkler</string>
   <string name="mail_settings_change_password">Passordhåndtering</string>
   <string name="mail_settings_signature">Signatur</string>
-  <string name="mail_settings_storage_quota">%1$d%% av %2$s</string>
+  <string name="mail_settings_storage_quota">%1$d %% av %2$s</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_app_icon">Appikon</string>
   <string name="mail_settings_alternative_routing">Alternativ ruting</string>

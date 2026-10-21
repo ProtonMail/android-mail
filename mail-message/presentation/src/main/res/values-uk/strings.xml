@@ -27,10 +27,10 @@
     <item quantity="one">%d вкладення</item>
     <item quantity="few">%d вкладення</item>
     <item quantity="many">%d вкладень</item>
-    <item quantity="other">%d вкладення</item>
+    <item quantity="other">%d вкладень</item>
   </plurals>
   <string name="attachments">вкладення</string>
-  <string name="attachment_type_description">Файл %1$s</string>
+  <string name="attachment_type_description">%1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Архів</string>
   <string name="attachment_type_image">Зображення</string>

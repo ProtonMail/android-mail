@@ -48,7 +48,7 @@
   <string name="mail_settings_pin_insertion_error_no_match">A PIN-kódok nem egyeznek.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
     <item quantity="one">%s hátralévő próbálkozás a kijelentkezésig.</item>
-    <item quantity="other">%s hátralévő próbálkozás a kijelentkezésig.</item>
+    <item quantity="other">%s zbývajících pokusů před odhlášením.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Hiba történt a PIN-kód ellenőrzése során.</string>
   <string name="mail_settings_pin_insertion_error_too_short">A PIN kódnak legalább 4 számjegyűnek kell lennie.</string>

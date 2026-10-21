@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">No llegits</string>
   <string name="include_spam_trash_text">Inclou el correu brossa/paperera</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d seleccionat</item>
+    <item quantity="one">%d seleccionats</item>
     <item quantity="other">%d seleccionats</item>
   </plurals>
   <string name="mailbox_default_recipient">(Cap destinatari)</string>
@@ -57,12 +57,12 @@
     <item quantity="other">Segur que voleu suprimir aquests missatges permanentment?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">S\'ha eliminat el missatge de manera permanent.</item>
-    <item quantity="other">S\'han eliminat %d missatges de manera permanent.</item>
+    <item quantity="one">S\'ha eliminat el missatge de manera permanent</item>
+    <item quantity="other">S\'han eliminat %d missatges de manera permanent</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversa eliminada permanentment.</item>
-    <item quantity="other">S\'han eliminat %d converses permanentment.</item>
+    <item quantity="one">S\'ha eliminat la conversa de manera permanent</item>
+    <item quantity="other">S\'han eliminat %d converses de manera permanent</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">No s\'ha pogut efectuar l\'operació sobre l\'etiqueta.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">No s\'han pogut obtenir les etiquetes.</string>
@@ -73,11 +73,11 @@
   <string name="mailbox_action_archive_message">S\'ha mogut el missatge a l\'arxiu.</string>
   <string name="mailbox_action_spam_message">S\'ha mogut el missatge al correu brossa</string>
   <plurals name="mailbox_action_move_conversation">
-    <item quantity="one">S\'ha mogut la conversa a %s</item>
+    <item quantity="one">S\'ha mogut la conversa a %s.</item>
     <item quantity="other">S\'han mogut les converses a %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
-    <item quantity="one">El missatge s\'ha mogut a %s.</item>
+    <item quantity="one">S\'ha mogut el missatge a %s</item>
     <item quantity="other">Els missatges s\'han mogut a %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Buida la paperera</string>

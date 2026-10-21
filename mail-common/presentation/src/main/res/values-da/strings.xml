@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Udløbet</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dt</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Forsøg igen</string>
   <string name="x_error_not_logged_in">Ikke logget ind</string>
   <string name="action_customize_toolbar_description">Tilpas værktøjslinje</string>

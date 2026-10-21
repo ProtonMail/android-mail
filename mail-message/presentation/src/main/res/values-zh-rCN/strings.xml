@@ -24,7 +24,7 @@
     <item quantity="other">%d 个附件</item>
   </plurals>
   <string name="attachments">附件</string>
-  <string name="attachment_type_description">%1$s文件</string>
+  <string name="attachment_type_description">%1$s 文件</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">归档</string>
   <string name="attachment_type_image">图像</string>

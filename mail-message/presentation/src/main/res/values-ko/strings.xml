@@ -18,10 +18,10 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="other">%d개 선택됨</item>
+    <item quantity="other">%d 선택됨</item>
   </plurals>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d개 첨부 파일</item>
+    <item quantity="other">첨부 파일 %d개</item>
   </plurals>
   <string name="attachments">첨부파일</string>
   <string name="attachment_type_description">%1$s 파일</string>

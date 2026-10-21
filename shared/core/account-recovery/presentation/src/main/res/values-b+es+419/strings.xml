@@ -21,7 +21,7 @@
   <string name="account_recovery_grace_period_info_title">Restablecimiento de contraseña solicitado</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
     <item quantity="one">Se ha solicitado el restablecimiento de la contraseña para <b>%1$s</b>. Puede cambiar la contraseña en %2$d hora.\n\nSi no ha realizado esta solicitud, cancélela ahora.</item>
-    <item quantity="other">Se solicitó un restablecimiento de contraseña para <b>%1$s</b>. Puede cambiar su contraseña en %2$d horas.\n\nSi no hizo esta solicitud, cancélela ahora.</item>
+    <item quantity="other">Se ha solicitado el restablecimiento de la contraseña para <b>%1$s</b>. Puede cambiar la contraseña en %2$d horas.\n\nSi no ha realizado esta solicitud, cancélela ahora.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">¿Cancelar el restablecimiento de la contraseña?</string>
@@ -49,7 +49,7 @@
   <string name="account_recovery_info_grace_subtitle">Puede restablecer la contraseña en %1s.</string>
   <string name="account_recovery_info_grace_description">Para asegurarnos de que realmente es usted quien intenta restablecer la contraseña, esperamos 72 horas antes de aprobar las solicitudes.\n\nSi no solicitó restablecer la contraseña, cancélela ahora.</string>
   <string name="account_recovery_info_cancelled_title">Restablecimiento de contraseña cancelado</string>
-  <string name="account_recovery_info_cancelled_subtitle">Una solicitud de restablecimiento de contraseña fue hecha el %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Una solicitud de restablecimiento de contraseña fue hecha en %1s.</string>
   <string name="account_recovery_info_cancelled_description">Si no reconoce esta solicitud, puede que alguien más tenga acceso a su cuenta de Proton.\n\nAsegure la cuenta ahora.</string>
   <string name="account_recovery_info_insecure_title">Restablecimiento de contraseña disponible</string>
   <string name="account_recovery_info_insecure_subtitle">Ahora puede restablecer la contraseña. El restablecimiento de contraseña está disponible hasta %1s.</string>

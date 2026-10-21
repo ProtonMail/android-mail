@@ -27,12 +27,12 @@
   <string name="payment_pay_annually">Pagar anualmente</string>
   <string name="payment_pay_biennially">Pagar a cada 2 anos</string>
   <plurals name="payment_pay_other">
-    <item quantity="one">Pague por %d mês</item>
-    <item quantity="other">Pague por %d meses</item>
+    <item quantity="one">Pagar por %d meses</item>
+    <item quantity="other">Pagar por %d meses</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Os descontos têm por base o preço mensal padrão. A renovação é automática por %1$s/mês.</string>
-  <string name="payment_bf_renew_annually">Os descontos têm por base o preço mensal padrão. A renovação é automática por %1$s/ano.</string>
-  <string name="payment_welcome_offer_renew_monthly">Oferta de boas-vindas. A renovação é automática a %1$s/mês</string>
+  <string name="payment_bf_renew_monthly">Os descontos são calculados com base no preço mensal padrão. A renovação automática é de %1$s/mês.</string>
+  <string name="payment_bf_renew_annually">Os descontos são calculados com base no preço mensal padrão. A renovação automática é de %1$s/ano.</string>
+  <string name="payment_welcome_offer_renew_monthly">Oferta de boas-vindas. Renovações automáticas a %1$s/mês</string>
   <string name="payment_welcome_offer_renew_annually">Oferta de boas-vindas. Renovação automática a %1$s/ano</string>
   <string name="payment_welcome_offer_renew_biennially">Oferta de boas-vindas. Renova automaticamente a %1$s a cada 2 anos</string>
   <plurals name="payment_welcome_offer_renew_other">

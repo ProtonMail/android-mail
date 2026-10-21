@@ -39,7 +39,7 @@
   <string name="padlocks_proton_receive_e2ee_verified_recipient_description">Denne e-mail er %s på afsenderens enhed og kan kun dekrypteres af modtageren. Proton kan ikke på noget tidspunkt se indholdet af e-mailen.</string>
   <string name="padlocks_proton_receive_e2ee_verified_recipient_description_link_text">end-to-end krypteret</string>
   <string name="padlocks_proton_receive_e2ee_verification_failed">End-to-end krypteret med mislykket bekræftelse</string>
-  <string name="padlocks_proton_receive_e2ee_verification_failed_description">Denne e-mail er %s på afsenderens enhed og kan kun dekrypteres af modtageren. Proton kan ikke på noget tidspunkt se indholdet af e-mailen.</string>
+  <string name="padlocks_proton_receive_e2ee_verification_failed_description">Denne e-mail er %s på afsenderens enhed og kan kun krypteres af modtageren. Proton kan ikke på noget tidspunkt se indholdet af e-mailen.</string>
   <string name="padlocks_proton_receive_e2ee_verification_failed_description_link_text">end-to-end krypteret</string>
   <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature">End-to-end krypteret med mislykket bekræftelse</string>
   <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description">Denne e-mail er %s på afsenderens enhed og kan kun dekrypteres af modtageren. Proton kan ikke på noget tidspunkt se indholdet af e-mailen.</string>
@@ -89,15 +89,15 @@
   <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">E-mails, der udveksles mellem Proton-brugere, er automatisk end-to-end-krypterede.</string>
   <string name="padlocks_non_encrypted_copy">En afsender eller modtager, der ikke bruger Proton Mail, kan dog have en ukrypteret kopi lagret på sin mailserver.</string>
-  <string name="padlocks_sender_verified_contact">Afsenderen er en %s, hvis krypteringsnøgler du har tillid til.</string>
+  <string name="padlocks_sender_verified_contact">Afsenderen er en %s, hvis krypteringsnøgler du har betroet dig til.</string>
   <string name="padlocks_sender_verified_contact_link_text">verificeret kontakt</string>
   <string name="padlocks_sender_verification_failed">%s. Bekræft e-mailens autenticitet med din kontakt.</string>
   <string name="padlocks_sender_verification_failed_link_text">afsenderbekræftelse mislykkedes</string>
-  <string name="padlocks_sender_verification_failed_no_signature">%s, da den ikke var signeret. Bekræft e-mailens autenticitet med din kontakt.</string>
+  <string name="padlocks_sender_verification_failed_no_signature">%s, fordi den ikke var signeret. Bekræft e-mailens autenticitet med din kontakt.</string>
   <string name="padlocks_sender_verification_failed_no_signature_link_text">afsenderbekræftelse mislykkedes</string>
-  <string name="padlocks_recipient_verified_contact">Modtageren er en %s, hvis krypteringsnøgler du har tillid til.</string>
+  <string name="padlocks_recipient_verified_contact">Modtageren er en %s, hvis krypteringsnøgler du har betroet dig til.</string>
   <string name="padlocks_recipient_verified_contact_link_text">verificeret kontakt</string>
-  <string name="padlocks_recipients_verified_contacts">Modtagerne er %s, hvis krypteringsnøgler du har tillid til.</string>
+  <string name="padlocks_recipients_verified_contacts">Modtagerne er %s, hvis krypteringsnøgler du har betroet dig til.</string>
   <string name="padlocks_recipients_verified_contacts_link_text">verificerede kontakter</string>
   <string name="padlocks_zero_access_addendum">Denne e-mail er lagret på Protons servere med %s. Hverken Proton eller nogen anden kan læse den.</string>
   <string name="padlocks_zero_access_addendum_link_text">nul-adgang-kryptering</string>

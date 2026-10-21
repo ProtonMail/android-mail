@@ -32,7 +32,7 @@
   <string name="payment_bf_renew_monthly">Mức giảm giá được tính dựa trên mức giá tiêu chuẩn theo tháng. Gói sẽ tự động gia hạn ở mức %1$s/tháng</string>
   <string name="payment_bf_renew_annually">Mức giảm giá được tính dựa trên mức giá tiêu chuẩn theo tháng. Gói sẽ tự động gia hạn ở mức %1$s/năm</string>
   <string name="payment_welcome_offer_renew_monthly">Ưu đãi chào mừng. Tự động gia hạn với mức %1$s/tháng</string>
-  <string name="payment_welcome_offer_renew_annually">Ưu đãi chào mừng. Tự động gia hạn với mức %1$s/năm</string>
+  <string name="payment_welcome_offer_renew_annually">Ưu đãi chào mừng. Tự động gia hạn ở mức %1$s/năm</string>
   <string name="payment_welcome_offer_renew_biennially">Ưu đãi chào mừng. Tự động gia hạn ở mức %1$s mỗi 2 năm</string>
   <plurals name="payment_welcome_offer_renew_other">
     <item quantity="other">Ưu đãi chào mừng. Tự động gia hạn ở mức %1$s mỗi %2$s tháng</item>

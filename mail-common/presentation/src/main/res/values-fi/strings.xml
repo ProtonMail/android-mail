@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Tuhoutunut</string>
-  <string name="expiration_days_arg">%dpv</string>
-  <string name="expiration_hours_arg">%dt</string>
-  <string name="expiration_minutes_arg">%dmin</string>
+  <string name="expiration_days_arg">%d pv</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Yritä uudelleen</string>
   <string name="x_error_not_logged_in">Ei kirjautuneena</string>
   <string name="action_customize_toolbar_description">Mukauta työkalupalkkia</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Vastaa kaikille</string>
   <string name="action_forward">Välitä</string>
   <string name="action_reply_description">Vastaa</string>
-  <string name="action_reply_to_description">Vastaa käyttäjälle %s</string>
+  <string name="action_reply_to_description">Vastaa viestiin %s</string>
   <string name="action_reply_all_description">Vastaa kaikille</string>
   <string name="action_forward_description">Välitä</string>
   <string name="action_mark_read_description">Merkitse luetuksi</string>

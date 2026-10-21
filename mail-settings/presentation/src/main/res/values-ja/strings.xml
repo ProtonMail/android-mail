@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">セキュリティキー</string>
   <string name="mail_settings_change_password">パスワード管理</string>
   <string name="mail_settings_signature">署名</string>
-  <string name="mail_settings_storage_quota">%2$s の中の%1$d%%</string>
+  <string name="mail_settings_storage_quota">%2$sの%1$d%%</string>
   <string name="mail_settings_theme">テーマ</string>
   <string name="mail_settings_app_icon">アプリアイコン</string>
   <string name="mail_settings_alternative_routing">代替ルーティング</string>

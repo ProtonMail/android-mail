@@ -20,15 +20,15 @@
   <string name="payment_error_title">Ocurrió un error</string>
   <string name="payment_error_description">No pudimos cargar esta página. Actualice la página o verifique su conexión a internet.</string>
   <string name="proton_error_non_processable_actions">Una o más acciones no se pueden procesar. Cierre sesión y vuelve a iniciarla en su cuenta.</string>
-  <string name="payment_purchase_button_get">Obtener %1$s</string>
+  <string name="payment_purchase_button_get">Obtenga %1$s</string>
   <string name="payment_purchase_button_subscribed">Suscrito a %1$s</string>
   <string name="payment_purchase_button_product_not_found">Producto no encontrado en la tienda</string>
   <string name="payment_pay_monthly">Pagar mensualmente</string>
   <string name="payment_pay_annually">Pagar anualmente</string>
   <string name="payment_pay_biennially">Pagar cada dos años</string>
   <plurals name="payment_pay_other">
-    <item quantity="one">Pague por %d mes</item>
-    <item quantity="other">Pague por %d meses</item>
+    <item quantity="one">Facturación por %d mes</item>
+    <item quantity="other">Facturación por %d meses</item>
   </plurals>
   <string name="payment_bf_renew_monthly">Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$s/mes</string>
   <string name="payment_bf_renew_annually">Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$s/año</string>

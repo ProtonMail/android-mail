@@ -37,10 +37,10 @@
   <string name="mailbox_message_sending_offline">Fora de línia: el missatge és a la cua per enviar-se.</string>
   <string name="mailbox_message_sending_success">S\'ha enviat el missatge.</string>
   <string name="mailbox_message_sending_error_action">Ves als esborranys</string>
-  <string name="notification_switched_account">S\'ha canviat al compte %s.</string>
+  <string name="notification_switched_account">S\'ha canviat al compte %s</string>
   <string name="mailbox_message_scheduling">S\'està planificant el missatge...</string>
   <string name="mailbox_message_scheduling_offline">Fora de línia: missatge a la cua per a la planificació</string>
-  <string name="mailbox_message_scheduled_for_sending_success">Aquest missatge s\'enviarà el %1$s.</string>
+  <string name="mailbox_message_scheduled_for_sending_success">Aquest missatge s\'enviarà el %1$s</string>
   <string name="launcher_alert_duplicate_account_description">L\'usuari ja ha iniciat la sessió</string>
   <string name="home_content_search_error_snackbar">No s\'ha pogut preparar la cerca al contingut del correu electrònic.</string>
   <string name="home_content_search_error_snackbar_action">Revisa</string>

@@ -20,10 +20,10 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Запрошен сброс пароля</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">Для <b>%1$s</b> был запрошен сброс пароля. Вы сможете изменить свой пароль через %2$d час.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
-    <item quantity="few">Для <b>%1$s</b> был запрошен сброс пароля. Вы сможете изменить свой пароль через %2$d часа.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
-    <item quantity="many">Для <b>%1$s</b> был запрошен сброс пароля. Вы сможете изменить свой пароль через %2$d часов.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
-    <item quantity="other">Для <b>%1$s</b> был запрошен сброс пароля. Вы сможете изменить свой пароль через %2$d часов.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
+    <item quantity="one">Был запрошен сброс пароля для <b>%1$s</b>. Вы сможете изменить пароль через %2$d час.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
+    <item quantity="few">Был запрошен сброс пароля для <b>%1$s</b>. Вы сможете изменить пароль через %2$d часа.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
+    <item quantity="many">Был запрошен сброс пароля для <b>%1$s</b>. Вы сможете изменить пароль через %2$d часов.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
+    <item quantity="other">Был запрошен сброс пароля для <b>%1$s</b>. Вы сможете изменить пароль через %2$d часа.\n\nЕсли вы не делали этот запрос, отмените его сейчас.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Отменить сброс пароля?</string>
@@ -37,28 +37,28 @@
   <string name="account_recovery_cancelled_subtitle">Если вы не запрашивали смену пароля, ваш аккаунт может быть под угрозой.\n\nЗащитите свой аккаунт, изменив пароль.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Доступен сброс пароля</string>
-  <string name="account_recovery_password_started_subtitle">Чтобы сбросить пароль, вернитесь на устройство, приложение или браузер, с которого вы сделали запрос на сброс пароля.\n\nВам нужно сделать это до %s.\n\nЕсли вы не запрашивали сброс пароля, отмените запрос сейчас.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Теперь вы можете сбросить пароль.\n\nЭто необходимо сделать до %s.\n\nЕсли вы не запрашивали сброс пароля, отмените запрос сейчас.</string>
+  <string name="account_recovery_password_started_subtitle">Чтобы сбросить пароль, вернитесь к устройству, приложению или браузеру, с которого вы отправляли запрос на сброс пароля.\n\nВы должны сделать это до %s.\n\nЕсли вы не просили сбросить пароль, отмените запрос сейчас.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Теперь вы можете сбросить свой пароль.\n\nВы должны сделать это до %s.\n\nЕсли вы не просили сбросить ваш пароль, отмените запрос сейчас.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Срок действия сброса пароля истёк</string>
-  <string name="account_recovery_window_ended_subtitle">Вам нужно запросить новый сброс пароля для %s.</string>
+  <string name="account_recovery_window_ended_subtitle">Вам потребуется запросить новый сброс пароля для %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Отменить запрос</string>
   <string name="account_recovery_dismiss">Понятно</string>
   <string name="account_recovery_reset">Сброс пароля</string>
   <!-- Account Recovery Info -->
   <string name="account_recovery_info_grace_title">Запрошен сброс пароля</string>
-  <string name="account_recovery_info_grace_subtitle">Вы сможете сбросить пароль через %1s.</string>
+  <string name="account_recovery_info_grace_subtitle">Вы можете восстановить свой пароль через %1s.</string>
   <string name="account_recovery_info_grace_description">Чтобы убедиться, что это действительно вы пытаетесь сбросить пароль, мы ждем 72 часа, прежде чем одобрить запрос.\n\nЕсли вы не запрашивали сброс пароля, отмените этот запрос сейчас.</string>
   <string name="account_recovery_info_cancelled_title">Сброс пароля отменён</string>
-  <string name="account_recovery_info_cancelled_subtitle">Запрос на сброс пароля был сделан в %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Запрос на сброс пароля был сделан %1s.</string>
   <string name="account_recovery_info_cancelled_description">Если вы не узнаете этот запрос, это может означать, что кто-то другой имеет доступ к вашему аккаунту Proton.\n\nЗащитите свой аккаунт прямо сейчас.</string>
   <string name="account_recovery_info_insecure_title">Доступен сброс пароля</string>
-  <string name="account_recovery_info_insecure_subtitle">Теперь вы можете сбросить пароль. Сброс пароля доступен до %1s.</string>
+  <string name="account_recovery_info_insecure_subtitle">Теперь вы можете сбросить свой пароль. Сброс пароля доступен до %1s.</string>
   <string name="account_recovery_info_insecure_description">Не делали этот запрос?\n\nЕсли вы не запрашивали сброс пароля, то отмените запрос прямо сейчас.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Сбросить пароль?</string>
-  <string name="account_recovery_reset_dialog_text">"В целях безопасности вам придется подождать 72 часа, прежде чем вы сможете сменить пароль на %1s.\n\nЕсли у вас настроен метод восстановления, попробуйте восстановить аккаунт. Это позволит вам сменить пароль прямо сейчас."</string>
+  <string name="account_recovery_reset_dialog_text">"В целях безопасности вам придется подождать 72 часа, прежде чем вы сможете изменить пароль для %1s.\n\nЕсли у вас настроен метод восстановления, попробуйте вместо этого воспользоваться восстановлением учетной записи. Это позволит вам сразу же сменить пароль."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Запросить сброс пароля</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Использовать метод восстановления</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Измените пароль в браузере, не дожидаясь окончания периода безопасности.</string>

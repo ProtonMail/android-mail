@@ -66,10 +66,10 @@
   <string name="content_search_previously_found_title">Najdeno v prejšnjih iskanjih</string>
   <string name="content_search_dismiss_recent_search_content_description">Odstrani »%1$s« iz nedavnih iskanj</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Indeksiranje pošte • %1$d %%</string>
-  <string name="content_search_indexing_interrupted">Indeksiranje prekinjeno • %1$d %%</string>
-  <string name="content_search_indexing_progress_content_description">Indeksiranje pošte, %1$d %%</string>
-  <string name="content_search_indexing_interrupted_content_description">Indeksiranje prekinjeno, %1$d %%</string>
+  <string name="content_search_indexing_progress">Indeksiranje pošte • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Indeksiranje prekinjeno • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indeksiranje pošte, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indeksiranje prekinjeno, %1$d%%</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Trajno izbriši?</string>
   <string name="content_search_delete_dialog_message">Naslednja sporočila bodo trajno izbrisana. Dejanja ni mogoče razveljaviti.</string>

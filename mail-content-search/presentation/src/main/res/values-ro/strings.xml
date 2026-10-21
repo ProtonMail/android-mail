@@ -14,7 +14,7 @@
   <string name="mail_settings_content_search_update_error">Ceva nu a funcționat bine. Reîncercați.</string>
   <string name="mail_settings_content_search_retry_error">Nu se poate pregăti căutarea în conținutul mesajelor.</string>
   <string name="mail_settings_content_search_indexing_section">Se indexează</string>
-  <string name="mail_settings_content_search_indexing_percentage">%1$s %%</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
   <string name="mail_settings_content_search_indexing_in_progress">În derulare</string>
   <string name="mail_settings_content_search_indexing_up_to_date">Actualizat</string>
   <string name="mail_settings_content_search_indexing_paused">Suspendat</string>

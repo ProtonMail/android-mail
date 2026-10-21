@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Sisältää</string>
   <string name="upselling_pu_cta">Hanki Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Maksa vuosittain ja säästä %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Säästä %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lukitse alennus %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Vaihda ja säästä %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Vie verkkoyksityisyyttäsi pidemmälle Proton Unlimitedilla</string>
@@ -141,13 +141,13 @@
   <string name="upselling_unlimited_description_override">Avataksesi lisää tallennustilaa ja premium-ominaisuuksia.</string>
   <string name="upselling_auto_renew_text">Uusiutuu automaattisesti samaan hintaan ja samoilla ehdoilla, ellei tilausta peruta</string>
   <string name="upselling_auto_renew_text_promo">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %s%s, ellei peruuteta.</string>
-  <string name="upselling_auto_renew_text_bfriday">Alennukset perustuvat normaaliin kuukausihinnoitteluun. Tilaus uusitaan automaattisesti hintaan %s%s, kunnes se peruutetaan.</string>
+  <string name="upselling_auto_renew_text_bfriday">Alennukset perustuvat tavanomaiseen kuukausihintaan. Uudistuu automaattisesti hintaan %s%s, kunnes tilaus peruutetaan.</string>
   <string name="upselling_auto_renew_text_promo_short">Tervetuliaistarjous. Jatkuu automaattisesti hintaan %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Uusiutuu automaattisesti hintaan %s%s, ellei peruuteta.</string>
   <string name="upselling_social_proof_reviews">2 000 + arvostelua</string>
   <string name="upselling_description_social_proof">Päivitä kokemukseen, josta miljoonat tilaajat ovat innoissaan.</string>
-  <string name="upselling_month">/kuukausi</string>
-  <string name="upselling_month_only">vain %s /kk</string>
+  <string name="upselling_month">/kk</string>
+  <string name="upselling_month_only">vain %s /kuukausi</string>
   <string name="upselling_year">/vuosi</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Tapahtui virhe.</string>

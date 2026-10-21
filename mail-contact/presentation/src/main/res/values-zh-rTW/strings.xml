@@ -26,7 +26,7 @@
   <string name="no_contact_email">暫無電郵位址</string>
   <string name="multiple_contact_emails">%1$s、+%2$d</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="other">%1$d 個成員</item>
+    <item quantity="other">%1$d 位成員</item>
   </plurals>
   <string name="search_contacts_description">搜尋聯絡人</string>
   <string name="contact_search_no_results">找不到相符的結果。</string>
@@ -87,7 +87,7 @@
   <string name="contact_details_action_open_url_label">開啟網址</string>
   <string name="contact_group_details_send_message_action">傳送群組訊息</string>
   <plurals name="contact_group_details_number_of_contacts">
-    <item quantity="other">%1$d 位聯絡人</item>
+    <item quantity="other">%1$d 個聯絡人</item>
   </plurals>
   <string name="contact_bottom_sheet_redirect_to_web_title">可在網頁上使用</string>
   <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">關閉</string>

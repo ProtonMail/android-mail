@@ -143,7 +143,7 @@
   <string name="upselling_auto_renew_text_promo">Welkomstaanbieding. Automatisch verlengen op %s%s tenzij u annuleert</string>
   <string name="upselling_auto_renew_text_bfriday">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %s%s totdat u annuleert.</string>
   <string name="upselling_auto_renew_text_promo_short">Welkomstaanbieding, verlengt automatisch op %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Wordt automatisch verlengt op %s%s tenzij geannuleerd.</string>
+  <string name="upselling_auto_renew_text_standard">Wordt automatisch verlengt op %s%s, tenzij geannuleerd.</string>
   <string name="upselling_social_proof_reviews">2k+ RECENSIES</string>
   <string name="upselling_description_social_proof">Upgrade naar de ervaring waar miljoenen abonnees enthousiast over zijn.</string>
   <string name="upselling_month">/maand</string>

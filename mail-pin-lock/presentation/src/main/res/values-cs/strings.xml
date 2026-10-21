@@ -49,8 +49,8 @@
   <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
     <item quantity="one">%s zbývající pokus před odhlášením.</item>
     <item quantity="few">%s zbývající pokusy před odhlášením.</item>
-    <item quantity="many">%s zbývajících pokusů před odhlášením.</item>
-    <item quantity="other">%s zbývajících pokusů před odhlášením.</item>
+    <item quantity="many">%s remaining attempts before sign-out.</item>
+    <item quantity="other">%s remaining attempts before sign-out.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Při ověřování PIN kódu došlo k chybě.</string>
   <string name="mail_settings_pin_insertion_error_too_short">PIN musí mít alespoň 4 číslice</string>

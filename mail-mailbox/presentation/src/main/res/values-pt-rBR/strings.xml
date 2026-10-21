@@ -25,7 +25,7 @@
   <string name="include_spam_trash_text">Incluir Spam/Lixeira</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d selecionado</item>
-    <item quantity="other">%d selecionados</item>
+    <item quantity="other">%d selecionado</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nenhum destinatário)</string>
   <string name="mailbox_default_sender">(Nenhum remetente)</string>

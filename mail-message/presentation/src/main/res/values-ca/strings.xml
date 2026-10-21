@@ -18,7 +18,7 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">%d seleccionat</item>
+    <item quantity="one">%d seleccionats</item>
     <item quantity="other">%d seleccionats</item>
   </plurals>
   <plurals name="attachment_count_label">

@@ -104,7 +104,7 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">No se ha podido configurar la dirección.</string>
   <string name="auth_fido_security_keys_error">Error al obtener las claves de seguridad. Intenta de nuevo.</string>
   <string name="auth_fido_security_keys_title">Claves de seguridad</string>
-  <string name="auth_fido_manage_security_keys_info">Para administrar, añadir o eliminar claves de seguridad, usa la aplicación web de Proton. %s</string>
+  <string name="auth_fido_manage_security_keys_info">Para administrar, añadir, o borrar claves de seguridad, usa la aplicación web de Proton. %s</string>
   <string name="auth_fido_security_keys_empty_list">No hay claves de seguridad registradas en tu cuenta. Para añadir una clave de seguridad utiliza la aplicación web de Proton. %s</string>
   <string name="auth_fido_security_keys_registered">Estas son las claves de seguridad registradas en tu cuenta.</string>
   <string name="auth_fido_manage_security_keys">Gestionar las claves de seguridad</string>

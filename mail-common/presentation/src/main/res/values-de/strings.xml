@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Abgelaufen</string>
-  <string name="expiration_days_arg">%d Tag(e)</string>
-  <string name="expiration_hours_arg">%d Stunde(n)</string>
-  <string name="expiration_minutes_arg">%d Minute(n)</string>
+  <string name="expiration_days_arg">%dt</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Wiederholen</string>
   <string name="x_error_not_logged_in">Nicht angemeldet</string>
   <string name="action_customize_toolbar_description">Symbolleiste anpassen</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Allen antworten</string>
   <string name="action_forward">Weiterleiten</string>
   <string name="action_reply_description">Antworten</string>
-  <string name="action_reply_to_description">Antwort auf %s</string>
+  <string name="action_reply_to_description">Antwort an %s</string>
   <string name="action_reply_all_description">Allen antworten</string>
   <string name="action_forward_description">Weiterleiten</string>
   <string name="action_mark_read_description">Als gelesen kennzeichnen</string>

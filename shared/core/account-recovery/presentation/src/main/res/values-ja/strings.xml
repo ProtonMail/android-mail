@@ -20,7 +20,7 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">パスワードの再設定を要求</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="other"><b>%1$s</b> のパスワードのリセットがリクエストされました。パスワードは %2$d 時間以内に変更できます。\n\nこのリクエストにお心当たりがない場合は、今すぐキャンセルしてください。</item>
+    <item quantity="other"><b>%1$s</b> のパスワードのリセットが要求されました。 %2$d 時間以内にパスワードを変更できます。\n\nこのリクエストを行っていない場合は、今すぐキャンセルしてください。</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">パスワードのリセットをキャンセルしますか？</string>
@@ -34,8 +34,8 @@
   <string name="account_recovery_cancelled_subtitle">パスワードの変更を要求しなかった場合、お客様のアカウントが危険にさらされる可能性があります。\n\nパスワードを変更してアカウントを保護してください。</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">パスワードのリセットが可能です</string>
-  <string name="account_recovery_password_started_subtitle">パスワードをリセットするには、パスワードのリセットリクエストを行ったデバイス、アプリ、またはブラウザに戻ってください。\n\nこれは %s までに行う必要があります。\n\nパスワードのリセットを要求していない場合は、今すぐキャンセルしてください。</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">パスワードをリセットできるようになりました。\n\n%sまでに実行する必要があります。\n\nパスワードのリセットを要求しなかった場合は、今すぐリクエストをキャンセルしてください。</string>
+  <string name="account_recovery_password_started_subtitle">パスワードをリセットするには、パスワードのリセットリクエストを行ったデバイス、アプリ、またはブラウザに戻ります。\n\n%sの前にする必要があります。\n\nもしパスワードのリセットを要求しない場合は、今すぐキャンセルしてください。</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">現在パスワードのリセットが可能です。\n\n%sの前にする必要があります。\n\nもしパスワードリセットのリクエストを求めていない場合は、今すぐリクエストをキャンセルしてください。</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">パスワードのリセットの有効期限が切れました</string>
   <string name="account_recovery_window_ended_subtitle">%s の新しいパスワードのリセットをリクエストする必要があります。</string>
@@ -55,7 +55,7 @@
   <string name="account_recovery_info_insecure_description">リクエストをしませんでしたか？\n\nもしパスワードのリセットをリクエストシていない場合は、今すぐリクエストをキャンセルしてください。</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">パスワードをリセットしますか？</string>
-  <string name="account_recovery_reset_dialog_text">"セキュリティ上の理由から、%1sのパスワードを変更するには、 72 時間待つ必要があります。\n\nもし復旧方法を設定している場合は、アカウントのリカバリーをお試しください。これにより、すぐにパスワードを変更できます。"</string>
+  <string name="account_recovery_reset_dialog_text">"セキュリティ上の理由から、%1sのパスワードを変更するには、72時間待つ必要があります。\n\nもし復旧方法を設定している場合は、アカウントのリカバリーをお試しください。これにより、すぐにパスワードを変更できます。"</string>
   <string name="account_recovery_reset_dialog_action_request_reset">パスワードのリセットをリクエスト</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">回復手段を使用</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">セキュリティ期間中に待機することなく、ブラウザからパスワードを変更することができます。</string>

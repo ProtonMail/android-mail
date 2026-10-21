@@ -24,10 +24,10 @@
   <string name="filter_unread_button_text">Nieprzeczytane</string>
   <string name="include_spam_trash_text">Uwzględnij spam/Kosz</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d</item>
-    <item quantity="few">%d</item>
-    <item quantity="many">%d</item>
-    <item quantity="other">%d</item>
+    <item quantity="one">Zaznaczono: %d</item>
+    <item quantity="few">Zaznaczono: %d</item>
+    <item quantity="many">Zaznaczono: %d</item>
+    <item quantity="other">Zaznaczono: %d</item>
   </plurals>
   <string name="mailbox_default_recipient">(brak odbiorcy)</string>
   <string name="mailbox_default_sender">(brak nadawcy)</string>
@@ -45,8 +45,8 @@
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Usuń wątek</item>
     <item quantity="few">Usuń %d wątki</item>
-    <item quantity="many">Usuń %d wątki</item>
-    <item quantity="other">Usuń %d wątki</item>
+    <item quantity="many">Usuń %d wątków</item>
+    <item quantity="other">Usuń %d wątków</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Usuń wiadomość</item>
@@ -74,7 +74,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Wątek został trwale usunięty</item>
-    <item quantity="few">%d wątki zostały trwale usuniętych</item>
+    <item quantity="few">%d wątki zostały trwale usunięte</item>
     <item quantity="many">%d wątków zostało trwale usuniętych</item>
     <item quantity="other">%d wątków zostało trwale usuniętych</item>
   </plurals>
@@ -122,20 +122,20 @@
   <plurals name="expires_in_days">
     <item quantity="one">Wygasa za %d dzień</item>
     <item quantity="few">Wygasa za %d dni</item>
-    <item quantity="many">Wygasa za %d dni</item>
+    <item quantity="many">Wygasa za %d dnia</item>
     <item quantity="other">Wygasa za %d dnia</item>
   </plurals>
   <plurals name="expires_in_hours">
     <item quantity="one">Wygasa za %d godzinę</item>
     <item quantity="few">Wygasa za %d godziny</item>
     <item quantity="many">Wygasa za %d godzin</item>
-    <item quantity="other">Wygasa za %d godziny</item>
+    <item quantity="other">Wygasa za %d godzin</item>
   </plurals>
   <plurals name="expires_in_minutes">
     <item quantity="one">Wygasa za %d minutę</item>
     <item quantity="few">Wygasa za %d minuty</item>
     <item quantity="many">Wygasa za %d minut</item>
-    <item quantity="other">Wygasa za %d minuty</item>
+    <item quantity="other">Wygasa za %d minut</item>
   </plurals>
   <string name="expires_in_less_than_a_minute">Wygasa za mniej niż minutę</string>
   <string name="schedule_send_tomorrow">Jutro, %1$s</string>

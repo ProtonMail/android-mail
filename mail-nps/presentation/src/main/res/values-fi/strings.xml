@@ -24,5 +24,5 @@
   <string name="nps_share_button">Share anonymously</string>
   <string name="nps_privacy_note">We never send your name, email, or message contents.</string>
   <string name="nps_thank_you">Thanks for sharing. Your feedback helps us improve Proton Mail.</string>
-  <string name="nps_score_content_description">Rating %1$d</string>
+  <string name="nps_score_content_description">Arvosana %1$d</string>
 </resources>

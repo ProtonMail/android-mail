@@ -24,8 +24,8 @@
   <string name="filter_unread_button_text">Lukemattomat</string>
   <string name="include_spam_trash_text">Sisällytä roskaposti/roskakori</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Valittu</item>
-    <item quantity="other">%d Valittu</item>
+    <item quantity="one">%d valittu</item>
+    <item quantity="other">%d valittu</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ei vastaanottajaa)</string>
   <string name="mailbox_default_sender">(Ei lähettäjää)</string>
@@ -74,11 +74,11 @@
   <string name="mailbox_action_spam_message">Viesti siirretiin roskapostiin</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Keskustelu siirrettiin kohteeseen %s</item>
-    <item quantity="other">Keskustelut siirretty kohteeseen %s</item>
+    <item quantity="other">Keskustelut siirrettiin kohteeseen %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
     <item quantity="one">Viesti siirrettiin kohteeseen %s</item>
-    <item quantity="other">Viestit siirretty kohteeseen %s</item>
+    <item quantity="other">Viestit siirrettiin kohteeseen %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Tyhjennä roskakori</string>
   <string name="mailbox_action_button_clear_spam">Tyhjennä roskaposti</string>

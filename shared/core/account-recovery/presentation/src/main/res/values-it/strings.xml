@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Reimpostazione richiesta</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">È stata richiesta una reimpostazione della password per <b>%1$s</b>. Attendi %2$d ora per cambiare la password.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</item>
-    <item quantity="other">È stata richiesta una reimpostazione della password per <b>%1$s</b>. Attendi %2$d ore per cambiare la password.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</item>
+    <item quantity="one">È stata richiesta una reimpostazione della password per <b>%1$s</b>. Attendi %2$d ora per cambiare la password.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</item>
+    <item quantity="other">È stata richiesta una reimpostazione della password per <b>%1$s</b>. Attendi %2$d ore per cambiare la password.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Blocca la richiesta</string>
@@ -35,28 +35,28 @@
   <string name="account_recovery_cancelled_subtitle">Se non sei stato tu a chiedere il cambio della password, il tuo account potrebbe essere a rischio.\n\nCambia la password per proteggerlo.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Reimpostazione disponibile</string>
-  <string name="account_recovery_password_started_subtitle">Usa il dispositivo e l\'app o browser da cui hai richiesto la reimpostazione della password.\n\nReimpostala entro il %s.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Ora puoi reimpostare la password.\n\nReimpostala entro il %s.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</string>
+  <string name="account_recovery_password_started_subtitle">Usa il dispositivo e l\'app o browser da cui hai richiesto la reimpostazione della password.\n\nReimpostala entro il %s.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Ora puoi reimpostare la password.\n\nReimpostala entro il %s.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Reimpostazione scaduta</string>
-  <string name="account_recovery_window_ended_subtitle">Richiedi una nuova reimpostazione della password per %s se necessario.</string>
+  <string name="account_recovery_window_ended_subtitle">Richiedi una nuova reimpostazione della password per %s se necessario.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Blocca</string>
   <string name="account_recovery_dismiss">Annulla</string>
   <string name="account_recovery_reset">Reimposta la password</string>
   <!-- Account Recovery Info -->
   <string name="account_recovery_info_grace_title">Reimpostazione richiesta</string>
-  <string name="account_recovery_info_grace_subtitle">Attendi %1s per reimpostare la password.</string>
+  <string name="account_recovery_info_grace_subtitle">Attendi %1s per reimpostare la password.</string>
   <string name="account_recovery_info_grace_description">Per garantire che solamente il proprietario dell\'account possa reimpostare la password, attendiamo 72 ore prima di approvare le richieste.\n\nBlocca subito questa richiesta se non sei stato tu a effettuarla.</string>
   <string name="account_recovery_info_cancelled_title">Reimpostazione bloccata</string>
-  <string name="account_recovery_info_cancelled_subtitle">Era stata richiesta una reimpostazione della password il %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Era stata richiesta una reimpostazione della password il %1s.</string>
   <string name="account_recovery_info_cancelled_description">Se non riconosci questa richiesta, qualcun altro potrebbe avere accesso all\'account Proton.\n\nProteggi subito il tuo account.</string>
   <string name="account_recovery_info_insecure_title">Reimpostazione disponibile</string>
-  <string name="account_recovery_info_insecure_subtitle">Ora puoi reimpostare la password. Reimpostala entro il %1s.</string>
+  <string name="account_recovery_info_insecure_subtitle">Ora puoi reimpostare la password. Reimpostala entro il %1s.</string>
   <string name="account_recovery_info_insecure_description">Blocca subito questa richiesta se non sei stato tu a effettuarla.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Reimposta la password</string>
-  <string name="account_recovery_reset_dialog_text">"Se hai impostato un metodo di recupero per %1s, prova a recuperare l'account, così potrai cambiare immediatamente la password.\n\nAltrimenti, richiedi la reimpostazione della password, così potrai cambiare la password tra 72 ore."</string>
+  <string name="account_recovery_reset_dialog_text">"Se hai impostato un metodo di recupero per %1s, prova a recuperare l'account, così potrai cambiare immediatamente la password.\n\nAltrimenti, richiedi la reimpostazione della password, così potrai cambiare la password tra 72 ore."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Richiedi la reimpostazione</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Recupera l\'account</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Cambia la password nell\'app web</string>

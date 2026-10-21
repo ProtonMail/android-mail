@@ -27,11 +27,11 @@
   <string name="payment_pay_annually">Fizetés évente</string>
   <string name="payment_pay_biennially">Fizetés 2 évente</string>
   <plurals name="payment_pay_other">
-    <item quantity="one">Fizessen %d hónapért</item>
-    <item quantity="other">Fizessen %d hónapért</item>
+    <item quantity="one">Fizetés %d hónapra</item>
+    <item quantity="other">Fizetés %d hónapra</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">A kedvezmények az alap havi díjszabáson alapulnak. Automatikusan megújul %1$s/hó áron.</string>
-  <string name="payment_bf_renew_annually">A kedvezmények az alap havi díjszabáson alapulnak. Automatikusan megújul %1$s/év áron.</string>
+  <string name="payment_bf_renew_monthly">A kedvezmények a normál havi árakon alapulnak. A szolgáltatás automatikusan megújul havonta %1$s áron.</string>
+  <string name="payment_bf_renew_annually">A kedvezmények a normál havi árakon alapulnak. A szolgáltatás automatikusan megújul évente %1$s áron.</string>
   <string name="payment_welcome_offer_renew_monthly">Üdvözlő ajánlat. Automatikusan megújul %1$s/hónap áron.</string>
   <string name="payment_welcome_offer_renew_annually">Üdvözlő ajánlat. Automatikusan megújul %1$s/év áron</string>
   <string name="payment_welcome_offer_renew_biennially">Üdvözlő ajánlat. Automatikusan megújul %1$s / 2 év áron</string>

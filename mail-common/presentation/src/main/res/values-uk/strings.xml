@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="expiration_expired">Термін дії закінчився</string>
-  <string name="expiration_days_arg">%d дн</string>
+  <string name="expiration_days_arg">%d д</string>
   <string name="expiration_hours_arg">%d год</string>
   <string name="expiration_minutes_arg">%d хв</string>
   <string name="retry">Повторити</string>

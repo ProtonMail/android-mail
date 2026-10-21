@@ -42,15 +42,15 @@
   <string name="error_star_operation_failed">No s\'ha pogut destacar. Torneu-ho a provar.</string>
   <string name="error_unstar_operation_failed">No s\'ha pogut esborrar dels destacats. Torneu-ho a provar.</string>
   <string name="error_move_to_trash_failed">No s\'ha pogut moure el missatge a la paperera. Proveu de nou.</string>
-  <string name="message_moved_to">S\'ha mogut el missatge a %s.</string>
+  <string name="message_moved_to">S\'ha mogut el missatge a %s</string>
   <string name="message_moved_to_archive">El missatge s\'ha mogut a l\'arxiu.</string>
   <string name="error_move_to_archive_failed">No s\'ha pogut moure a l\'arxiu. Proveu de nou.</string>
   <string name="error_move_to_spam_failed">No s\'ha pogut moure a correu brossa. Torneu-ho a provar.</string>
-  <string name="message_moved_to_selected_destination">S\'ha mogut el missatge a %1$s.</string>
+  <string name="message_moved_to_selected_destination">S\'ha mogut el missatge a %1$s</string>
   <string name="error_move_message_failed">No s\'ha pogut moure el missatge. Proveu de nou.</string>
   <string name="conversation_moved_to_trash">La conversa s\'ha mogut a la paperera.</string>
   <string name="conversation_moved_to_inbox">Conversa moguda a la safata d\'entrada</string>
-  <string name="conversation_moved_to_selected_destination">S\'ha mogut la conversa a %1$s.</string>
+  <string name="conversation_moved_to_selected_destination">La conversa s\'ha mogut a %1$s</string>
   <string name="conversation_moved_to_spam">S\'ha mogut la conversa al correu brossa.</string>
   <string name="conversation_moved_to_archive">La conversa s\'ha mogut a l\'arxiu.</string>
   <string name="error_print_message">No s\'ha pogut imprimir el missatge. Torneu-ho a provar.</string>
@@ -75,8 +75,8 @@
   <string name="message_spam_banner_not_spam_button">No és brossa</string>
   <string name="message_blocked_sender_banner_text">Aquest remitent ha estat blocat en el passat.</string>
   <string name="message_blocked_sender_button_text">Desbloqueja</string>
-  <string name="message_expiration_banner_text">Aquest missatge expirarà en %1$s</string>
-  <string name="message_auto_delete_banner_text">Aquest missatge s\'eliminarà automàticament en %1$s.</string>
+  <string name="message_expiration_banner_text">Aquest missatge caducarà en %1$s</string>
+  <string name="message_auto_delete_banner_text">Aquest missatge s\'eliminarà automàticament en %1$s</string>
   <string name="message_auth_fail_banner_text">Aquest correu electrònic no ha complert els requisits d\'autenticació del domini. Pot ser fals o reenviat de manera incorrecta.</string>
   <string name="message_auth_fail_banner_button">Més informació</string>
   <!-- External link confirmation dialog -->

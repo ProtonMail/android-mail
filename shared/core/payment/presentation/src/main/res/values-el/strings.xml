@@ -28,7 +28,7 @@
   <string name="payment_pay_biennially">Πληρωμή κάθε 2 χρόνια</string>
   <plurals name="payment_pay_other">
     <item quantity="one">Πληρωμή για %d μήνα</item>
-    <item quantity="other">Πληρώστε για %d μήνες</item>
+    <item quantity="other">Πληρωμή για %d μήνες</item>
   </plurals>
   <string name="payment_bf_renew_monthly">Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %1$s/μήνα</string>
   <string name="payment_bf_renew_annually">Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %1$s ετησίως</string>

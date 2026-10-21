@@ -37,7 +37,7 @@
   <string name="mailbox_message_sending_offline">Off-line: mensagem na fila para o envio</string>
   <string name="mailbox_message_sending_success">Mensagem enviada</string>
   <string name="mailbox_message_sending_error_action">Ir para Rascunho</string>
-  <string name="notification_switched_account">Conta alterada para: %s</string>
+  <string name="notification_switched_account">Mudou para a conta %s</string>
   <string name="mailbox_message_scheduling">Agendando mensagem...</string>
   <string name="mailbox_message_scheduling_offline">Off-line: mensagem na fila para agendamento</string>
   <string name="mailbox_message_scheduled_for_sending_success">Esta mensagem será enviada em %1$s</string>

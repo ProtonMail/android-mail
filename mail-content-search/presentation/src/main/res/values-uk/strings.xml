@@ -33,7 +33,7 @@
   <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
   <!-- Content search screen -->
-  <string name="content_search_no_results_title_for_query">No results for \"%1$s\"</string>
+  <string name="content_search_no_results_title_for_query">Не знайдено результатів для «%1$s»</string>
   <string name="content_search_no_results_description">Спробуйте інші ключові слова або перевірте правопис.</string>
   <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
   <string name="content_search_no_results_learn_more">Learn more…</string>
@@ -54,10 +54,10 @@
   <string name="content_search_first_run_description">Type anything to search privately…</string>
   <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
-    <item quantity="one">%1$d Result</item>
-    <item quantity="few">%1$d Results</item>
-    <item quantity="many">%1$d Results</item>
-    <item quantity="other">%1$d Results</item>
+    <item quantity="one">%1$d результат</item>
+    <item quantity="few">%1$d результати</item>
+    <item quantity="many">%1$d результатів</item>
+    <item quantity="other">%1$d результату</item>
   </plurals>
   <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
@@ -66,10 +66,10 @@
   <string name="content_search_previously_found_title">Раніше знайдене</string>
   <string name="content_search_dismiss_recent_search_content_description">Видалити «%1$s» з останніх пошуків</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Indexing mail • %1$d%%</string>
-  <string name="content_search_indexing_interrupted">Indexing interrupted • %1$d%%</string>
-  <string name="content_search_indexing_progress_content_description">Indexing mail, %1$d%%</string>
-  <string name="content_search_indexing_interrupted_content_description">Indexing interrupted, %1$d%%</string>
+  <string name="content_search_indexing_progress">Індексування пошти • %1$d%%</string>
+  <string name="content_search_indexing_interrupted">Індексування перервано • %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Індексування пошти, %1$d%%</string>
+  <string name="content_search_indexing_interrupted_content_description">Індексування перервано, %1$d%%</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Видалити остаточно?</string>
   <string name="content_search_delete_dialog_message">Ці повідомлення будуть видалені назавжди. Цю дію неможливо скасувати.</string>

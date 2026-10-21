@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">No leídos</string>
   <string name="include_spam_trash_text">Incluir Spam/Papelera</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d seleccionado</item>
+    <item quantity="one">%d seleccionados</item>
     <item quantity="other">%d seleccionados</item>
   </plurals>
   <string name="mailbox_default_recipient">(Sin destinatario)</string>
@@ -62,7 +62,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Se ha eliminado la conversación permanentemente.</item>
-    <item quantity="other">Se han eliminado %d conversaciones permanentemente</item>
+    <item quantity="other">Se han eliminado %d conversaciones permanentemente.</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Error con la operación sobre la etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Error al obtener las etiquetas</string>
@@ -73,7 +73,7 @@
   <string name="mailbox_action_archive_message">Mensaje movido al archivo</string>
   <string name="mailbox_action_spam_message">Mensaje movido a spam</string>
   <plurals name="mailbox_action_move_conversation">
-    <item quantity="one">Conversación movida a %s</item>
+    <item quantity="one">Se ha movido la conversación a %s.</item>
     <item quantity="other">Conversaciones movidas a %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">

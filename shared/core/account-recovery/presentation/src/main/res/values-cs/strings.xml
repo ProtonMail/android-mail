@@ -51,7 +51,7 @@
   <string name="account_recovery_info_grace_subtitle">Své heslo můžete resetovat za %1s.</string>
   <string name="account_recovery_info_grace_description">Abychom měli jistotu, že se o reset hesla pokoušíte skutečně vy, čekáme před schválením požadavku 72 hodin.\n\nPokud jste o reset hesla nepožádali, tak požadavek zrušte.</string>
   <string name="account_recovery_info_cancelled_title">Resetování hesla zrušeno</string>
-  <string name="account_recovery_info_cancelled_subtitle">Požadavek na resetování hesla byl proveden dne %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Požadavek na reset hesla byl zaslán %1s.</string>
   <string name="account_recovery_info_cancelled_description">Pokud tento požadavek nerozpoznáte, může to znamenat, že k vašemu účtu Proton má přístup někdo jiný.\n\nZabezpečte si ihned svůj účet.</string>
   <string name="account_recovery_info_insecure_title">Resetování hesla je k dispozici</string>
   <string name="account_recovery_info_insecure_subtitle">Nyní si můžete resetovat heslo. Reset hesla bude dostupný do %1s.</string>

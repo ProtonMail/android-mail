@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">읽지 않음</string>
   <string name="include_spam_trash_text">스팸 및 휴지통 포함</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">%d개 선택됨</item>
+    <item quantity="other">%d 선택됨</item>
   </plurals>
   <string name="mailbox_default_recipient">(수신자 없음)</string>
   <string name="mailbox_default_sender">(보낸 사람 없음)</string>

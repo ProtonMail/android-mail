@@ -28,17 +28,17 @@
   <string name="payment_pay_biennially">Оплата каждые 2 года</string>
   <plurals name="payment_pay_other">
     <item quantity="one">Оплата за %d месяц</item>
-    <item quantity="few">Оплата за %d месяца</item>
-    <item quantity="many">Оплатить %d месяцев</item>
+    <item quantity="few">Оплатить %d месяца</item>
+    <item quantity="many">Оплата за %d месяцев</item>
     <item quantity="other">Оплата за %d месяцев</item>
   </plurals>
   <string name="payment_bf_renew_monthly">Скидки рассчитываются на основе стандартной месячной цены. Подписка продлевается автоматически по цене %1$s /месяц.</string>
   <string name="payment_bf_renew_annually">Скидки рассчитываются на основе стандартной месячной цены. Подписка продлевается автоматически по цене %1$s /год.</string>
-  <string name="payment_welcome_offer_renew_monthly">Приветственное предложение. Автоматическое продление по цене %1$s за месяц</string>
-  <string name="payment_welcome_offer_renew_annually">Приветственное предложение. Автоматическое продление по цене %1$s за год</string>
+  <string name="payment_welcome_offer_renew_monthly">Приветственное предложение. Автоматическое продление по цене %1$s/в месяц</string>
+  <string name="payment_welcome_offer_renew_annually">Приветственное предложение. Автоматическое продление по цене %1$s/в год</string>
   <string name="payment_welcome_offer_renew_biennially">Приветственное предложение. Автоматическое продление по цене %1$s за каждые 2 года</string>
   <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Приветственное предложение. Автоматическое продление по цене %1$s в месяц</item>
+    <item quantity="one">Приветственное предложение. Автоматическое продление по цене %1$s/в месяц</item>
     <item quantity="few">Приветственное предложение. Автоматическое продление за %1$s каждые %2$s месяца</item>
     <item quantity="many">Приветственное предложение. Автоматическое продление за %1$s каждые %2$s месяцев</item>
     <item quantity="other">Приветственное предложение. Автоматическое продление за %1$s каждые %2$s месяцев</item>

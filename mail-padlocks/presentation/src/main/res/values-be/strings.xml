@@ -99,7 +99,7 @@
   <string name="padlocks_recipient_verified_contact_link_text">спраўджаны кантакт</string>
   <string name="padlocks_recipients_verified_contacts">Атрымальнікі з\'яўляюцца %s. Гэтым ключам шыфравання вы давяраеце.</string>
   <string name="padlocks_recipients_verified_contacts_link_text">спраўджаныя кантакты</string>
-  <string name="padlocks_zero_access_addendum">Гэты ліст захоўваецца на серверах Proton з %s. Ніхто не можа прачытаць яго акрамя вас, нават супрацоўнікі Proton.</string>
+  <string name="padlocks_zero_access_addendum">Гэты ліст захоўваецца на серверах Proton з дапамогай %s. Ніхто не можа прачытаць яго акрамя вас, нават супрацоўнікі Proton.</string>
   <string name="padlocks_zero_access_addendum_link_text">шыфраванне нулявога доступу</string>
   <string name="padlocks_show_details">Паказаць падрабязнасці</string>
   <string name="padlocks_close_button_text">Зразумела</string>

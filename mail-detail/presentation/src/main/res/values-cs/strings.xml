@@ -145,7 +145,7 @@
   <string name="rsvp_widget_you">Vy</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d účastník</item>
-    <item quantity="few">%1$d účastníci</item>
+    <item quantity="few">%1$d účastníků</item>
     <item quantity="many">%1$d účastníků</item>
     <item quantity="other">%1$d účastníků</item>
   </plurals>

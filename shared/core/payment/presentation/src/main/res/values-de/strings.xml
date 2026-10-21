@@ -32,11 +32,11 @@
   </plurals>
   <string name="payment_bf_renew_monthly">Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung für %1$s/Monat</string>
   <string name="payment_bf_renew_annually">Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung für %1$s/Jahr</string>
-  <string name="payment_welcome_offer_renew_monthly">Willkommensangebot. Verlängert sich automatisch für %1$s/Monat</string>
-  <string name="payment_welcome_offer_renew_annually">Willkommensangebot. Verlängert sich automatisch für %1$s/Jahr</string>
+  <string name="payment_welcome_offer_renew_monthly">Willkommensangebot. Wird automatisch für %1$s/Monat verlängert.</string>
+  <string name="payment_welcome_offer_renew_annually">Willkommensangebot. Wird automatisch für %1$s/Jahr verlängert.</string>
   <string name="payment_welcome_offer_renew_biennially">Willkommensangebot. Verlängert sich automatisch für %1$s/2 Jahre</string>
   <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Willkommensangebot. Verlängert sich automatisch für %1$s/Monat</item>
+    <item quantity="one">Willkommensangebot. Wird automatisch für %1$s/Monat verlängert.</item>
     <item quantity="other">Willkommensangebot. Automatische Verlängerung alle %2$s Monate für %1$s</item>
   </plurals>
   <string name="payment_subscription_title">Abonnement</string>

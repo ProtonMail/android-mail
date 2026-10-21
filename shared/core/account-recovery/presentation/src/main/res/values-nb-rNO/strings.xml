@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Forespørsel om tilbakestilling av passord</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">En forespørsel om å tilbakestille passord var bedt om for <b>%1$s</b>. Du kan endre passordet ditt om %2$d time.\n\nHvis du ikke sendte denne forespørselen, kan du avbryte den nå.</item>
-    <item quantity="other">En forespørsel om å tilbakestille passord ble forespurt for <b>%1$s</b>. Du kan endre passordet ditt om %2$d timer.\n\nHvis du ikke sendte denne forespørselen, avbryt den nå.</item>
+    <item quantity="one">En forespørsel om å tilbakestille passordet var bedt for <b>%1$s</b>. Du kan endre passordet ditt om %2$d time.\n\nHvis du ikke kom med denne forespørselen, avbryt den nå.</item>
+    <item quantity="other">En forespørsel om å tilbakestille passordet var bedt for <b>%1$s</b>. Du kan endre passordet ditt om %2$d timer.\n\nHvis du ikke kom med denne forespørselen, avbryt den nå.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Avbryte tilbakestilling av passord?</string>
@@ -35,11 +35,11 @@
   <string name="account_recovery_cancelled_subtitle">Hvis du aldri ba om å endre passordet ditt, kan kontoen din være i fare.\n\nSikre kontoen din ved å endre passordet ditt.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Tilbakestilling av passord tilgjengelig</string>
-  <string name="account_recovery_password_started_subtitle">For å tilbakestille passordet ditt, gå tilbake til enheten, appen eller nettleseren du sendte forespørselen om tilbakestilling av passord fra.\n\nDu må gjøre dette før %s.\n\nHvis du ikke ba om å tilbakestille passordet ditt, kan du avbryte forespørselen nå.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Du kan nå tilbakestille passordet ditt.\n\nDu må gjøre dette før %s.\n\nHvis du ikke ba om å tilbakestille passordet, kan du avbryte forespørselen nå.</string>
+  <string name="account_recovery_password_started_subtitle">For å tilbakestille passordet ditt må du gå tilbake til enheten, appen eller nettleseren som du sendte forespørselen fra.\n\nDu må gjøre dette innen %s.\n\nHvis du ikke ba om å tilbakestille passordet, kan du avbryte forespørselen nå.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Du kan nå tilbakestille passordet ditt.\n\nDu må gjøre dette før %s.\n\nHvis du ikke ba om å tilbakestille passordet, avbryter du tilbakestillingen nå.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Tilbakestilling av passord utløpt</string>
-  <string name="account_recovery_window_ended_subtitle">Du må be om en ny tilbakestilling av passord for %s.</string>
+  <string name="account_recovery_window_ended_subtitle">Du vil trenge å be om en ny tilbakestilling av passord for %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Avbryt forespørsel</string>
   <string name="account_recovery_dismiss">Skjønner</string>
@@ -49,14 +49,14 @@
   <string name="account_recovery_info_grace_subtitle">Du kan tilbakestille passordet ditt om %1s.</string>
   <string name="account_recovery_info_grace_description">For å forsikre oss at det virkelig er deg som prøver å tilbakestille passordet ditt, venter vi 72 timer før vi godkjenner forespørsler.\n\nHvis du ikke ba om å tilbakestille passordet ditt, kan du avbryte denne forespørselen nå.</string>
   <string name="account_recovery_info_cancelled_title">Tilbakestilling av passord avbrutt</string>
-  <string name="account_recovery_info_cancelled_subtitle">En forespørsel om tilbakestilling av passord ble gjort på %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">En forespørsel om tilbakestilling av passord ble gjort den %1s.</string>
   <string name="account_recovery_info_cancelled_description">Hvis du ikke gjenkjenner denne forespørselen, kan det bety at noen andre har tilgang til din Proton-konto.\n\nSikre kontoen din nå.</string>
   <string name="account_recovery_info_insecure_title">Tilbakestilling av passord tilgjengelig</string>
   <string name="account_recovery_info_insecure_subtitle">Du kan nå tilbakestille passordet ditt. Tilbakestilling av passord er tilgjengelig til %1s.</string>
   <string name="account_recovery_info_insecure_description">Kom du ikke med denne forespørselen?\n\nHvis du ikke ba om å tilbakestille passordet ditt, kan du avbryte forespørselen nå.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Tilbakestille passord?</string>
-  <string name="account_recovery_reset_dialog_text">"Av sikkerhetsårsaker må du vente i 72 timer før du kan endre passordet for %1s.\n\nHvis du har konfigurert en gjenopprettingsmetode, kan du prøve å gjenopprette kontoen i stedet. Denne handlingen gjør at du kan endre passordet med en gang."</string>
+  <string name="account_recovery_reset_dialog_text">"Av sikkerhetsårsaker må du vente i 72 timer før du kan endre passordet for %1s.\n\nHvis du har en gjenopprettingsmåte konfigurert, kan du prøve å gjenopprette i stedet. Denne handlingen gjør det mulig for deg å endre passordet med en gang."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Be om tilbakestilling av passord</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Bruk gjenopprettingsmetode</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Endre passordet ditt i nettleseren din uten å vente gjennom sikkerhetsperioden.</string>

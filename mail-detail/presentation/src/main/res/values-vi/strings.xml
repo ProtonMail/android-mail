@@ -20,7 +20,7 @@
   <string name="detail_error_loading_conversation">Tải cuộc hội thoại thất bại</string>
   <string name="detail_error_loading_messages">Tải thư thất bại</string>
   <plurals name="message_count_label_text">
-    <item quantity="other">%d thư</item>
+    <item quantity="other">%d tin nhắn</item>
   </plurals>
   <string name="quick_reply_button_content_description">Trả lời</string>
   <string name="quick_reply_all_button_content_description">Trả lời tất cả</string>
@@ -31,7 +31,7 @@
   <string name="bcc">Bcc:</string>
   <string name="date">Ngày:</string>
   <plurals name="attachment">
-    <item quantity="other">%d Tập tin đính kèm</item>
+    <item quantity="other">%d đính kèm</item>
   </plurals>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Thư nháp)</string>
@@ -40,15 +40,15 @@
   <string name="error_star_operation_failed">Gắn sao không thành công. Vui lòng thử lại.</string>
   <string name="error_unstar_operation_failed">Bỏ gắn sao không thành công. Vui lòng thử lại.</string>
   <string name="error_move_to_trash_failed">Chuyển tới thùng rác không thành công. Vui lòng thử lại.</string>
-  <string name="message_moved_to">Đã chuyển thư vào %s</string>
+  <string name="message_moved_to">Tin nhắn đã được di chuyển đến %s</string>
   <string name="message_moved_to_archive">Đã chuyển thư vào Lưu trữ</string>
   <string name="error_move_to_archive_failed">Không thể chuyển vào lưu trữ. Hãy thử lại.</string>
   <string name="error_move_to_spam_failed">Không thể chuyển vào thư rác. Hãy thử lại.</string>
-  <string name="message_moved_to_selected_destination">Đã chuyển thư vào %1$s</string>
+  <string name="message_moved_to_selected_destination">Tin nhắn đã được chuyển tới %1$s</string>
   <string name="error_move_message_failed">Không thể chuyển thư. Vui lòng thử lại.</string>
   <string name="conversation_moved_to_trash">Đã chuyển cuộc hội thoại vào Thùng rác</string>
   <string name="conversation_moved_to_inbox">Đã chuyển cuộc hội thoại vào Hộp thư đến</string>
-  <string name="conversation_moved_to_selected_destination">Đã chuyển cuộc hội thoại vào %1$s</string>
+  <string name="conversation_moved_to_selected_destination">Đã di chuyển cuộc hội thoại tới %1$s</string>
   <string name="conversation_moved_to_spam">Đã chuyển cuộc hội thoại vào Thư rác</string>
   <string name="conversation_moved_to_archive">Đã chuyển cuộc hội thoại vào Lưu trữ</string>
   <string name="error_print_message">Không thể in thư. Vui lòng thử lại.</string>
@@ -74,7 +74,7 @@
   <string name="message_blocked_sender_banner_text">Người gửi này đã bị chặn trước đây.</string>
   <string name="message_blocked_sender_button_text">Bỏ chặn</string>
   <string name="message_expiration_banner_text">Thư này sẽ hết hạn sau %1$s</string>
-  <string name="message_auto_delete_banner_text">Thư này sẽ tự động xóa sau %1$s</string>
+  <string name="message_auto_delete_banner_text">Thư này sẽ được xóa tự động sau %1$s</string>
   <string name="message_auth_fail_banner_text">Email này không đáp ứng các yêu cầu xác thực của miền. Có thể thư đã bị giả mạo hoặc chuyển tiếp không đúng cách!</string>
   <string name="message_auth_fail_banner_button">Tìm hiểu thêm</string>
   <!-- External link confirmation dialog -->

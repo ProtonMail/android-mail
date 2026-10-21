@@ -104,8 +104,8 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">Не вдалося налаштувати адресу.</string>
   <string name="auth_fido_security_keys_error">Помилка отримання ключів безпеки, спробуйте ще раз.</string>
   <string name="auth_fido_security_keys_title">Ключі безпеки</string>
-  <string name="auth_fido_manage_security_keys_info">Для керування, додавання або видалення ключів безпеки, використовуйте вебзастосунок Proton. %s</string>
-  <string name="auth_fido_security_keys_empty_list">У вашому обліковому записі не зареєстровано жодного ключа безпеки. Аби додати ключ безпеки, скористайтеся вебзастосунком Proton. %s</string>
+  <string name="auth_fido_manage_security_keys_info">Для управління, створення або видалення ключів безпеки, будь ласка, використовуйте вебдодаток Proton. %s</string>
+  <string name="auth_fido_security_keys_empty_list">До вашого облікового запису не зареєстровано жодних ключів безпеки. Для створення ключа безпеки використайте вебдодаток Proton. %s</string>
   <string name="auth_fido_security_keys_registered">Це ключі безпеки, зареєстровані у вашому обліковому записі.</string>
   <string name="auth_fido_manage_security_keys">Керувати ключами безпеки</string>
   <string name="auth_fido_add_security_key">Додати ключ безпеки</string>

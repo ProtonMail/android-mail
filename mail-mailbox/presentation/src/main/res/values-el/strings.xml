@@ -24,8 +24,8 @@
   <string name="filter_unread_button_text">Μη αναγνωσμένα</string>
   <string name="include_spam_trash_text">Συμπεριλάβετε Ανεπιθύμητα/Διαγραμμένα</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Επιλεγμένο/α</item>
-    <item quantity="other">%d Επιλεγμένο/α</item>
+    <item quantity="one">%d Επιλεγμένα</item>
+    <item quantity="other">%d Επιλεγμένα</item>
   </plurals>
   <string name="mailbox_default_recipient">(Κανένας παραλήπτης)</string>
   <string name="mailbox_default_sender">(Κανένας αποστολέας)</string>
@@ -73,7 +73,7 @@
   <string name="mailbox_action_archive_message">Το μήνυμα μετακινήθηκε στα αρχειοθετημένα</string>
   <string name="mailbox_action_spam_message">Το μήνυμα μετακινήθηκε στα ενοχλητικά</string>
   <plurals name="mailbox_action_move_conversation">
-    <item quantity="one">Η συνομιλία μετακινήθηκε στο %s</item>
+    <item quantity="one">Η συνομιλία μετακινήθηκε στον φάκελο %s</item>
     <item quantity="other">Οι συνομιλίες μετακινήθηκαν στο %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">

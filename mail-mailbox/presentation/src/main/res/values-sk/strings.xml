@@ -24,10 +24,10 @@
   <string name="filter_unread_button_text">Neprečítané</string>
   <string name="include_spam_trash_text">Zahrnúť Spam/Kôš</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Vybrané: %d</item>
-    <item quantity="few">Vybrané: %d</item>
-    <item quantity="many">Vybrané: %d</item>
-    <item quantity="other">Vybrané: %d</item>
+    <item quantity="one">%d vybraných</item>
+    <item quantity="few">%d vybrané</item>
+    <item quantity="many">%d vybraných</item>
+    <item quantity="other">%d vybraných</item>
   </plurals>
   <string name="mailbox_default_recipient">(Žiaden príjemca)</string>
   <string name="mailbox_default_sender">(Žiaden odosielateľ)</string>
@@ -90,10 +90,10 @@
     <item quantity="one">Konverzácia presunutá do %s</item>
     <item quantity="few">Konverzácie presunuté do %s</item>
     <item quantity="many">Konverzácie presunuté do %s</item>
-    <item quantity="other">Konverzácie presunuté do %s</item>
+    <item quantity="other">השיחות הועברו ל%s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
-    <item quantity="one">Správa presunutá do %s</item>
+    <item quantity="one">Správa bola presunutá do %s</item>
     <item quantity="few">Správy presunuté do %s</item>
     <item quantity="many">Správy presunuté do %s</item>
     <item quantity="other">Správy presunuté do %s</item>

@@ -20,7 +20,7 @@
   <string name="expiration_expired">Utløpt</string>
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d t</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Prøv på nytt</string>
   <string name="x_error_not_logged_in">Ikke pålogget</string>
   <string name="action_customize_toolbar_description">Tilpass verktøylinjen</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Svar alle</string>
   <string name="action_forward">Videresend</string>
   <string name="action_reply_description">Svar</string>
-  <string name="action_reply_to_description">Svar på %s</string>
+  <string name="action_reply_to_description">Svar til %s</string>
   <string name="action_reply_all_description">Svar alle</string>
   <string name="action_forward_description">Videresend</string>
   <string name="action_mark_read_description">Merk som lest</string>

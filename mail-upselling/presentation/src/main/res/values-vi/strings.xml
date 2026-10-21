@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Bao gồm những gì</string>
   <string name="upselling_pu_cta">Mua Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Thanh toán hàng năm và tiết kiệm %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Tiết kiệm %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Giữ ưu đãi giảm giá trên %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Thay đổi và tiết kiệm %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Tăng cường bảo mật quyền riêng tư trực tuyến với Proton Unlimited</string>

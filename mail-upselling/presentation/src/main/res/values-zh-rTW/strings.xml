@@ -28,7 +28,7 @@
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">把握此限時優惠，享有 Mail 的最佳體驗</string>
   <string name="upselling_mailbox_plus_promo_title">試用 Mail Plus，為期 %s</string>
-  <string name="upselling_mailbox_plus_promo_cta">以 %s 取得 1 個月</string>
+  <string name="upselling_mailbox_plus_promo_cta">取得 1 個月的 %s</string>
   <string name="upselling_mailbox_plus_promo_skip">略過優惠</string>
   <string name="upselling_mailbox_plus_promo_renewal">首月 %s，之後每月 %s</string>
   <!-- Upselling: Unlimited -->
@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">包含內容</string>
   <string name="upselling_pu_cta">取得 Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">按年付費，節省 %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">節省 %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">鎖定 %s 的折扣</string>
   <string name="upselling_monthly_to_yearly_one_year">1年</string>
   <string name="upselling_monthly_to_yearly_currently">現在</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12個月的方案</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">變更並節省 %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">使用 Proton Unlimited 讓您的線上隱私更上一層樓</string>
@@ -127,12 +127,12 @@
   <string name="upselling_onboarding_choose_plan_monthly">每月</string>
   <string name="upselling_onboarding_choose_plan_yearly">每年</string>
   <string name="upselling_onboarding_best_value">最佳值</string>
-  <string name="upselling_onboarding_yearly_savings">按年付款即可節省 %s</string>
+  <string name="upselling_onboarding_yearly_savings">按年付費，節省 %s</string>
   <string name="upselling_onboarding_entitlements_show_more">顯示更多</string>
   <string name="upselling_onboarding_entitlements_show_less">顯示較少</string>
   <string name="upselling_onboarding_button_continue_free">繼續使用 Free plan</string>
-  <string name="upselling_onboarding_autorenew">每 %s 以 %s 計費</string>
-  <string name="upselling_onboarding_autorenew_welcome_offer">歡迎優惠。每 %s 以 %s 自動續約</string>
+  <string name="upselling_onboarding_autorenew">每 %s 收費 %s</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">歡迎優惠。之後每 %s 以 %s 自動續約</string>
   <string name="upselling_onboarding_autorenew_month">月</string>
   <string name="upselling_onboarding_autorenew_year">12 個月</string>
   <string name="upselling_onboarding_free_entitlement_storage">1 GB 儲存空間</string>
@@ -140,14 +140,14 @@
   <!-- Other UI Items -->
   <string name="upselling_unlimited_description_override">要取得更多儲存空間與頂級質子版功能。</string>
   <string name="upselling_auto_renew_text">除非取消，否則將以相同的價格與條款自動續訂</string>
-  <string name="upselling_auto_renew_text_promo">歡迎優惠。除非取消，否則將以 %s%s 自動續約</string>
-  <string name="upselling_auto_renew_text_bfriday">折扣以標準月費計算。在取消前，將以 %s%s 自動續訂。</string>
-  <string name="upselling_auto_renew_text_promo_short">歡迎優惠。將以 %s%s 自動續約。</string>
-  <string name="upselling_auto_renew_text_standard">除非取消，否則將以 %s%s 自動續約。</string>
+  <string name="upselling_auto_renew_text_promo">歡迎優惠。除非取消，否則會在 %s%s 時自動續約</string>
+  <string name="upselling_auto_renew_text_bfriday">折扣以標準月費價格計算。除非取消，否則會在 %s%s 時自動續約。</string>
+  <string name="upselling_auto_renew_text_promo_short">歡迎優惠。會在 %s%s 時自動續約。</string>
+  <string name="upselling_auto_renew_text_standard">除非取消，否則會在 %s%s 時自動續約。</string>
   <string name="upselling_social_proof_reviews">2,000 則以上的評論</string>
   <string name="upselling_description_social_proof">升級以體驗數百萬訂閱者讚不絕口的服務。</string>
   <string name="upselling_month">/月</string>
-  <string name="upselling_month_only">僅 %s /月</string>
+  <string name="upselling_month_only">每月只要 %s</string>
   <string name="upselling_year">/年</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">出現錯誤</string>

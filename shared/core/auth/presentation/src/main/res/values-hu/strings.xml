@@ -104,7 +104,7 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">Nem sikerült beállítani a címet.</string>
   <string name="auth_fido_security_keys_error">Hiba a hitelesítési kulcsok letöltésekor, próbálja meg újra.</string>
   <string name="auth_fido_security_keys_title">Hitelesítési kulcsok</string>
-  <string name="auth_fido_manage_security_keys_info">A hitelesítési kulcsok kezeléséhez, felvételéhez, törléséhez használja a Proton webes alkalmazást. %s</string>
+  <string name="auth_fido_manage_security_keys_info">A hitelesítési kulcsok kezeléséhez, felvételéhez, törléséhez használja a Proton webes alkalmazást.%s</string>
   <string name="auth_fido_security_keys_empty_list">Nincs hitelesítési kulcs hozzáadva a fiókjához. Egy hitelesítési kulcs hozzáadásához használja a Proton webes alkalmazást. %s</string>
   <string name="auth_fido_security_keys_registered">A fiókjához ezek a hitelesítési kulcsok vannak regisztrálva.</string>
   <string name="auth_fido_manage_security_keys">Hitelesítési kulcsok kezelése</string>

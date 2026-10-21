@@ -105,16 +105,16 @@
   <string name="auth_fido_security_keys_error">Ошибка при получении ключей безопасности, попробуйте еще раз.</string>
   <string name="auth_fido_security_keys_title">Ключи безопасности</string>
   <string name="auth_fido_manage_security_keys_info">Для управления, добавления или удаления ключей безопасности используйте веб-приложение Proton. %s</string>
-  <string name="auth_fido_security_keys_empty_list">Для вашего акаунта не зарегистрировано ни одного ключа безопасности. Чтобы добавить ключ безопасности, воспользуйтесь веб-приложением Proton. %s</string>
+  <string name="auth_fido_security_keys_empty_list">В вашей учетной записи не зарегистрированы ключи безопасности. Чтобы добавить ключ безопасности, используйте веб-приложение Proton. %s</string>
   <string name="auth_fido_security_keys_registered">Это ключи безопасности, зарегистрированные в вашем аккаунте.</string>
   <string name="auth_fido_manage_security_keys">Управление ключами безопасности</string>
   <string name="auth_fido_add_security_key">Добавить ключ безопасности</string>
   <string name="auth_fido_security_keys_learn_more">Подробнее</string>
   <plurals name="auth_user_check_max_free_error">
-    <item quantity="one">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
-    <item quantity="few">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
-    <item quantity="many">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
-    <item quantity="other">Превышено максимальное количество бесплатных аккаунтов: %d.</item>
+    <item quantity="one">Превышено максимально допустимое количество бесплатных аккаунтов: %d.</item>
+    <item quantity="few">Превышено максимально допустимое количество бесплатных аккаунтов: %d.</item>
+    <item quantity="many">Превышено максимально допустимое количество бесплатных аккаунтов: %d.</item>
+    <item quantity="other">Превышено максимально допустимое количество бесплатных аккаунтов: %d.</item>
   </plurals>
   <string name="common_error_something_went_wrong">Что-то пошло не так. Пожалуйста, попробуйте еще раз.</string>
   <string name="auth_fido_config_error">Ошибка при получении сохранённых ключей.</string>

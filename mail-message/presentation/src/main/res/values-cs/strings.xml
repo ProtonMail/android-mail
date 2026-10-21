@@ -18,10 +18,10 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">Vybráno: %d</item>
-    <item quantity="few">Vybráno: %d</item>
-    <item quantity="many">Vybráno: %d</item>
-    <item quantity="other">Vybráno: %d</item>
+    <item quantity="one">%d vybrány</item>
+    <item quantity="few">%d vybrány</item>
+    <item quantity="many">%d vybráno</item>
+    <item quantity="other">%d vybráno</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="one">%d příloha</item>
@@ -30,7 +30,7 @@
     <item quantity="other">%d příloh</item>
   </plurals>
   <string name="attachments">přílohy</string>
-  <string name="attachment_type_description">%1$s soubor</string>
+  <string name="attachment_type_description">Soubor %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archiv</string>
   <string name="attachment_type_image">Obrázek</string>

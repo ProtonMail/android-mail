@@ -35,7 +35,7 @@
   <string name="account_recovery_cancelled_subtitle">Om du aldrig bett om att ändra ditt lösenord kan ditt konto vara i fara.\n\nSkydda ditt konto genom att ändra ditt lösenord.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Lösenordsåterställning tillgänglig</string>
-  <string name="account_recovery_password_started_subtitle">För att återställa ditt lösenord, gå tillbaka till den enhet, app eller webbläsare som du gjorde din begäran om lösenordsåterställning från.\n\nDu måste göra detta innan %s.\n\nOm du inte har bett om att få återställa ditt lösenord, avbryt begäran nu.</string>
+  <string name="account_recovery_password_started_subtitle">För att återställa ditt lösenord, gå tillbaka till enheten, appen eller webbläsaren som du gjorde din begäran om lösenordsåterställning från.\n\nDu måste göra detta innan %s.\n\nOm du inte bad om att få återställa ditt lösenord , avbryt begäran nu.</string>
   <string name="account_recovery_password_started_self_initiated_subtitle">Du kan nu återställa ditt lösenord.\n\nDu måste göra detta innan %s.\n\nOm du inte bad om att få återställa ditt lösenord, avbryt begäran nu.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Lösenordsåterställning löpt ut</string>

@@ -45,7 +45,7 @@
   <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description">此电子邮件在发件人的设备上是 %s，并且只能由收件人解密。Proton 无法在任何时候查看电子邮件的内容。</string>
   <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description_link_text">端到端加密</string>
   <string name="padlocks_proton_receive_sign_only_verification_failed">PGP签名电子邮件，验证失败</string>
-  <string name="padlocks_proton_receive_sign_only_verification_failed_description">此电子邮件已在 Proton 服务器使用%s存储 。Proton 或任何其他人均无法读取。</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed_description">此电子邮件已在 Proton 服务器使用%s存储。Proton 或任何其他人均无法读取。</string>
   <string name="padlocks_proton_receive_sign_only_verification_failed_description_link_text">零访问加密</string>
   <string name="padlocks_proton_receive_sign_only_verified_recipient">已验证发件人的 PGP 签名电子邮件</string>
   <string name="padlocks_proton_receive_sign_only_verified_recipient_description">此电子邮件已在 Proton 服务器使用%s存储。Proton 或任何其他人均无法读取。</string>

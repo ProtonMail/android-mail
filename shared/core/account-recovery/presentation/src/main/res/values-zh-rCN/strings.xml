@@ -20,7 +20,7 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">已请求重置密码</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="other">已收到针对 <b>%1$s</b> 的密码重置请求。您可以在 %2$d 小时后修改密码。\n\n 若该请求非您本人操作，请立即取消。</item>
+    <item quantity="other"><b>%1$s</b> 已请求重置密码。您可以在 %2$d 小时内更改密码。 \n\n如果您没有提出此请求，请立即取消。</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">取消密码重置？</string>
@@ -34,8 +34,8 @@
   <string name="account_recovery_cancelled_subtitle">若您未曾主动申请修改密码，您的账户可能存在安全风险。\n\n 建议您立即更改密码以加强账户保护。</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">可进行密码重置</string>
-  <string name="account_recovery_password_started_subtitle">要重置密码，请返回您最初发起密码重置请求的设备、应用程序或浏览器界面。\n\n 您需要在 %s 之前完成此操作。\n\n 若非您本人操作，请立即取消该密码重置请求。</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">您现在可以重置密码。\n\n 请在 %s 之前完成此操作。\n\n 如非本人操作，请立即取消该请求。</string>
+  <string name="account_recovery_password_started_subtitle">请返回您提交申请时所用的设备、应用或浏览器继续重置密码。\n\n密码重置必须在 %s 前完成。\n\n如果您没有申请重置密码，请立即取消此次申请。</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">您现在可以重置密码了。\n\n密码重置必须在 %s 前完成。\n\n如果您没有申请重置密码，请立即取消此次申请。</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">密码重置已过期</string>
   <string name="account_recovery_window_ended_subtitle">您需要重新为 %s 申请重置密码。</string>
@@ -51,11 +51,11 @@
   <string name="account_recovery_info_cancelled_subtitle">我们在 %1s 收到了密码重置申请。</string>
   <string name="account_recovery_info_cancelled_description">如您不记得自己进行过此操作，可能意味着他人已获得了您 Proton 账户的访问权限。\n\n 请立即保护账户安全。</string>
   <string name="account_recovery_info_insecure_title">可重置密码</string>
-  <string name="account_recovery_info_insecure_subtitle">您现在可以重置密码了。在 %1s 之前均可进行重置。</string>
+  <string name="account_recovery_info_insecure_subtitle">您现在可以重置您的密码。重置密码的时限为 %1s。</string>
   <string name="account_recovery_info_insecure_description">您没有进行此操作吗？\n\n 如果您未申请重置密码，请立即取消该请求。</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">重置密码?</string>
-  <string name="account_recovery_reset_dialog_text">"出于安全考虑，您需要等待 72 小时才能更改 %1s 的密码。\n\n 如果已设置恢复方式，请改用账户恢复流程。这样您就可以立即更改密码。"</string>
+  <string name="account_recovery_reset_dialog_text">"出于安全原因，您必须等待72小时后才能更改 %1s的密码。\n\n如果您设置了恢复功能，请尝试恢复帐户。这将允许您直接更改密码。"</string>
   <string name="account_recovery_reset_dialog_action_request_reset">请求重置密码</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">使用恢复方法</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">无需等待安全期结束，即可直接在网页浏览器中修改密码。</string>

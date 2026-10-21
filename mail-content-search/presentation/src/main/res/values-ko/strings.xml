@@ -6,7 +6,7 @@
   <string name="mail_settings_content_search_toggle_title">이메일 콘텐츠 검색</string>
   <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
-  <string name="mail_settings_content_search_syncing_status">준비 중 %1$d%%...</string>
+  <string name="mail_settings_content_search_syncing_status">준비 중 %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">준비 중…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi를 기다리는 중...</string>
   <string name="mail_settings_content_search_failed_status">이메일 콘텐츠 검색 중 오류가 발생했습니다.</string>

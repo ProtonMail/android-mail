@@ -14,7 +14,7 @@
   <string name="mail_settings_content_search_update_error">Er is iets misgegaan. Probeer het opnieuw.</string>
   <string name="mail_settings_content_search_retry_error">Het is niet mogelijk om een zoeken naar e-mailinhoud voor te bereiden.</string>
   <string name="mail_settings_content_search_indexing_section">Indexeren</string>
-  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s %%</string>
   <string name="mail_settings_content_search_indexing_in_progress">In uitvoering</string>
   <string name="mail_settings_content_search_indexing_up_to_date">Bijgewerkt</string>
   <string name="mail_settings_content_search_indexing_paused">Gepauzeerd</string>

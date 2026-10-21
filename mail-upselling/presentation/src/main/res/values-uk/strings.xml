@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Що включено</string>
   <string name="upselling_pu_cta">Отримати Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Сплачуйте щорічно і заощадьте %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Заощадьте %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Зафіксуйте знижку на %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Змініть і заощадьте %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Захистіть свою приватність в інтернеті ще краще з Proton Unlimited</string>
@@ -141,13 +141,13 @@
   <string name="upselling_unlimited_description_override">Щоб отримати більше сховища та преміальні функції.</string>
   <string name="upselling_auto_renew_text">Автопоновлення за тією ж ціною та умовами доки не буде скасовано</string>
   <string name="upselling_auto_renew_text_promo">Вітальна пропозиція. Автопоновлення через %s%s, якщо не скасовано</string>
-  <string name="upselling_auto_renew_text_bfriday">Знижки розраховуються на основі стандартної місячної ціни. Автоматичне поновлення за %s%s до скасування.</string>
+  <string name="upselling_auto_renew_text_bfriday">Знижки базуються на стандартних місячних тарифах. Автопоновлення за %s%s, якщо не скасовано.</string>
   <string name="upselling_auto_renew_text_promo_short">Вітальна пропозиція. Автопоновлення за %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Автопоновлення через %s%s, якщо не скасовано.</string>
   <string name="upselling_social_proof_reviews">ПОНАД 2 ТИС. ВІДГУКІВ</string>
   <string name="upselling_description_social_proof">Отримайте покращений досвід, яким захоплюються мільйони підписників.</string>
   <string name="upselling_month">/місяць</string>
-  <string name="upselling_month_only">лише %s /міс.</string>
+  <string name="upselling_month_only">лише %s / місяць</string>
   <string name="upselling_year">/рік</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Сталася помилка.</string>

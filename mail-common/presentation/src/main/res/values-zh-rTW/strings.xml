@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">已過期</string>
-  <string name="expiration_days_arg">%d天</string>
-  <string name="expiration_hours_arg">%d小時</string>
-  <string name="expiration_minutes_arg">%d分鐘</string>
+  <string name="expiration_days_arg">%d 天</string>
+  <string name="expiration_hours_arg">%d 時</string>
+  <string name="expiration_minutes_arg">%d 分</string>
   <string name="retry">重試</string>
   <string name="x_error_not_logged_in">尚未登入</string>
   <string name="action_customize_toolbar_description">自訂工具列</string>

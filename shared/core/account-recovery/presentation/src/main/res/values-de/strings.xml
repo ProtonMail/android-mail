@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Passwortzurücksetzung angefordert</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">Für <b>%1$s</b> wurde eine Passwortzurücksetzung beantragt. Du kannst dein Passwort in %2$d Stunde ändern.\n\nWenn du diese Anfrage nicht gestellt hast, brich sie jetzt ab.</item>
-    <item quantity="other">Es wurde eine Passwortzurücksetzung für <b>%1$s</b> angefordert. Du kannst dein Passwort in %2$d Stunden ändern.\n\nWenn du diese Anfrage nicht gestellt hast, brich sie jetzt ab.</item>
+    <item quantity="one">Die Zurücksetzung des Passworts für <b>%1$s</b> wurde angefragt. Du kannst dein Passwort in %2$d Stunde ändern.\n\nWenn dir diese Anfrage nicht bekannt vorkommt, Stoppe sie jetzt.</item>
+    <item quantity="other">Eine Zurücksetzung des Passworts für <b>%1$s</b> wurde angefragt. Du kannst dein Passwort in %2$d Stunden ändern.\n\nStoppe die Anfrage umgehend, wenn diese nicht von dir ist.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Passwortzurücksetzung abbrechen?</string>
@@ -35,11 +35,11 @@
   <string name="account_recovery_cancelled_subtitle">Falls du nie eine Passwort-Änderung beantragt hast, könnte dein Konto gefährdet sein.\n\nSichere dein Konto, indem du dein Passwort änderst.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Passwortzurücksetzung verfügbar</string>
-  <string name="account_recovery_password_started_subtitle">Um dein Passwort zurückzusetzen, kehre zu dem Gerät, der App oder dem Browser zurück, von dem du deine Anfrage zum Zurücksetzen des Passworts gesendet hast.\n\nDu musst dies vor %s tun.\n\nWenn du keine Anfrage zum Zurücksetzen deines Passworts gesendet hast, brich die Anfrage jetzt ab.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Du kannst jetzt dein Passwort zurücksetzen.\n\nDu musst dies vor %s tun.\n\nWenn du das Zurücksetzen deines Passworts nicht beantragt hast, brich die Anfrage jetzt ab.</string>
+  <string name="account_recovery_password_started_subtitle">Um dein Passwort zurückzusetzen, kehre zu dem Gerät, der App oder dem Browser zurück, von dem du die Anfrage zur Passwortzurücksetzung gestellt hast.\n\nDu musst dies vor dem %s tun.\n\nWenn du nicht darum gebeten hast, dein Passwort zurückzusetzen, brich die Anfrage jetzt ab.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Du kannst dein Passwort jetzt zurücksetzen.\n\nDu musst dies vor dem %s erledigen.\n\nWenn du nicht darum gebeten hast, dein Passwort zurückzusetzen, brich die Anfrage jetzt ab.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Passwortzurücksetzung abgelaufen</string>
-  <string name="account_recovery_window_ended_subtitle">Du musst eine neue Passwortzurücksetzung für %s beantragen.</string>
+  <string name="account_recovery_window_ended_subtitle">Du musst ein neues Passwort für %s beantragen.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Anfrage abbrechen</string>
   <string name="account_recovery_dismiss">Verstanden</string>
@@ -49,10 +49,10 @@
   <string name="account_recovery_info_grace_subtitle">Du kannst dein Passwort in %1s zurücksetzen.</string>
   <string name="account_recovery_info_grace_description">Um sicherzustellen, dass wirklich du versuchst, dein Passwort zurückzusetzen, warten wir 72 Stunden, bevor wir Anfragen genehmigen.\n\nWenn du keine Anfrage zum Zurücksetzen deines Passworts gesendet hast, brich diese Anfrage jetzt ab.</string>
   <string name="account_recovery_info_cancelled_title">Passwortzurücksetzung abgebrochen</string>
-  <string name="account_recovery_info_cancelled_subtitle">Eine Anfrage zur Passwortzurücksetzung wurde auf %1s gestellt.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Eine Anfrage zur Passwortzurücksetzung wurde am %1s erstellt.</string>
   <string name="account_recovery_info_cancelled_description">Wenn du diese Anfrage nicht erkennst, könnte das bedeuten, dass jemand anderes Zugriff auf dein Proton-Konto hat.\n\nSchütze jetzt dein Konto.</string>
   <string name="account_recovery_info_insecure_title">Passwortzurücksetzung verfügbar</string>
-  <string name="account_recovery_info_insecure_subtitle">Du kannst jetzt dein Passwort zurücksetzen. Das Zurücksetzen des Passworts ist bis %1s möglich.</string>
+  <string name="account_recovery_info_insecure_subtitle">Du kannst dein Passwort jetzt zurücksetzen. Die Passwortzurücksetzung ist bis zum %1s verfügbar.</string>
   <string name="account_recovery_info_insecure_description">Hast du diese Anfrage nicht gestellt?\n\nWenn du dein Passwort nicht zurücksetzen möchtest, brich die Anfrage jetzt ab.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Passwort zurücksetzen?</string>

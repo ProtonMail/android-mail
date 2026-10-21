@@ -18,7 +18,7 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="other">เลือกแล้ว %d</item>
+    <item quantity="other">เลือก %d รายการ</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="other">%d ไฟล์แนบ</item>

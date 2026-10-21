@@ -66,7 +66,7 @@
   <string name="auth_signup_create_password">Parolanızı oluşturun</string>
   <string name="auth_signup_password">Parola</string>
   <string name="auth_signup_repeat_password">Parola onayı</string>
-  <string name="auth_signup_terms_privacy_conditions_footer">Sonraki üzerine tıklayarak Proton %1$s ve %2$s metinlerini kabul etmiş olursunuz</string>
+  <string name="auth_signup_terms_privacy_conditions_footer">Sonraki üzerine tıklayarak Proton %1$s ve %2$s içeriklerini kabul etmiş olursunuz</string>
   <string name="auth_signup_terms_learn_more">Hüküm ve Koşullar</string>
   <string name="auth_signup_privacy_policy_learn_more">Gizlilik İlkesi</string>
   <string name="auth_signup_internal_footnote">Proton Mail ve Proton Calendar uygulamalarını kullanmak için bir Proton adresiniz olmalı</string>

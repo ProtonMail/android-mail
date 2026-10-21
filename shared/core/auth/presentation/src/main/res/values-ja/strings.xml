@@ -104,7 +104,7 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">アドレスをセットアップできませんでした。</string>
   <string name="auth_fido_security_keys_error">セキュリティキーの取得中にエラーが発生しました。もう一度やり直して下さい。</string>
   <string name="auth_fido_security_keys_title">セキュリティキー</string>
-  <string name="auth_fido_manage_security_keys_info">セキュリティキーを管理、追加、または削除するには、ProtonWebアプリを使用してください。 %s</string>
+  <string name="auth_fido_manage_security_keys_info">セキュリティキーを管理、追加、または削除するには、ProtonWebアプリケーションを使用してください。 %s</string>
   <string name="auth_fido_security_keys_empty_list">あなたのアカウントに登録されているセキュリティキーはありません。セキュリティキーを追加するには、Protonウェブアプリを使用してください。 %s</string>
   <string name="auth_fido_security_keys_registered">これらはアカウントに登録されているセキュリティキーです。</string>
   <string name="auth_fido_manage_security_keys">セキュリティキーを管理</string>

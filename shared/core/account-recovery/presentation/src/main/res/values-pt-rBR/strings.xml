@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Redefinição de senha solicitada</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">Uma redefinição de senha foi solicitada para <b>%1$s</b>. Você pode alterar sua senha em %2$d hora.\n\nSe você não fez esta solicitação, cancele agora.</item>
-    <item quantity="other">Uma redefinição de senha foi solicitada para <b>%1$s</b>. Você pode alterar sua senha em %2$d horas.\n\nSe você não fez esta solicitação, cancele agora.</item>
+    <item quantity="one">Uma solicitação redefinição de senha foi feita por <b>%1$s</b>. Pode mudar a sua senha em %2$d hora.\n\nSe não fez este pedido, cancele agora.</item>
+    <item quantity="other">Uma solicitação de redefinição de senha foi feita por <b>%1$s</b>. Pode mudar a sua senha em %2$d horas.\n\n Se não fez este pedido, cancele agora.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Cancelar redefinição de senha?</string>
@@ -35,8 +35,8 @@
   <string name="account_recovery_cancelled_subtitle">Se você nunca solicitou a alteração da sua senha, sua conta pode estar em risco.\n\nProteja sua conta alterando sua senha.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Redefinição de senha disponível</string>
-  <string name="account_recovery_password_started_subtitle">Para redefinir sua senha, volte para o dispositivo, aplicativo ou navegador em que você fez sua solicitação de redefinição de senha.\n\nVocê precisará fazer isso antes de %s.\n\nSe você não solicitou a redefinição da sua senha, cancele a solicitação agora.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Agora você pode redefinir sua senha.\n\nVocê precisará fazer isso antes de %s.\n\nSe você não solicitou a redefinição da sua senha, cancele a solicitação agora.</string>
+  <string name="account_recovery_password_started_subtitle">Para redefinir sua senha, volte ao dispositivo, aplicativo ou navegador em que você fez a solicitação de redefinição de senha.\n\nVocê precisará fazer isso antes de %s.\n\nSe você não pediu para redefinir sua senha, cancele a solicitação agora.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Você pode redefinir a sua senha agora.\n\nVocê precisa fazer isso antes de %s.\n\nISe você não pediu para redefinir a sua senha, cancele agora.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Redefinição de senha expirada</string>
   <string name="account_recovery_window_ended_subtitle">Você precisará solicitar uma nova redefinição de senha para %s.</string>
@@ -49,10 +49,10 @@
   <string name="account_recovery_info_grace_subtitle">Você pode redefinir sua senha em %1s.</string>
   <string name="account_recovery_info_grace_description">Para nos certificarmos de que é realmente você quem está tentando redefinir sua senha, aguardamos 72 horas antes de aprovar solicitações.\n\nSe você não pediu para redefinir sua senha, cancele a solicitação agora.</string>
   <string name="account_recovery_info_cancelled_title">A redefinição de senha foi cancelada.</string>
-  <string name="account_recovery_info_cancelled_subtitle">Uma solicitação para redefinir a senha foi feita em %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Um pedido para redefinição de senha foi feito em %1s.</string>
   <string name="account_recovery_info_cancelled_description">Se você não reconhece esta solicitação, isso pode significar que outra pessoa tem acesso à sua conta Proton.\n\nProteja sua conta agora.</string>
   <string name="account_recovery_info_insecure_title">Redefinição de senha disponível</string>
-  <string name="account_recovery_info_insecure_subtitle">Agora você pode redefinir sua senha. A redefinição de senha está disponível até %1s.</string>
+  <string name="account_recovery_info_insecure_subtitle">Você pode redefinir sua senha agora. A redefinição de senha estará disponível até %1s.</string>
   <string name="account_recovery_info_insecure_description">Não fez esta solicitação?\n\nSe você não solicitou a redefinição da sua senha, cancele a solicitação agora.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Redefinir senha?</string>

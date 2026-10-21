@@ -43,7 +43,7 @@
   <string name="upselling_monthly_to_yearly_row_subtitle">Ändra din faktureringsperiod</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Spara %s</string>
   <string name="upselling_monthly_to_yearly_title">Spara stort med årlig fakturering</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Lås in en rabatt på %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 år</string>
   <string name="upselling_monthly_to_yearly_currently">Nuvarande</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
@@ -140,8 +140,8 @@
   <!-- Other UI Items -->
   <string name="upselling_unlimited_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner.</string>
   <string name="upselling_auto_renew_text">Autoförnyas med samma pris och villkor tills uppsägning</string>
-  <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt till %s%s om det inte avbryts.</string>
-  <string name="upselling_auto_renew_text_bfriday">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %s%s tills det avbryts.</string>
+  <string name="upselling_auto_renew_text_promo">Välkomsterbjudande. Förnyas automatiskt med %s%s om det inte avbryts</string>
+  <string name="upselling_auto_renew_text_bfriday">Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt med %s%s tills det avbryts.</string>
   <string name="upselling_auto_renew_text_promo_short">Välkomsterbjudande. Förnyas automatiskt med %s%s.</string>
   <string name="upselling_auto_renew_text_standard">Förnyas automatiskt för %s%s om prenumerationen inte avslutas.</string>
   <string name="upselling_social_proof_reviews">2 000+ RECENSIONER</string>

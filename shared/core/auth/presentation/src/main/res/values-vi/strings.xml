@@ -104,8 +104,8 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">Không thể thiết lập địa chỉ.</string>
   <string name="auth_fido_security_keys_error">Đã xảy ra lỗi khi tìm nạp khóa bảo mật, vui lòng thử lại.</string>
   <string name="auth_fido_security_keys_title">Khóa bảo mật</string>
-  <string name="auth_fido_manage_security_keys_info">Để quản lý, thêm hoặc xóa khóa bảo mật, vui lòng dùng ứng dụng web Proton. %s</string>
-  <string name="auth_fido_security_keys_empty_list">Tài khoản của bạn không đăng ký khóa bảo mật nào. Để thêm khóa bảo mật, hãy dùng ứng dụng web Proton. %s</string>
+  <string name="auth_fido_manage_security_keys_info">Để quản lý, thêm hoặc xoá khoá bảo mật, vui lòng sử dụng ứng dụng web của Proton. %s</string>
+  <string name="auth_fido_security_keys_empty_list">Không có khóa bảo vệ nào được đăng ký với tài khoản của bạn. Để thêm khóa bảo vệ hãy sử dụng ứng dụng web Proton. %s</string>
   <string name="auth_fido_security_keys_registered">Đây là những khoá bảo mật đã đăng ký với tài khoản của bạn.</string>
   <string name="auth_fido_manage_security_keys">Quản lý khóa bảo mật</string>
   <string name="auth_fido_add_security_key">Thêm khóa bảo mật</string>

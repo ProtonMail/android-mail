@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">หมดอายุแล้ว</string>
-  <string name="expiration_days_arg">%d วัน</string>
-  <string name="expiration_hours_arg">%d ชม.</string>
-  <string name="expiration_minutes_arg">%d นาที</string>
+  <string name="expiration_days_arg">%dวัน</string>
+  <string name="expiration_hours_arg">%dชม.</string>
+  <string name="expiration_minutes_arg">%dนาที</string>
   <string name="retry">ลองอีกครั้ง</string>
   <string name="x_error_not_logged_in">ยังไม่ได้เข้าสู่ระบบ</string>
   <string name="action_customize_toolbar_description">ปรับแต่งแถบเครื่องมือ</string>

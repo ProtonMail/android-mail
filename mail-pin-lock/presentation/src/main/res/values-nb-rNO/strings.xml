@@ -48,7 +48,7 @@
   <string name="mail_settings_pin_insertion_error_no_match">PIN-kodene samsvarer ikke.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
     <item quantity="one">%s gjenstående forsøk før utlogging.</item>
-    <item quantity="other">%s gjenværende forsøk før utlogging.</item>
+    <item quantity="other">%s gjenstående forsøk før utlogging.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Det oppstod en feil under bekreftelse av PIN-koden.</string>
   <string name="mail_settings_pin_insertion_error_too_short">PIN må være minst 4 sifre</string>

@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Kedaluwarsa</string>
-  <string name="expiration_days_arg">%dhr</string>
-  <string name="expiration_hours_arg">%dj</string>
-  <string name="expiration_minutes_arg">%dmnt</string>
+  <string name="expiration_days_arg">%d h</string>
+  <string name="expiration_hours_arg">%d j</string>
+  <string name="expiration_minutes_arg">%d mnt</string>
   <string name="retry">Coba lagi</string>
   <string name="x_error_not_logged_in">Tidak terhubung masuk</string>
   <string name="action_customize_toolbar_description">Sesuaikan toolbar</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Balas semua</string>
   <string name="action_forward">Teruskan</string>
   <string name="action_reply_description">Balas</string>
-  <string name="action_reply_to_description">Balas ke %s</string>
+  <string name="action_reply_to_description">Balas %s</string>
   <string name="action_reply_all_description">Balas semua</string>
   <string name="action_forward_description">Teruskan</string>
   <string name="action_mark_read_description">Tandai sebagai terbaca</string>

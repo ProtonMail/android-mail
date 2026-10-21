@@ -43,7 +43,7 @@
   <string name="upselling_monthly_to_yearly_row_subtitle">Altere seu ciclo de faturamento</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Economize %s</string>
   <string name="upselling_monthly_to_yearly_title">Economize bastante com a cobrança anual</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Garanta um desconto em %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 ano</string>
   <string name="upselling_monthly_to_yearly_currently">Atualmente</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">Plano de 12 meses</string>

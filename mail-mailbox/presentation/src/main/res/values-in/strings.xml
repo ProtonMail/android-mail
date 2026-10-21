@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">Belum dibaca</string>
   <string name="include_spam_trash_text">Sertakan Spam/Sampah</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">%d Terpilih</item>
+    <item quantity="other">%d Dipilih</item>
   </plurals>
   <string name="mailbox_default_recipient">(Tanpa Penerima)</string>
   <string name="mailbox_default_sender">(Tanpa Pengirim)</string>

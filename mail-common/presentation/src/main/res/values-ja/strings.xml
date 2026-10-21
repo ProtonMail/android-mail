@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">期限切れ</string>
-  <string name="expiration_days_arg">%d日</string>
+  <string name="expiration_days_arg">%d 日</string>
   <string name="expiration_hours_arg">%d 時間</string>
-  <string name="expiration_minutes_arg">%d分</string>
+  <string name="expiration_minutes_arg">%d 分</string>
   <string name="retry">再試行</string>
   <string name="x_error_not_logged_in">サインインしていません</string>
   <string name="action_customize_toolbar_description">ツールバーを編集</string>

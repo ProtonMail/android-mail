@@ -18,8 +18,8 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">%d Valittu</item>
-    <item quantity="other">%d Valittu</item>
+    <item quantity="one">%d valittu</item>
+    <item quantity="other">%d valittu</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="one">%d liite</item>

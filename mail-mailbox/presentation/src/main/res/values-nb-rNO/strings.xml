@@ -77,7 +77,7 @@
     <item quantity="other">Samtaler flyttet til %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
-    <item quantity="one">Meldingen flyttet til %s</item>
+    <item quantity="one">Melding flyttet til %s</item>
     <item quantity="other">Meldinger flyttet til %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Tøm papirkurven</string>

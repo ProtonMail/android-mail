@@ -24,10 +24,10 @@
   <string name="filter_unread_button_text">Непрачытаныя</string>
   <string name="include_spam_trash_text">Уключыць папкі Сметніца або Спам</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Выбраны: %d</item>
-    <item quantity="few">Выбраны: %d</item>
-    <item quantity="many">Выбраны: %d</item>
-    <item quantity="other">Выбраны: %d</item>
+    <item quantity="one">%d выбрана</item>
+    <item quantity="few">%d выбрана</item>
+    <item quantity="many">%d выбрана</item>
+    <item quantity="other">%d выбрана</item>
   </plurals>
   <string name="mailbox_default_recipient">(Без атрымальніка)</string>
   <string name="mailbox_default_sender">(Без адпраўніка)</string>

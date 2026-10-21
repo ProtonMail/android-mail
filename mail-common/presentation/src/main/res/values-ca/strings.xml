@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Caducat</string>
-  <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Reintenta</string>
   <string name="x_error_not_logged_in">No s\'ha iniciat la sessió</string>
   <string name="action_customize_toolbar_description">Personalitza la barra d\'eines</string>

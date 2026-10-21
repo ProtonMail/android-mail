@@ -104,8 +104,8 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">无法设置地址。</string>
   <string name="auth_fido_security_keys_error">获取安全密钥时出错，请重试。</string>
   <string name="auth_fido_security_keys_title">安全密钥</string>
-  <string name="auth_fido_manage_security_keys_info">若要管理、添加或删除安全密钥，请使用 Proton 网页端。%s</string>
-  <string name="auth_fido_security_keys_empty_list">您的账户没有注册安全密钥。若要添加安全密钥，请使用 Proton 网页端。%s</string>
+  <string name="auth_fido_manage_security_keys_info">要管理、添加或删除安全密钥，请使用 Proton 网络应用程序。%s</string>
+  <string name="auth_fido_security_keys_empty_list">您的账户没有注册安全密钥。要添加安全密钥，请使用 Proton 网络应用程序。%s</string>
   <string name="auth_fido_security_keys_registered">这些是注册到您账户的安全密钥。</string>
   <string name="auth_fido_manage_security_keys">管理安全密钥</string>
   <string name="auth_fido_add_security_key">添加安全密钥</string>

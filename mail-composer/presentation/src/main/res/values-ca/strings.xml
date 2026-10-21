@@ -48,7 +48,7 @@
   <string name="composer_error_loading_parent_message">No s\'ha pogut carregar la informació del missatge.</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">D\'acord</string>
   <string name="composer_attachment_size_exceeded_dialog_title">S\'ha assolit el límit de fitxers adjunts.</string>
-  <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida dels adjunts és %1$s.</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida per als adjunts és de %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Ha fallat el xifratge del fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_too_many_attachments_error">S\'ha superat el nombre màxim de fitxers adjunts (100).</string>
   <string name="composer_delete_attachment_error">S\'ha produït un error inesperat en suprimir un fitxer adjunt.</string>
@@ -127,7 +127,7 @@
   <string name="composer_change_sender_error_refreshing_body">S\'està actualitzant el cos després d\'un error en el canvi del remitent. És possible que la signatura no estigui actualitzada.</string>
   <string name="composer_loading_attachments_error">No s\'han pogut carregar els adjunts</string>
   <string name="composer_attachment_upload_error_retry">Alguns adjunts no s\'han pogut carregar. Torneu-ho a provar.</string>
-  <string name="composer_external_encryption_unexpected_error">Error inesperat %s. Torneu-ho a provar.</string>
+  <string name="composer_external_encryption_unexpected_error">S\'ha produït un error inesperat %s. Torneu-ho a provar.</string>
   <string name="composer_sender_changed_original_address_cannot_send">L\'adreça seleccionada no es pot utilitzar per a enviar. El missatge s\'enviarà des de l\'adreça per defecte.</string>
   <string name="composer_expiration_time_bottom_sheet_description">Establiu quan el missatge s\'eliminarà de la safata d\'entrada del destinatari i de la carpeta d\'enviats. Per a caducar els missatges dels usuaris que no siguin del Proton, afegiu una contrasenya.</string>
   <string name="expiration_time_set_time_and_date">Establiu l\'hora i la data</string>

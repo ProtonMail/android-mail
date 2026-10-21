@@ -24,8 +24,8 @@
   <string name="filter_unread_button_text">Olvasatlan</string>
   <string name="include_spam_trash_text">A levélszemétből és lomtárból is</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Kijelölve</item>
-    <item quantity="other">%d Kijelölve</item>
+    <item quantity="one">%d kiválasztva</item>
+    <item quantity="other">%d kiválasztva</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nincs címzett)</string>
   <string name="mailbox_default_sender">(Nincs feladó)</string>
@@ -74,11 +74,11 @@
   <string name="mailbox_action_spam_message">Üzenet áthelyezve a levélszemétbe</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">A beszélgetés átkerült a %s mappába</item>
-    <item quantity="other">Beszélgetések áthelyezve ide: %s</item>
+    <item quantity="other">A beszélgetések átkerültek a %s mappába</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
     <item quantity="one">Üzenet áthelyezve a %s mappába</item>
-    <item quantity="other">Üzenetek áthelyezve ide: %s</item>
+    <item quantity="other">Üzenetek áthelyezve a %s mappába</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Lomtár kiürítése</string>
   <string name="mailbox_action_button_clear_spam">Levélszemét kiürítése</string>

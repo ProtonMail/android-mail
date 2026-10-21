@@ -29,7 +29,7 @@
   <string name="action_reply_all">Odpovědět všem</string>
   <string name="action_forward">Přeposlat</string>
   <string name="action_reply_description">Odpovědět</string>
-  <string name="action_reply_to_description">Odpovědět %s</string>
+  <string name="action_reply_to_description">Odpovědět na %s</string>
   <string name="action_reply_all_description">Odpovědět všem</string>
   <string name="action_forward_description">Přeposlat</string>
   <string name="action_mark_read_description">Označit jako přečtené</string>

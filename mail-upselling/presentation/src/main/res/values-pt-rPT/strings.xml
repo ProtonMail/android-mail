@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">O que está incluído</string>
   <string name="upselling_pu_cta">Obter o Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Pague anualmente e poupe %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Poupe %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Garanta um desconto em %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Mude e poupe %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Leve a sua privacidade online mais longe com o Proton Unlimited</string>
@@ -132,7 +132,7 @@
   <string name="upselling_onboarding_entitlements_show_less">Mostrar menos</string>
   <string name="upselling_onboarding_button_continue_free">Continuar com o plano Free</string>
   <string name="upselling_onboarding_autorenew">Faturação a %s a cada %s</string>
-  <string name="upselling_onboarding_autorenew_welcome_offer">Oferta de boas-vindas. Renovação automática a %s a cada %s</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">Oferta de boas-vindas. Renova automaticamente a %s a cada %s</string>
   <string name="upselling_onboarding_autorenew_month">mês</string>
   <string name="upselling_onboarding_autorenew_year">12 meses</string>
   <string name="upselling_onboarding_free_entitlement_storage">1 GB de armazenamento</string>
@@ -140,14 +140,14 @@
   <!-- Other UI Items -->
   <string name="upselling_unlimited_description_override">Para desbloquear mais armazenamento e funcionalidades premium.</string>
   <string name="upselling_auto_renew_text">Renovação automática pelo mesmo preço e condições, exceto se for cancelada</string>
-  <string name="upselling_auto_renew_text_promo">Oferta de boas-vindas. Renovação automática por %s%s, salvo cancelamento</string>
-  <string name="upselling_auto_renew_text_bfriday">Os descontos baseiam-se no preço mensal padrão. A renovação é automática por %s%s até ao cancelamento.</string>
-  <string name="upselling_auto_renew_text_promo_short">Oferta de boas-vindas. Renovação automática por %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Renovação automática a %s%s, a menos que seja cancelada.</string>
+  <string name="upselling_auto_renew_text_promo">Oferta de boas-vindas. Renovação automática a %s%s a menos que seja cancelada</string>
+  <string name="upselling_auto_renew_text_bfriday">Os descontos baseiam-se no preço mensal padrão. Renovação automática a %s%s até ser cancelada.</string>
+  <string name="upselling_auto_renew_text_promo_short">Oferta de boas-vindas. Renovação automática a %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Renovação automática a %s%s a menos que seja cancelada.</string>
   <string name="upselling_social_proof_reviews">Mais de 2 mil AVALIAÇÕES</string>
   <string name="upselling_description_social_proof">Atualize para a experiência que milhões de subscritores elogiam.</string>
   <string name="upselling_month">/mês</string>
-  <string name="upselling_month_only">apenas %s/mês</string>
+  <string name="upselling_month_only">apenas %s /mês</string>
   <string name="upselling_year">/ano</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Ocorreu um erro.</string>
