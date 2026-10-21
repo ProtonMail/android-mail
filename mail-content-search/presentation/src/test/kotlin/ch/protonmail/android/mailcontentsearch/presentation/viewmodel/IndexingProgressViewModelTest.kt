@@ -175,16 +175,28 @@ internal class IndexingProgressViewModelTest {
         val viewModel = buildViewModel()
 
         // When
-        indexingStatus.value = ContentIndexingState.Failed
+        indexingStatus.value = ContentIndexingState.Failed()
 
         // Then
         assertEquals(IndexingProgressState.Error(percentage = 42), viewModel.state.value)
     }
 
     @Test
-    fun `shows nothing when the backfill fails before any progress was shown`() = runTest(dispatcher) {
+    fun `shows the error when the screen opens on a backfill that already failed`() = runTest(dispatcher) {
         // Given
-        indexingStatus.value = ContentIndexingState.Failed
+        indexingStatus.value = ContentIndexingState.Failed(percentageBackfilled = 42.0)
+
+        // When
+        val viewModel = buildViewModel()
+
+        // Then
+        assertEquals(IndexingProgressState.Error(percentage = 42), viewModel.state.value)
+    }
+
+    @Test
+    fun `shows nothing when the backfill fails before any progress is known`() = runTest(dispatcher) {
+        // Given
+        indexingStatus.value = ContentIndexingState.Failed()
 
         // When
         val viewModel = buildViewModel()

@@ -257,7 +257,7 @@ internal class ContentSearchRepositoryImplTest {
         val result = repository.getIndexingStatus(userId)
 
         // Then
-        assertEquals(ContentIndexingState.Failed, result)
+        assertEquals(ContentIndexingState.Failed(), result)
     }
 
     @Test
@@ -285,7 +285,7 @@ internal class ContentSearchRepositoryImplTest {
         val result = repository.getIndexingStatus(userId)
 
         // Then
-        assertEquals(ContentIndexingState.Failed, result)
+        assertEquals(ContentIndexingState.Failed(), result)
     }
 
     @Test

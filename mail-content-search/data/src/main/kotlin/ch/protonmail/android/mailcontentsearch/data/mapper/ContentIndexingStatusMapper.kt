@@ -42,7 +42,7 @@ internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState
     SyncStatus.ONGOING,
     SyncStatus.OFFLINE -> progress.toRunningState()
     SyncStatus.COMPLETED -> ContentIndexingState.Completed
-    SyncStatus.FAILURE -> ContentIndexingState.Failed
+    SyncStatus.FAILURE -> ContentIndexingState.Failed(progress)
     SyncStatus.PAUSED -> ContentIndexingState.Paused(progress)
 }
 
@@ -86,7 +86,7 @@ internal fun SyncEvent.toIndexingState(stalledPercentage: Double? = null): Conte
     // Dropped so the UI keeps the last percentage. Rust resumes the backfill once the network is back.
     is SyncEvent.Offline -> null
     is SyncEvent.Driver -> when (this.v1) {
-        is SyncDriverEvent.Failure -> ContentIndexingState.Failed
+        is SyncDriverEvent.Failure -> ContentIndexingState.Failed()
         is SyncDriverEvent.Completed -> null
     }
 
@@ -94,7 +94,7 @@ internal fun SyncEvent.toIndexingState(stalledPercentage: Double? = null): Conte
     // failure and stops - so it cannot be dropped as a per-item event: the stream would then fall
     // silent on the last percentage and never report the account as failed.
     is SyncEvent.Worker -> when (this.v1) {
-        is SyncWorkerEvent.Failure -> ContentIndexingState.Failed
+        is SyncWorkerEvent.Failure -> ContentIndexingState.Failed()
         is SyncWorkerEvent.Processed -> null
     }
 }

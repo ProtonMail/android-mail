@@ -629,7 +629,7 @@ class HomeViewModelTest {
     @Test
     fun `reports an indexing failure on the primary account`() = runTest {
         // Given
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
 
         // When
         advanceUntilIdle()
@@ -641,12 +641,12 @@ class HomeViewModelTest {
     @Test
     fun `reports the same failure once`() = runTest {
         // Given
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
         advanceUntilIdle()
         assertNotNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
 
         // When
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
         advanceUntilIdle()
 
         // Then
@@ -658,7 +658,7 @@ class HomeViewModelTest {
         // Given
         val primaryUserId = MutableStateFlow<UserId?>(otherUserId)
         every { observePrimaryUserId() } returns primaryUserId
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
         otherIndexingStatus.emit(ContentIndexingState.Completed)
         advanceUntilIdle()
         assertNull(homeViewModel.state.value.contentIndexingErrorEffect.consume())
@@ -675,7 +675,7 @@ class HomeViewModelTest {
     fun `says nothing about an indexing failure on another account`() = runTest {
         // Given
         primaryIndexingStatus.emit(ContentIndexingState.Running(50.0))
-        otherIndexingStatus.emit(ContentIndexingState.Failed)
+        otherIndexingStatus.emit(ContentIndexingState.Failed())
 
         // When
         advanceUntilIdle()
@@ -688,7 +688,7 @@ class HomeViewModelTest {
     fun `says nothing about an account with content search switched off`() = runTest {
         // Given
         primaryContentSearchEnabled.emit(false)
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
 
         // When
         advanceUntilIdle()
@@ -702,7 +702,7 @@ class HomeViewModelTest {
     fun `says nothing about an account content search is unavailable for`() = runTest {
         // Given
         coEvery { isContentSearchFeatureEnabled(any()) } returns false
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
 
         // When
         advanceUntilIdle()
@@ -716,7 +716,7 @@ class HomeViewModelTest {
     fun `says nothing about a failure the enable that just happened is on its way to clearing`() = runTest {
         // Given
         primaryContentSearchEnabled.emit(false)
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
         advanceUntilIdle()
 
         // When
@@ -732,7 +732,7 @@ class HomeViewModelTest {
     fun `reports a failure that outlives the enable`() = runTest {
         // Given
         primaryContentSearchEnabled.emit(false)
-        primaryIndexingStatus.emit(ContentIndexingState.Failed)
+        primaryIndexingStatus.emit(ContentIndexingState.Failed())
         advanceUntilIdle()
 
         // When
