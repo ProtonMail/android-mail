@@ -78,7 +78,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
     fun `can set up when content search is available and off for the primary account`() = runTest(dispatcher) {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().canSetUpContentSearch.test {
@@ -91,7 +91,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
     fun `cannot set up when content search is already on`() = runTest(dispatcher) {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(true)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().canSetUpContentSearch.test {
@@ -104,7 +104,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
     fun `cannot set up when the feature is unavailable`() = runTest(dispatcher) {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns false
+        coEvery { isContentSearchFeatureEnabled(any()) } returns false
 
         // When
         viewModel().canSetUpContentSearch.test {
@@ -118,7 +118,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
         every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns emptyFlow()
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().showSetUpBanner.test {
@@ -132,7 +132,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
         every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().showSetUpBanner.test {
@@ -146,7 +146,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
         every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(true)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().showSetUpBanner.test {
@@ -160,7 +160,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(true)
         every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().showSetUpBanner.test {
@@ -173,7 +173,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
     fun `records the answer for the primary account when the banner is dismissed`() = runTest(dispatcher) {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().dismissSetUpBanner()
@@ -187,7 +187,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
         every { observeContentSearchPromptDismissed(userId, ContentSearchPrompt.SetUpOffer) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
         val viewModel = viewModel()
 
         viewModel.showSetUpBanner.test {
@@ -206,7 +206,7 @@ internal class ContentSearchSetUpPromptViewModelTest {
     fun `records the answer for the primary account when set-up is declined`() = runTest(dispatcher) {
         // Given
         every { observeContentSearchEnabled(userId) } returns flowOf(false)
-        coEvery { isContentSearchFeatureEnabled() } returns true
+        coEvery { isContentSearchFeatureEnabled(any()) } returns true
 
         // When
         viewModel().declineSetUp()

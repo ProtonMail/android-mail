@@ -19,19 +19,24 @@
 package ch.protonmail.android.mailcontentsearch.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailcontentsearch.domain.repository.ContentSearchSettingsRepository
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchFeatureEnabled as IsContentSearchFeatureEnabledFlag
 
 /**
- * Whether the content search feature is available on this build.
+ * Whether the content search feature is available to the given account.
  *
- * Other than checking the FF, we check the device arch (as 32-bit is unsupported).
+ * Rust owns the answer. It reads the launch flags and rules out 32-bit devices.
+ * A failed read counts as unavailable.
+ *
+ * The 64-bit check repeats the one in Rust on purpose.
+ * It keeps 32-bit devices out once the launch flags are removed.
  */
 class IsContentSearchFeatureEnabled @Inject constructor(
-    @IsContentSearchFeatureEnabledFlag private val contentSearchFlag: FeatureFlag<Boolean>,
+    private val contentSearchSettingsRepository: ContentSearchSettingsRepository,
     private val deviceArchitectureProvider: DeviceArchitectureProvider
 ) {
 
-    suspend operator fun invoke(): Boolean = deviceArchitectureProvider.is64Bit() && contentSearchFlag.get()
+    suspend operator fun invoke(userId: UserId): Boolean = deviceArchitectureProvider.is64Bit() &&
+        contentSearchSettingsRepository.isFeatureEnabled(userId).getOrNull() == true
 }

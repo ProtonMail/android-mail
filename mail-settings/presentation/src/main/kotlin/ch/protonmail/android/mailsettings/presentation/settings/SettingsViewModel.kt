@@ -53,7 +53,7 @@ class SettingsViewModel @Inject constructor(
                 VisibilityUiModel.Visible(quota.toUiModel())
             } ?: VisibilityUiModel.Hidden,
             appInformation = appInformation,
-            isContentSearchEnabled = account != null && isContentSearchFeatureEnabled()
+            isContentSearchEnabled = account != null && isContentSearchFeatureEnabled(account.userId)
         )
     }.stateIn(
         viewModelScope,

@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.proton.core.domain)
 
     implementation(project(":mail-common:domain"))
-    implementation(project(":mail-featureflags:domain"))
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-pagination:domain"))

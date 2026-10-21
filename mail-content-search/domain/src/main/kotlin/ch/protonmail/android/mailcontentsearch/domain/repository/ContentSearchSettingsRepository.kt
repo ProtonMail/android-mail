@@ -25,6 +25,13 @@ import me.proton.core.domain.entity.UserId
 
 interface ContentSearchSettingsRepository {
 
+    /**
+     * Whether the launch flags give this account access to content search.
+     *
+     * Rust decides it from the flags and the device architecture.
+     */
+    suspend fun isFeatureEnabled(userId: UserId): Either<DataError, Boolean>
+
     suspend fun isEnabled(userId: UserId): Either<DataError, Boolean>
 
     fun observeIsEnabled(userId: UserId): Flow<Boolean>

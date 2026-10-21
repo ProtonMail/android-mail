@@ -124,7 +124,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun observeIndexingFailure(userId: UserId): Flow<Unit> = flow {
-        if (!isContentSearchFeatureEnabled()) return@flow
+        if (!isContentSearchFeatureEnabled(userId)) return@flow
 
         emitAll(
             observeContentSearchEnabled(userId)
