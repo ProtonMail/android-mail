@@ -48,7 +48,7 @@
   <string name="composer_error_loading_parent_message">Kon de informatie van het bericht niet laden</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Bijlage-limiet bereikt</string>
-  <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is 1%1$s</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Versleuteling van de bijlage is mislukt. Om veiligheidsredenen zijn alle bijlagen verwijderd.</string>
   <string name="composer_too_many_attachments_error">Maximum aantal bijlage (100) overschreden.</string>
   <string name="composer_delete_attachment_error">Er is een onverwachte fout opgetreden tijdens het verwijderen van een bijlage.</string>
