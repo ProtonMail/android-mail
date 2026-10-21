@@ -20,7 +20,7 @@
   <string name="expiration_expired">Expirată</string>
   <string name="expiration_days_arg">%d z</string>
   <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Reîncercare</string>
   <string name="x_error_not_logged_in">Neconectat</string>
   <string name="action_customize_toolbar_description">Personalizare bară de unelte</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Răspuns tuturor</string>
   <string name="action_forward">Redirecționare</string>
   <string name="action_reply_description">Răspuns</string>
-  <string name="action_reply_to_description">Răspuns la %s</string>
+  <string name="action_reply_to_description">Răspuns lui %s</string>
   <string name="action_reply_all_description">Răspuns tuturor</string>
   <string name="action_forward_description">Redirecționare</string>
   <string name="action_mark_read_description">Marcare: citit</string>

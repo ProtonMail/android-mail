@@ -21,7 +21,7 @@
   <string name="detail_error_loading_messages">Neuspešno nalaganje sporočil</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d sporočilo</item>
-    <item quantity="two">%d sporočil</item>
+    <item quantity="two">%d sporočili</item>
     <item quantity="few">%d sporočila</item>
     <item quantity="other">%d sporočil</item>
   </plurals>
@@ -34,10 +34,10 @@
   <string name="bcc">Skp:</string>
   <string name="date">Datum:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Priponka</item>
-    <item quantity="two">%d Priponki</item>
-    <item quantity="few">%d Priponke</item>
-    <item quantity="other">%d Priponk</item>
+    <item quantity="one">%d priloga</item>
+    <item quantity="two">%d prilogi</item>
+    <item quantity="few">%d priloge</item>
+    <item quantity="other">%d prilog</item>
   </plurals>
   <string name="undisclosed_recipients">...</string>
   <string name="collapsed_header_draft">(osnutek)</string>
@@ -46,7 +46,7 @@
   <string name="error_star_operation_failed">Označevanje z zvezdico ni uspelo. Poskusite znova.</string>
   <string name="error_unstar_operation_failed">Odstranjevanje zvezdice ni uspelo. Poskusite znova.</string>
   <string name="error_move_to_trash_failed">Premikanje v smeti ni uspelo. Poskusite znova.</string>
-  <string name="message_moved_to">Sporočilo je premaknjeno v mapo %s</string>
+  <string name="message_moved_to">Sporočilo premaknjeno v mapo %s</string>
   <string name="message_moved_to_archive">Sporočilo je premaknjeno v arhiv</string>
   <string name="error_move_to_archive_failed">Premikanje v arhiv ni uspelo. Poskusite znova.</string>
   <string name="error_move_to_spam_failed">Premikanje v neželeno pošto ni uspelo. Poskusite znova.</string>
@@ -145,9 +145,9 @@
   <string name="rsvp_widget_you">Vi</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d Udeleženec</item>
-    <item quantity="two">%1$d Udeleženca</item>
-    <item quantity="few">%1$d Udeleženci</item>
-    <item quantity="other">%1$d Udeležencev</item>
+    <item quantity="two">%1$d udeležencev</item>
+    <item quantity="few">%1$d udeležencev</item>
+    <item quantity="other">%1$d udeležencev</item>
   </plurals>
   <string name="rsvp_widget_happening_now">Poteka <b>zdaj</b></string>
   <string name="rsvp_widget_event_ended">Dogodek <b>končan</b></string>

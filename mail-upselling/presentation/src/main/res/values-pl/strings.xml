@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Co zawiera</string>
   <string name="upselling_pu_cta">Wybierz plan Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Zapałać rocznie i oszczędź %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Zaoszczędź %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Zagwarantuj sobie zniżkę na %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Zmień i zaoszczędź %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Rozszerz swoją prywatność online dzięki planowi Proton Unlimited</string>
@@ -141,14 +141,14 @@
   <string name="upselling_unlimited_description_override">Aby odblokować więcej przestrzeni dyskowej i funkcje premium.</string>
   <string name="upselling_auto_renew_text">Automatyczne odnowienie w tej samej cenie i na tych samych warunkach, chyba że zostanie anulowane</string>
   <string name="upselling_auto_renew_text_promo">Oferta powitalna. Automatyczne odnowienie za %s%s, chyba że zostanie anulowane</string>
-  <string name="upselling_auto_renew_text_bfriday">Zniżki są oparte na standardowej cenie miesięcznej. Plan odnowi się automatycznie w cenie %s%s, dopóki go nie anulujesz.</string>
+  <string name="upselling_auto_renew_text_bfriday">Zniżki są obliczane na podstawie standardowych cen miesięcznych. Automatycznie odnawia się w cenie %s%s do anulowania.</string>
   <string name="upselling_auto_renew_text_promo_short">Oferta powitalna. Automatyczne odnowienie za %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Odnawia się automatycznie w cenie %s%s, chyba że anulujesz.</string>
+  <string name="upselling_auto_renew_text_standard">Automatyczne odnowienie za %s%s, chyba że zostanie anulowane.</string>
   <string name="upselling_social_proof_reviews">PONAD 2000 OPINII</string>
   <string name="upselling_description_social_proof">Ulepsz konto do planu, który zachwyca miliony subskrybentów.</string>
-  <string name="upselling_month">/ miesiąc</string>
+  <string name="upselling_month">/miesiąc</string>
   <string name="upselling_month_only">tylko %s / miesiąc</string>
-  <string name="upselling_year">/ rok</string>
+  <string name="upselling_year">/year</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Wystąpił błąd.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Nie można pobrać subskrypcji.</string>

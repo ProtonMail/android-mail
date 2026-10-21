@@ -73,7 +73,7 @@
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Все равно отправить</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Добавить защиту паролем</string>
   <string name="composer_send_expiring_message_to_external_may_fail">Мы не смогли подтвердить, что все получатели используют Proton Mail. Срок действия сообщения поддерживается только для адресов Proton. В этом случае мы предлагаем вам вместо этого добавить пароль.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">Некоторые получатели (%1$s) не поддерживают срок действия по умолчанию. Добавьте пароль, чтобы включить срок действия для получателей, не использующих Proton Mail.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Некоторые получатели (%1$s) не поддерживают срок действия по умолчанию. Добавьте пароль, чтобы включить эту функцию для тех, кто не пользуется Proton Mail.</string>
   <string name="composer_send_expiring_message_to_external_will_fail_for_all">Ни один из получателей не поддерживает срок действия по умолчанию. Добавьте пароль, чтобы включить срок действия для получателей, не использующих Proton Mail.</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Примечание об отправке</string>

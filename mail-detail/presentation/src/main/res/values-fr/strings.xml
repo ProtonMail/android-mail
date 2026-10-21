@@ -42,15 +42,15 @@
   <string name="error_star_operation_failed">Le marquage comme favori n\'a pas abouti. Nous vous invitons à réessayer.</string>
   <string name="error_unstar_operation_failed">Le marquage comme favori n\'a pas pu être retiré. Nous vous invitons à réessayer.</string>
   <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille n\'a pas abouti. Veuillez réessayer.</string>
-  <string name="message_moved_to">Le message a été déplacé vers %s.</string>
+  <string name="message_moved_to">Le message a été déplacé dans %s.</string>
   <string name="message_moved_to_archive">Le message a été déplacé dans le dossier Archives.</string>
   <string name="error_move_to_archive_failed">Le message n\'a pas pu être déplacé dans les archives. Merci de réessayer.</string>
   <string name="error_move_to_spam_failed">Le message n\'a pas pu être déplacé dans le dossier Indésirables/spam. Merci de réessayer.</string>
-  <string name="message_moved_to_selected_destination">Le message a été déplacé vers %1$s.</string>
+  <string name="message_moved_to_selected_destination">Le message a été déplacé dans %1$s.</string>
   <string name="error_move_message_failed">Le message n\'a pas pu être déplacé. Veuillez réessayer.</string>
   <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>
   <string name="conversation_moved_to_inbox">La conversation a été déplacée vers la boîte de réception.</string>
-  <string name="conversation_moved_to_selected_destination">La conversation a été déplacée vers %1$s.</string>
+  <string name="conversation_moved_to_selected_destination">La conversation a été déplacée dans %1$s.</string>
   <string name="conversation_moved_to_spam">La conversation a été déplacée dans le dossier Indésirables/spam.</string>
   <string name="conversation_moved_to_archive">La conversation a été déplacée dans le dossier Archives.</string>
   <string name="error_print_message">Le message n\'a pas pu être imprimé. Veuillez réessayer.</string>
@@ -141,7 +141,7 @@
   <string name="rsvp_widget_you">Vous</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d Participant</item>
-    <item quantity="other">%1$d Participants</item>
+    <item quantity="other">%1$d participants</item>
   </plurals>
   <string name="rsvp_widget_happening_now">En cours <b>actuellement</b></string>
   <string name="rsvp_widget_event_ended">Événement <b>terminé</b></string>

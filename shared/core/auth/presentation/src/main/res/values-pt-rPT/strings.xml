@@ -105,7 +105,7 @@
   <string name="auth_fido_security_keys_error">Erro ao obter chaves de segurança. Tente novamente.</string>
   <string name="auth_fido_security_keys_title">Chaves de segurança</string>
   <string name="auth_fido_manage_security_keys_info">Para gerir, adicionar ou remover as chaves de segurança, se a aplicação web da Proton. %s</string>
-  <string name="auth_fido_security_keys_empty_list">Não há chaves de segurança registadas na sua conta. Para adicionar uma chave de segurança, utilize a aplicação da Proton na web. %s</string>
+  <string name="auth_fido_security_keys_empty_list">Não há chaves de segurança registadas na sua conta. Para adicionar uma chave de segurança, use a aplicação da Proton na web. %s</string>
   <string name="auth_fido_security_keys_registered">Estas são as chaves de segurança registadas na sua conta.</string>
   <string name="auth_fido_manage_security_keys">Gerir as chaves de segurança</string>
   <string name="auth_fido_add_security_key">Adicionar uma chave de segurança</string>

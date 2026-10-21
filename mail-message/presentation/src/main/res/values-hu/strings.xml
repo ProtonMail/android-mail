@@ -19,7 +19,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
     <item quantity="one">%d Kiválasztva</item>
-    <item quantity="other">%d Kiválasztva</item>
+    <item quantity="other">%d kiválasztva</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="one">%d melléklet</item>
@@ -69,7 +69,7 @@
   <string name="contact_actions_add_contact_description">Címzett mentése névjegyként</string>
   <string name="contact_actions_block_contact">Kapcsolat blokkolása</string>
   <string name="contact_actions_block_contact_description">Névjegy letiltása</string>
-  <string name="contact_actions_block_contact_dialog_text">A(z) <xliff:g id="email">%1$s</xliff:g> címről érkező e-mailek a jövőben nem kerülnek kézbesítésre, és véglegesen törlésre kerülnek. A letiltott e-mail-címeket a beállításokban kezelheti.</string>
+  <string name="contact_actions_block_contact_dialog_text">A(z) <xliff:g id="email">%1$s</xliff:g> címről érkező e-mailek a továbbiakban nem kerülnek kézbesítésre, és véglegesen törlődnek. A letiltott e-mail címeket a beállításokban kezelheti.</string>
   <string name="contact_actions_block_contact_dialog_button_block">Tiltás</string>
   <string name="contact_actions_block_contact_dialog_button_cancel">Mégsem</string>
   <string name="contact_actions_unblock_contact">Névjegy feloldása</string>

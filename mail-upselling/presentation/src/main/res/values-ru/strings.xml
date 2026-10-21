@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Что включено</string>
   <string name="upselling_pu_cta">Подключить Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Оплачивайте ежегодно и экономьте %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Сэкономьте %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Зафиксируйте скидку на %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Смените план и сэкономьте %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Повысьте уровень конфиденциальности онлайн с Proton Unlimited</string>
@@ -131,8 +131,8 @@
   <string name="upselling_onboarding_entitlements_show_more">Показать больше</string>
   <string name="upselling_onboarding_entitlements_show_less">Свернуть</string>
   <string name="upselling_onboarding_button_continue_free">Продолжить с Free plan</string>
-  <string name="upselling_onboarding_autorenew">Оплачивается по цене %s каждые %s</string>
-  <string name="upselling_onboarding_autorenew_welcome_offer">Приветственное предложение. Автоматическое продление по цене %s каждые %s</string>
+  <string name="upselling_onboarding_autorenew">Оплачивается по цене %s раз в %s</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">Приветственное предложение. Автоматическое продление по цене %s раз в %s</string>
   <string name="upselling_onboarding_autorenew_month">месяц</string>
   <string name="upselling_onboarding_autorenew_year">12 месяцев</string>
   <string name="upselling_onboarding_free_entitlement_storage">1 ГБ хранилища</string>
@@ -143,7 +143,7 @@
   <string name="upselling_auto_renew_text_promo">Приветственное предложение. Автоматически продлевается по цене %s%s, если подписка не будет отменена</string>
   <string name="upselling_auto_renew_text_bfriday">Скидки рассчитываются на основе стандартной месячной цены. Подписка продлевается автоматически по цене %s%s, пока вы её не отмените.</string>
   <string name="upselling_auto_renew_text_promo_short">Приветственное предложение. Автоматически продлевается по цене %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Автоматически продлевается по цене %s%s, если не отменено.</string>
+  <string name="upselling_auto_renew_text_standard">Автоматически продлевается по цене %s%s, если подписка не будет отменена.</string>
   <string name="upselling_social_proof_reviews">2 ТЫС.+ ОТЗЫВОВ</string>
   <string name="upselling_description_social_proof">Улучшите до версии, от которой в восторге миллионы подписчиков.</string>
   <string name="upselling_month">/месяц</string>

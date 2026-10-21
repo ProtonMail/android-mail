@@ -147,7 +147,7 @@
   <string name="upselling_social_proof_reviews">Más de 2000 reseñas</string>
   <string name="upselling_description_social_proof">Actualice a la experiencia que millones de suscriptores están elogiando.</string>
   <string name="upselling_month">/mes</string>
-  <string name="upselling_month_only">solamente %s /mes</string>
+  <string name="upselling_month_only">solo %s /mes</string>
   <string name="upselling_year">/año</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Ocurrió un error.</string>

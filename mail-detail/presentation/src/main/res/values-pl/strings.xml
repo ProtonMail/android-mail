@@ -145,9 +145,9 @@
   <string name="rsvp_widget_you">Ty</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d uczestnik</item>
-    <item quantity="few">%1$d uczestników</item>
-    <item quantity="many">%1$d uczestników</item>
-    <item quantity="other">%1$d uczestnika</item>
+    <item quantity="few">Liczba uczestników: %1$d</item>
+    <item quantity="many">Liczba uczestników: %1$d</item>
+    <item quantity="other">Liczba uczestników: %1$d</item>
   </plurals>
   <string name="rsvp_widget_happening_now">Trwa <b>teraz</b></string>
   <string name="rsvp_widget_event_ended">Wydarzenie <b>zakończyło się</b></string>

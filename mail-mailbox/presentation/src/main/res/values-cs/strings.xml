@@ -24,10 +24,10 @@
   <string name="filter_unread_button_text">Nepřečtené</string>
   <string name="include_spam_trash_text">Zahrnout spam/koš</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">Vybráno: %d</item>
-    <item quantity="few">Vybráno: %d</item>
-    <item quantity="many">Vybráno: %d</item>
-    <item quantity="other">Vybráno: %d</item>
+    <item quantity="one">%d vybráno</item>
+    <item quantity="few">%d vybrány</item>
+    <item quantity="many">%d vybráno</item>
+    <item quantity="other">%d vybráno</item>
   </plurals>
   <string name="mailbox_default_recipient">(Žádný příjemce)</string>
   <string name="mailbox_default_sender">(Žádný odesílatel)</string>

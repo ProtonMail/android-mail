@@ -32,13 +32,13 @@
     <item quantity="many">Оплата за %d місяців</item>
     <item quantity="other">Оплата за %d місяців</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Знижки розраховано на основі стандартної місячної ціни. Автоматичне поновлення: %1$s на місяць.</string>
-  <string name="payment_bf_renew_annually">Знижки розраховано на основі стандартної місячної ціни. Автоматичне поновлення: %1$s на рік.</string>
-  <string name="payment_welcome_offer_renew_monthly">Вітальна пропозиція. Автоматично поновлюється за %1$s / місяць</string>
-  <string name="payment_welcome_offer_renew_annually">Вітальна пропозиція. Автоматично поновлюється за %1$s / рік</string>
+  <string name="payment_bf_renew_monthly">Знижки базуються на стандартних місячних тарифах. Автопоновлення за %1$s на місяць</string>
+  <string name="payment_bf_renew_annually">Знижки базуються на стандартних місячних тарифах. Автопоновлення за %1$s на рік</string>
+  <string name="payment_welcome_offer_renew_monthly">Пропозиція для нових користувачів. Автоматично поновлюється за %1$s/місяць</string>
+  <string name="payment_welcome_offer_renew_annually">Пропозиція для нових користувачів. Автоматично поновлюється за %1$s/рік</string>
   <string name="payment_welcome_offer_renew_biennially">Вітальна пропозиція. Автоматично поновлюється за %1$s кожні 2 роки</string>
   <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Вітальна пропозиція. Автоматично поновлюється за %1$s / місяць</item>
+    <item quantity="one">Пропозиція для нових користувачів. Автоматично поновлюється за %1$s/місяць</item>
     <item quantity="few">Вітальна пропозиція. Автоматично поновлюється за %1$s кожні %2$s місяці</item>
     <item quantity="many">Вітальна пропозиція. Автоматично поновлюється за %1$s кожні %2$s місяців</item>
     <item quantity="other">Вітальна пропозиція. Автоматично поновлюється за %1$s кожні %2$s місяців</item>

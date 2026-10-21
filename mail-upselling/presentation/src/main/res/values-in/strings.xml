@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Apa yang termasuk</string>
   <string name="upselling_pu_cta">Dapatkan Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Bayar tahunan dan hemat %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">Hemat %s</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Amankan diskon untuk %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Ubah dan hemat %s</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Tingkatkan privasi daring Anda dengan Proton Unlimited</string>
@@ -127,7 +127,7 @@
   <string name="upselling_onboarding_choose_plan_monthly">Bulanan</string>
   <string name="upselling_onboarding_choose_plan_yearly">Tahunan</string>
   <string name="upselling_onboarding_best_value">Penawaran terbaik</string>
-  <string name="upselling_onboarding_yearly_savings">Bayar per tahun dan hemat %s</string>
+  <string name="upselling_onboarding_yearly_savings">Bayar tahunan dan hemat %s</string>
   <string name="upselling_onboarding_entitlements_show_more">Tampilkan lebih banyak</string>
   <string name="upselling_onboarding_entitlements_show_less">Tampilkan lebih sedikit</string>
   <string name="upselling_onboarding_button_continue_free">Lanjut dengan paket Free</string>
@@ -140,14 +140,14 @@
   <!-- Other UI Items -->
   <string name="upselling_unlimited_description_override">Untuk membuka penyimpanan lebih banyak dan fitur premium.</string>
   <string name="upselling_auto_renew_text">Diperbarui secara otomatis pada harga dan ketentuan yang sama kecuali apabila dibatalkan</string>
-  <string name="upselling_auto_renew_text_promo">Penawaran selamat datang. Diperpanjang otomatis dengan harga %s%s kecuali dibatalkan</string>
-  <string name="upselling_auto_renew_text_bfriday">Diskon didasarkan pada harga bulanan standar. Diperbarui secara otomatis pada %s%s hingga dibatalkan.</string>
-  <string name="upselling_auto_renew_text_promo_short">Penawaran selamat datang. Diperpanjang otomatis dengan harga %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Diperbarui otomatis seharga %s%s kecuali dibatalkan.</string>
+  <string name="upselling_auto_renew_text_promo">Penawaran selamat datang. Diperbarui secara otomatis pada %s%s kecuali dibatalkan.</string>
+  <string name="upselling_auto_renew_text_bfriday">Diskon berdasarkan harga bulanan standar. Diperbarui secara otomatis pada %s%s hingga dibatalkan.</string>
+  <string name="upselling_auto_renew_text_promo_short">Penawaran selamat datang. Diperbarui secara otomatis pada %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Diperbarui secara otomatis pada %s%s kecuali dibatalkan.</string>
   <string name="upselling_social_proof_reviews">2000+ ULASAN</string>
   <string name="upselling_description_social_proof">Tingkatkan ke pengalaman yang dicintai oleh jutaan pelanggan.</string>
   <string name="upselling_month">/bulan</string>
-  <string name="upselling_month_only">hanya %s / bulan</string>
+  <string name="upselling_month_only">hanya %s /bulan</string>
   <string name="upselling_year">/tahun</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Terjadi kesalahan.</string>

@@ -47,7 +47,7 @@
   <string name="mail_settings_pin_insertion_next_button">下一步</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN 碼不符.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
-    <item quantity="other">剩餘 %s 次嘗試機會，之後將會登出。</item>
+    <item quantity="other">登出前還有 %s 次嘗試機會。</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">驗證 PIN 碼時出了一些錯誤。</string>
   <string name="mail_settings_pin_insertion_error_too_short">PIN 碼必須至少 4 位數字</string>

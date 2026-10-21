@@ -19,8 +19,8 @@
 <resources>
   <string name="expiration_expired">Expiré</string>
   <string name="expiration_days_arg">%d j</string>
-  <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Réessayer</string>
   <string name="x_error_not_logged_in">Non connecté</string>
   <string name="action_customize_toolbar_description">Personnaliser la barre d\'outils</string>

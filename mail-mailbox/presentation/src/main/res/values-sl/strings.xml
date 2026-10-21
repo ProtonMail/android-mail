@@ -24,9 +24,9 @@
   <string name="filter_unread_button_text">Neprebrano</string>
   <string name="include_spam_trash_text">Vključi neželeno pošto in smetnjak</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d izbran</item>
-    <item quantity="two">%d izbrana</item>
-    <item quantity="few">%d izbrani</item>
+    <item quantity="one">%d izbranih</item>
+    <item quantity="two">%d izbrani</item>
+    <item quantity="few">%d izbrana</item>
     <item quantity="other">%d izbranih</item>
   </plurals>
   <string name="mailbox_default_recipient">(brez prejemnika)</string>
@@ -93,7 +93,7 @@
     <item quantity="other">Pogovori so premaknjeni v %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
-    <item quantity="one">Sporočilo je premaknjeno v mapo %s</item>
+    <item quantity="one">Sporočilo premaknjeno v mapo %s</item>
     <item quantity="two">Sporočili sta premaknjeni v %s</item>
     <item quantity="few">Sporočila so premaknjena v %s</item>
     <item quantity="other">Sporočila so premaknjena v %s</item>

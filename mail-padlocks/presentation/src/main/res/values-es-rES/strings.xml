@@ -19,7 +19,7 @@
 <resources>
   <string name="padlocks_stored_with_zero_access_encryption_summary">Almacenado con cifrado de acceso cero</string>
   <string name="padlocks_proton_send_e2ee">Cifrado de extremo a extremo</string>
-  <string name="padlocks_proton_send_e2ee_description">Este correo electrónico se cifra en el dispositivo del remitente %s y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del mensaje en ningún momento.</string>
+  <string name="padlocks_proton_send_e2ee_description">Este correo electrónico está %s en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del mensaje en ningún momento.</string>
   <string name="padlocks_proton_send_e2ee_description_link_text">cifrado de extremo a extremo</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient">Cifrado de extremo a extremo para un destinatario verificado</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient_description">Este correo electrónico está %s en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del mensaje en ningún momento.</string>
@@ -70,7 +70,7 @@
   <string name="padlocks_proton_sent_recipient_proton_mail_recipient_description">Este correo electrónico se almacena en los servidores de Proton con %s. Ni Proton ni nadie más puede leerlo.</string>
   <string name="padlocks_proton_sent_recipient_proton_mail_recipient_description_link_text">cifrado de acceso cero</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient">Cifrado de extremo a extremo con PGP para un destinatario verificado</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description">Este correo electrónico está %s en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del correo electrónico en ningún momento.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description">Este correo electrónico está %s en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del mensaje en ningún momento.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_verified_recipient_description_link_text">cifrado de extremo a extremo</string>
   <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient">Cifrado con acceso cero</string>
   <string name="padlocks_proton_sent_recipient_proton_mail_pgp_recipient_description">Este correo electrónico se almacena en los servidores de Proton con %s. Ni Proton ni nadie más puede leerlo.</string>
@@ -83,21 +83,21 @@
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description">Este correo electrónico está cifrado de extremo a extremo en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del correo electrónico en ningún momento.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_pgp_recipient_description_link_text">cifrado de extremo a extremo</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient">Cifrado de extremo a extremo para un destinatario verificado</string>
-  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Este correo electrónico está %s en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del correo electrónico en ningún momento.</string>
+  <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description">Este correo electrónico está %s en el dispositivo del remitente y solo el destinatario puede descifrarlo. Proton no puede ver el contenido del mensaje en ningún momento.</string>
   <string name="padlocks_proton_sent_recipient_e2ee_verified_recipient_description_link_text">cifrado de extremo a extremo</string>
   <string name="padlocks_proton_sent_recipient_e2ee">Cifrado de extremo a extremo</string>
   <!-- Additional descriptions -->
   <string name="padlocks_proton_always_e2ee">Los correos electrónicos intercambiados entre usuarios de Proton se cifran automáticamente de extremo a extremo.</string>
   <string name="padlocks_non_encrypted_copy">Sin embargo, un remitente o destinatario que no utilice Proton Mail podría tener una copia no cifrada almacenada en su servidor de correo electrónico.</string>
-  <string name="padlocks_sender_verified_contact">El remitente es un %s cuyas claves de cifrado has marcado como de confianza.</string>
+  <string name="padlocks_sender_verified_contact">El remitente es un %s cuyas claves de cifrado has añadido a tu lista de confianza.</string>
   <string name="padlocks_sender_verified_contact_link_text">contacto verificado</string>
-  <string name="padlocks_sender_verification_failed">El %s. Confirma la autenticidad del correo electrónico con tu contacto.</string>
+  <string name="padlocks_sender_verification_failed">La %s. Confirma la autenticidad del correo electrónico con tu contacto.</string>
   <string name="padlocks_sender_verification_failed_link_text">error al verificar el remitente</string>
-  <string name="padlocks_sender_verification_failed_no_signature">El %s porque no estaba firmado. Confirma la autenticidad del correo electrónico con tu contacto.</string>
+  <string name="padlocks_sender_verification_failed_no_signature">La %s porque el mensaje no estaba firmado. Confirma la autenticidad del correo electrónico con tu contacto.</string>
   <string name="padlocks_sender_verification_failed_no_signature_link_text">error al verificar el remitente</string>
-  <string name="padlocks_recipient_verified_contact">El destinatario es un %s cuyas claves de cifrado has marcado como de confianza.</string>
+  <string name="padlocks_recipient_verified_contact">El destinatario es un %s cuyas claves de cifrado has añadido a tu lista de confianza.</string>
   <string name="padlocks_recipient_verified_contact_link_text">contacto verificado</string>
-  <string name="padlocks_recipients_verified_contacts">Los destinatarios son %s cuyas claves de cifrado has marcado como de confianza.</string>
+  <string name="padlocks_recipients_verified_contacts">Los destinatarios son %s cuyas claves de cifrado has añadido a tu lista de confianza.</string>
   <string name="padlocks_recipients_verified_contacts_link_text">contactos verificados</string>
   <string name="padlocks_zero_access_addendum">Este correo electrónico se almacena en los servidores de Proton con %s. Ni Proton ni nadie más puede leerlo.</string>
   <string name="padlocks_zero_access_addendum_link_text">cifrado de acceso cero</string>

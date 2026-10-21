@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Chei de securitate</string>
   <string name="mail_settings_change_password">Gestionare parole</string>
   <string name="mail_settings_signature">Semnătură</string>
-  <string name="mail_settings_storage_quota">%1$d%% din %2$s</string>
+  <string name="mail_settings_storage_quota">%1$d %% din %2$s</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_app_icon">Pictogramă aplicație</string>
   <string name="mail_settings_alternative_routing">Rută alternativă</string>

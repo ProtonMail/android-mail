@@ -45,7 +45,7 @@
   <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description">Ce message est %s sur l\'appareil de l\'expéditeur et ne peut être déchiffré que par le destinataire. Proton ne peut à aucun moment voir le contenu du message.</string>
   <string name="padlocks_proton_receive_e2ee_verification_failed_no_signature_description_link_text">chiffré de bout en bout</string>
   <string name="padlocks_proton_receive_sign_only_verification_failed">Message signé avec PGP avec une vérification qui n\'a pas abouti</string>
-  <string name="padlocks_proton_receive_sign_only_verification_failed_description">Ce message est stocké sur les serveurs Proton avec %s. Ni Proton ni aucune autre personne ne peut le lire.</string>
+  <string name="padlocks_proton_receive_sign_only_verification_failed_description">Ce message est stocké sur les serveurs Proton avec un %s. Ni Proton ni aucune autre personne ne peut le lire.</string>
   <string name="padlocks_proton_receive_sign_only_verification_failed_description_link_text">chiffrement à zéro accès</string>
   <string name="padlocks_proton_receive_sign_only_verified_recipient">Message signé par PGP provenant d\'un expéditeur vérifié</string>
   <string name="padlocks_proton_receive_sign_only_verified_recipient_description">Ce message est stocké sur les serveurs Proton avec un %s. Ni Proton ni aucune autre personne ne peut le lire.</string>

@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">Oläst</string>
   <string name="include_spam_trash_text">Inkludera skräppost/papperskorg</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d valt</item>
+    <item quantity="one">%d valda</item>
     <item quantity="other">%d valda</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ingen mottagare)</string>
@@ -77,7 +77,7 @@
     <item quantity="other">Konversationer flyttad till %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
-    <item quantity="one">Meddelandet flyttat till %s</item>
+    <item quantity="one">Meddelande flyttat till %s</item>
     <item quantity="other">Meddelanden flyttade till %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Töm papperskorg</string>

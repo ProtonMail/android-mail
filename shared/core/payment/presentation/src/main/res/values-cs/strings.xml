@@ -27,10 +27,10 @@
   <string name="payment_pay_annually">Platit ročně</string>
   <string name="payment_pay_biennially">Platit každé 2 roky</string>
   <plurals name="payment_pay_other">
-    <item quantity="one">Zaplatit za %d měsíc</item>
-    <item quantity="few">Zaplatit za %d měsíce</item>
-    <item quantity="many">Zaplatit za %d měsíců</item>
-    <item quantity="other">Zaplatit za %d měsíců</item>
+    <item quantity="one">Platit za %d měsíc</item>
+    <item quantity="few">Platit za %d měsíce</item>
+    <item quantity="many">Platit za %d měsíců</item>
+    <item quantity="other">Platit za %d měsíců</item>
   </plurals>
   <string name="payment_bf_renew_monthly">Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %1$s/měsíc</string>
   <string name="payment_bf_renew_annually">Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %1$s/rok</string>

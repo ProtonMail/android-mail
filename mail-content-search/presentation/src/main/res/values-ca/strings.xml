@@ -6,7 +6,7 @@
   <string name="mail_settings_content_search_toggle_title">Cerca al contingut dels correus electrònics</string>
   <string name="mail_settings_content_search_mobile_data_title">Permet la descàrrega mitjançant dades mòbils</string>
   <string name="mail_settings_content_search_mobile_data_hint">La descàrrega continuarà mitjançant dades mòbils si es perd la connexió Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%…</string>
+  <string name="mail_settings_content_search_syncing_status">S\'està preparant %1$d%%</string>
   <string name="mail_settings_content_search_preparing_status">S\'està preparant…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">S\'està esperant la connexió Wi-Fi…</string>
   <string name="mail_settings_content_search_failed_status">S\'ha produït un error en preparar la cerca del contingut del correu electrònic.</string>

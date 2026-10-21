@@ -27,8 +27,8 @@
   <string name="payment_pay_annually">Pagament anual</string>
   <string name="payment_pay_biennially">Pagament cada 2 anys</string>
   <plurals name="payment_pay_other">
-    <item quantity="one">Paga per %d mes</item>
-    <item quantity="other">Paga per %d mesos</item>
+    <item quantity="one">Pagament per %d mes</item>
+    <item quantity="other">Pagament per %d mesos</item>
   </plurals>
   <string name="payment_bf_renew_monthly">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %1$s/mes</string>
   <string name="payment_bf_renew_annually">Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %1$s/any</string>
@@ -36,7 +36,7 @@
   <string name="payment_welcome_offer_renew_annually">Oferta de benvinguda. Es renova automàticament a %1$s/any.</string>
   <string name="payment_welcome_offer_renew_biennially">Oferta de benvinguda. Es renova automàticament a %1$s cada 2 anys.</string>
   <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Oferta de benvinguda. Es renova automàticament a %1$s/mes</item>
+    <item quantity="one">Oferta de benvinguda. Es renova automàticament a %1$s/mes.</item>
     <item quantity="other">Oferta de benvinguda. Es renova automàticament a %1$s cada %2$s mesos</item>
   </plurals>
   <string name="payment_subscription_title">Subscripció</string>

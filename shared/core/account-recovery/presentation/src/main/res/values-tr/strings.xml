@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Parola sıfırlama isteği yapıldı</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one"><b>%1$s</b> parolasını sıfırlama isteği yapıldı. Parolanızı %2$d saat içinde değiştirebilirsiniz.\n\nBu isteği siz yapmadıysanız, şimdi iptal edin.</item>
-    <item quantity="other"><b>%1$s</b> parolasını sıfırlama isteği yapıldı. Parolanızı %2$d saat içinde değiştirebilirsiniz.\n\nBu isteği siz yapmadıysanız, şimdi iptal edin.</item>
+    <item quantity="one"><b>%1$s</b> için bir parola sıfırlama isteği yapıldı. Parolanızı %2$d saat içinde değiştirebilirsiniz.\n\nBu isteği siz yapmadıysanız şimdi iptal edin.</item>
+    <item quantity="other"><b>%1$s</b> için bir parola sıfırlama isteği yapıldı. Parolanızı %2$d saat içinde değiştirebilirsiniz.\n\nBu isteği siz yapmadıysanız şimdi iptal edin.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Parola sıfırlama işlemi iptal edilsin mi?</string>
@@ -35,7 +35,7 @@
   <string name="account_recovery_cancelled_subtitle">Parolanızı değiştirmek için herhangi bir istek yapmadıysanız, hesabınız tehlike altında olabilir.\n\nHesabınızın güvenliğini sağlamak için parolanızı değiştirin.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Parola sıfırlama kullanılabilir</string>
-  <string name="account_recovery_password_started_subtitle">Parolanızı sıfırlamak için, parola sıfırlama isteğinizi yaptığınız aygıta, uygulamaya veya tarayıcıya geri dönün.\n\nBunu %s öncesinde yapmanız gerekir.\n\nParola sıfırlama isteğinde bulunmadıysanız, isteği şimdi iptal edin.</string>
+  <string name="account_recovery_password_started_subtitle">Parolanızı sıfırlamak için, parola sıfırlama isteğini yaptığınız aygıta, uygulamaya ya da tarayıcıya dönün.\n\nBunu %s öncesinde yapmanız gerekir.\n\nParola sıfırlama isteğinde bulunmadıysanız, isteği şimdi iptal edin.</string>
   <string name="account_recovery_password_started_self_initiated_subtitle">Artık parolanızı sıfırlayabilirsiniz.\n\nBunu %s öncesinde yapmanız gerekir.\n\nParolanızı sıfırlama isteğinde bulunmadıysanız, isteği şimdi iptal edin.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Parola sıfırlama süresi geçmiş</string>

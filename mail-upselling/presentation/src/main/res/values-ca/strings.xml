@@ -27,7 +27,7 @@
   <string name="upselling_mailbox_plus_title_social_proof">Proveu el Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">Aconseguiu el millor del Mail amb aquesta oferta de temps limitat</string>
-  <string name="upselling_mailbox_plus_promo_title">Proveu el Mail Plus per %s</string>
+  <string name="upselling_mailbox_plus_promo_title">Proveu Mail Plus per %s</string>
   <string name="upselling_mailbox_plus_promo_cta">Obté 1 mes per %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Omet l\'oferta</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s per al primer mes, després %s al mes</string>

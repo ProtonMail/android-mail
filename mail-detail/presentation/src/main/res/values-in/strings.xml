@@ -74,7 +74,7 @@
   <string name="message_blocked_sender_banner_text">Pengirim ini telah diblokir di masa lalu.</string>
   <string name="message_blocked_sender_button_text">Buka Blokir</string>
   <string name="message_expiration_banner_text">Pesan ini akan kedaluwarsa dalam %1$s</string>
-  <string name="message_auto_delete_banner_text">Pesan ini akan terhapus otomatis dalam %1$s</string>
+  <string name="message_auto_delete_banner_text">Pesan ini akan dihapus secara otomatis dalam %1$s</string>
   <string name="message_auth_fail_banner_text">Email ini gagal memenuhi persyaratan autentikasi domainnya. Email ini mungkin dipalsukan atau diteruskan dengan tidak benar!</string>
   <string name="message_auth_fail_banner_button">Pelajari lebih lanjut</string>
   <!-- External link confirmation dialog -->

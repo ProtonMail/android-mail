@@ -40,7 +40,7 @@
   <string name="mailbox_is_empty_spam_description">โฟลเดอร์สแปมของคุณว่างเปล่า</string>
   <string name="mailbox_is_empty_trash_description">ตรงนี้ดูว่างเปล่า</string>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">ลบ %d บทสนทนา</item>
+    <item quantity="other">ลบ %d การสนทนา</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="other">ลบ %d ข้อความ</item>

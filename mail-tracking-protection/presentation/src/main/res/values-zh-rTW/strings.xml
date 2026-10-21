@@ -29,7 +29,7 @@
   <string name="action_close_dialog_button">關閉</string>
   <string name="got_it">知道了</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="other">已攔截 %s 個追蹤程式</item>
+    <item quantity="other">Zablokowano %s elementu śledzącego</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
     <item quantity="other">已清理 %s 個連結</item>

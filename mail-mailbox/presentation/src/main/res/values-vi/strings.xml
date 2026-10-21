@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">Chưa đọc</string>
   <string name="include_spam_trash_text">Bao gồm Thư rác/Thùng rác</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">Đã chọn %d</item>
+    <item quantity="other">%d Đã chọn</item>
   </plurals>
   <string name="mailbox_default_recipient">(Không có người nhận)</string>
   <string name="mailbox_default_sender">(Không có người gửi)</string>
@@ -40,10 +40,10 @@
   <string name="mailbox_is_empty_spam_description">Thư mục thư rác trống</string>
   <string name="mailbox_is_empty_trash_description">Thùng rác có vẻ trống trơn</string>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">Xóa %d cuộc hội thoại</item>
+    <item quantity="other">Xóa %d cuộc trò chuyện</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="other">Xóa %d thư</item>
+    <item quantity="other">Xóa %d tin nhắn</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="other">Bạn có chắc chắn muốn xóa vĩnh viễn các cuộc hội thoại này không?</item>
@@ -52,10 +52,10 @@
     <item quantity="other">Bạn có chắc chắn muốn xóa các thư này không?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="other">Đã xóa vĩnh viễn %d thư</item>
+    <item quantity="other">đã xóa vĩnh viễn %d tin nhắn</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="other">Đã xóa vĩnh viễn %d cuộc hội thoại</item>
+    <item quantity="other">đã xóa vĩnh viễn %d cuộc hội thoại</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Gắn nhãn thất bại</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Lấy nhãn thất bại</string>

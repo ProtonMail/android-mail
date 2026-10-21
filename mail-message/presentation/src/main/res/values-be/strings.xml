@@ -18,10 +18,10 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">Выбраны: %d</item>
-    <item quantity="few">Выбраны: %d</item>
-    <item quantity="many">Выбраны: %d</item>
-    <item quantity="other">Выбраны: %d</item>
+    <item quantity="one">%d выбраны</item>
+    <item quantity="few">%d выбрана</item>
+    <item quantity="many">%d выбрана</item>
+    <item quantity="other">%d выбрана</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="one">%d далучэнне</item>

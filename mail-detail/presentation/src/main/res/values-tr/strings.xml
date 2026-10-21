@@ -42,11 +42,11 @@
   <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_trash_failed">Çöpe atılamadı. Lütfen yeniden deneyin.</string>
-  <string name="message_moved_to">İleti %s klasörüne taşındı</string>
+  <string name="message_moved_to">İleti %s içine taşındı</string>
   <string name="message_moved_to_archive">İleti arşivlendi</string>
   <string name="error_move_to_archive_failed">Arşive taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_spam_failed">İstenmeyen ileti kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
-  <string name="message_moved_to_selected_destination">İleti %1$s klasörüne taşındı</string>
+  <string name="message_moved_to_selected_destination">İleti %1$s içine taşındı</string>
   <string name="error_move_message_failed">İleti taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
   <string name="conversation_moved_to_inbox">Yazışma gelen kutusuna taşındı</string>

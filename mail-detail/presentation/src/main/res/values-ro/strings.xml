@@ -33,9 +33,9 @@
   <string name="bcc">Ca:</string>
   <string name="date">Data:</string>
   <plurals name="attachment">
-    <item quantity="one">Fișiere atașate: %d</item>
-    <item quantity="few">Fișiere atașate: %d</item>
-    <item quantity="other">Fișiere atașate: %d</item>
+    <item quantity="one">%d atașament</item>
+    <item quantity="few">%d atașamente</item>
+    <item quantity="other">%d de atașamente</item>
   </plurals>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Ciornă)</string>
@@ -48,7 +48,7 @@
   <string name="message_moved_to_archive">Mesajul a fost mutat în «Arhivă».</string>
   <string name="error_move_to_archive_failed">Mutarea în arhivă a eșuat. Reîncercați.</string>
   <string name="error_move_to_spam_failed">Mutarea în mesaje nedorite a eșuat. Reîncercați.</string>
-  <string name="message_moved_to_selected_destination">Mesajul a fost mutat în «%1$s».</string>
+  <string name="message_moved_to_selected_destination">Mesajul a fost mutat în %1$s.</string>
   <string name="error_move_message_failed">Mutarea mesajului a eșuat. Reîncercați.</string>
   <string name="conversation_moved_to_trash">Conversația a fost mutată în «Gunoi».</string>
   <string name="conversation_moved_to_inbox">Conversația a fost mutată în «Primite».</string>

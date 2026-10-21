@@ -127,7 +127,7 @@
   <string name="upselling_onboarding_choose_plan_monthly">Mesečno</string>
   <string name="upselling_onboarding_choose_plan_yearly">Letno</string>
   <string name="upselling_onboarding_best_value">Najboljša vrednost</string>
-  <string name="upselling_onboarding_yearly_savings">Plačajte letno in prihranite %s</string>
+  <string name="upselling_onboarding_yearly_savings">Plačujte letno in prihranite %s</string>
   <string name="upselling_onboarding_entitlements_show_more">Prikaži več</string>
   <string name="upselling_onboarding_entitlements_show_less">Prikaži manj</string>
   <string name="upselling_onboarding_button_continue_free">Nadaljuj z brezplačnim paketom</string>

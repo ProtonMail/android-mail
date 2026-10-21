@@ -42,7 +42,7 @@
   <string name="error_star_operation_failed">Η λειτουργία προσθήκης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
-  <string name="message_moved_to">Το μήνυμα μετακινήθηκε στα %s</string>
+  <string name="message_moved_to">Το μήνυμα μετακινήθηκε στον φάκελο %s</string>
   <string name="message_moved_to_archive">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="error_move_to_archive_failed">Η μετακίνηση στα αρχειοθετημένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_spam_failed">Η μετακίνηση στα ενοχλητικά απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>

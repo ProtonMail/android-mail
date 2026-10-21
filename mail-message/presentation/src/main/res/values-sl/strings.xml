@@ -18,16 +18,16 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">Izbrano: %d</item>
-    <item quantity="two">Izbrano: %d</item>
-    <item quantity="few">Izbrano: %d</item>
-    <item quantity="other">Izbrano: %d</item>
+    <item quantity="one">%d izbrana</item>
+    <item quantity="two">%d izbrani</item>
+    <item quantity="few">%d izbrana</item>
+    <item quantity="other">%d izbranih</item>
   </plurals>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d priponka</item>
-    <item quantity="two">%d priponki</item>
-    <item quantity="few">%d priponke</item>
-    <item quantity="other">%d priponk</item>
+    <item quantity="one">%d priloga</item>
+    <item quantity="two">%d prilogi</item>
+    <item quantity="few">%d priloge</item>
+    <item quantity="other">%d prilog</item>
   </plurals>
   <string name="attachments">priponke</string>
   <string name="attachment_type_description">Datoteka %1$s</string>

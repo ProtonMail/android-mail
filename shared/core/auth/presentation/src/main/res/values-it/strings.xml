@@ -125,7 +125,7 @@
     <item quantity="other">Inserisci una password con almeno %1$s caratteri</item>
   </plurals>
   <plurals name="password_validator_min_length_requirement">
-    <item quantity="one">Almeno 1 carattere</item>
+    <item quantity="one">Inserisci una password con almeno 1 carattere</item>
     <item quantity="other">Almeno %1$s caratteri</item>
   </plurals>
   <string name="settings_password_management_title">Gestione delle password</string>

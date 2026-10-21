@@ -19,13 +19,13 @@
 <resources>
   <string name="padlocks_stored_with_zero_access_encryption_summary">Armazenado com criptografia de acesso zero</string>
   <string name="padlocks_proton_send_e2ee">Criptografado de ponta a ponta</string>
-  <string name="padlocks_proton_send_e2ee_description">Este e-mail está %s no dispositivo do remetente e só pode ser descriptografado pelo destinatário. A Proton não pode ver o conteúdo do e-mail em nenhum momento.</string>
+  <string name="padlocks_proton_send_e2ee_description">Este e-mail está %s no dispositivo do remetente e só pode ser descriptografado pelo destinatário. A Proton não consegue ver o conteúdo do e-mail a qualquer momento.</string>
   <string name="padlocks_proton_send_e2ee_description_link_text">criptografado de ponta a ponta</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient">Criptografado de ponta a ponta para destinatário verificado</string>
-  <string name="padlocks_proton_send_e2ee_verified_recipient_description">Este e-mail está %s no dispositivo do remetente e só pode ser descriptografado pelo destinatário. A Proton não pode ver o conteúdo do e-mail em nenhum momento.</string>
+  <string name="padlocks_proton_send_e2ee_verified_recipient_description">Este e-mail está %s no dispositivo do remetente e só pode ser descriptografado pelo destinatário. A Proton não consegue ver o conteúdo do e-mail a qualquer momento.</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient_description_link_text">criptografado de ponta a ponta</string>
   <string name="padlocks_proton_send_sign_only">E-mail assinado com PGP</string>
-  <string name="padlocks_proton_send_sign_only_description">Você [assinou digitalmente](%s) este e-mail, provando ao destinatário que seu e-mail é genuíno e não foi adulterado.</string>
+  <string name="padlocks_proton_send_sign_only_description">Você %s este e-mail, provando ao destinatário que seu e-mail é genuíno e não foi adulterado.</string>
   <string name="padlocks_proton_send_sign_only_description_link_text">assinado digitalmente</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description">Você %s este e-mail, provando ao destinatário que seu e-mail é genuíno e não foi adulterado.</string>
   <string name="padlocks_proton_send_recipient_pgp_signed_description_link_text">assinado digitalmente</string>

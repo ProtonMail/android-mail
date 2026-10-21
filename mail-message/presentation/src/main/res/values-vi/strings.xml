@@ -18,13 +18,13 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="other">Đã chọn %d</item>
+    <item quantity="other">%d Đã chọn</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="other">%d tập tin đính kèm</item>
   </plurals>
   <string name="attachments">tập tin đính kèm</string>
-  <string name="attachment_type_description">Tập tin %1$s</string>
+  <string name="attachment_type_description">Tệp %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Lưu trữ</string>
   <string name="attachment_type_image">Hình ảnh</string>

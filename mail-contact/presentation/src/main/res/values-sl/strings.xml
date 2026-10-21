@@ -27,9 +27,9 @@
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d član</item>
-    <item quantity="two">%1$d člana</item>
-    <item quantity="few">%1$d člani</item>
-    <item quantity="other">%1$d članov</item>
+    <item quantity="two">Članov: %1$d</item>
+    <item quantity="few">Članov: %1$d</item>
+    <item quantity="other">Članov: %1$d</item>
   </plurals>
   <string name="search_contacts_description">Išči stike</string>
   <string name="contact_search_no_results">Ni najdenih rezultatov.</string>

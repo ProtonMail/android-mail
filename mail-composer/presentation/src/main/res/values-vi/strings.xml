@@ -48,7 +48,7 @@
   <string name="composer_error_loading_parent_message">Không thể tải thông tin của thư</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Đã đạt đến giới hạn tập tin đính kèm</string>
-  <string name="composer_attachment_size_exceeded_dialog_message">Giới hạn kích thước cho tập tin đính kèm là %1$s</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Kích thước giới hạn cho tệp đính kèm là %1$s</string>
   <string name="composer_attachment_encryption_failed_message">Mã hóa tập tin đính kèm không thành công. Tất cả tập tin đính kèm đã bị xóa vì lý do bảo mật.</string>
   <string name="composer_too_many_attachments_error">Đã vượt quá số lượng tập tin đính kèm tối đa (100).</string>
   <string name="composer_delete_attachment_error">Đã xảy ra lỗi không mong muốn khi xóa tập tin đính kèm.</string>

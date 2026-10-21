@@ -38,7 +38,7 @@
   <string name="account_recovery_password_started_self_initiated_subtitle">สามารถรีเซ็ตรหัสผ่านได้แล้วในขณะนี้\n\nจำเป็นต้องดำเนินการก่อน %s\n\nหากไม่ได้ขอรีเซ็ตรหัสผ่าน ให้ยกเลิกคำขอนี้ทันที</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">การรีเซ็ตรหัสผ่านหมดอายุแล้ว</string>
-  <string name="account_recovery_window_ended_subtitle">จำเป็นต้องขอรีเซ็ตรหัสผ่านใหม่สำหรับ %s</string>
+  <string name="account_recovery_window_ended_subtitle">คุณต้องขอการรีเซ็ตรหัสผ่านใน %s</string>
   <!-- Other -->
   <string name="account_recovery_cancel">ยกเลิกคำร้องขอ</string>
   <string name="account_recovery_dismiss">รับทราบ</string>

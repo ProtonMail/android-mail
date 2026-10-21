@@ -20,7 +20,7 @@
   <string name="expiration_expired">Expirado</string>
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Reintentar</string>
   <string name="x_error_not_logged_in">No se ha iniciado sesión.</string>
   <string name="action_customize_toolbar_description">Personalizar la barra de herramientas</string>

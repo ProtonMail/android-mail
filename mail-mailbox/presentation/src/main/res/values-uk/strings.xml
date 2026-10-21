@@ -89,14 +89,14 @@
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Розмову переміщено до %s</item>
     <item quantity="few">Розмови переміщено до %s</item>
-    <item quantity="many">Розмов переміщено до %s</item>
-    <item quantity="other">Розмов переміщено до %s</item>
+    <item quantity="many">Conversations moved to %s</item>
+    <item quantity="other">Conversations moved to %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
     <item quantity="one">Повідомлення переміщено до %s</item>
     <item quantity="few">Повідомлення переміщено до %s</item>
     <item quantity="many">Повідомлень переміщено до %s</item>
-    <item quantity="other">Повідомлень переміщено до %s</item>
+    <item quantity="other">Повідомлення переміщено до %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Очистити смітник</string>
   <string name="mailbox_action_button_clear_spam">Очистити спам</string>

@@ -21,7 +21,7 @@
   <string name="account_recovery_grace_period_info_title">Wachtwoord reset aangevraagd</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
     <item quantity="one">Een wachtwoordherstel is aangevraagd voor <b>%1$s</b>. U kunt uw wachtwoord wijzigen over %2$d uur.\n\nAls u dit niet heeft aangevraagd, annuleer het nu.</item>
-    <item quantity="other">Een wachtwoordherstel is aangevraagd voor <b>%1$s</b>. U kunt uw wachtwoord wijzigen over %2$d uur.\n\nAls u dit niet heeft aangevraagd, kunt u het nu annuleren.</item>
+    <item quantity="other">Een wachtwoordherstel is aangevraagd voor <b>%1$s</b>. U kunt uw wachtwoord wijzigen over %2$d uur.\n\nAls u dit niet heeft aangevraagd, annuleer het nu.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Wachtwoordherstel annuleren?</string>
@@ -35,28 +35,28 @@
   <string name="account_recovery_cancelled_subtitle">Als u nooit heeft gevraagd om uw wachtwoord te wijzigen, kan uw account gevaar lopen.\n\nBeveilig uw account door uw wachtwoord te wijzigen.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Wachtwoordherstel beschikbaar</string>
-  <string name="account_recovery_password_started_subtitle">Om uw wachtwoord te resetten keert u terug naar het apparaat, app of browser waarmee u het resetten van uw wachtwoord heeft aangevraagd.\n\nU moet dit voor %s doen.\n\nAls u geen verzoek heeft gevraagd om uw wachtwoord te resetten, annuleer de aanvraag dan nu.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">U kunt nu uw wachtwoord resetten.\n\nU moet dit doen voor %s.\n\nAls u niet heeft gevraagd om uw wachtwoord te resetten, annuleer de aanvraag dan nu.</string>
+  <string name="account_recovery_password_started_subtitle">Om uw wachtwoord te herstellen keert u terug naar het apparaat en browser waarmee u het wachtwoordherstel heeft aangevraagd.\n\nU moet dit voor %s doen.\n\nAls u niet heeft gevraagd om uw wachtwoord te herstellen, annuleer de aanvraag dan nu.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">U kunt nu uw wachtwoord resetten.\n\nU moet dit doen voor %s.\n\nAls u niet heeft gevraagd om uw wachtwoord opnieuw in te stellen, annuleer de aanvraag dan nu.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Wachtwoord reset verlopen</string>
-  <string name="account_recovery_window_ended_subtitle">U moet een nieuwe wachtwoord reset aanvragen voor %s.</string>
+  <string name="account_recovery_window_ended_subtitle">U moet een nieuw wachtwoord aanvragen voor %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Aanvraag annuleren</string>
   <string name="account_recovery_dismiss">Begrepen</string>
   <string name="account_recovery_reset">Wachtwoord resetten</string>
   <!-- Account Recovery Info -->
   <string name="account_recovery_info_grace_title">Wachtwoord reset aangevraagd</string>
-  <string name="account_recovery_info_grace_subtitle">U kunt uw wachtwoord resetten in %1s.</string>
+  <string name="account_recovery_info_grace_subtitle">U kunt uw wachtwoord herstellen over %1s.</string>
   <string name="account_recovery_info_grace_description">Om er zeker van te zijn dat u daadwerkelijk uw wachtwoord probeert te resetten, wachten we 72 uur voordat we verzoeken goedkeuren.\n\nAls u niet hebt gevraagd om uw wachtwoord te resetten, kunt u dit verzoek nu annuleren.</string>
   <string name="account_recovery_info_cancelled_title">Wachtwoord reset geannuleerd</string>
-  <string name="account_recovery_info_cancelled_subtitle">Er is een aanvraag voor het wachtwoord resetten gedaan op %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Er is een wachtwoordherstelaanvraag gedaan op %1s.</string>
   <string name="account_recovery_info_cancelled_description">Als u dit verzoek niet herkent, kan dit betekenen dat iemand anders toegang heeft tot uw Proton Account.\n\nBeveilig uw account nu.</string>
   <string name="account_recovery_info_insecure_title">Wachtwoord reset beschikbaar</string>
-  <string name="account_recovery_info_insecure_subtitle">U kunt uw wachtwoord nu resetten. Het resetten van uw wachtwoord is beschikbaar tot %1s.</string>
+  <string name="account_recovery_info_insecure_subtitle">U kunt uw wachtwoord nu opnieuw instellen. Wachtwoordherstel is beschikbaar tot %1s.</string>
   <string name="account_recovery_info_insecure_description">Heeft u dit verzoek niet gedaan?\n\nAls u niet hebt gevraagd om uw wachtwoord te resetten, annuleer het verzoek dan nu.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Wachtwoord resetten?</string>
-  <string name="account_recovery_reset_dialog_text">"Om veiligheidsredenen moet u 72 uur wachten voordat u het wachtwoord voor %1s kunt wijzigen.\n\nAls u een herstelmethode heeft ingesteld, probeer in plaats hiervan accountherstel. Hiermee kunt u uw wachtwoord onmiddellijk wijzigen."</string>
+  <string name="account_recovery_reset_dialog_text">"Om veiligheidsredenen moet u 72 uur wachten voordat u het wachtwoord voor %1s kunt wijzigen.\n\nAls u een herstelmethode heeft ingesteld, probeer in plaats hiervan accountherstel. Hiermee kun u uw wachtwoord onmiddellijk wijzigen."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Wachtwoord reset aanvragen</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Gebruik herstelmethode</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Wijzig uw wachtwoord in uw webbrowser zonder de beveiligingsperiode af te wachten.</string>

@@ -18,10 +18,10 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <plurals name="selected_count_title">
-    <item quantity="one">Vybrané: %d</item>
+    <item quantity="one">%d vybrané</item>
     <item quantity="few">Vybrané: %d</item>
-    <item quantity="many">Vybrané: %d</item>
-    <item quantity="other">Vybrané: %d</item>
+    <item quantity="many">%d vybraných</item>
+    <item quantity="other">%d vybraných</item>
   </plurals>
   <plurals name="attachment_count_label">
     <item quantity="one">%d príloha</item>

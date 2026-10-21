@@ -24,10 +24,10 @@
   <string name="filter_unread_button_text">Непрочитанные</string>
   <string name="include_spam_trash_text">Включая спам/корзину</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Выбран</item>
-    <item quantity="few">%d Выбраны</item>
-    <item quantity="many">%d Выбрано</item>
-    <item quantity="other">%d Выбрано</item>
+    <item quantity="one">%d Selected</item>
+    <item quantity="few">%d Selected</item>
+    <item quantity="many">Совершен выбор %d</item>
+    <item quantity="other">%d Selected</item>
   </plurals>
   <string name="mailbox_default_recipient">(Нет получателя)</string>
   <string name="mailbox_default_sender">(Нет отправителя)</string>
@@ -46,13 +46,13 @@
     <item quantity="one">Удалить цепочку писем</item>
     <item quantity="few">Удалить %d цепочки писем</item>
     <item quantity="many">Удалить %d цепочек писем</item>
-    <item quantity="other">Удалить %d цепочки писем</item>
+    <item quantity="other">Удалить %d цепочек писем</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Удалить сообщение</item>
     <item quantity="few">Удалить %d сообщения</item>
     <item quantity="many">Удалить %d сообщений</item>
-    <item quantity="other">Удалить %d сообщения</item>
+    <item quantity="other">Удалить %d сообщений</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Вы уверены, что хотите безвозвратно удалить эту цепочку писем?</item>
@@ -68,15 +68,15 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Сообщение безвозвратно удалено</item>
-    <item quantity="few">%d сообщения безвозвратно удалено</item>
-    <item quantity="many">%d сообщений безвозвратно удалено</item>
-    <item quantity="other">%d сообщения безвозвратно удалено</item>
+    <item quantity="few">%d сообщения безвозвратно удалены</item>
+    <item quantity="many">%d сообщений безвозвратно удалены</item>
+    <item quantity="other">%d сообщений безвозвратно удалено</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Цепочка писем безвозвратно удалена</item>
-    <item quantity="few">%d цепочки писем удалено безвозвратно</item>
+    <item quantity="few">%d цепочки писем безвозвратно удалены</item>
     <item quantity="many">%d цепочек писем удалено безвозвратно</item>
-    <item quantity="other">%d цепочки писем удалено безвозвратно</item>
+    <item quantity="other">%d цепочек писем безвозвратно удалено</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
@@ -96,7 +96,7 @@
     <item quantity="one">Сообщение перемещено в %s</item>
     <item quantity="few">Сообщения перемещены в %s</item>
     <item quantity="many">Сообщений перемещено в %s</item>
-    <item quantity="other">Сообщения перемещены в %s</item>
+    <item quantity="other">Сообщений перемещено в %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Очистить Корзину</string>
   <string name="mailbox_action_button_clear_spam">Очистить спам</string>

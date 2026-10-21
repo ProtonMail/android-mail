@@ -29,10 +29,10 @@
   <plurals name="payment_pay_other">
     <item quantity="other">支付 %d 个月</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">优惠基于标准月度价格。将以每月 %1$s 的价格自动续订。</string>
-  <string name="payment_bf_renew_annually">优惠基于标准月度价格。将以每年 %1$s 的价格自动续订。</string>
-  <string name="payment_welcome_offer_renew_monthly">首期优惠价，到期后自动续费，每月 %1$s</string>
-  <string name="payment_welcome_offer_renew_annually">首期优惠价，到期后自动续费，每年 %1$s</string>
+  <string name="payment_bf_renew_monthly">优惠基于标准月费价格。自动续订价格为 %1$s/月</string>
+  <string name="payment_bf_renew_annually">优惠基于标准月费价格。自动续订价格为 %1$s/年</string>
+  <string name="payment_welcome_offer_renew_monthly">新人特惠。%1$s/月自动续订</string>
+  <string name="payment_welcome_offer_renew_annually">新人特惠。%1$s/年自动续订</string>
   <string name="payment_welcome_offer_renew_biennially">首期优惠价，到期后自动续费，每 2 年 %1$s</string>
   <plurals name="payment_welcome_offer_renew_other">
     <item quantity="other">首期优惠价，到期后自动续费，每 %2$s 个月 %1$s</item>

@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Klucze bezpieczeństwa</string>
   <string name="mail_settings_change_password">Zarządzanie hasłami</string>
   <string name="mail_settings_signature">Podpis</string>
-  <string name="mail_settings_storage_quota">%1$d%% / %2$s</string>
+  <string name="mail_settings_storage_quota">%1$d%% z %2$s</string>
   <string name="mail_settings_theme">Motyw</string>
   <string name="mail_settings_app_icon">Ikona aplikacji</string>
   <string name="mail_settings_alternative_routing">Alternatywne przekierowanie połączenia</string>

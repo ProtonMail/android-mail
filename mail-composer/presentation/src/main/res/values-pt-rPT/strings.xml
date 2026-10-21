@@ -127,7 +127,7 @@
   <string name="composer_change_sender_error_refreshing_body">Erro ao atualizar o corpo após a alteração do remetente. A assinatura pode estar desatualizada.</string>
   <string name="composer_loading_attachments_error">Erro ao carregar os anexos</string>
   <string name="composer_attachment_upload_error_retry">Erro ao carregar alguns anexos. Tente novamente.</string>
-  <string name="composer_external_encryption_unexpected_error">Erro inesperado %s. Tente novamente.</string>
+  <string name="composer_external_encryption_unexpected_error">Erro inesperado: %s. Tente novamente.</string>
   <string name="composer_sender_changed_original_address_cannot_send">O endereço selecionado não pode ser utilizado para enviar. A sua mensagem será enviada a partir do seu endereço predefinido.</string>
   <string name="composer_expiration_time_bottom_sheet_description">Defina quando a mensagem será eliminada da caixa de entrada do destinatário e da sua pasta Enviado. Para expirar mensagens para utilizadores que não usam o Proton, adicione uma palavra-passe.</string>
   <string name="expiration_time_set_time_and_date">Definir hora e data</string>

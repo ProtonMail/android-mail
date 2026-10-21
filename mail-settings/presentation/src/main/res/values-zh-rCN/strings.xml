@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">安全密钥</string>
   <string name="mail_settings_change_password">密码管理</string>
   <string name="mail_settings_signature">签名</string>
-  <string name="mail_settings_storage_quota">%1$d%% / %2$s</string>
+  <string name="mail_settings_storage_quota">已用 %1$d%%，总计 %2$s</string>
   <string name="mail_settings_theme">主题</string>
   <string name="mail_settings_app_icon">应用图标</string>
   <string name="mail_settings_alternative_routing">备用线路</string>

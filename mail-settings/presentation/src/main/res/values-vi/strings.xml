@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Khóa bảo mật</string>
   <string name="mail_settings_change_password">Quản lý mật khẩu</string>
   <string name="mail_settings_signature">Chữ ký</string>
-  <string name="mail_settings_storage_quota">%1$d%% trên %2$s</string>
+  <string name="mail_settings_storage_quota">%1$d%% của %2$s</string>
   <string name="mail_settings_theme">Chủ đề</string>
   <string name="mail_settings_app_icon">Biểu tượng ứng dụng</string>
   <string name="mail_settings_alternative_routing">Định tuyến thay thế</string>

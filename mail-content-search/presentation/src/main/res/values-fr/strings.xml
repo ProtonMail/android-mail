@@ -6,7 +6,7 @@
   <string name="mail_settings_content_search_toggle_title">Recherche dans le contenu des e-mails</string>
   <string name="mail_settings_content_search_mobile_data_title">Autoriser le téléchargement via les données mobiles</string>
   <string name="mail_settings_content_search_mobile_data_hint">Le téléchargement se poursuit via les données mobiles en cas de perte de connexion Wi-Fi.</string>
-  <string name="mail_settings_content_search_syncing_status">Préparation en cours de %1$d %%…</string>
+  <string name="mail_settings_content_search_syncing_status">Préparation en cours : %1$d %%…</string>
   <string name="mail_settings_content_search_preparing_status">Préparation en cours…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">En attente du Wi-Fi…</string>
   <string name="mail_settings_content_search_failed_status">Quelque chose s\'est mal passé lors de la préparation de la recherche dans le contenu des e-mails.</string>
@@ -64,10 +64,10 @@
   <string name="content_search_previously_found_title">Trouvé précédemment</string>
   <string name="content_search_dismiss_recent_search_content_description">Retirer « %1$s » des recherches récentes</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Indexation des messages • %1$d %%</string>
-  <string name="content_search_indexing_interrupted">Indexation interrompue • %1$d %%</string>
-  <string name="content_search_indexing_progress_content_description">Indexation des messages, %1$d %%</string>
-  <string name="content_search_indexing_interrupted_content_description">Indexation interrompue, %1$d %%</string>
+  <string name="content_search_indexing_progress">Indexation des messages • %1$d %%</string>
+  <string name="content_search_indexing_interrupted">Indexation interrompue • %1$d %%</string>
+  <string name="content_search_indexing_progress_content_description">Indexation des messages, %1$d %%</string>
+  <string name="content_search_indexing_interrupted_content_description">Indexation interrompue, %1$d %%</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Supprimer définitivement ?</string>
   <string name="content_search_delete_dialog_message">Ces messages seront définitivement supprimés. Cette action ne peut pas être annulée.</string>

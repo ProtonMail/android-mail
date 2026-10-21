@@ -73,7 +73,7 @@
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Wyślij mimo to</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_add_password">Dodaj ochronę hasłem</string>
   <string name="composer_send_expiring_message_to_external_may_fail">Nie mogliśmy potwierdzić, że wszyscy odbiorcy używają Proton Mail. Tylko adresy Proton obsługują wygasanie wiadomości. W takim przypadku sugerujemy dodanie hasła.</string>
-  <string name="composer_send_expiring_message_to_external_will_fail">Niektórzy odbiorcy (%1$s) domyślnie nie obsługują wygasania. Dodaj hasło, aby włączyć wygasanie dla odbiorców spoza Proton Mail.</string>
+  <string name="composer_send_expiring_message_to_external_will_fail">Niektórzy odbiorcy (%1$s) domyślnie nie obsługują wygaśnięcia. Dodaj hasło, aby włączyć wygaśnięcie dla odbiorców spoza Proton Mail.</string>
   <string name="composer_send_expiring_message_to_external_will_fail_for_all">Żaden z odbiorców domyślnie nie obsługuje wygasania. Dodaj hasło, aby włączyć wygasanie dla odbiorców spoza Proton Mail.</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Wysyłanie powiadomienia</string>
@@ -133,7 +133,7 @@
   <string name="expiration_time_set_time_and_date">Ustaw godzinę i datę</string>
   <string name="composer_expiration_set_expiration">Ustaw wygaśnięcie</string>
   <string name="composer_expiration_pick_time_title">Ustaw czas</string>
-  <string name="composer_expiration_time_custom_time_on">W dniu %1$s</string>
+  <string name="composer_expiration_time_custom_time_on">W: %1$s</string>
   <string name="composer_error_send_draft_generic">Wystąpił nieoczekiwany błąd podczas wysyłania tej wiadomości. Spróbuj ponownie.</string>
   <string name="composer_error_send_draft_invalid_sender">Wyłączony lub niepoprawny adres e-mail. Sprawdź, czy adres jest poprawny i aktywny.</string>
   <string name="composer_error_send_draft_external_password_decrypt_error">Nie udało się odszyfrować zewnętrznego hasła szyfrowania</string>

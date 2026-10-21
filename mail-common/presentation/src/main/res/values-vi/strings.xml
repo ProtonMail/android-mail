@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Đã hết hạn</string>
-  <string name="expiration_days_arg">%d ngày</string>
-  <string name="expiration_hours_arg">%d giờ</string>
-  <string name="expiration_minutes_arg">%d phút</string>
+  <string name="expiration_days_arg">%dn</string>
+  <string name="expiration_hours_arg">%dg</string>
+  <string name="expiration_minutes_arg">%dp</string>
   <string name="retry">Thử lại</string>
   <string name="x_error_not_logged_in">Chưa đăng nhập</string>
   <string name="action_customize_toolbar_description">Tùy chỉnh thanh công cụ</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Trả lời tất cả</string>
   <string name="action_forward">Chuyển tiếp</string>
   <string name="action_reply_description">Trả lời</string>
-  <string name="action_reply_to_description">Trả lời %s</string>
+  <string name="action_reply_to_description">Trả lời %s:</string>
   <string name="action_reply_all_description">Trả lời tất cả</string>
   <string name="action_forward_description">Chuyển tiếp</string>
   <string name="action_mark_read_description">Đánh dấu là đã đọc</string>

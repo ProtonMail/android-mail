@@ -19,7 +19,7 @@
 <resources>
   <string name="padlocks_stored_with_zero_access_encryption_summary">Memorizzato con crittografia a zero accessi</string>
   <string name="padlocks_proton_send_e2ee">Crittografato end-to-end</string>
-  <string name="padlocks_proton_send_e2ee_description">Questa email è %s sul dispositivo del mittente e può essere decriptata solo dal destinatario. Proton non può vedere il contenuto dell\'email in nessun momento.</string>
+  <string name="padlocks_proton_send_e2ee_description">Questa email è %s sul dispositivo del mittente e può essere decrittata solo dal destinatario. Proton non può vedere il contenuto dell\'email in nessun momento.</string>
   <string name="padlocks_proton_send_e2ee_description_link_text">crittografato end-to-end</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient">Crittografato end-to-end al destinatario verificato</string>
   <string name="padlocks_proton_send_e2ee_verified_recipient_description">Questa email è %s sul dispositivo del mittente e può essere decrittata solo dal destinatario. Proton non può vedere il contenuto dell\'email in nessun momento.</string>

@@ -24,8 +24,8 @@
   <string name="filter_unread_button_text">Non lus</string>
   <string name="include_spam_trash_text">Inclure les messages des dossiers Indésirables/spam et Corbeille</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d sélectionnés</item>
-    <item quantity="other">%d sélectionnés</item>
+    <item quantity="one">Sélection : %d</item>
+    <item quantity="other">Sélection : %d</item>
   </plurals>
   <string name="mailbox_default_recipient">(aucun destinataire)</string>
   <string name="mailbox_default_sender">(aucun expéditeur)</string>
@@ -58,11 +58,11 @@
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Le message a été supprimé définitivement.</item>
-    <item quantity="other">%d messages ont été supprimés définitivement</item>
+    <item quantity="other">%d messages ont été supprimés définitivement.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">La conversation a été supprimée définitivement.</item>
-    <item quantity="other">%d conversations ont été supprimées définitivement</item>
+    <item quantity="other">%d conversations ont été supprimées définitivement.</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">L\'opération sur le label n\'a pas abouti.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Les labels n\'ont pas pu être obtenus.</string>
@@ -77,7 +77,7 @@
     <item quantity="other">Les conversations ont été déplacées vers %s.</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
-    <item quantity="one">Le message a été déplacé vers %s.</item>
+    <item quantity="one">Le message a été déplacé dans %s.</item>
     <item quantity="other">Les messages ont été déplacés vers %s.</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Vider la corbeille</string>

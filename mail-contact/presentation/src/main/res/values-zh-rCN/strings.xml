@@ -87,7 +87,7 @@
   <string name="contact_details_action_open_url_label">打开链接</string>
   <string name="contact_group_details_send_message_action">发送群组消息</string>
   <plurals name="contact_group_details_number_of_contacts">
-    <item quantity="other">%1$d 位联系人</item>
+    <item quantity="other">%1$d 个联系人</item>
   </plurals>
   <string name="contact_bottom_sheet_redirect_to_web_title">网络应用中可用</string>
   <string name="contact_bottom_sheet_redirect_to_web_dismiss_button">忽略</string>

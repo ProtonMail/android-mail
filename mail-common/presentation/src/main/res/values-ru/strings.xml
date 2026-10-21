@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Срок действия истёк</string>
-  <string name="expiration_days_arg">%d дн.</string>
-  <string name="expiration_hours_arg">%d ч</string>
-  <string name="expiration_minutes_arg">%d мин</string>
+  <string name="expiration_days_arg">%d д.</string>
+  <string name="expiration_hours_arg">%d ч.</string>
+  <string name="expiration_minutes_arg">%d мин.</string>
   <string name="retry">Повторить</string>
   <string name="x_error_not_logged_in">Вход не выполнен</string>
   <string name="action_customize_toolbar_description">Настроить панель инструментов</string>

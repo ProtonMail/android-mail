@@ -24,8 +24,8 @@
   <string name="filter_unread_button_text">Não lidas</string>
   <string name="include_spam_trash_text">Incluir Spam/Lixo</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d selecionado</item>
-    <item quantity="other">%d selecionado</item>
+    <item quantity="one">%d selecionados</item>
+    <item quantity="other">%d selecionados</item>
   </plurals>
   <string name="mailbox_default_recipient">(Sem destinatário)</string>
   <string name="mailbox_default_sender">(Sem remetente)</string>
@@ -74,11 +74,11 @@
   <string name="mailbox_action_spam_message">Mensagem movida para spam</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">A conversa foi movida para %s.</item>
-    <item quantity="other">Conversas movidas para %s</item>
+    <item quantity="other">As conversas foram movidas para %s.</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
     <item quantity="one">A mensagem foi movida para %s</item>
-    <item quantity="other">Mensagens movidas para %s</item>
+    <item quantity="other">As mensagens foram movidas para %s</item>
   </plurals>
   <string name="mailbox_action_button_clear_trash">Esvaziar lixo</string>
   <string name="mailbox_action_button_clear_spam">Esvaziar spam</string>

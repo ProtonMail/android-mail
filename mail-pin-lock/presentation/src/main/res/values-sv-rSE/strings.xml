@@ -47,8 +47,8 @@
   <string name="mail_settings_pin_insertion_next_button">Nästa</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-koder matchar inte.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
-    <item quantity="one">%s försök kvar innan utloggning.</item>
-    <item quantity="other">%s försök kvar innan utloggning.</item>
+    <item quantity="one">%s återstående försök före utloggning.</item>
+    <item quantity="other">%s återstående försök före utloggning.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Ett fel uppstod vid verifieringen av din PIN-kod.</string>
   <string name="mail_settings_pin_insertion_error_too_short">PIN måste vara minst 4 siffror</string>

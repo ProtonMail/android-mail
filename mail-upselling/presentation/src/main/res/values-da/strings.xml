@@ -39,7 +39,7 @@
   <string name="upselling_pu_whats_included">Hvad der er inkluderet</string>
   <string name="upselling_pu_cta">Få Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Betal årligt og spar %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Betal årligt, og spar %s</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Skift din faktureringsperiode</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Spar %s</string>
   <string name="upselling_monthly_to_yearly_title">Spar stort med årlig fakturering</string>
@@ -127,7 +127,7 @@
   <string name="upselling_onboarding_choose_plan_monthly">Månedligt</string>
   <string name="upselling_onboarding_choose_plan_yearly">Årligt</string>
   <string name="upselling_onboarding_best_value">Bedste tilbud</string>
-  <string name="upselling_onboarding_yearly_savings">Betal årligt og spar %s</string>
+  <string name="upselling_onboarding_yearly_savings">Betal årligt, og spar %s</string>
   <string name="upselling_onboarding_entitlements_show_more">Vis mere</string>
   <string name="upselling_onboarding_entitlements_show_less">Vis mindre</string>
   <string name="upselling_onboarding_button_continue_free">Fortsæt med gratis abonnement</string>
@@ -143,7 +143,7 @@
   <string name="upselling_auto_renew_text_promo">Velkomsttilbud. Fornyes automatisk til %s%s, medmindre det annulleres</string>
   <string name="upselling_auto_renew_text_bfriday">Rabatter er baseret på standard månedspriser. Fornyes automatisk til %s%s, indtil det annulleres.</string>
   <string name="upselling_auto_renew_text_promo_short">Velkomsttilbud. Fornyes automatisk til %s%s.</string>
-  <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s%s, medmindre det annulleres.</string>
+  <string name="upselling_auto_renew_text_standard">Fornyes automatisk til %s%s, medmindre det opsiges.</string>
   <string name="upselling_social_proof_reviews">2.000+ ANMELDELSER</string>
   <string name="upselling_description_social_proof">Opgradér til den oplevelse, som millioner af abonnenter er begejstrede for.</string>
   <string name="upselling_month">/måned</string>

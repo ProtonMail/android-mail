@@ -20,7 +20,7 @@
   <string name="expiration_expired">Geçerlilik süresi dolmuş</string>
   <string name="expiration_days_arg">%dg</string>
   <string name="expiration_hours_arg">%ds</string>
-  <string name="expiration_minutes_arg">%dd</string>
+  <string name="expiration_minutes_arg">%da</string>
   <string name="retry">Yeniden dene</string>
   <string name="x_error_not_logged_in">Oturum açılmamış</string>
   <string name="action_customize_toolbar_description">Araç çubuğunu özelleştir</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Tümünü yanıtla</string>
   <string name="action_forward">İlet</string>
   <string name="action_reply_description">Yanıtla</string>
-  <string name="action_reply_to_description">%s alıcısına yanıt verilsin</string>
+  <string name="action_reply_to_description">%s alıcısına yanıtla</string>
   <string name="action_reply_all_description">Tümünü yanıtla</string>
   <string name="action_forward_description">İlet</string>
   <string name="action_mark_read_description">Okunmuş olarak işaretle</string>

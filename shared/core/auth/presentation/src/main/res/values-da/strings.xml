@@ -104,8 +104,8 @@
   <string name="auth_login_error_invalid_action_cannot_setup_address">Kunne ikke konfigurere adressen.</string>
   <string name="auth_fido_security_keys_error">Fejl ved hentning af sikkerhedsnøgler, prøv igen.</string>
   <string name="auth_fido_security_keys_title">Sikkerhedsnøgler</string>
-  <string name="auth_fido_manage_security_keys_info">Brug Proton-webapplikationen til at håndtere, tilføje eller fjerne sikkerhedsnøgler. %s</string>
-  <string name="auth_fido_security_keys_empty_list">Der er ingen sikkerhedsnøgler registreret til din konto. Brug Proton-webapplikationen til at tilføje en sikkerhedsnøgle. %s</string>
+  <string name="auth_fido_manage_security_keys_info">Brug Proton- webprogrammet til at håndtere, tilføje eller fjerne sikkerhedsnøgler. %s</string>
+  <string name="auth_fido_security_keys_empty_list">Der er ingen sikkerhedsnøgler registreret i din konto. Brug Proton-webprogrammet til at tilføje en sikkerhedsnøgle. %s</string>
   <string name="auth_fido_security_keys_registered">Dette er de sikkerhedsnøgler, der er registreret til din konto.</string>
   <string name="auth_fido_manage_security_keys">Håndter sikkerhedsnøgler</string>
   <string name="auth_fido_add_security_key">Tilføj sikkerhedsnøgle</string>

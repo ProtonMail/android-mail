@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">S\'ha sol·licitat un restabliment de contrasenya.</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">S\'ha sol·licitat un restabliment de la contrasenya per a <b>%1$s</b>. Podeu canviar la contrasenya en %2$d hora.\n\nSi no heu fet aquesta sol·licitud, cancel·leu-la ara.</item>
-    <item quantity="other">S\'ha sol·licitat un restabliment de lacontrasenya per a <b>%1$s</b>. Podeu canviar la contrasenya en %2$d hores.\n\nSi no heu fet aquesta sol·licitud, cancel·leu-la ara.</item>
+    <item quantity="one">S\'ha sol·licitat un restabliment de contrasenya per a <b>%1$s</b>. Podeu canviar la vostra contrasenya d\'aquí a %2$d hora.\n\nSi no heu fet la sol·licitud, cancel·leu-la ara.</item>
+    <item quantity="other">S\'ha sol·licitat un restabliment de contrasenya per a <b>%1$s</b>. Podeu canviar la vostra contrasenya d\'aquí a %2$d hores.\n\nSi no heu fet la sol·licitud, cancel·leu-la ara.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Voleu cancel·lar el restabliment de la contrasenya?</string>
@@ -36,10 +36,10 @@
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">El restabliment de contrasenya està disponible.</string>
   <string name="account_recovery_password_started_subtitle">Per a restablir la contrasenya, torneu al dispositiu, l\'aplicació o el navegador des del qual heu fet la sol·licitud de restabliment de la contrasenya.\n\nHeu de fer-ho abans de %s.\n\nSi no heu demanat restablir la contrasenya, cancel·leu la sol·licitud ara.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Ara podeu restablir la contrasenya.\n\nHeu de fer-ho abans de %s.\n\nSi no heu sol·licitat restablir la contrasenya, cancel·leu la sol·licitud ara.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Ara podeu restablir la contrasenya.\n\nHaureu de fer-ho abans de %s.\n\nSi no heu demanat restablir la contrasenya, cancel·leu la sol·licitud ara.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">El restabliment de la contrasenya ha caducat</string>
-  <string name="account_recovery_window_ended_subtitle">Haureu de sol·licitar un restabliment de contrasenya nou per a %s.</string>
+  <string name="account_recovery_window_ended_subtitle">Haureu de sol·licitar un restabliment de contrasenya per a %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Cancel·la la sol·licitud</string>
   <string name="account_recovery_dismiss">D\'acord</string>

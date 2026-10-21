@@ -30,7 +30,7 @@
     <item quantity="one">%s трекер заблокирован</item>
     <item quantity="few">%s трекера заблокированы</item>
     <item quantity="many">%s трекеров заблокировано</item>
-    <item quantity="other">%s трекеров заблокировано</item>
+    <item quantity="other">%s трекера заблокировано</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
     <item quantity="one">%s ссылка очищена</item>

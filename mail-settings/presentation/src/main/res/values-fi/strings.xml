@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Suojausavaimet</string>
   <string name="mail_settings_change_password">Salasanan hallinta</string>
   <string name="mail_settings_signature">Allekirjoitus</string>
-  <string name="mail_settings_storage_quota">%1$d%%/%2$s</string>
+  <string name="mail_settings_storage_quota">%1$d %% / %2$s</string>
   <string name="mail_settings_theme">Teema</string>
   <string name="mail_settings_app_icon">Sovelluksen kuvake</string>
   <string name="mail_settings_alternative_routing">Vaihtoehtoinen reititys</string>

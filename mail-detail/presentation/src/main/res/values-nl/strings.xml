@@ -141,7 +141,7 @@
   <string name="rsvp_widget_you">U</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d Deelnemer</item>
-    <item quantity="other">%1$d Deelnemers</item>
+    <item quantity="other">%1$d deelnemers</item>
   </plurals>
   <string name="rsvp_widget_happening_now">Vindt <b>nu</b> plaats</string>
   <string name="rsvp_widget_event_ended">Afspraak <b>beëindigd</b></string>

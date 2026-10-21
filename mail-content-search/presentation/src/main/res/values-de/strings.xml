@@ -14,7 +14,7 @@
   <string name="mail_settings_content_search_update_error">Es ist ein Fehler aufgetreten. Bitte erneut versuchen.</string>
   <string name="mail_settings_content_search_retry_error">Die Suche nach E-Mail-Inhalten konnte nicht vorbereitet werden.</string>
   <string name="mail_settings_content_search_indexing_section">Wird indiziert</string>
-  <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
+  <string name="mail_settings_content_search_indexing_percentage">%1$s %%</string>
   <string name="mail_settings_content_search_indexing_in_progress">In Bearbeitung</string>
   <string name="mail_settings_content_search_indexing_up_to_date">Alles aktuell</string>
   <string name="mail_settings_content_search_indexing_paused">Pausiert</string>

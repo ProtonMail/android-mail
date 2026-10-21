@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="trackers_blocked_links_cleaned_numbers">已攔截 %s 個追蹤程式，已清理 %s 個連結</string>
+  <string name="trackers_blocked_links_cleaned_numbers">已封鎖 %s 個追蹤程式，清理 %s 個連結</string>
   <string name="trackers_protection">追蹤程式保護：</string>
   <string name="show_details">顯示詳細資料</string>
   <string name="trackers_protection_no_trackers_detected">追蹤程式保護：未偵測到追蹤程式</string>
@@ -27,7 +27,7 @@
   <string name="original">原始</string>
   <string name="cleaned">已清理</string>
   <plurals name="number_of_blocked_trackers">
-    <item quantity="other">已攔截 %s 個追蹤程式</item>
+    <item quantity="other">Zablokowano %s elementu śledzącego</item>
   </plurals>
   <plurals name="number_of_cleaned_links">
     <item quantity="other">已清理 %s 個連結</item>

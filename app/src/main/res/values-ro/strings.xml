@@ -37,10 +37,10 @@
   <string name="mailbox_message_sending_offline">Deconectat: mesajul va fi trimis ulterior.</string>
   <string name="mailbox_message_sending_success">Mesaj trimis</string>
   <string name="mailbox_message_sending_error_action">Accesați ciorna</string>
-  <string name="notification_switched_account">S-a comutat la contul %s</string>
+  <string name="notification_switched_account">S-a schimbat la contul %s</string>
   <string name="mailbox_message_scheduling">Se programează mesajul…</string>
   <string name="mailbox_message_scheduling_offline">Deconectat: mesaj pus în lista pentru programare</string>
-  <string name="mailbox_message_scheduled_for_sending_success">Acest mesaj va fi trimis la data de %1$s</string>
+  <string name="mailbox_message_scheduled_for_sending_success">Acest mesaj va fi trimis %1$s</string>
   <string name="launcher_alert_duplicate_account_description">Utilizatorul este deja conectat</string>
   <string name="home_content_search_error_snackbar">Căutarea în conținutul mesajelor nu a putut fi pregătită.</string>
   <string name="home_content_search_error_snackbar_action">Revizuire</string>

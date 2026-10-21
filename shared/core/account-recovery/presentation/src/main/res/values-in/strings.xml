@@ -20,7 +20,7 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Pengaturan ulang kata sandi diminta</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="other">Pengaturan ulang kata sandi telah diminta untuk <b>%1$s</b>. Anda dapat mengubah kata sandi Anda dalam %2$d jam.\n\nApabila Anda tidak mengajukan hal ini, batalkan permintaan ini sekarang juga.</item>
+    <item quantity="other">Pengaturan ulang kata sandi telah diminta untuk <b>%1$s</b>. Anda dapat mengubah kata sandi Anda dalam %2$d jam.\n\nApabila Anda tidak merasa meminta hal ini, batalkan permintaan ini sekarang juga.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Batalkan pengaturan ulang kata sandi?</string>
@@ -34,11 +34,11 @@
   <string name="account_recovery_cancelled_subtitle">Apabila Anda tidak pernah meminta untuk mengubah kata sandi Anda, akun Anda dapat berada dalam bahaya.\n\nAmankan akun Anda dengan mengubah kata sandi Anda.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Pengaturan ulang kata sandi tersedia</string>
-  <string name="account_recovery_password_started_subtitle">Untuk mengatur ulang kata sandi Anda, kembalilah ke perangkat, aplikasi, atau browser yang Anda gunakan untuk meminta pengaturan ulang kata sandi ini.\n\nAnda harus melakukan hal ini sebelum %s.\n\nApabila Anda tidak meminta untuk mengatur ulang kata sandi Anda, batalkan permintaan ini sekarang juga.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Anda kini dapat mengatur ulang kata sandi Anda.\n\nAnda harus melakukan hal ini sebelum %s.\n\nApabila Anda tidak meminta untuk mengatur ulang kata sandi Anda, batalkan permintaan ini sekarang juga.</string>
+  <string name="account_recovery_password_started_subtitle">Untuk mengatur ulang kata sandi Anda, silakan kembali ke perangkat, aplikasi atau peramban yang Anda gunakan untuk meminta pengaturan kata sandi.\n\n Anda harus melakukan ini sebelum %s.\n\nApabila Anda tidak meminta untuk mengatur ulang kata sandi, batalkan permintaan ini sekarang juga.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Anda kini dapat mengatur ulang kata sandi Anda.\n\nAnda harus melakukan hal ini sebelum %s.\n\nApabila Anda tidak meminta untuk mengatur ulang kata sandi, batalkan permintaan ini sekarang juga.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Pengaturan ulang kata sandi kedaluwarsa</string>
-  <string name="account_recovery_window_ended_subtitle">Anda akan perlu meminta pengaturan ulang kata sandi baru untuk %s.</string>
+  <string name="account_recovery_window_ended_subtitle">Anda akan perlu untuk meminta pengaturan ulang kata sandi baru untuk %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Batalkan permintaan</string>
   <string name="account_recovery_dismiss">Mengerti</string>
@@ -48,14 +48,14 @@
   <string name="account_recovery_info_grace_subtitle">Anda dapat mengatur ulang kata sandi Anda dalam %1s.</string>
   <string name="account_recovery_info_grace_description">Untuk memastikan bahwa permintaan pengaturan ulang kata sandi ini benar-benar berasal dari Anda, kami menunggu 72 jam sebelum menyetujui permintaan.\n\nApabila Anda tidak meminta untuk mengatur ulang kata sandi Anda, batalkan permintaan ini sekarang juga.</string>
   <string name="account_recovery_info_cancelled_title">Pengaturan ulang kata sandi dibatalkan</string>
-  <string name="account_recovery_info_cancelled_subtitle">Permintaan pengaturan ulang kata sandi telah diajukan pada %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Pengaturan ulang kata sandi telah diminta pada %1s.</string>
   <string name="account_recovery_info_cancelled_description">Apabila Anda tidak mengenali permintaan ini, ada kemungkinan orang lain memiliki akses ke Akun Proton Anda. \n\nAmankan akun Anda sekarang juga.</string>
   <string name="account_recovery_info_insecure_title">Pengaturan ulang kata sandi tersedia</string>
   <string name="account_recovery_info_insecure_subtitle">Anda kini dapat mengatur ulang kata sandi Anda. Pengaturan ulang kata sandi tersedia hingga %1s.</string>
   <string name="account_recovery_info_insecure_description">Tidak mengajukan permintaan ini?\n\nApabila Anda tidak meminta untuk mengatur ulang kata sandi Anda, batalkan permintaan ini sekarang juga.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Atur Ulang Kata Sandi?</string>
-  <string name="account_recovery_reset_dialog_text">"Demi alasan keamanan, Anda harus menunggu 72 jam sebelum Anda dapat mengubah kata sandi untuk %1s.\n\nApabila Anda telah mengatur metode pemulihan, cobalah untuk melangsungkan proses pemulihan akun. Proses ini akan memungkinkan Anda untuk mengubah kata sandi Anda dengan segera."</string>
+  <string name="account_recovery_reset_dialog_text">"Demi keamanan, Anda harus menunggu 72 jam sebelum mengubah sandi %1s.\n\nJika Anda pernah membuat pengaturan metode pemulihan, silakan dicoba. Mungkin Anda bisa langsung mengubah sandi akun Anda."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Minta pengaturan ulang kata sandi</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Gunakan metode pemulihan</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Ubah kata sandi Anda pada browser Anda tanpa harus menunggu periode keamanan.</string>

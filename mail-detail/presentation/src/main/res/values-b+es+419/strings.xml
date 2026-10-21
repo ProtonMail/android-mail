@@ -32,8 +32,8 @@
   <string name="bcc">Cco:</string>
   <string name="date">Fecha:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Archivo adjunto</item>
-    <item quantity="other">%d Archivos adjuntos</item>
+    <item quantity="one">%d archivo adjunto</item>
+    <item quantity="other">%d archivos adjuntos</item>
   </plurals>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Borrador)</string>
@@ -141,7 +141,7 @@
   <string name="rsvp_widget_you">Usted</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d Participante</item>
-    <item quantity="other">%1$d Participantes</item>
+    <item quantity="other">%1$d participantes</item>
   </plurals>
   <string name="rsvp_widget_happening_now">En curso <b>ahora</b></string>
   <string name="rsvp_widget_event_ended">Evento <b>finalizado</b></string>

@@ -29,7 +29,7 @@
   <string name="action_reply_all">Responder a todos</string>
   <string name="action_forward">Encaminhar</string>
   <string name="action_reply_description">Responder</string>
-  <string name="action_reply_to_description">Responder para %s</string>
+  <string name="action_reply_to_description">Responder a %s</string>
   <string name="action_reply_all_description">Responder a todos</string>
   <string name="action_forward_description">Encaminhar</string>
   <string name="action_mark_read_description">Marcar como lido</string>

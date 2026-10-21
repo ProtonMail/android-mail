@@ -48,7 +48,7 @@
   <string name="mail_settings_pin_insertion_error_no_match">Οι κωδικοί PIN δεν ταιριάζουν.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_threshold">
     <item quantity="one">%s εναπομείνουσα προσπάθεια πριν την αποσύνδεση.</item>
-    <item quantity="other">%s εναπομείναντες προσπάθειες πριν την αποσύνδεση.</item>
+    <item quantity="other">%s εναπομείνουσες προσπάθειες πριν την αποσύνδεση.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Παρουσιάστηκε σφάλμα κατά την επαλήθευση του κωδικού PIN.</string>
   <string name="mail_settings_pin_insertion_error_too_short">Το PIN πρέπει να είναι τουλάχιστον 4 ψηφία</string>

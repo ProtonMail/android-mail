@@ -46,7 +46,7 @@
   <string name="error_star_operation_failed">Pridanie hviezdičky zlyhalo. Skúste to znova, prosím.</string>
   <string name="error_unstar_operation_failed">Odobratie hviezdičky zlyhalo. Skúste to znova, prosím.</string>
   <string name="error_move_to_trash_failed">Presun do koša zlyhal. Skúste to znova.</string>
-  <string name="message_moved_to">Správa presunutá do %s</string>
+  <string name="message_moved_to">Správa bola presunutá do %s</string>
   <string name="message_moved_to_archive">Správa bola presunutá do archívu</string>
   <string name="error_move_to_archive_failed">Presun do archívu zlyhal. Skúste to znova, prosím.</string>
   <string name="error_move_to_spam_failed">Presun do spamu zlyhal. Skúste to znova, prosím.</string>
@@ -54,7 +54,7 @@
   <string name="error_move_message_failed">Presun správy zlyhal. Skúste to znova.</string>
   <string name="conversation_moved_to_trash">Konverzácia bola presunutá do koša</string>
   <string name="conversation_moved_to_inbox">Konverzácia presunutá do Doručenej pošty</string>
-  <string name="conversation_moved_to_selected_destination">Konverzácia presunutá do %1$s</string>
+  <string name="conversation_moved_to_selected_destination">Konverzácia bola presunutá do %1$s</string>
   <string name="conversation_moved_to_spam">Konverzácia bola presunutá do spamu</string>
   <string name="conversation_moved_to_archive">Konverzácia bola presunutá do archívu</string>
   <string name="error_print_message">Správu sa nepodarilo vytlačiť. Skúste znovu, prosím.</string>

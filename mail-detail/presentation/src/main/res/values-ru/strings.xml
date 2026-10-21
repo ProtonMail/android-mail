@@ -23,7 +23,7 @@
     <item quantity="one">%d сообщение</item>
     <item quantity="few">%d сообщения</item>
     <item quantity="many">%d сообщений</item>
-    <item quantity="other">%d сообщения</item>
+    <item quantity="other">%d сообщений</item>
   </plurals>
   <string name="quick_reply_button_content_description">Ответить</string>
   <string name="quick_reply_all_button_content_description">Ответить всем</string>
@@ -37,7 +37,7 @@
     <item quantity="one">%d Вложение</item>
     <item quantity="few">%d Вложения</item>
     <item quantity="many">%d Вложений</item>
-    <item quantity="other">%d Вложения</item>
+    <item quantity="other">%d Вложений</item>
   </plurals>
   <string name="undisclosed_recipients">…</string>
   <string name="collapsed_header_draft">(Черновик)</string>
@@ -79,7 +79,7 @@
   <string name="message_spam_banner_not_spam_button">Не спам</string>
   <string name="message_blocked_sender_banner_text">Этот отправитель был заблокирован в прошлом.</string>
   <string name="message_blocked_sender_button_text">Разблокировать</string>
-  <string name="message_expiration_banner_text">Срок действия сообщения истечет через %1$s</string>
+  <string name="message_expiration_banner_text">Срок действия этого сообщения истечёт через %1$s</string>
   <string name="message_auto_delete_banner_text">Это сообщение будет автоматически удалено через %1$s</string>
   <string name="message_auth_fail_banner_text">Это электронное письмо не прошло проверку подлинности домена. Оно может быть поддельным или ненадлежащим образом переслано!</string>
   <string name="message_auth_fail_banner_button">Подробнее</string>
@@ -145,9 +145,9 @@
   <string name="rsvp_widget_you">Вы</string>
   <plurals name="rsvp_widget_participants">
     <item quantity="one">%1$d участник</item>
-    <item quantity="few">%1$d участника</item>
-    <item quantity="many">%1$d участников</item>
-    <item quantity="other">%1$d участников</item>
+    <item quantity="few">%1$d участн.</item>
+    <item quantity="many">%1$d участн.</item>
+    <item quantity="other">%1$d участн.</item>
   </plurals>
   <string name="rsvp_widget_happening_now">Идёт <b>сейчас</b></string>
   <string name="rsvp_widget_event_ended">Событие <b>завершилось</b></string>

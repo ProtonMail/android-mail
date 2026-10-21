@@ -28,9 +28,9 @@
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">Hozza ki a legtöbbet a Mailből ezzel a korlátozott idejű ajánlattal</string>
   <string name="upselling_mailbox_plus_promo_title">Próbálja ki a Mail Plus szolgáltatást %s áron</string>
-  <string name="upselling_mailbox_plus_promo_cta">1 hónap %s áron</string>
+  <string name="upselling_mailbox_plus_promo_cta">Szerezzen 1 hónapot %s áron</string>
   <string name="upselling_mailbox_plus_promo_skip">Ajánlat kihagyása</string>
-  <string name="upselling_mailbox_plus_promo_renewal">%s az 1. hónapban, majd havonta %s</string>
+  <string name="upselling_mailbox_plus_promo_renewal">Az 1. hónapban %s, utána havonta %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Váltson Proton Unlimited csomagra</string>
   <string name="upselling_do_not_show_again">Do not show this offer again</string>
@@ -39,15 +39,15 @@
   <string name="upselling_pu_whats_included">Mit tartalmaz?</string>
   <string name="upselling_pu_cta">Szerezze meg a Proton Unlimitedet</string>
   <!-- Upselling: Monthly to Yearly -->
-  <string name="upselling_monthly_to_yearly_row_title">Pay annually and save %s</string>
+  <string name="upselling_monthly_to_yearly_row_title">Éves fizetéssel %s kedvezmény</string>
   <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
-  <string name="upselling_monthly_to_yearly_sidebar_title">Save %s</string>
+  <string name="upselling_monthly_to_yearly_sidebar_title">%s kedvezmény</string>
   <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
-  <string name="upselling_monthly_to_yearly_subtitle">Lock-in a discount on %s</string>
+  <string name="upselling_monthly_to_yearly_subtitle">Biztosítsa be a kedvezményt a(z) %s csomagra</string>
   <string name="upselling_monthly_to_yearly_one_year">1 year</string>
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
-  <string name="upselling_monthly_to_yearly_cta">Change and save %s</string>
+  <string name="upselling_monthly_to_yearly_cta">Váltson, és takarítson meg %s-t</string>
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Bővítse tovább online adatvédelmét a Proton Unlimiteddel</string>
@@ -127,12 +127,12 @@
   <string name="upselling_onboarding_choose_plan_monthly">Havonta</string>
   <string name="upselling_onboarding_choose_plan_yearly">Évente</string>
   <string name="upselling_onboarding_best_value">Legjobb ár-érték arány</string>
-  <string name="upselling_onboarding_yearly_savings">Fizessen évente, és takarítson meg %s-ot</string>
+  <string name="upselling_onboarding_yearly_savings">Éves fizetéssel %s kedvezmény</string>
   <string name="upselling_onboarding_entitlements_show_more">Több megjelenítése</string>
   <string name="upselling_onboarding_entitlements_show_less">Kevesebb megjelenítése</string>
   <string name="upselling_onboarding_button_continue_free">Folytatás az ingyenes csomaggal</string>
-  <string name="upselling_onboarding_autorenew">Számlázva: %s minden %s</string>
-  <string name="upselling_onboarding_autorenew_welcome_offer">Üdvözlő ajánlat. Automatikusan megújul %s áron minden %s</string>
+  <string name="upselling_onboarding_autorenew">Számlázás: %s / %s</string>
+  <string name="upselling_onboarding_autorenew_welcome_offer">Üdvözlő ajánlat. Automatikusan megújul: %s / %s</string>
   <string name="upselling_onboarding_autorenew_month">hónap</string>
   <string name="upselling_onboarding_autorenew_year">12 hónap</string>
   <string name="upselling_onboarding_free_entitlement_storage">1 GB tárhely</string>
@@ -140,14 +140,14 @@
   <!-- Other UI Items -->
   <string name="upselling_unlimited_description_override">Több tárhely és prémium funkciók feloldásához.</string>
   <string name="upselling_auto_renew_text">Lemondás nélkül automatikusan megújul ugyanazon az áron és feltételek mellett</string>
-  <string name="upselling_auto_renew_text_promo">Üdvözlő ajánlat. Automatikusan megújul %s%s áron, hacsak nem mondja le</string>
-  <string name="upselling_auto_renew_text_bfriday">A kedvezmények a normál havi díjszabáson alapulnak. Automatikusan megújul %s%s áron a lemondásig.</string>
-  <string name="upselling_auto_renew_text_promo_short">Üdvözlő ajánlat. Automatikusan megújul %s%s áron.</string>
-  <string name="upselling_auto_renew_text_standard">Automatikusan megújul %s%s áron, kivéve ha lemondja.</string>
+  <string name="upselling_auto_renew_text_promo">Üdvözlő ajánlat. Automatikusan megújul %s%s, amíg le nem mondja</string>
+  <string name="upselling_auto_renew_text_bfriday">A kedvezmények a normál havi árakon alapulnak. A szolgáltatás %s%s áron automatikusan megújul, amíg le nem mondják.</string>
+  <string name="upselling_auto_renew_text_promo_short">Üdvözlő ajánlat. Automatikusan megújul %s%s.</string>
+  <string name="upselling_auto_renew_text_standard">Automatikusan megújul %s%s, amíg le nem mondja.</string>
   <string name="upselling_social_proof_reviews">2000+ ÉRTÉKELÉS</string>
   <string name="upselling_description_social_proof">Frissítsen arra az élményre, amelyért előfizetők milliói rajonganak.</string>
   <string name="upselling_month">/hó</string>
-  <string name="upselling_month_only">csak %s/hó</string>
+  <string name="upselling_month_only">csak %s /hó</string>
   <string name="upselling_year">/év</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Hiba történt.</string>

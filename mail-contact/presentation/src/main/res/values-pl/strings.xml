@@ -27,9 +27,9 @@
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d członek</item>
-    <item quantity="few">%1$d członków</item>
-    <item quantity="many">%1$d członków</item>
-    <item quantity="other">%1$d członków</item>
+    <item quantity="few">%1$d użytkowników</item>
+    <item quantity="many">%1$d użytkowników</item>
+    <item quantity="other">%1$d użytkowników</item>
   </plurals>
   <string name="search_contacts_description">Szukaj kontaktów</string>
   <string name="contact_search_no_results">Nie znaleziono żadnych wyników.</string>

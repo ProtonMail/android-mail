@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Salasanan nollausta pyydettiin</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">Tilille <b>%1$s</b> on pyydetty salasanan nollausta. Voit vaihtaa salasanasi %2$d tunnin kuluttua.\n\nJos et tehnyt pyyntöä itse, peru se nyt.</item>
-    <item quantity="other">Tilille <b>%1$s</b> on pyydetty salasanan nollausta. Voit vaihtaa salasanasi %2$d tunnin kuluttua.\n\nJos et tehnyt pyyntöä itse, peru se nyt.</item>
+    <item quantity="one">Tilille <b>%1$s</b> on pyydetty salasanan uudelleenasetusta. Voit vaihtaa salasanasi %2$d tunnin kuluttua.\n\nJos et tehnyt pyyntöä itse, peru se nyt.</item>
+    <item quantity="other">Tilille <b>%1$s</b> on pyydetty salasanan uudelleenasetusta. Voit vaihtaa salasanasi %2$d tunnin kuluttua.\n\nJos et tehnyt pyyntöä itse, peru se nyt.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Peruutaanko salasanan nollaus?</string>
@@ -39,7 +39,7 @@
   <string name="account_recovery_password_started_self_initiated_subtitle">Voit nyt nollata salasanasi.\n\nSinun on tehtävä tämä viimeistään %s.\n\nJos et pyytänyt salasanasi nollausta, peru pyyntö nyt.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">Salasanan nollauspyyntö on vanhentunut</string>
-  <string name="account_recovery_window_ended_subtitle">Sinun on pyydettävä tilin %s salasanan nollaamista uudelleen.</string>
+  <string name="account_recovery_window_ended_subtitle">Sinun on pyydettävä tilin %s salasanan uudelleenasetusta uudelleen.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Peru pyyntö</string>
   <string name="account_recovery_dismiss">Selvä</string>
@@ -49,14 +49,14 @@
   <string name="account_recovery_info_grace_subtitle">Voit nollata salasanasi %1s kuluttua.</string>
   <string name="account_recovery_info_grace_description">Odotamme 72 tuntia ennen pyyntöjen hyväksyntää varmistaaksemme juuri sinun pyytäneen salasanasi nollausta.\n\nJos et pyytänyt nollausta, peru pyyntö nyt.</string>
   <string name="account_recovery_info_cancelled_title">Salasanan nollaus peruttiin</string>
-  <string name="account_recovery_info_cancelled_subtitle">Salasanan nollausta pyydettiin tilille %1s.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Salasanan nollauspyyntö tehtiin %1s.</string>
   <string name="account_recovery_info_cancelled_description">Jos et tunnista tätä pyyntöä, se voi tarkoittaa, että jollain muulla on pääsy Proton-tilillesi.\n\nSuojaa tilisi nyt.</string>
   <string name="account_recovery_info_insecure_title">Salasanan nollaus on käytettävissä</string>
   <string name="account_recovery_info_insecure_subtitle">Voit nyt nollata salasanasi. Tämä on tehtävä viimeistään %1s.</string>
   <string name="account_recovery_info_insecure_description">Etkö pyytänyt tätä?\n\nJos et pyytänyt salasanasi nollausta, peru pyyntö nyt.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Nollataanko salasana?</string>
-  <string name="account_recovery_reset_dialog_text">"Turvallisuussyistä sinun täytyy odottaa 72 tuntia, ennen kuin voit vaihtaa salasanan kohteelle %1s.\n\nJos olet määrittänyt palautusmenetelmän, kokeile sen sijaan tilin palauttamista. Näin voit vaihtaa salasanasi heti."</string>
+  <string name="account_recovery_reset_dialog_text">"Turvallisuussyistä sinun on odotettava 72 tuntia, ennen kuin voit vaihtaa salasanan %1s.\n\nJos sinulla on käytössäsi palautustapa, kokeile sen sijaan tilin palautusta. Näin voit vaihtaa salasanasi heti."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Pyydä salasanan nollausta</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Käytä palautustapaa</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Vaihda salasanasi verkkoselaimessasi odottamatta turva-ajan päättymistä.</string>

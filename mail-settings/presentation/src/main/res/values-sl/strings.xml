@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Varnostni ključi</string>
   <string name="mail_settings_change_password">Upravljanje gesel</string>
   <string name="mail_settings_signature">Podpis</string>
-  <string name="mail_settings_storage_quota">%1$d%% od %2$s</string>
+  <string name="mail_settings_storage_quota">%1$d %% od %2$s</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_app_icon">Ikona aplikacije</string>
   <string name="mail_settings_alternative_routing">Alternativno usmerjanje</string>

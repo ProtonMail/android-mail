@@ -36,7 +36,7 @@
   <string name="mail_settings_fido_keys">Hitelesítési kulcsok</string>
   <string name="mail_settings_change_password">Jelszókezelő</string>
   <string name="mail_settings_signature">Aláírás</string>
-  <string name="mail_settings_storage_quota">%1$d%% / %2$s</string>
+  <string name="mail_settings_storage_quota">%2$s %1$d%% része</string>
   <string name="mail_settings_theme">Téma</string>
   <string name="mail_settings_app_icon">Alkalmazásikon</string>
   <string name="mail_settings_alternative_routing">Alternatív útválasztás</string>

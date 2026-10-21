@@ -37,7 +37,7 @@
   <string name="mailbox_message_sending_offline">Offline: zpráva je ve frontě k odeslání</string>
   <string name="mailbox_message_sending_success">Zpráva odeslána</string>
   <string name="mailbox_message_sending_error_action">Přejít na Koncept</string>
-  <string name="notification_switched_account">Přepnuto na účet %s</string>
+  <string name="notification_switched_account">Přepnuto na účet \'%s</string>
   <string name="mailbox_message_scheduling">Plánování zprávy…</string>
   <string name="mailbox_message_scheduling_offline">Offline: zpráva je ve frontě k naplánování</string>
   <string name="mailbox_message_scheduled_for_sending_success">Tato zpráva bude odeslána %1$s</string>

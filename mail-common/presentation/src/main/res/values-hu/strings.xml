@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Lejárt</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d nap</string>
+  <string name="expiration_hours_arg">%d óra</string>
+  <string name="expiration_minutes_arg">%d perc</string>
   <string name="retry">Újra</string>
   <string name="x_error_not_logged_in">Nincs bejelentkezve</string>
   <string name="action_customize_toolbar_description">Eszköztár testreszabása</string>
@@ -29,7 +29,7 @@
   <string name="action_reply_all">Válasz mindenkinek</string>
   <string name="action_forward">Továbbítás</string>
   <string name="action_reply_description">Válasz</string>
-  <string name="action_reply_to_description">Válasz erre: %s</string>
+  <string name="action_reply_to_description">Válasz neki: %s</string>
   <string name="action_reply_all_description">Válasz mindenkinek</string>
   <string name="action_forward_description">Továbbítás</string>
   <string name="action_mark_read_description">Megjelölés olvasottként</string>

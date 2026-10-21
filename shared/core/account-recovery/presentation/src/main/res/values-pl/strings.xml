@@ -23,7 +23,7 @@
     <item quantity="one">Żądanie zresetowania hasła dla konta <b>%1$s</b> zostało wysłane. Hasło możesz zmienić za %2$d godzinę.\n\nJeśli żądanie zmiany hasła nie zostało wysłane przez Ciebie, anuluj je.</item>
     <item quantity="few">Żądanie zresetowania hasła dla konta <b>%1$s</b> zostało wysłane. Hasło możesz zmienić za %2$d godziny.\n\nJeśli żądanie zmiany hasła nie zostało wysłane przez Ciebie, anuluj je.</item>
     <item quantity="many">Żądanie zresetowania hasła dla konta <b>%1$s</b> zostało wysłane. Hasło możesz zmienić za %2$d godzin.\n\nJeśli żądanie zmiany hasła nie zostało wysłane przez Ciebie, anuluj je.</item>
-    <item quantity="other">Żądanie zresetowania hasła dla konta <b>%1$s</b> zostało wysłane. Hasło możesz zmienić za %2$d godziny.\n\nJeśli żądanie zmiany hasła nie zostało wysłane przez Ciebie, anuluj je.</item>
+    <item quantity="other">Żądanie zresetowania hasła dla konta <b>%1$s</b> zostało wysłane. Możesz zmienić hasło w ciągu %2$d godziny.\n\nJeśli żądanie zmiany hasła nie zostało wysłane przez Ciebie, anuluj je.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Anulować resetowanie hasła?</string>

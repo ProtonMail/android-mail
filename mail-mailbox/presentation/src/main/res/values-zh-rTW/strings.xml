@@ -24,7 +24,7 @@
   <string name="filter_unread_button_text">未讀</string>
   <string name="include_spam_trash_text">包含垃圾郵件/垃圾桶</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">已選取 %d</item>
+    <item quantity="other">已選取 %d 個</item>
   </plurals>
   <string name="mailbox_default_recipient">(無收件者)</string>
   <string name="mailbox_default_sender">(無寄件者)</string>
@@ -40,7 +40,7 @@
   <string name="mailbox_is_empty_spam_description">垃圾郵件資料夾是空的</string>
   <string name="mailbox_is_empty_trash_description">本來無一物，何處惹塵埃</string>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">刪除 %d 則往來對話</item>
+    <item quantity="other">刪除 %d 篇對話</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="other">刪除 %d 封訊息</item>
@@ -66,7 +66,7 @@
   <string name="mailbox_action_archive_message">郵件已移至封存</string>
   <string name="mailbox_action_spam_message">郵件已移至垃圾郵件</string>
   <plurals name="mailbox_action_move_conversation">
-    <item quantity="other">對話已移至 %s</item>
+    <item quantity="other">Розмови переміщено до %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
     <item quantity="other">訊息已移至 %s</item>

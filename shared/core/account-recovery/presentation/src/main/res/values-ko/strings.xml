@@ -38,7 +38,7 @@
   <string name="account_recovery_password_started_self_initiated_subtitle">이제 비밀번호를 재설정할 수 있습니다.\n\n%s 이전에 작업을 완료하셔야 합니다.\n\n비밀번호 재설정을 요청하지 않았다면 지금 취소하십시오.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">만료된 비밀번호 재설정입니다.</string>
-  <string name="account_recovery_window_ended_subtitle">%s에 대한 새 비밀번호 재설정 요청이 필요합니다.</string>
+  <string name="account_recovery_window_ended_subtitle">%s 의 새 비밀번호 재설정 요청이 필요합니다.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">요청 취소</string>
   <string name="account_recovery_dismiss">확인</string>
@@ -55,7 +55,7 @@
   <string name="account_recovery_info_insecure_description">이 요청을 하지 않으셨습니까?\n\n그렇다면 지금 바로 취소하십시오.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">비밀번호를 재설정하시겠습니까?</string>
-  <string name="account_recovery_reset_dialog_text">"보안상의 이유로 %1s의 비밀변호 변경이 가능해지기 전까지 72시간을 기다려야 합니다. \n\n복구방법이 설정되어 있다면, 계정 복구를 이용하여 즉시 변경할 수도 있습니다."</string>
+  <string name="account_recovery_reset_dialog_text">"보안상의 이유로 %1s의 비밀변호 변경이 가능해지기 전까지 72시간을 기다리셔야 합니다. \n\n복구방법이 설정되어 있다면, 계정복구를 이용하여 즉시 변경할 수도 있습니다."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">비밀번호 재설정 요청</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">복구 수단 사용하기</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">보안 대기 기간 동안 대기하지 않아도 브라우저에서 비밀번호를 변경 가능합니다.</string>

@@ -20,8 +20,8 @@
   <!-- Grace period - info -->
   <string name="account_recovery_grace_period_info_title">Jelszó-visszaállítás kérés</string>
   <plurals name="account_recovery_grace_period_info_subtitle">
-    <item quantity="one">Jelszó-visszaállítás kérés érkezett <b>%1$s</b> számára. A jelszavát %2$d órán belül megváltoztathatja.\n\nHa nem Ön kezdeményezte ezt a kérést, most törölje.</item>
-    <item quantity="other">Jelszó-visszaállítás kérés érkezett <b>%1$s</b> számára. A jelszavát %2$d órán belül megváltoztathatja.\n\nHa nem Ön kezdeményezte ezt a kérést, most törölje.</item>
+    <item quantity="one">A jelszó visszaállítását kérelmezte a(z) <b>%1$s</b> címhez. A jelszót %2$d órán belül megváltoztathatja.\n\nHa nem ön kérte a visszaállítást, szakítsa meg.</item>
+    <item quantity="other">A jelszó visszaállítását kérelmezte a(z) <b>%1$s</b> címhez. A jelszót %2$d órán belül megváltoztathatja.\n\nHa nem ön kérte a visszaállítást, szakítsa meg.</item>
   </plurals>
   <!-- Grace period - cancellation form -->
   <string name="account_recovery_cancel_title">Jelszó-visszaállítás törlése?</string>
@@ -35,28 +35,28 @@
   <string name="account_recovery_cancelled_subtitle">Ha soha nem kérte a jelszava megváltoztatását, a fiókja veszélyben lehet.\n\nBiztosítsa a fiókját a jelszava megváltoztatásával.</string>
   <!-- Password change period -->
   <string name="account_recovery_password_started_title">Jelszó-visszaállítás elérhető</string>
-  <string name="account_recovery_password_started_subtitle">Jelszavának visszaállításához térjen vissza arra az eszközre, alkalmazásra vagy böngészőre, amelyről a jelszó visszaállítását kérte.\n\n Ezt %s előtt kell megtennie.\n\n\nHa nem kérte a jelszó visszaállítását, most törölje a kérést.</string>
-  <string name="account_recovery_password_started_self_initiated_subtitle">Most visszaállíthatja a jelszavát.\n\nEzt %s előtt kell megtennie.\n\nHa nem kérte a jelszó visszaállítását, most törölje a kérést.</string>
+  <string name="account_recovery_password_started_subtitle">Jelszava visszaállításához térjen vissza arra az eszközre és böngészőre, amelyről a jelszó visszaállítását kezdeményezte.\n\nEzt még %s előtt szükséges végrehajtania.\n\nAmennyiben nem Ön kérte a jelszava visszaállítását, szakítsa meg a visszaállítást most.</string>
+  <string name="account_recovery_password_started_self_initiated_subtitle">Most már visszaállíthatja a jelszavát.\n\nEzt %s előtt kell megtennie.\n\nHa nem kérte a jelszó visszaállítását, szakítsa meg a folyamatot most.</string>
   <!-- Recovery window ended -->
   <string name="account_recovery_window_ended_title">A jelszó-visszaállítás lejárt</string>
-  <string name="account_recovery_window_ended_subtitle">Új jelszó-visszaállítást kell kérnie ehhez: %s.</string>
+  <string name="account_recovery_window_ended_subtitle">Újra kell kérelmeznie a jelszó visszaállítást ehhez: %s.</string>
   <!-- Other -->
   <string name="account_recovery_cancel">Kérés visszavonása</string>
   <string name="account_recovery_dismiss">Megvan</string>
   <string name="account_recovery_reset">Jelszó visszaállítása</string>
   <!-- Account Recovery Info -->
   <string name="account_recovery_info_grace_title">Jelszó-visszaállítás kérés</string>
-  <string name="account_recovery_info_grace_subtitle">Visszaállíthatja jelszavát: %1s.</string>
+  <string name="account_recovery_info_grace_subtitle">A jelszavát %1s múlva állíthatja vissza.</string>
   <string name="account_recovery_info_grace_description">Annak biztosítására, hogy valóban Ön próbálja visszaállítani a jelszavát, 72 órát várunk a kérések jóváhagyása előtt.\n\nHa nem Ön kérte a jelszó visszaállítását, törölje ezt a kérést most.</string>
   <string name="account_recovery_info_cancelled_title">Jelszó-visszaállítás megszakítva</string>
-  <string name="account_recovery_info_cancelled_subtitle">Jelszó-visszaállítási kérelem érkezett %1s dátummal.</string>
+  <string name="account_recovery_info_cancelled_subtitle">Jelszó visszaállítási kérelem érkezett ekkor: %1s.</string>
   <string name="account_recovery_info_cancelled_description">Ha nem ismeri fel ezt a kérést, az azt jelentheti, hogy valaki másnak hozzáférése van a Proton fiókjához.\n\nVédje meg a fiókját most.</string>
   <string name="account_recovery_info_insecure_title">Jelszó-visszaállítás elérhető</string>
-  <string name="account_recovery_info_insecure_subtitle">Most visszaállíthatja jelszavát. A jelszó visszaállítás %1s-ig érhető el.</string>
+  <string name="account_recovery_info_insecure_subtitle">Most már visszaállíthatja a jelszavát. Ezt %1s előtt kell megtennie.</string>
   <string name="account_recovery_info_insecure_description">Nem Ön küldte ezt a kérést?\n\nHa nem kérte jelszava visszaállítását, törölje a kérést most.</string>
   <!-- Password Reset Dialog -->
   <string name="account_recovery_reset_dialog_title">Jelszó visszaállítása?</string>
-  <string name="account_recovery_reset_dialog_text">"Biztonsági okokból 72 órát kell várnia, mielőtt megváltoztathatja a(z) %1s fiók jelszavát.\n\nHa van beállított helyreállítási módja, próbálja meg helyette a fiók-helyreállítást. Ez lehetővé teszi, hogy azonnal megváltoztathassa a jelszavát."</string>
+  <string name="account_recovery_reset_dialog_text">"Biztonsági okokból, 72 órát várnia kell mielőtt a megváltoztathatja a jelszavát: %1s.\n\nHa van helyreállítási módszere beállítva, használja inkább a fiók helyreállítást. Azzal azonnal megadhat egy új jelszót."</string>
   <string name="account_recovery_reset_dialog_action_request_reset">Jelszó-visszaállítás kérése</string>
   <string name="account_recovery_reset_dialog_action_use_recovery">Helyreállítási módszer használata</string>
   <string name="account_recovery_reset_dialog_action_use_recovery_hint">Változtassa meg a jelszavát a webböngészőjében anélkül, hogy végigvárná a biztonsági időszakot.</string>

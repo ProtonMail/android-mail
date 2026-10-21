@@ -40,7 +40,7 @@
   <string name="notification_switched_account">Overgeschakeld naar account %s</string>
   <string name="mailbox_message_scheduling">Bericht plannen…</string>
   <string name="mailbox_message_scheduling_offline">Offline: bericht staat in de wachtrij voor planning</string>
-  <string name="mailbox_message_scheduled_for_sending_success">Dit bericht zal worden verzonden op %1$s om</string>
+  <string name="mailbox_message_scheduled_for_sending_success">Dit bericht zal worden verzonden op %1$s</string>
   <string name="launcher_alert_duplicate_account_description">De gebruiker is al ingelogd.</string>
   <string name="home_content_search_error_snackbar">Zoeken naar e-mailinhoud kan niet worden voorbereid.</string>
   <string name="home_content_search_error_snackbar_action">Controleer</string>
