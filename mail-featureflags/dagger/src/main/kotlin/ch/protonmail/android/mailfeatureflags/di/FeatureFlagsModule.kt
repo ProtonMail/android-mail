@@ -28,7 +28,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRe
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Wave2Enabled
@@ -56,7 +55,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkMod
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
-import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEarlyAccess
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailAutoExpandLastMessageEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailMessageBodyImageCacheEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailMessageWebViewPoolEnabled
@@ -362,15 +361,9 @@ object FeatureFlagsModule {
         factory.create(key = SdkUpgradesReadEnabled.key, false)
 
     @Provides
-    @Singleton
-    @IsContentSearchFeatureEnabled
-    fun provideContentSearchFeatureEnabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = ContentSearchEnabled.key, ContentSearchEnabled.defaultValue)
-
-    @Provides
     @IntoSet
     @Singleton
-    fun provideContentSearchEnabledDef(): FeatureFlagDefinition = ContentSearchEnabled
+    fun provideContentSearchEarlyAccessDef(): FeatureFlagDefinition = ContentSearchEarlyAccess
 
     @Provides
     @IntoSet

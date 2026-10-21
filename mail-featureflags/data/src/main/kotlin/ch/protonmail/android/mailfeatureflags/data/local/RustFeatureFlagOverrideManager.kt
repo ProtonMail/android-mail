@@ -57,8 +57,8 @@ class RustFeatureFlagOverrideManager @Inject constructor(
                     is MailUserSessionSetDebugFeatureFlagOverrideResult.Error -> logError("set", key, result.v1)
                 }
             }
-            // Always mirrored onto the app session: accessors such as content search availability are
-            // only defined there, so while logged in they would otherwise miss the override entirely.
+            // Always mirrored onto the app session. Flag reads go to the app session when no user is
+            // logged in, so an override set while logged in still applies after logout.
             appSession()?.let { appSession ->
                 when (val result = appSession.setDebugFeatureFlagOverride(key, override)) {
                     is MailSessionSetDebugFeatureFlagOverrideResult.Ok -> Unit
