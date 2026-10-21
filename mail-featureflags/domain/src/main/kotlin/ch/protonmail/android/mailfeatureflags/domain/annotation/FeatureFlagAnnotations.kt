@@ -126,10 +126,6 @@ annotation class IsBgProcessingRelaxedBatteryConstraintEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IsContentSearchFeatureEnabled
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class IsSdkUpgradesReadEnabled
 
 @Qualifier

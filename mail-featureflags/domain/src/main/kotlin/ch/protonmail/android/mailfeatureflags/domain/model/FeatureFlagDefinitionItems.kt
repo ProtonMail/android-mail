@@ -242,11 +242,11 @@ data object UpsellPlanExperiment : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object ContentSearchEnabled : FeatureFlagDefinition(
-    key = "MailMobileContentSearch",
-    name = "Enable Content Search",
+data object ContentSearchEarlyAccess : FeatureFlagDefinition(
+    key = "ContentSearchEarlyAccess",
+    name = "Content Search early access",
     category = FeatureFlagCategory.Settings,
-    description = "Shows the new content search entry points",
+    description = "Grants content search access. Only Rust reads it, the app asks Rust instead.",
     defaultValue = false
 )
 
