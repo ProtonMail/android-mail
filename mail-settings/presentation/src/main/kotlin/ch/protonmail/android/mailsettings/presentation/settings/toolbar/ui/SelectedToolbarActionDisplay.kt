@@ -67,9 +67,9 @@ internal fun SelectedToolbarActionDisplay(
             Text(
                 text = model.action.description.string(),
                 color = ProtonTheme.colors.textNorm.modifyAlpha(model.enabled),
-                style = ProtonTheme.typography.bodyLarge
+                style = ProtonTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
             )
-            Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = onRemoveClicked, enabled = model.enabled) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_minus_circle),
