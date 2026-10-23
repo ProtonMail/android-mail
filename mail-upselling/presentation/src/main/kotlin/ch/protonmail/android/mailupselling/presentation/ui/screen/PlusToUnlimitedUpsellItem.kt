@@ -78,7 +78,7 @@ private fun PlusToUnlimitedUpsellItem(
         )
     ) {
         ProtonMainSettingsItem(
-            name = stringResource(id = if (isBlackFriday) R.string.upselling_black_friday_sale else theme.rowTitleRes),
+            name = stringResource(id = if (isBlackFriday) R.string.upselling_black_friday else theme.rowTitleRes),
             hint = {
                 Text(
                     modifier = Modifier.padding(top = ProtonDimens.Spacing.Small),

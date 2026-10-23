@@ -150,5 +150,5 @@
   <string name="upselling_snackbar_error_no_user_id">Ocorreu um erro.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Não foi possível obter subscrições.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_black_friday_sale">Promoção da Black Friday</string>
+  <string name="upselling_black_friday">Black Friday</string>
 </resources>
