@@ -30,9 +30,12 @@ import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
+import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
-import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
+import ch.protonmail.android.mailupselling.presentation.extension.toOfferId
+import ch.protonmail.android.mailupselling.presentation.model.PlusToUnlimitedEntryPointState
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -55,15 +58,24 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
     private val recordUpsellButtonTapped: RecordUpsellButtonTapped
 ) : ViewModel() {
 
-    val theme: StateFlow<UpsellContentTheme?> = observePrimaryUserId()
+    val state: StateFlow<PlusToUnlimitedEntryPointState?> = observePrimaryUserId()
         .filterNotNull()
         .flatMapLatest { userId ->
             observePlusToUnlimitedEligibility(userId)
-                .scan<Either<DataError, Boolean>, Boolean?>(null) { lastKnown, verdict ->
+                .scan<Either<DataError, PlusToUnlimitedOffer>, PlusToUnlimitedOffer?>(
+                    null
+                ) { lastKnown, verdict ->
                     verdict.getOrNull() ?: lastKnown
                 }
-                .map { eligible ->
-                    if (eligible == true) resolveActiveUpsellTheme(userId) else null
+                .map { offer ->
+                    if (offer == null || offer == PlusToUnlimitedOffer.None) {
+                        null
+                    } else {
+                        PlusToUnlimitedEntryPointState(
+                            theme = resolveActiveUpsellTheme(userId),
+                            isBlackFriday = offer == PlusToUnlimitedOffer.BlackFriday
+                        )
+                    }
                 }
         }
         .stateIn(
@@ -72,15 +84,17 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
             initialValue = null
         )
 
-    fun recordUpsellButtonTapped() = viewModelScope.launch {
+    fun recordUpsellButtonTapped(upsellEntryPoint: UpsellEntryPoint) = viewModelScope.launch {
         recordUpsellButtonTapped(
             userId = observePrimaryUserId().filterNotNull().first(),
             generalDimensions = GeneralDimensions(
-                upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
+                upsellEntryPoint = upsellEntryPoint,
                 planBeforeUpgrade = resolvePlanBeforeUpgrade(),
                 modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
                 upsellExperimentFlag = UpsellExperimentFlag(flagName = PlusToUnlimitedUpsellExperiment.key),
-                promoCampaign = theme.value?.telemetryId
+                promoCampaign = state.value?.let {
+                    if (it.isBlackFriday) PlanUpgradeVariant.BlackFriday.Wave1.toOfferId() else it.theme.telemetryId
+                }
             )
         )
     }

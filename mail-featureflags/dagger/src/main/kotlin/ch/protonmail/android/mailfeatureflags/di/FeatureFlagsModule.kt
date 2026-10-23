@@ -39,6 +39,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageWebView
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsEnabledInApp
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsNpsUserTargeted
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsOnboardingUpsellEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPlusToUnlimitedUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPushProcessingWithoutWorkerEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRateOnUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsRegisterDeviceTokenWithWorkerEnabled
@@ -66,8 +67,10 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Wave2Ena
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
-import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Enabled
-import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2025Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.MonthlyToYearlyUpsellExperiment
+import ch.protonmail.android.mailfeatureflags.domain.model.MonthlyToYearlyUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.NpsEnabledInApp
 import ch.protonmail.android.mailfeatureflags.domain.model.NpsUserTargeted
 import ch.protonmail.android.mailfeatureflags.domain.model.OnboardingUpsellingEnabled
@@ -168,13 +171,13 @@ object FeatureFlagsModule {
     @Singleton
     @IsBlackFridayWave1Enabled
     fun provideBlackFridayWave1Enabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = MailBlackFriday2025Enabled.key, false)
+        factory.create(key = MailBlackFriday2026Enabled.key, false)
 
     @Provides
     @Singleton
     @IsBlackFridayWave2Enabled
     fun provideBlackFridayWave2Enabled(factory: BooleanFeatureFlagFactory) =
-        factory.create(key = MailBlackFriday2025Wave2Enabled.key, false)
+        factory.create(key = MailBlackFriday2026Wave2Enabled.key, false)
 
     @Provides
     @Singleton
@@ -211,6 +214,12 @@ object FeatureFlagsModule {
     @IsFallPromo2026Wave2Enabled
     fun provideFallPromo2026Wave2Enabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = FallPromo2026Wave2Enabled.key, false)
+
+    @Provides
+    @Singleton
+    @IsPlusToUnlimitedUpsellEnabled
+    fun providePlusToUnlimitedUpsellEnabled(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = PlusToUnlimitedUpsellExperiment.key, false)
 
     @Provides
     @Singleton
@@ -390,4 +399,14 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun providePlusToUnlimitedOptOutDef(): FeatureFlagDefinition = PlusToUnlimitedUpsellOptOut
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideMonthlyToYearlyExperimentDef(): FeatureFlagDefinition = MonthlyToYearlyUpsellExperiment
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideMonthlyToYearlyOptOutDef(): FeatureFlagDefinition = MonthlyToYearlyUpsellOptOut
 }

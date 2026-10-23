@@ -133,4 +133,17 @@ internal class PlanUpgradeIconUiMapperTest {
         // Then
         assertEquals(PlanUpgradeIconUiModel(theme.headerDrawable), actual)
     }
+
+    @Test
+    fun `should map to the black friday background when a theme is given for a black friday variant`() {
+        // When
+        val actual = mapper.toUiModel(
+            upsellingEntryPoint = UpsellingEntryPoint.Feature.PlusUnlimited,
+            variant = PlanUpgradeVariant.BlackFriday.Wave1,
+            theme = UpsellContentTheme.Drive
+        )
+
+        // Then
+        assertEquals(PlanUpgradeIconUiModel(R.drawable.black_friday_bg), actual)
+    }
 }

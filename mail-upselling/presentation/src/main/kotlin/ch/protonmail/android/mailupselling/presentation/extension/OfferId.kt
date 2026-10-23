@@ -50,8 +50,8 @@ internal fun UpsellingVisibility.toOfferId(): String? = when (this) {
 }
 
 private const val INTRO_PRICE = "intro_price"
-private const val BLACK_FRIDAY_WAVE1 = "black_friday_wave1"
-private const val BLACK_FRIDAY_WAVE2 = "black_friday_wave2"
+private const val BLACK_FRIDAY_WAVE1 = "bf26_wave1"
+private const val BLACK_FRIDAY_WAVE2 = "bf26_wave2"
 private const val SPRING_WAVE1 = "spring26_wave1"
 private const val SPRING_WAVE2 = "spring26_wave2"
 private const val SUMMER_WAVE1 = "summer26_wave1"

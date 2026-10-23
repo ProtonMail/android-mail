@@ -41,6 +41,7 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.viewmodel.hiltViewModelOrNull
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimitedUpsellViewModel
@@ -48,13 +49,15 @@ import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimite
 @Composable
 fun PlusToUnlimitedUpsellItem(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val viewModel = hiltViewModelOrNull<PlusToUnlimitedUpsellViewModel>() ?: return
-    val theme by viewModel.theme.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val entryPoint = state ?: return
 
     PlusToUnlimitedUpsellItem(
-        theme = theme ?: return,
+        theme = entryPoint.theme,
+        isBlackFriday = entryPoint.isBlackFriday,
         modifier = modifier,
         onClick = {
-            viewModel.recordUpsellButtonTapped()
+            viewModel.recordUpsellButtonTapped(UpsellEntryPoint.NAVBAR_UPSELL)
             onClick()
         }
     )
@@ -63,6 +66,7 @@ fun PlusToUnlimitedUpsellItem(modifier: Modifier = Modifier, onClick: () -> Unit
 @Composable
 private fun PlusToUnlimitedUpsellItem(
     theme: UpsellContentTheme,
+    isBlackFriday: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -75,7 +79,7 @@ private fun PlusToUnlimitedUpsellItem(
         )
     ) {
         ProtonMainSettingsItem(
-            name = stringResource(id = theme.rowTitleRes),
+            name = stringResource(id = if (isBlackFriday) R.string.upselling_black_friday else theme.rowTitleRes),
             hint = {
                 Text(
                     modifier = Modifier.padding(top = ProtonDimens.Spacing.Small),
@@ -87,7 +91,13 @@ private fun PlusToUnlimitedUpsellItem(
             icon = {
                 Image(
                     modifier = Modifier.size(ProtonDimens.IconSize.ExtraLarge),
-                    painter = painterResource(id = R.drawable.illustration_pu_settings_item),
+                    painter = painterResource(
+                        id = if (isBlackFriday) {
+                            R.drawable.ic_upselling_black_friday
+                        } else {
+                            R.drawable.illustration_pu_settings_item
+                        }
+                    ),
                     contentDescription = null
                 )
             },
@@ -110,6 +120,21 @@ private fun PlusToUnlimitedUpsellItemPreview(
     ProtonInvertedTheme {
         PlusToUnlimitedUpsellItem(
             theme = theme,
+            isBlackFriday = false,
+            modifier = Modifier.padding(ProtonDimens.Spacing.Large),
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Plus to Unlimited upsell item - Black Friday", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "Plus to Unlimited upsell item - Black Friday dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun PlusToUnlimitedItemBlackFridayPreview() {
+    ProtonInvertedTheme {
+        PlusToUnlimitedUpsellItem(
+            theme = UpsellContentTheme.Drive,
+            isBlackFriday = true,
             modifier = Modifier.padding(ProtonDimens.Spacing.Large),
             onClick = {}
         )

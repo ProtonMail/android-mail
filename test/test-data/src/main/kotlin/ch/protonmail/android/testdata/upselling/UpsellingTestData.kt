@@ -133,7 +133,7 @@ object UpsellingTestData {
             ),
             offer = ProductOffer(
                 isBaseOffer = false,
-                tags = ProductOfferTags(setOf("introductory-price", "bf-promo")),
+                tags = ProductOfferTags(setOf("introductory-price", "bf26")),
                 token = offerToken,
                 current = ProductOfferPrice(
                     productId = "productId",
@@ -197,7 +197,7 @@ object UpsellingTestData {
             ),
             offer = ProductOffer(
                 isBaseOffer = false,
-                tags = ProductOfferTags(setOf("bf-promo")),
+                tags = ProductOfferTags(setOf("bf26")),
                 token = offerToken,
                 current = ProductOfferPrice(
                     productId = "productId",
@@ -312,6 +312,14 @@ object UpsellingTestData {
                     formatted = "EUR 108.00"
                 )
             )
+        )
+
+        val YearlyBFProductDetail = YearlyPromoProductDetail.copy(
+            offer = YearlyPromoProductDetail.offer.copy(tags = ProductOfferTags(setOf("bf26")))
+        )
+
+        val YearlyBFProductOfferList = YearlyProductOfferList.copy(
+            offers = listOf(YearlyProductOfferDetail.offer, YearlyBFProductDetail.offer)
         )
     }
 
@@ -482,6 +490,42 @@ object UpsellingTestData {
                 starred = false
             ),
             offers = listOf(YearlyProductDetail.offer)
+        )
+
+        val YearlyBFProductDetail = ProductOfferDetail(
+            metadata = bundleMetadata,
+            header = ProductDetailHeader(
+                title = "Proton Unlimited",
+                description = "Description",
+                priceText = "EUR 54.00",
+                cycleText = "/year",
+                starred = false
+            ),
+            offer = ProductOffer(
+                isBaseOffer = false,
+                tags = ProductOfferTags(setOf("bf26")),
+                token = offerToken,
+                current = ProductOfferPrice(
+                    productId = "productId",
+                    customerId = "customerId",
+                    cycle = 12,
+                    amount = 54 * 1000 * 1000,
+                    currency = "EUR",
+                    formatted = "EUR 54.00"
+                ),
+                renew = ProductOfferPrice(
+                    productId = "productId",
+                    customerId = "customerId",
+                    cycle = 12,
+                    amount = 108 * 1000 * 1000,
+                    currency = "EUR",
+                    formatted = "EUR 108.00"
+                )
+            )
+        )
+
+        val YearlyBFProductOfferList = YearlyProductOfferList.copy(
+            offers = listOf(YearlyProductDetail.offer, YearlyBFProductDetail.offer)
         )
     }
 }

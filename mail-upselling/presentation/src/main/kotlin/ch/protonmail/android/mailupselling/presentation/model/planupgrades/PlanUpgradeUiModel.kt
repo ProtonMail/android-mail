@@ -39,7 +39,7 @@ sealed interface PlanUpgradeVariant {
     }
 
     sealed interface BlackFriday : PlanUpgradeVariant {
-        data object Wave1 : BlackFriday
+        data object Wave1 : BlackFriday, UnlimitedPlanVariant
         data object Wave2 : BlackFriday
     }
 

@@ -21,15 +21,24 @@ package ch.protonmail.android.mailupselling.domain.usecase
 import arrow.core.Either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPlusToUnlimitedUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
+import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import me.proton.android.core.payment.domain.model.ProductOfferList
+import me.proton.android.core.payment.domain.model.filterForTags
 import me.proton.android.core.payment.domain.usecase.GetCurrentSubscriptions
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
@@ -37,32 +46,74 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ObservePlusToUnlimitedEligibility @Inject constructor(
+    private val observeUser: ObserveUser,
     private val upsellEligibilityRepository: UpsellEligibilityRepository,
     private val availableUpgradesCache: AvailableUpgradesCache,
     private val getCurrentSubscriptions: GetCurrentSubscriptions,
+    private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
+    @IsPlusToUnlimitedUpsellEnabled private val regularUpsellEnabled: FeatureFlag<Boolean>,
     @IsSdkUpgradesReadEnabled private val sdkUpgradesReadEnabled: FeatureFlag<Boolean>,
     @IsSdkUpgradesPurchaseEnabled private val sdkUpgradesPurchaseEnabled: FeatureFlag<Boolean>
 ) {
 
-    operator fun invoke(userId: UserId): Flow<Either<DataError, Boolean>> = flow {
+    operator fun invoke(userId: UserId): Flow<Either<DataError, PlusToUnlimitedOffer>> = observeUser(userId)
+        .map { it.getOrNull()?.subscribed }
+        .distinctUntilChanged()
+        .flatMapLatest { observeOffer(userId) }
+
+    private fun observeOffer(userId: UserId): Flow<Either<DataError, PlusToUnlimitedOffer>> = flow {
         if (!sdkUpgradesReadEnabled.get() || !sdkUpgradesPurchaseEnabled.get()) {
             Timber.d("upsell: Payments SDK flags disabled, not eligible for Plus to Unlimited")
-            emit(false.right())
+            emit(PlusToUnlimitedOffer.None.right())
             return@flow
         }
 
-        val eligible = upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId)
-        if (eligible.getOrNull() != true) {
-            emit(eligible)
+        val eligibility = upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId)
+        val rustOffer = eligibility.getOrNull()
+        if (rustOffer == null || rustOffer == PlusToUnlimitedOffer.None) {
+            emit(eligibility)
             return@flow
         }
+
+        val blackFridayBlocked = rustOffer == PlusToUnlimitedOffer.BlackFriday &&
+            !isEligibleForBlackFridayPromotion(userId)
+        if (blackFridayBlocked && !canFallBackToRegular()) {
+            emit(PlusToUnlimitedOffer.None.right())
+            return@flow
+        }
+        val offer = if (blackFridayBlocked) PlusToUnlimitedOffer.Regular else rustOffer
 
         emitAll(
             availableUpgradesCache.observe(userId).map { upgrades ->
-                val unlimitedAvailable = upgrades.any { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
-                (unlimitedAvailable && !isSubscribedToUnlimited()).right()
+                val unlimitedAvailable = upgrades.hasUnlimitedOffer(offer)
+                if (unlimitedAvailable && !isSubscribedToUnlimited()) {
+                    offer.right()
+                } else {
+                    PlusToUnlimitedOffer.None.right()
+                }
             }
         )
+    }
+
+    private fun List<ProductOfferList>.hasUnlimitedOffer(offer: PlusToUnlimitedOffer): Boolean {
+        val unlimitedOffers = filter { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId }
+        return if (offer == PlusToUnlimitedOffer.BlackFriday) {
+            unlimitedOffers.filterForTags(
+                primaryTag = PlanUpgradeSupportedTags.BlackFriday.value,
+                fallbackToBaseOffer = false
+            ).isNotEmpty()
+        } else {
+            unlimitedOffers.isNotEmpty()
+        }
+    }
+
+    private suspend fun canFallBackToRegular(): Boolean = regularUpsellEnabled.get() && hasYearlySubscription()
+
+    private suspend fun hasYearlySubscription(): Boolean = runCatching {
+        getCurrentSubscriptions().any { it.price?.cycle == PlanUpgradeCycle.Yearly.months }
+    }.getOrElse {
+        Timber.d(it, "upsell: could not read the current subscriptions")
+        false
     }
 
     private suspend fun isSubscribedToUnlimited(): Boolean = runCatching {

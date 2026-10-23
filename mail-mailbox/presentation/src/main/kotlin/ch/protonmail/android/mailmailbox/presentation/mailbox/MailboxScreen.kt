@@ -166,6 +166,7 @@ import ch.protonmail.android.mailsnooze.presentation.SnoozeBottomSheet
 import ch.protonmail.android.mailsnooze.presentation.SnoozeBottomSheetScreen
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.ui.screen.MonthlyToYearlyUpsellItem
 import ch.protonmail.android.mailupselling.presentation.ui.screen.PlusToUnlimitedUpsellItem
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
@@ -405,6 +406,9 @@ fun MailboxScreen(
                                     UpsellingVisibility.Normal.Unlimited
                                 )
                             }
+                        })
+                        MonthlyToYearlyUpsellItem(onClick = {
+                            dismissBottomSheet { actions.onNavigateToMonthlyToYearlyUpsell() }
                         })
                     }
                 )
@@ -1247,6 +1251,7 @@ object MailboxScreen {
         val onNavigateToContentSearch: () -> Unit,
         val onAccountAvatarClicked: () -> Unit,
         val onNavigateToUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
+        val onNavigateToMonthlyToYearlyUpsell: () -> Unit,
         val onClearAll: () -> Unit,
         val onClearAllConfirmed: () -> Unit,
         val onClearAllDismissed: () -> Unit,
@@ -1313,6 +1318,7 @@ object MailboxScreen {
                 onClearAllConfirmed = {},
                 onClearAllDismissed = {},
                 onNavigateToUpselling = { _, _ -> },
+                onNavigateToMonthlyToYearlyUpsell = {},
                 onSnooze = {},
                 onCustomizeToolbar = {},
                 validateUserSession = {},

@@ -236,7 +236,7 @@ internal class UpsellingViewModelTest {
         }
 
         // Then
-        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.OfferReceived("black_friday_wave1")) }
+        coVerify(exactly = 1) { appEventBroadcaster.emit(AppEvent.OfferReceived("bf26_wave1")) }
     }
 
     @Test

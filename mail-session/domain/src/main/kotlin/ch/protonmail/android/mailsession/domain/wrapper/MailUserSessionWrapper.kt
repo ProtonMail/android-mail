@@ -36,6 +36,7 @@ import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
+import uniffi.mail_uniffi.MailUserSessionMonthlyToYearlyEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionPlusToUnlimitedEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
@@ -117,12 +118,20 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
 
     fun observeEventLoopErrors(callback: EventLoopErrorObserver) = userSession.observeEventLoopErrors(callback)
 
-    suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, Boolean> =
+    suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, PlusToUnlimitedEligibility> =
         when (val result = userSession.plusToUnlimitedEligibility(flag)) {
-            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok ->
-                (result.v1 == PlusToUnlimitedEligibility.REGULAR).right()
+            is MailUserSessionPlusToUnlimitedEligibilityResult.Ok -> result.v1.right()
             is MailUserSessionPlusToUnlimitedEligibilityResult.Error -> {
                 Timber.e("MailUserSession Plus to Unlimited eligibility:: ${result.v1}")
+                result.v1.toDataError().left()
+            }
+        }
+
+    suspend fun monthlyToYearlyEligibility(): Either<DataError, Boolean> =
+        when (val result = userSession.monthlyToYearlyEligibility()) {
+            is MailUserSessionMonthlyToYearlyEligibilityResult.Ok -> result.v1.right()
+            is MailUserSessionMonthlyToYearlyEligibilityResult.Error -> {
+                Timber.e("MailUserSession monthly to yearly eligibility:: ${result.v1}")
                 result.v1.toDataError().left()
             }
         }

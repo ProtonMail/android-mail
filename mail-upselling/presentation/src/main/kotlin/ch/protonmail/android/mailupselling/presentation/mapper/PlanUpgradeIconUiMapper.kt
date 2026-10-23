@@ -33,12 +33,14 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
         theme: UpsellContentTheme?
     ): PlanUpgradeIconUiModel {
 
-        if (theme != null) return PlanUpgradeIconUiModel(theme.headerDrawable)
+        if (theme != null && variant !is PlanUpgradeVariant.BlackFriday) {
+            return PlanUpgradeIconUiModel(theme.headerDrawable)
+        }
 
         val drawableRes = when (variant) {
             PlanUpgradeVariant.SocialProof -> R.drawable.ic_mail_social_proof
-            PlanUpgradeVariant.BlackFriday.Wave1 -> R.drawable.upselling_bf_header_wave1
-            PlanUpgradeVariant.BlackFriday.Wave2 -> R.drawable.upselling_bf_header_wave2
+            PlanUpgradeVariant.BlackFriday.Wave1,
+            PlanUpgradeVariant.BlackFriday.Wave2 -> R.drawable.black_friday_bg
 
             PlanUpgradeVariant.SpringPromo.Wave1,
             PlanUpgradeVariant.SpringPromo.Wave2 -> R.drawable.spring_promo_header

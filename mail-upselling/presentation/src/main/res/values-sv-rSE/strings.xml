@@ -153,4 +153,5 @@
   <string name="upselling_snackbar_error_no_user_id">Ett fel uppstod.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Kan inte hämta prenumerationer.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday">Black Friday</string>
 </resources>

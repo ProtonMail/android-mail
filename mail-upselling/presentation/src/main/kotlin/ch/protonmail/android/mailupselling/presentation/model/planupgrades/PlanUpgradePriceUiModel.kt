@@ -31,7 +31,7 @@ data class PlanUpgradePriceUiModel(
     fun getShorthandFormat(): String {
         val symbol = getCurrencySymbol()
         val isOriginal = currencyCode == symbol
-        val formattedAmount = formatAmount(rawAmount)
+        val formattedAmount = formatAmount(rawAmount, minimumFractionDigits = 0)
 
         // Not all currencies have symbols, fallback to the full currencyCode in that case
         return if (symbol == null || isOriginal) {
@@ -41,11 +41,13 @@ data class PlanUpgradePriceUiModel(
         }
     }
 
-    fun getFullFormat(): String = "$currencyCode ${formatAmount(rawAmount)}"
+    fun getFullFormat(): String = "$currencyCode ${formatAmount(rawAmount, minimumFractionDigits = 0)}"
 
-    private fun formatAmount(amount: BigDecimal): String {
+    fun getFullFormatWithCents(): String = "$currencyCode ${formatAmount(rawAmount, minimumFractionDigits = 2)}"
+
+    private fun formatAmount(amount: BigDecimal, minimumFractionDigits: Int): String {
         val format = NumberFormat.getNumberInstance(Locale.getDefault())
-        format.minimumFractionDigits = 0
+        format.minimumFractionDigits = if (amount.stripTrailingZeros().scale() > 0) 2 else minimumFractionDigits
         format.maximumFractionDigits = 2
 
         return format.format(amount)

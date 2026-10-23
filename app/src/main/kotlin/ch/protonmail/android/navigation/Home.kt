@@ -107,6 +107,7 @@ import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingSte
 import ch.protonmail.android.mailsession.data.mapper.toUserId
 import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.viewmodel.BlackFridayModalUpsellViewModel
@@ -144,6 +145,7 @@ import ch.protonmail.android.navigation.route.addFeatureSpotlight
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMobileSignatureSettings
+import ch.protonmail.android.navigation.route.addMonthlyToYearlyUpsellSheet
 import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addPinDialog
 import ch.protonmail.android.navigation.route.addPrivacySettings
@@ -890,6 +892,7 @@ fun Home(
                         addSetMessagePassword(navController)
                         addSignOutAccountDialog(navController)
                         addRemoveAccountDialog(navController)
+                        addMonthlyToYearlyUpsellSheet(navController)
                         addSettings(navController, activityActions)
                         addAppSettings(navController, showFeatureMissingSnackbar = { showFeatureMissingSnackbar() })
                         // settings
@@ -1030,7 +1033,10 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onContacts = { navController.navigate(Screen.Contacts.route) },
         onReportBug = { navController.navigate(Screen.BugReporting.route) },
         onApplicationLogs = { navController.navigate(Screen.ApplicationLogs.route) },
-        onUpselling = { entryPoint, type -> navController.navigate(Screen.FeatureUpselling(entryPoint, type)) }
+        onUpselling = { entryPoint, type -> navController.navigate(Screen.FeatureUpselling(entryPoint, type)) },
+        onMonthlyToYearlyUpselling = {
+            navController.navigate(Dialog.MonthlyToYearlyUpsell(UpsellEntryPoint.NAVBAR_UPSELL))
+        }
     )
 
 private sealed interface BottomSheetType {

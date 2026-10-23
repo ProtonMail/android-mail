@@ -34,27 +34,33 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.viewmodel.hiltViewModelOrNull
 import ch.protonmail.android.mailsidebar.presentation.R
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimitedUpsellViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SidebarPlusToUnlimitedUpsellRow(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val viewModel = hiltViewModelOrNull<PlusToUnlimitedUpsellViewModel>()
-    val theme = viewModel?.theme?.collectAsStateWithLifecycle()?.value
+    val state = viewModel?.state?.collectAsStateWithLifecycle()?.value
 
     // Set min to 1.dp to allow lazyColumns to render it.
     Box(modifier = modifier.heightIn(min = 1.dp)) {
-        AnimatedVisibility(visible = theme != null, enter = scaleIn(), exit = scaleOut()) {
-            theme?.let {
-                ProtonSidebarItem(
-                    icon = painterResource(R.drawable.ic_infinity),
-                    iconTint = Color.Unspecified,
-                    text = stringResource(it.rowTitleRes),
-                    onClick = {
-                        viewModel?.recordUpsellButtonTapped()
-                        onClick()
-                    }
-                )
+        AnimatedVisibility(visible = state != null, enter = scaleIn(), exit = scaleOut()) {
+            state?.let {
+                val onRowClick = {
+                    viewModel?.recordUpsellButtonTapped(UpsellEntryPoint.NAVBAR_UPSELL)
+                    onClick()
+                }
+                if (it.isBlackFriday) {
+                    SidebarUpsellRowBlackFriday(onButtonClick = onRowClick)
+                } else {
+                    ProtonSidebarItem(
+                        icon = painterResource(R.drawable.ic_infinity),
+                        iconTint = Color.Unspecified,
+                        text = stringResource(it.theme.rowTitleRes),
+                        onClick = onRowClick
+                    )
+                }
             }
         }
     }

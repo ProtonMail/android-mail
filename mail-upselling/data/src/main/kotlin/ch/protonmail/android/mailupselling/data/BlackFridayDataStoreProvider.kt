@@ -35,7 +35,7 @@ class BlackFridayDataStoreProvider @Inject constructor(
 
     internal companion object {
 
-        const val PHASE_1_SEEN_KEY = "firstSeenBlackFridayWave1"
-        const val PHASE_2_SEEN_KEY = "firstSeenBlackFridayWave2"
+        const val PHASE_1_SEEN_KEY = "firstSeenBlackFriday26Wave1"
+        const val PHASE_2_SEEN_KEY = "firstSeenBlackFriday26Wave2"
     }
 }

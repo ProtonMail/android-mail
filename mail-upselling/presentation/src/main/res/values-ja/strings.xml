@@ -153,4 +153,5 @@
   <string name="upselling_snackbar_error_no_user_id">エラーが発生しました。</string>
   <string name="upselling_snackbar_error_no_subscriptions">サブスクリプションを取得できませんでした。</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday">ブラックフライデー</string>
 </resources>
