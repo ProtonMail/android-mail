@@ -24,15 +24,19 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.model.ProductMetadata
 import me.proton.android.core.payment.domain.model.SubscriptionDetail
@@ -46,6 +50,9 @@ import kotlin.test.assertEquals
 internal class ObservePlusToUnlimitedEligibilityTest {
 
     private val userId = UserId("user-id")
+    private val observeUser = mockk<ObserveUser> {
+        every { this@mockk(userId) } returns flowOf(UserTestData.Primary.right())
+    }
     private val upsellEligibilityRepository = mockk<UpsellEligibilityRepository>()
     private val availableUpgradesCache = mockk<AvailableUpgradesCache>()
     private val getCurrentSubscriptions = mockk<GetCurrentSubscriptions>()
@@ -55,6 +62,7 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     private val regularUpsellEnabled = mockk<FeatureFlag<Boolean>>()
 
     private val observePlusToUnlimitedEligibility = ObservePlusToUnlimitedEligibility(
+        observeUser,
         upsellEligibilityRepository,
         availableUpgradesCache,
         getCurrentSubscriptions,
@@ -127,6 +135,25 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         observePlusToUnlimitedEligibility(userId).test {
             assertEquals(DataError.Local.Unknown.left(), awaitItem())
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `re-checks eligibility when the user's subscription changes`() = runTest {
+        val user = MutableStateFlow(UserTestData.paidMailUser)
+        every { observeUser(userId) } returns user.map { it.right() }
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
+        expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
+        expectCurrentSubscriptions(PlanUpgradeIds.PlusPlanId)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+
+            expectCurrentSubscriptions(PlanUpgradeIds.UnlimitedPlanId)
+            user.value = UserTestData.paidUser
+
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
         }
     }
 

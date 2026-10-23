@@ -25,6 +25,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPlusToUnlimite
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
@@ -35,7 +36,9 @@ import me.proton.android.core.payment.domain.model.ProductOfferList
 import me.proton.android.core.payment.domain.model.filterForTags
 import me.proton.android.core.payment.domain.usecase.GetCurrentSubscriptions
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
@@ -43,6 +46,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ObservePlusToUnlimitedEligibility @Inject constructor(
+    private val observeUser: ObserveUser,
     private val upsellEligibilityRepository: UpsellEligibilityRepository,
     private val availableUpgradesCache: AvailableUpgradesCache,
     private val getCurrentSubscriptions: GetCurrentSubscriptions,
@@ -52,7 +56,12 @@ class ObservePlusToUnlimitedEligibility @Inject constructor(
     @IsSdkUpgradesPurchaseEnabled private val sdkUpgradesPurchaseEnabled: FeatureFlag<Boolean>
 ) {
 
-    operator fun invoke(userId: UserId): Flow<Either<DataError, PlusToUnlimitedOffer>> = flow {
+    operator fun invoke(userId: UserId): Flow<Either<DataError, PlusToUnlimitedOffer>> = observeUser(userId)
+        .map { it.getOrNull()?.subscribed }
+        .distinctUntilChanged()
+        .flatMapLatest { observeOffer(userId) }
+
+    private fun observeOffer(userId: UserId): Flow<Either<DataError, PlusToUnlimitedOffer>> = flow {
         if (!sdkUpgradesReadEnabled.get() || !sdkUpgradesPurchaseEnabled.get()) {
             Timber.d("upsell: Payments SDK flags disabled, not eligible for Plus to Unlimited")
             emit(PlusToUnlimitedOffer.None.right())

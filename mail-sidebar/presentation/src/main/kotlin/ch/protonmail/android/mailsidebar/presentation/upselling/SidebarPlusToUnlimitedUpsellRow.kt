@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.viewmodel.hiltViewModelOrNull
 import ch.protonmail.android.mailsidebar.presentation.R
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimitedUpsellViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -47,7 +48,7 @@ fun SidebarPlusToUnlimitedUpsellRow(modifier: Modifier = Modifier, onClick: () -
         AnimatedVisibility(visible = state != null, enter = scaleIn(), exit = scaleOut()) {
             state?.let {
                 val onRowClick = {
-                    viewModel?.recordUpsellButtonTapped()
+                    viewModel?.recordUpsellButtonTapped(UpsellEntryPoint.NAVBAR_UPSELL)
                     onClick()
                 }
                 if (it.isBlackFriday) {

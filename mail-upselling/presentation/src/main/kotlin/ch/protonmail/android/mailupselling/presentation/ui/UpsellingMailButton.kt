@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,12 +50,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.dropUnlessResumed
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.design.compose.viewmodel.hiltViewModelOrNull
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimitedUpsellViewModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingButtonViewModel
 
 @Composable
@@ -140,6 +143,26 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, onClick: (type: Upselling
                     }
                 )
         }
+    }
+}
+
+@Composable
+fun PlusToUnlimitedMailButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val viewModel = hiltViewModelOrNull<PlusToUnlimitedUpsellViewModel>() ?: return
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    AnimatedVisibility(
+        visible = state?.isBlackFriday == true,
+        enter = scaleIn(),
+        exit = scaleOut()
+    ) {
+        UpsellingBlackFridayMailButton(
+            modifier = modifier,
+            onButtonClick = {
+                viewModel.recordUpsellButtonTapped(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO)
+                onClick()
+            }
+        )
     }
 }
 
