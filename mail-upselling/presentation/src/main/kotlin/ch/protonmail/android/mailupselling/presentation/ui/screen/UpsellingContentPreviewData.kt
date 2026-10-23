@@ -19,7 +19,10 @@
 package ch.protonmail.android.mailupselling.presentation.ui.screen
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.MonthlyToYearlyOffer
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
+import ch.protonmail.android.mailupselling.domain.model.YearlySaving
+import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
@@ -38,6 +41,11 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanU
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PromoKind
 import me.proton.android.core.payment.domain.model.ProductDetailHeader
+import me.proton.android.core.payment.domain.model.ProductMetadata
+import me.proton.android.core.payment.domain.model.ProductOffer
+import me.proton.android.core.payment.domain.model.ProductOfferDetail
+import me.proton.android.core.payment.domain.model.ProductOfferPrice
+import me.proton.android.core.payment.domain.model.ProductOfferTags
 import me.proton.android.core.payment.domain.model.ProductOfferToken
 import me.proton.android.core.payment.presentation.model.Product
 import java.math.BigDecimal
@@ -196,6 +204,34 @@ internal object UpsellingContentPreviewData {
         UnlimitedPlanModelYearly
     )
 
+    val MonthlyToYearlyPlusOffer = MonthlyToYearlyOffer(
+        plan = UpsellVariantPlan.MAIL_PLUS,
+        monthly = monthlyToYearlyOffer("giapmail_mail2022_1_renewing", cycle = 1, amount = 5_990_000),
+        yearly = monthlyToYearlyOfferDetail(
+            "giapmail_mail2022_12_renewing",
+            planName = "mail2022",
+            title = "Mail Plus",
+            cycle = 12,
+            amount = 47_900_000
+        ),
+        saving = YearlySaving("CHF", BigDecimal("23.98")),
+        discountRate = 33
+    )
+
+    val MonthlyToYearlyUnlimitedOffer = MonthlyToYearlyOffer(
+        plan = UpsellVariantPlan.UNLIMITED,
+        monthly = monthlyToYearlyOffer("giapmail_bundle2022_1_renewing", cycle = 1, amount = 12_990_000),
+        yearly = monthlyToYearlyOfferDetail(
+            "giapmail_bundle2022_12_renewing",
+            planName = "bundle2022",
+            title = "Proton Unlimited",
+            cycle = 12,
+            amount = 119_880_000
+        ),
+        saving = YearlySaving("CHF", BigDecimal("36")),
+        discountRate = 23
+    )
+
     val PromoList = PlanUpgradeInstanceListUiModel.Data.IntroPrice(
         MailPlusPlanModelMonthlyPromo,
         MailPlusPlanModelYearlyPromo
@@ -273,6 +309,18 @@ internal object UpsellingContentPreviewData {
         longerCycle = FallPromoYearlyPromo
     )
 
+    val BlackFridayWave1List = PlanUpgradeInstanceListUiModel.Data.BlackFriday(
+        blackFridayVariant = PlanUpgradeVariant.BlackFriday.Wave1,
+        shorterCycle = UnlimitedPlanModelMonthly,
+        longerCycle = blackFridayYearlyPromo("Proton Unlimited", "bf-unlimited-yearly", "77.88", "119.88")
+    )
+
+    val BlackFridayWave2List = PlanUpgradeInstanceListUiModel.Data.BlackFriday(
+        blackFridayVariant = PlanUpgradeVariant.BlackFriday.Wave2,
+        shorterCycle = MailPlusPlanModelMonthly,
+        longerCycle = blackFridayYearlyPromo("Mail Plus", "bf-plus-yearly", "29.88", "47.88")
+    )
+
     val SimpleListEntitlements = PlanUpgradeEntitlementsListUiModel.SimpleList(
         listOf(
             PlanUpgradeEntitlementListUiModel.Local(
@@ -344,14 +392,45 @@ internal object UpsellingContentPreviewData {
 
     val BlackFriday = UpsellingScreenContentState.Data(
         PlanUpgradeUiModel(
-            icon = PlanUpgradeIconUiModel(R.drawable.upselling_bf_header_wave2),
+            icon = PlanUpgradeIconUiModel(R.drawable.black_friday_bg),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Proton Unlimited")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = FallPromoComparisonTableEntitlements,
+            variant = PlanUpgradeVariant.BlackFriday.Wave1,
+            list = BlackFridayWave1List
+        )
+    )
+
+    val BlackFridayWave2 = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.black_friday_bg),
             title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
             description = PlanUpgradeDescriptionUiModel.Simple(
                 TextUiModel.Text("To unlock more storage and premium features")
             ),
-            entitlements = ComparisonTableEntitlements,
+            entitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                ComparisonTableEntitlementsData.BlackFridayMailPlusEntitlements
+            ),
+            variant = PlanUpgradeVariant.BlackFriday.Wave2,
+            list = BlackFridayWave2List
+        )
+    )
+
+    val BlackFridayPlusToUnlimited = UpsellingScreenContentState.Data(
+        PlanUpgradeUiModel(
+            icon = PlanUpgradeIconUiModel(R.drawable.black_friday_bg),
+            title = PlanUpgradeTitleUiModel(TextUiModel.Text("Upgrade to Proton Unlimited")),
+            description = PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.Text("To unlock more storage and premium features")
+            ),
+            entitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = ComparisonTableEntitlementsData.PlusToUnlimitedEntitlements,
+                baseColumnLabel = TextUiModel.TextRes(R.string.upselling_plus_plan)
+            ),
             variant = PlanUpgradeVariant.BlackFriday.Wave1,
-            list = BlackFridayList
+            list = BlackFridayWave1List
         )
     )
 
@@ -424,4 +503,79 @@ internal object UpsellingContentPreviewData {
             )
         )
     }
+
+    private fun blackFridayYearlyPromo(
+        name: String,
+        productId: String,
+        promotionalPrice: String,
+        renewalPrice: String
+    ) = PlanUpgradeInstanceUiModel.Promotional(
+        promoKind = PromoKind.BlackFriday,
+        params = PlanUpgradeInstanceUiModel.Promotional.Params(
+            name = name,
+            pricePerCycle = PlanUpgradePriceUiModel(rawAmount = BigDecimal(promotionalPrice), currencyCode = "USD"),
+            promotionalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(promotionalPrice), currencyCode = "USD"),
+            renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(renewalPrice), currencyCode = "USD"),
+            discountRate = 50,
+            cycle = PlanUpgradeCycle.Yearly,
+            yearlySaving = null,
+            product = Product(
+                planName = name,
+                productId = productId,
+                accountId = "456",
+                cycle = 12,
+                header = ProductDetailHeader(name, "12 months", "USD $promotionalPrice", "/year", false),
+                offerToken = ProductOfferToken(""),
+                entitlements = emptyList(),
+                renewalText = "Auto-renews at \$$renewalPrice/year",
+                amount = 0L,
+                currency = "USD"
+            )
+        )
+    )
+
+    private fun monthlyToYearlyOffer(
+        productId: String,
+        cycle: Int,
+        amount: Long
+    ): ProductOffer {
+        val price = ProductOfferPrice(
+            productId = productId,
+            customerId = "",
+            cycle = cycle,
+            amount = amount,
+            currency = "CHF",
+            formatted = ""
+        )
+        return ProductOffer(
+            isBaseOffer = true,
+            tags = ProductOfferTags(emptySet()),
+            token = ProductOfferToken(""),
+            current = price,
+            renew = price
+        )
+    }
+
+    private fun monthlyToYearlyOfferDetail(
+        productId: String,
+        planName: String,
+        title: String,
+        cycle: Int,
+        amount: Long
+    ) = ProductOfferDetail(
+        metadata = ProductMetadata(
+            productId = productId,
+            customerId = "",
+            planName = planName,
+            entitlements = emptyList()
+        ),
+        header = ProductDetailHeader(
+            title = title,
+            description = "",
+            priceText = "",
+            cycleText = "",
+            starred = false
+        ),
+        offer = monthlyToYearlyOffer(productId, cycle, amount)
+    )
 }

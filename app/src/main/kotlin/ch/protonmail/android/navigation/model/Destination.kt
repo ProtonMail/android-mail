@@ -60,10 +60,12 @@ import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import ch.protonmail.android.mailsettings.presentation.settings.toolbar.ui.CustomizeToolbarEditScreen
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingTypeKey
+import ch.protonmail.android.mailupselling.presentation.viewmodel.MonthlyToYearlyUpsellSheetViewModel.Companion.EntryPointKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.serialize
 
@@ -272,6 +274,11 @@ sealed class Destination(val route: String) {
         object RemoveAccount : Destination("remove/${USER_ID_KEY.wrap()}") {
 
             operator fun invoke(userId: UserId?) = route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
+        }
+
+        object MonthlyToYearlyUpsell : Destination("upselling/monthlyToYearly/${EntryPointKey.wrap()}") {
+
+            operator fun invoke(entryPoint: UpsellEntryPoint) = route.replace(EntryPointKey.wrap(), entryPoint.name)
         }
     }
 }

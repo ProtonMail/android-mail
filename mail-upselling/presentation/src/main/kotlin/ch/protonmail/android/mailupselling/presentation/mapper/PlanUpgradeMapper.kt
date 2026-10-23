@@ -60,6 +60,18 @@ internal class PlanUpgradeMapper @Inject constructor(
         return when {
             // A plan can be tagged as BF + Intro OR Sp26 + intro OR summer26 + intro OR fall26 + intro,
             // so the extra checks on the entryPoint/phases are required.
+            entryPoint is BlackFridaySupported &&
+                currentBlackFridayPhase is BlackFridayPhase.Active &&
+                instances.containsTag(PlanUpgradeSupportedTags.BlackFriday) ->
+
+                when (currentBlackFridayPhase) {
+                    BlackFridayPhase.Active.Wave2 -> PlanUpgradeVariant.BlackFriday.Wave2
+                    BlackFridayPhase.Active.Wave1 -> PlanUpgradeVariant.BlackFriday.Wave1
+                }
+
+            entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited &&
+                instances.containsTag(PlanUpgradeSupportedTags.BlackFriday) -> PlanUpgradeVariant.BlackFriday.Wave1
+
             entryPoint is FallPromoSupported &&
                 currentFallPromoPhase is FallPromoPhase.Active &&
                 instances.containsTag(PlanUpgradeSupportedTags.FallPromo) ->
@@ -84,15 +96,6 @@ internal class PlanUpgradeMapper @Inject constructor(
                     SpringPromoPhase.Active.Wave1 -> PlanUpgradeVariant.SpringPromo.Wave1
                 }
 
-            entryPoint is BlackFridaySupported &&
-                currentBlackFridayPhase is BlackFridayPhase.Active &&
-                instances.containsTag(PlanUpgradeSupportedTags.BlackFriday) ->
-
-                when (currentBlackFridayPhase) {
-                    BlackFridayPhase.Active.Wave2 -> PlanUpgradeVariant.BlackFriday.Wave2
-                    BlackFridayPhase.Active.Wave1 -> PlanUpgradeVariant.BlackFriday.Wave1
-                }
-
             instances.containsTag(PlanUpgradeSupportedTags.IntroductoryPrice) -> PlanUpgradeVariant.IntroductoryPrice
             entryPoint.supportsHeaderVariants() -> PlanUpgradeVariant.SocialProof
             instances.areUnlimitedPlans() -> PlanUpgradeVariant.Normal.Unlimited
@@ -108,6 +111,7 @@ internal class PlanUpgradeMapper @Inject constructor(
     ): PlanUpgradeInstanceListUiModel.Data {
         return when {
             entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited &&
+                variant !is PlanUpgradeVariant.BlackFriday &&
                 shorterCycleUiModel is PlanUpgradeInstanceUiModel.Standard &&
                 longerCycleUiModel is PlanUpgradeInstanceUiModel.Standard -> {
                 PlanUpgradeInstanceListUiModel.Data.PlusToUnlimited(

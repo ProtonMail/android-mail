@@ -115,6 +115,17 @@ internal class PlanUpgradeMapperTest(
                 )
             ),
             arrayOf(
+                "should return BF wave 1 variant on BF Unlimited instances for the plus-to-unlimited entry point",
+                TestInput(
+                    monthlyInstance = UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+                    yearlyInstance = UpsellingTestData.UnlimitedMailProduct.YearlyBFProductDetail,
+                    entryPoint = UpsellingEntryPoint.Feature.PlusUnlimited,
+                    blackFridayPhase = BlackFridayPhase.None,
+                    springPromoPhase = SpringPromoPhase.None,
+                    expectedVariant = PlanUpgradeVariant.BlackFriday.Wave1
+                )
+            ),
+            arrayOf(
                 "should return normal Unlimited variant on non-promotional Unlimited instances",
                 TestInput(
                     monthlyInstance = UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,

@@ -28,7 +28,7 @@ import me.proton.android.core.payment.domain.model.ProductOfferDetail
  */
 sealed class PlanUpgradeSupportedTags(val value: String, val targetPlan: String) {
 
-    data object BlackFriday : PlanUpgradeSupportedTags("bf-promo", PlanUpgradeIds.PlusPlanId)
+    data object BlackFriday : PlanUpgradeSupportedTags("bf26", PlanUpgradeIds.PlusPlanId)
     data object IntroductoryPrice : PlanUpgradeSupportedTags("introductory-price", PlanUpgradeIds.PlusPlanId)
     data object SpringOffer : PlanUpgradeSupportedTags("spring26", PlanUpgradeIds.PlusPlanId)
     data object SummerCampaign : PlanUpgradeSupportedTags("summer26", PlanUpgradeIds.PlusPlanId)

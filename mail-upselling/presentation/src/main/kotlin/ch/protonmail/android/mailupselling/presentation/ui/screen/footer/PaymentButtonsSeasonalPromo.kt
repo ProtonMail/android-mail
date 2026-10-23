@@ -45,7 +45,8 @@ internal fun PaymentButtonsSeasonalPromo(
     instance: PlanUpgradeInstanceUiModel,
     buttonVariant: MailPurchaseButtonVariant = MailPurchaseButtonVariant.Default,
     actions: UpsellingScreen.Actions,
-    colors: UpsellingVariantColors? = null
+    colors: UpsellingVariantColors? = null,
+    modalVariant: UpsellModalVariant
 ) {
     Column {
         Box(
@@ -65,7 +66,7 @@ internal fun PaymentButtonsSeasonalPromo(
 
         Box(modifier = Modifier.fillMaxWidth()) {
             val upsellingTelemetryPayload = instance.toTelemetryPayload(
-                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                modalVariant = modalVariant,
                 upsellIsPromotional = true,
                 isIntroOffer = false
             )
@@ -105,7 +106,8 @@ private fun PaymentButtonsHorizontalLayoutPreview() {
             PaymentButtonsSeasonalPromo(
                 instance = BlackFridayList.shorterCycle,
                 actions = UpsellingScreen.Actions.Empty,
-                buttonVariant = MailPurchaseButtonVariant.BlackFriday
+                buttonVariant = MailPurchaseButtonVariant.BlackFriday,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS
             )
         }
     }

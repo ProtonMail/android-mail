@@ -54,6 +54,7 @@ object SettingsScreenPreviewData {
         onBackClick = {},
         onSignatureClicked = {},
         onContentSearchSettingsClick = {},
-        onPlusToUnlimitedUpsellClick = {}
+        onPlusToUnlimitedUpsellClick = {},
+        onMonthlyToYearlyUpsellClick = {}
     )
 }

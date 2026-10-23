@@ -153,4 +153,5 @@
   <string name="upselling_snackbar_error_no_user_id">Bir sorun çıktı.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Abonelikler alınamadı.</string>
   <!-- Snackbar texts -->
+  <string name="upselling_black_friday">Efsane Cuma</string>
 </resources>

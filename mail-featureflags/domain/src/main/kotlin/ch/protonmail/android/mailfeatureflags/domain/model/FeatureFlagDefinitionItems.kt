@@ -42,19 +42,19 @@ data object OnboardingUpsellingEnabled : FeatureFlagDefinition(
     defaultValue = true
 )
 
-data object MailBlackFriday2025Enabled : FeatureFlagDefinition(
-    key = "MailBlackFriday2025",
-    name = "Enable BF (Wave 1)",
+data object MailBlackFriday2026Enabled : FeatureFlagDefinition(
+    key = "MailMobileBlackFriday2026Wave1",
+    name = "Enable BF 26 (Wave 1)",
     category = FeatureFlagCategory.Upselling,
-    description = "Enables BF offers.",
+    description = "Enables BF 26 wave 1.",
     defaultValue = false
 )
 
-data object MailBlackFriday2025Wave2Enabled : FeatureFlagDefinition(
-    key = "MailBlackFriday2025Wave2",
-    name = "Enable BF (Wave 2)",
+data object MailBlackFriday2026Wave2Enabled : FeatureFlagDefinition(
+    key = "MailMobileBlackFriday2026Wave2",
+    name = "Enable BF 26 (Wave 2)",
     category = FeatureFlagCategory.Upselling,
-    description = "Enables BF offers.",
+    description = "Enables BF 26 wave 2.",
     defaultValue = false
 )
 
@@ -279,5 +279,21 @@ data object PlusToUnlimitedUpsellOptOut : FeatureFlagDefinition(
     name = "Plus to Unlimited upsell opt-out",
     category = FeatureFlagCategory.Upselling,
     description = "Set when a user hides the Plus to Unlimited upsell. It stays hidden on all their devices.",
+    defaultValue = false
+)
+
+data object MonthlyToYearlyUpsellExperiment : FeatureFlagDefinition(
+    key = "MailMobileMonthlyToYearlyUpsell",
+    name = "Monthly to yearly upsell experiment",
+    category = FeatureFlagCategory.Upselling,
+    description = "Turns the monthly to yearly billing upsell on or off. When off, no entry points are shown.",
+    defaultValue = false
+)
+
+data object MonthlyToYearlyUpsellOptOut : FeatureFlagDefinition(
+    key = "MailMonthlyToYearlyUpsellOptOut",
+    name = "Monthly to yearly upsell opt-out",
+    category = FeatureFlagCategory.Upselling,
+    description = "Set when a user hides the monthly to yearly upsell. It stays hidden on all their devices.",
     defaultValue = false
 )

@@ -18,9 +18,13 @@
 
 package ch.protonmail.android.mailupselling.data.repository
 
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
+import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
 import io.mockk.coEvery
 import io.mockk.every
@@ -32,9 +36,11 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionUpsellEligibilityResult
+import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellExperimentFlag
 import uniffi.mail_uniffi.UpsellType
+import uniffi.mail_uniffi.plusToUnlimitedExperimentFlag
 import uniffi.mail_uniffi.upsellExperimentFlagForAndroid
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -61,6 +67,7 @@ internal class UpsellEligibilityRepositoryImplTest {
     fun setup() {
         mockkStatic("uniffi.mail_uniffi.Mail_uniffiKt")
         every { upsellExperimentFlagForAndroid() } returns UpsellExperimentFlag("MailAndroidV7UpsellPlanExperiment")
+        every { plusToUnlimitedExperimentFlag() } returns UpsellExperimentFlag("MailAndroidV7PlusToUnlimitedUpsell")
     }
 
     @AfterTest
@@ -103,5 +110,47 @@ internal class UpsellEligibilityRepositoryImplTest {
         coEvery { userSessionRepository.getUserSession(userId) } returns null
 
         assertNull(repository.getEligibleUpsellPlan(userId))
+    }
+
+    @Test
+    fun `maps NOT_ELIGIBLE to no Plus to Unlimited offer`() = runTest {
+        coEvery { wrapper.plusToUnlimitedEligibility(any()) } returns PlusToUnlimitedEligibility.NOT_ELIGIBLE.right()
+
+        assertEquals(PlusToUnlimitedOffer.None.right(), repository.getPlusToUnlimitedEligibility(userId))
+    }
+
+    @Test
+    fun `maps REGULAR to the regular Plus to Unlimited offer`() = runTest {
+        coEvery { wrapper.plusToUnlimitedEligibility(any()) } returns PlusToUnlimitedEligibility.REGULAR.right()
+
+        assertEquals(PlusToUnlimitedOffer.Regular.right(), repository.getPlusToUnlimitedEligibility(userId))
+    }
+
+    @Test
+    fun `maps BLACK_FRIDAY to the Black Friday Plus to Unlimited offer`() = runTest {
+        coEvery { wrapper.plusToUnlimitedEligibility(any()) } returns PlusToUnlimitedEligibility.BLACK_FRIDAY.right()
+
+        assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), repository.getPlusToUnlimitedEligibility(userId))
+    }
+
+    @Test
+    fun `passes the yearly billing eligibility through`() = runTest {
+        coEvery { wrapper.monthlyToYearlyEligibility() } returns true.right()
+
+        assertEquals(true.right(), repository.getMonthlyToYearlyEligibility(userId))
+    }
+
+    @Test
+    fun `is not eligible for yearly billing when Rust says no`() = runTest {
+        coEvery { wrapper.monthlyToYearlyEligibility() } returns false.right()
+
+        assertEquals(false.right(), repository.getMonthlyToYearlyEligibility(userId))
+    }
+
+    @Test
+    fun `fails when there is no user session for the yearly billing check`() = runTest {
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
+
+        assertEquals(DataError.Local.NoUserSession.left(), repository.getMonthlyToYearlyEligibility(userId))
     }
 }

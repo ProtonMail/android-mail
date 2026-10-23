@@ -24,18 +24,25 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
+import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import ch.protonmail.android.testdata.upselling.UpsellingTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.domain.model.ProductMetadata
 import me.proton.android.core.payment.domain.model.SubscriptionDetail
 import me.proton.android.core.payment.domain.usecase.GetCurrentSubscriptions
 import me.proton.android.core.payment.domain.model.ProductOfferList
+import me.proton.android.core.payment.domain.model.ProductOfferPrice
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -43,16 +50,24 @@ import kotlin.test.assertEquals
 internal class ObservePlusToUnlimitedEligibilityTest {
 
     private val userId = UserId("user-id")
+    private val observeUser = mockk<ObserveUser> {
+        every { this@mockk(userId) } returns flowOf(UserTestData.Primary.right())
+    }
     private val upsellEligibilityRepository = mockk<UpsellEligibilityRepository>()
     private val availableUpgradesCache = mockk<AvailableUpgradesCache>()
     private val getCurrentSubscriptions = mockk<GetCurrentSubscriptions>()
+    private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val sdkUpgradesReadEnabled = mockk<FeatureFlag<Boolean>>()
     private val sdkUpgradesPurchaseEnabled = mockk<FeatureFlag<Boolean>>()
+    private val regularUpsellEnabled = mockk<FeatureFlag<Boolean>>()
 
     private val observePlusToUnlimitedEligibility = ObservePlusToUnlimitedEligibility(
+        observeUser,
         upsellEligibilityRepository,
         availableUpgradesCache,
         getCurrentSubscriptions,
+        isEligibleForBlackFridayPromotion,
+        regularUpsellEnabled,
         sdkUpgradesReadEnabled,
         sdkUpgradesPurchaseEnabled
     )
@@ -60,11 +75,11 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     @Test
     fun `is eligible when an Unlimited upgrade is available`() = runTest {
         expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(true.right())
+        expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
         expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(true.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -72,11 +87,11 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     @Test
     fun `is not eligible when no Unlimited upgrade is available`() = runTest {
         expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(true.right())
+        expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
         expectUpgrades(PlanUpgradeIds.PlusPlanId)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(false.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -86,7 +101,7 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         expectSdkFlags(read = true, purchase = false)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(false.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -96,7 +111,7 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         expectSdkFlags(read = false, purchase = true)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(false.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -104,10 +119,10 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     @Test
     fun `is not eligible when the subscription does not qualify`() = runTest {
         expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(false.right())
+        expectRustEligibility(PlusToUnlimitedOffer.None.right())
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(false.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -124,14 +139,33 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     }
 
     @Test
+    fun `re-checks eligibility when the user's subscription changes`() = runTest {
+        val user = MutableStateFlow(UserTestData.paidMailUser)
+        every { observeUser(userId) } returns user.map { it.right() }
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
+        expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
+        expectCurrentSubscriptions(PlanUpgradeIds.PlusPlanId)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+
+            expectCurrentSubscriptions(PlanUpgradeIds.UnlimitedPlanId)
+            user.value = UserTestData.paidUser
+
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
+        }
+    }
+
+    @Test
     fun `is not eligible when the user is already subscribed to Unlimited`() = runTest {
         expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(true.right())
+        expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
         expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
         expectCurrentSubscriptions(PlanUpgradeIds.UnlimitedPlanId)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(false.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -139,12 +173,80 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     @Test
     fun `stays eligible when the current subscriptions cannot be read`() = runTest {
         expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(true.right())
+        expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
         expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
         coEvery { getCurrentSubscriptions() } throws IllegalStateException("boom")
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(true.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `is eligible for Black Friday when a Black Friday Unlimited offer is available`() = runTest {
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(true)
+        expectUpgradeOffers(UpsellingTestData.UnlimitedMailProduct.YearlyBFProductOfferList)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `is not eligible for Black Friday without a Black Friday Unlimited offer`() = runTest {
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(true)
+        expectUpgradeOffers(UpsellingTestData.UnlimitedMailProduct.YearlyProductOfferList)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `falls back to the regular offer when the user cannot get the Black Friday promotion`() = runTest {
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(false)
+        coEvery { regularUpsellEnabled.get() } returns true
+        expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
+        expectCurrentPlusSubscription(cycle = 12)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `is not eligible when Black Friday is blocked and the regular upsell is off`() = runTest {
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(false)
+        coEvery { regularUpsellEnabled.get() } returns false
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `is not eligible when Black Friday is blocked and the plan is monthly`() = runTest {
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(false)
+        coEvery { regularUpsellEnabled.get() } returns true
+        expectCurrentPlusSubscription(cycle = 1)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
@@ -154,8 +256,17 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         coEvery { sdkUpgradesPurchaseEnabled.get() } returns purchase
     }
 
-    private fun expectRustEligibility(value: Either<DataError, Boolean>) {
+    private fun expectRustEligibility(value: Either<DataError, PlusToUnlimitedOffer>) {
         coEvery { upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId) } returns value
+    }
+
+    private fun expectBlackFridayPromotionEligibility(eligible: Boolean) {
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns eligible
+    }
+
+    private fun expectUpgradeOffers(vararg offers: ProductOfferList) {
+        every { availableUpgradesCache.observe(userId) } returns flowOf(offers.toList())
+        expectCurrentSubscriptions(PlanUpgradeIds.PlusPlanId)
     }
 
     private fun expectCurrentSubscriptions(vararg planNames: String) {
@@ -163,6 +274,15 @@ internal class ObservePlusToUnlimitedEligibilityTest {
             mockk<SubscriptionDetail> { every { name } returns planName }
         }
         coEvery { getCurrentSubscriptions() } returns subscriptions
+    }
+
+    private fun expectCurrentPlusSubscription(cycle: Int) {
+        val price = mockk<ProductOfferPrice> { every { this@mockk.cycle } returns cycle }
+        val subscription = mockk<SubscriptionDetail> {
+            every { name } returns PlanUpgradeIds.PlusPlanId
+            every { this@mockk.price } returns price
+        }
+        coEvery { getCurrentSubscriptions() } returns listOf(subscription)
     }
 
     private fun expectUpgrades(planName: String) {

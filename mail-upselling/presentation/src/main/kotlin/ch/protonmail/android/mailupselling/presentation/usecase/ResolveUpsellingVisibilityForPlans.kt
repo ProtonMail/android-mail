@@ -45,6 +45,14 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
         val instances = plans.takeIf { it.size == 2 } // We always expect 2 instances (monthly + yearly)
             ?: return UpsellingVisibility.Hidden
 
+        // Only check BF phase if offers are tagged for it
+        if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.BlackFriday) }) {
+            val phase = getCurrentBlackFridayPhase()
+            if (phase is BlackFridayPhase.Active) {
+                return phase.toUpsellingVisibility()
+            }
+        }
+
         // Only check Fall Promo phase if offers are tagged for it
         if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.FallPromo) }) {
             val phase = getCurrentFallPromoPhase()
@@ -65,14 +73,6 @@ class ResolveUpsellingVisibilityForPlans @Inject constructor(
         if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.SpringOffer) }) {
             val phase = getCurrentSpringPromoPhase()
             if (phase is SpringPromoPhase.Active) {
-                return phase.toUpsellingVisibility()
-            }
-        }
-
-        // Only check BF phase if offers are tagged for it
-        if (instances.any { it.isTaggedWith(PlanUpgradeSupportedTags.BlackFriday) }) {
-            val phase = getCurrentBlackFridayPhase()
-            if (phase is BlackFridayPhase.Active) {
                 return phase.toUpsellingVisibility()
             }
         }

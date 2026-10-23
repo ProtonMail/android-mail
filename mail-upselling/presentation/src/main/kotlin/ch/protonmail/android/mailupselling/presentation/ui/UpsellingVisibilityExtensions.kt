@@ -18,32 +18,10 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 
-typealias HeaderIcons = Pair<Painter, Painter>
-typealias SidebarIcon = Painter
-
-@Composable
-fun UpsellingVisibility.Promotional.BlackFriday.getHeaderIcons(): HeaderIcons = when (this) {
-    UpsellingVisibility.Promotional.BlackFriday.Wave1 ->
-        Pair(
-            painterResource(id = R.drawable.ic_upselling_mail),
-            painterResource(id = R.drawable.ic_percentage)
-        )
-
-    UpsellingVisibility.Promotional.BlackFriday.Wave2 ->
-        Pair(
-            painterResource(id = R.drawable.ic_proton_brand_proton_mail),
-            painterResource(id = R.drawable.ic_zap)
-        )
-}
-
-@Composable
-fun UpsellingVisibility.Promotional.BlackFriday.getSidebarIcon(): SidebarIcon = when (this) {
-    UpsellingVisibility.Promotional.BlackFriday.Wave1 -> painterResource(id = R.drawable.ic_percentage)
-    UpsellingVisibility.Promotional.BlackFriday.Wave2 -> painterResource(id = R.drawable.ic_zap)
+fun UpsellingVisibility.Promotional.BlackFriday.toUpsellModalVariant() = when (this) {
+    UpsellingVisibility.Promotional.BlackFriday.Wave1 -> UpsellModalVariant.COMPARISON_UNLIMITED
+    UpsellingVisibility.Promotional.BlackFriday.Wave2 -> UpsellModalVariant.COMPARISON_PLUS
 }

@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -47,6 +48,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -55,32 +57,42 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.design.compose.theme.isNightMode
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.extension.isIntroOffer
 import ch.protonmail.android.mailupselling.presentation.extension.isPromotional
 import ch.protonmail.android.mailupselling.presentation.extension.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.extension.toUpsellModalVariant
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues.BlackFriday.upsellingBackground
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTable
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist.UpsellingEntitlementsListLayout
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingPlanButtonsFooter
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
@@ -92,6 +104,7 @@ internal fun UpsellingScreenContentBlackFriday(
     state: UpsellingScreenContentState.Data,
     actions: UpsellingScreen.Actions
 ) {
+    val nightMode = isNightMode()
     val plans = state.plans
     val scrollState = rememberScrollState()
 
@@ -101,19 +114,6 @@ internal fun UpsellingScreenContentBlackFriday(
 
     val shouldShowImage by remember {
         derivedStateOf { scrollState.value == 0 }
-    }
-
-    val scrollProgress = remember {
-        derivedStateOf {
-            val maxScroll = 100f
-            (scrollState.value.toFloat() / maxScroll).coerceIn(0f, 1f)
-        }
-    }
-
-    val imageAlpha = remember {
-        derivedStateOf {
-            1f - scrollProgress.value * 0.5f
-        }
     }
 
     Scaffold(
@@ -134,13 +134,20 @@ internal fun UpsellingScreenContentBlackFriday(
                         .onSizeChanged { size ->
                             footerHeight = with(density) { size.height.toDp() }
                         }
-                        .background(ProtonTheme.colors.brandPlus20)
-                        .hazeEffect(state = hazeState)
+                        .hazeEffect(
+                            state = hazeState,
+                            style = HazeStyle(
+                                tint = HazeTint(if (nightMode) Color.Transparent else Color.White.copy(alpha = 0.3f))
+                            )
+                        )
+                        .fillMaxWidth()
                         .heightIn(max = maxHeight)
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     UpsellingPlanButtonsFooter(
                         modifier = Modifier
+                            .widthIn(max = UpsellingLayoutValues.contentMaxWidth)
                             .fillMaxWidth()
                             .windowInsetsPadding(
                                 WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
@@ -155,33 +162,47 @@ internal fun UpsellingScreenContentBlackFriday(
         Box(
             modifier = modifier
                 .hazeSource(state = hazeState)
-                .fillMaxHeight()
+                .fillMaxSize()
+                .background(UpsellingLayoutValues.BlackFriday.backgroundGradient()),
+            contentAlignment = Alignment.TopCenter
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxHeight()
+                    .widthIn(max = UpsellingLayoutValues.contentMaxWidth)
+                    .fillMaxWidth()
                     .verticalScroll(scrollState)
-                    .upsellingBackground()
-                    .padding(bottom = footerHeight + ProtonDimens.Spacing.Large)
-                    .windowInsetsPadding(WindowInsets.safeDrawing),
+                    .padding(bottom = footerHeight + ProtonDimens.Spacing.Large),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Huge * 2))
-                Image(
+                Box(
                     modifier = Modifier
-                        .padding(horizontal = ProtonDimens.Spacing.Large)
-                        .padding(top = ProtonDimens.Spacing.Large)
-                        .alpha(imageAlpha.value),
-                    painter = painterResource(id = plans.icon.iconResId),
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
+                        .fillMaxWidth()
+                ) {
+                    Image(
+                        modifier = Modifier.fillMaxWidth(),
+                        painter = painterResource(id = plans.icon.iconResId),
+                        contentDescription = NO_CONTENT_DESCRIPTION,
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Image(
+                        modifier = Modifier.matchParentSize(),
+                        painter = painterResource(id = state.plans.variant.headerTextResId()),
+                        contentDescription = NO_CONTENT_DESCRIPTION,
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Huge))
+                Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Large))
 
                 when (state.plans.entitlements) {
                     is PlanUpgradeEntitlementsListUiModel.ComparisonTableList ->
                         ComparisonTable(
-                            modifier = Modifier.padding(horizontal = ProtonDimens.Spacing.Large),
+                            modifier = Modifier
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                                )
+                                .padding(horizontal = ProtonDimens.Spacing.Large),
                             entitlementsUiModel = state.plans.entitlements,
                             variant = state.plans.variant
                         )
@@ -221,13 +242,13 @@ internal fun UpsellingScreenContentBlackFriday(
                         modifier = Modifier
                             .size(UpsellingLayoutValues.closeButtonSize)
                             .background(
-                                color = UpsellingLayoutValues.closeButtonBackgroundColor,
+                                color = UpsellingLayoutValues.BlackFriday.closeButtonBackgroundColor,
                                 shape = CircleShape
                             )
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Close,
-                            tint = UpsellingLayoutValues.closeButtonColor,
+                            tint = UpsellingLayoutValues.BlackFriday.closeButtonColor,
                             contentDescription = stringResource(R.string.upselling_close_button_content_description)
                         )
                     }
@@ -241,22 +262,124 @@ internal fun UpsellingScreenContentBlackFriday(
     }
 }
 
+private fun PlanUpgradeVariant.headerTextResId() = when (this) {
+    PlanUpgradeVariant.BlackFriday.Wave2 -> R.drawable.black_friday_text_wave2
+    else -> R.drawable.black_friday_text_wave1
+}
+
+@Preview
 @AdaptivePreviews
 @Composable
-private fun UpsellingScreenContentBlackFriday_Promo() {
-    ProtonTheme {
-        UpsellingScreenContentBlackFriday(
-            state = UpsellingContentPreviewData.BlackFriday,
-            actions = UpsellingScreen.Actions(
-                onDisplayed = {},
-                onDismiss = {},
-                onError = {},
-                onUpgradeAttempt = {},
-                onUpgrade = {},
-                onUpgradeCancelled = {},
-                onUpgradeErrored = {},
-                onSuccess = {}
+private fun UpsellingScreenContentBlackFriday_Wave1() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFriday)
+}
+
+@Preview
+@AdaptivePreviews
+@Composable
+private fun UpsellingScreenContentBlackFriday_Wave2() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayWave2)
+}
+
+@Preview
+@AdaptivePreviews
+@Composable
+private fun BlackFriday_PlusToUnlimited() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayPlusToUnlimited)
+}
+
+@Preview(showSystemUi = true)
+@AdaptivePreviews
+@Composable
+private fun BlackFriday_LongList() {
+    val longEntitlements = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+        items = List(20) { i ->
+            ComparisonTableEntitlementItemUiModel(
+                title = TextUiModel.Text("Entitlement ${i + 1}"),
+                freeValue = if (i % 3 == 0) {
+                    ComparisonTableEntitlement.Free.Value(TextUiModel.Text("${i + 1}"))
+                } else {
+                    ComparisonTableEntitlement.Free.NotPresent
+                },
+                paidValue = if (i % 4 == 0) {
+                    ComparisonTableEntitlement.Paid.Value(TextUiModel.Text("Unlimited"))
+                } else {
+                    ComparisonTableEntitlement.Paid.Present
+                }
             )
-        )
+        }
+    )
+    val state = UpsellingScreenContentState.Data(
+        UpsellingContentPreviewData.BlackFriday.plans.copy(entitlements = longEntitlements)
+    )
+    BlackFridayPreview(state = state)
+}
+
+@Composable
+private fun BlackFridayPreview(state: UpsellingScreenContentState.Data) {
+    val storeOwner = remember {
+        object : ViewModelStoreOwner {
+            override val viewModelStore = ViewModelStore()
+        }
     }
+    CompositionLocalProvider(LocalViewModelStoreOwner provides storeOwner) {
+        ProtonTheme {
+            UpsellingScreenContentBlackFriday(
+                state = state,
+                actions = UpsellingScreen.Actions(
+                    onDisplayed = {},
+                    onDismiss = {},
+                    onError = {},
+                    onUpgradeAttempt = {},
+                    onUpgrade = {},
+                    onUpgradeCancelled = {},
+                    onUpgradeErrored = {},
+                    onSuccess = {}
+                )
+            )
+        }
+    }
+}
+
+@Preview(name = "en (default)")
+@Preview(name = "cs", locale = "cs")
+@Preview(name = "da", locale = "da")
+@Preview(name = "de", locale = "de")
+@Preview(name = "es-ES", locale = "es-rES")
+@Preview(name = "es-419", locale = "b+es+419")
+@Preview(name = "fi", locale = "fi")
+@Preview(name = "fr", locale = "fr")
+@Preview(name = "id", locale = "in")
+@Preview(name = "it", locale = "it")
+@Preview(name = "ja", locale = "ja")
+@Preview(name = "ko", locale = "ko")
+@Preview(name = "nb-NO", locale = "nb-rNO")
+@Preview(name = "nl", locale = "nl")
+@Preview(name = "pl", locale = "pl")
+@Preview(name = "pt-BR", locale = "pt-rBR")
+@Preview(name = "pt-PT", locale = "pt-rPT")
+@Preview(name = "ro", locale = "ro")
+@Preview(name = "ru", locale = "ru")
+@Preview(name = "sv-SE", locale = "sv-rSE")
+@Preview(name = "tr", locale = "tr")
+@Preview(name = "zh-CN", locale = "zh-rCN")
+@Preview(name = "zh-TW", locale = "zh-rTW")
+private annotation class BlackFridayLocalePreviews
+
+@BlackFridayLocalePreviews
+@Composable
+private fun BlackFriday_Wave1_Locales() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFriday)
+}
+
+@BlackFridayLocalePreviews
+@Composable
+private fun BlackFriday_Wave2_Locales() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayWave2)
+}
+
+@BlackFridayLocalePreviews
+@Composable
+private fun BlackFriday_PlusToUnlimited_Locales() {
+    BlackFridayPreview(state = UpsellingContentPreviewData.BlackFridayPlusToUnlimited)
 }
