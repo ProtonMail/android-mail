@@ -206,6 +206,7 @@ class UserSessionRepositoryImplTest {
             subscribed = 0,
             delinquent = 0,
             createTimeUtc = 0L,
+            isOrganizationMember = true,
             usedSpace = 0L,
             maxSpace = 0L
         )

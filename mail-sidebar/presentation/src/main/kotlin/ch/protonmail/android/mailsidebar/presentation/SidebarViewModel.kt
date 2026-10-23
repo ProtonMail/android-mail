@@ -35,6 +35,7 @@ import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction
 import ch.protonmail.android.mailsidebar.presentation.usecase.ObservePrimaryCategoryUnreadCount
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,6 +55,7 @@ class SidebarViewModel @Inject constructor(
     val appInformation: AppInformation,
     private val updateLabelExpandedState: UpdateLabelExpandedState,
     private val observePrimaryUserId: ObservePrimaryUserId,
+    private val observeUser: ObserveUser,
     private val observeMailLabels: ObserveMailLabels,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observePrimaryCategoryUnreadCount: ObservePrimaryCategoryUnreadCount,
@@ -74,8 +76,9 @@ class SidebarViewModel @Inject constructor(
             observeLoadedMailLabelId(),
             observeMailLabels(userId),
             observeUnreadCounters(userId),
-            observePrimaryCategoryUnreadCount(userId).onStart { emit(null) }
-        ) { loadedMailLabelId, mailLabels, counters, primaryUnreadCount ->
+            observePrimaryCategoryUnreadCount(userId).onStart { emit(null) },
+            observeUser(userId)
+        ) { loadedMailLabelId, mailLabels, counters, primaryUnreadCount, user ->
             val inboxLabelId = mailLabels.inboxLabelId()
 
             // When category view is on, the Inbox row shows the Primary category count instead.
@@ -88,10 +91,7 @@ class SidebarViewModel @Inject constructor(
             }
             State.Enabled(
                 selectedMailLabelId = loadedMailLabelId,
-                // Pending Account team to migrate "paymentManager" to rust
-                // (current implementation isn't aware of the rust session and throws
-                // exception crashing the app if no user is logged into "core"
-                canChangeSubscription = false,
+                canChangeSubscription = user.getOrNull()?.isOrganizationMember != true,
                 mailLabels = mailLabels.toUiModels(unreadCounters, loadedMailLabelId)
             )
         }

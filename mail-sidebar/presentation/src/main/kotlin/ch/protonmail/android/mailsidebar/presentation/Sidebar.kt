@@ -201,7 +201,9 @@ fun Sidebar(
             item { SidebarDivider() }
             item { VerticalSpacer(height = ProtonDimens.Spacing.Standard) }
 
-            item { ProtonSidebarSubscriptionItem { actions.onSubscription() } }
+            if (viewState.isSubscriptionVisible) {
+                item { ProtonSidebarSubscriptionItem { actions.onSubscription() } }
+            }
 
             item { ProtonSidebarSettingsItem(onClick = actions.onSettings) }
             item { SidebarContactsItem(onClick = actions.onContacts) }

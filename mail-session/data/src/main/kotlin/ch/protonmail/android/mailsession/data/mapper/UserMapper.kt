@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsession.data.mapper
 import ch.protonmail.android.mailcommon.data.mapper.LocalUser
 import ch.protonmail.android.mailsession.domain.model.User
 import me.proton.core.domain.entity.UserId
+import uniffi.mail_uniffi.Role
 
 fun LocalUser.toUser(userId: UserId): User = User(
     userId = userId,
@@ -31,6 +32,7 @@ fun LocalUser.toUser(userId: UserId): User = User(
     subscribed = subscribed.toInt(),
     delinquent = delinquent.toInt(),
     createTimeUtc = createTime.toLong(),
+    isOrganizationMember = role is Role.Member,
     usedSpace = usedSpace,
     maxSpace = maxSpace
 )
