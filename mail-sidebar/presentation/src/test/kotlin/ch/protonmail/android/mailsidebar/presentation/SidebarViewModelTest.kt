@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsidebar.presentation
 
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.maillabel.domain.model.LabelId
@@ -33,6 +34,7 @@ import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailsidebar.presentation.usecase.ObservePrimaryCategoryUnreadCount
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.Action.LabelAction
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Disabled
@@ -42,6 +44,7 @@ import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.E
 import ch.protonmail.android.mailsidebar.presentation.label.SidebarLabelAction.Select
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -50,6 +53,7 @@ import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -77,6 +81,11 @@ class SidebarViewModelTest {
         every { this@mockk() } returns primaryUserId
     }
 
+    private val user = MutableStateFlow(UserTestData.Primary)
+    private val observeUser = mockk<ObserveUser> {
+        every { this@mockk(any()) } returns user.map { it.right() }
+    }
+
     private val mailboxLabels = MutableStateFlow(MailLabels.Initial)
     private val observeMailboxLabels = mockk<ObserveMailLabels> {
         every { this@mockk(any<UserId>()) } returns mailboxLabels
@@ -101,6 +110,7 @@ class SidebarViewModelTest {
             appInformation = appInformation,
             updateLabelExpandedState = updateLabelExpandedState,
             observePrimaryUserId = observePrimaryUserId,
+            observeUser = observeUser,
             observeMailLabels = observeMailboxLabels,
             observeUnreadCounters = observeUnreadCounters,
             observePrimaryCategoryUnreadCount = observePrimaryCategoryUnreadCount,
@@ -123,7 +133,7 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = MailLabelId.System(SystemLabelId.Inbox.labelId),
-                canChangeSubscription = false,
+                canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
             )
             assertEquals(expected, actual)
@@ -147,10 +157,26 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = MailLabelId.System(SystemLabelId.Inbox.labelId),
-                canChangeSubscription = false,
+                canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
             )
             assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `hides subscription when user is an organization member`() = runTest {
+        // Given
+        user.value = UserTestData.Primary.copy(isOrganizationMember = true)
+
+        // When
+        sidebarViewModel.state.test {
+            assertEquals(Disabled, awaitItem())
+            primaryUserId.emit(UserIdTestData.Primary)
+
+            // Then
+            val actual = awaitItem() as Enabled
+            assertEquals(false, actual.canChangeSubscription)
         }
     }
 

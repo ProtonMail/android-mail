@@ -63,6 +63,7 @@ object UserTestData {
         subscribed = subscribed,
         delinquent = delinquent,
         createTimeUtc = createdTimeUtc,
+        isOrganizationMember = false,
         usedSpace = usedSpace,
         maxSpace = maxSpace
     )

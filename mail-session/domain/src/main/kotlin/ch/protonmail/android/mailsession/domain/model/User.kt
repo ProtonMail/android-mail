@@ -29,6 +29,7 @@ data class User(
     val subscribed: Int,
     val delinquent: Int,
     val createTimeUtc: Long,
+    val isOrganizationMember: Boolean,
     private val usedSpace: Long,
     private val maxSpace: Long
 ) {
