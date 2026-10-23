@@ -150,5 +150,5 @@
   <string name="upselling_snackbar_error_no_user_id">Адбылася памылка.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Немагчыма атрымаць падпіскі.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_black_friday_sale">Распродаж на Чорную пятніцу</string>
+  <string name="upselling_black_friday">Чорная пятніца</string>
 </resources>
