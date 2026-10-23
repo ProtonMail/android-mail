@@ -20,7 +20,7 @@
   <string name="app_icon_name_weather">ウィンター</string>
   <string name="app_icon_name_notes">ノート</string>
   <string name="app_icon_name_calculator">計算機</string>
-  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
+  <string name="app_welcome_subtitle">プライベート暗号化によってデータのプライバシーが守られます。データは真の意味でお客様のものです。</string>
   <string name="dialog_sign_out_account_title">サインアウト</string>
   <string name="dialog_sign_out_account_description">アカウントに関連付けられたデータは、削除を選択しない限り、このデバイスに残ります。</string>
   <string name="dialog_sign_out_account_confirm">サインアウト</string>
@@ -42,6 +42,6 @@
   <string name="mailbox_message_scheduling_offline">オフライン: メッセージをスケジュール設定待ちにしました</string>
   <string name="mailbox_message_scheduled_for_sending_success">このメッセージは %1$s に送信されます</string>
   <string name="launcher_alert_duplicate_account_description">ユーザーは既にサインインしています</string>
-  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
-  <string name="home_content_search_error_snackbar_action">Review</string>
+  <string name="home_content_search_error_snackbar">メール本文検索の準備ができませんでした。</string>
+  <string name="home_content_search_error_snackbar_action">確認</string>
 </resources>

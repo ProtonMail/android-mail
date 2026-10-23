@@ -95,9 +95,9 @@
   <string name="padlocks_sender_verification_failed_link_text">afsenderbekræftelse mislykkedes</string>
   <string name="padlocks_sender_verification_failed_no_signature">%s, fordi den ikke var signeret. Bekræft e-mailens autenticitet med din kontakt.</string>
   <string name="padlocks_sender_verification_failed_no_signature_link_text">afsenderbekræftelse mislykkedes</string>
-  <string name="padlocks_recipient_verified_contact">Modtageren er en %s, hvis krypteringsnøgler du har betroet dig til.</string>
+  <string name="padlocks_recipient_verified_contact">Modtageren er en %s, hvis krypteringsnøgler du har betroet.</string>
   <string name="padlocks_recipient_verified_contact_link_text">verificeret kontakt</string>
-  <string name="padlocks_recipients_verified_contacts">Modtagerne er %s, hvis krypteringsnøgler du har betroet dig til.</string>
+  <string name="padlocks_recipients_verified_contacts">Modtagerne er %s, hvis krypteringsnøgler du har betroet.</string>
   <string name="padlocks_recipients_verified_contacts_link_text">verificerede kontakter</string>
   <string name="padlocks_zero_access_addendum">Denne e-mail er lagret på Protons servere med %s. Hverken Proton eller nogen anden kan læse den.</string>
   <string name="padlocks_zero_access_addendum_link_text">nul-adgang-kryptering</string>

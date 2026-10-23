@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Email content search</string>
+  <string name="mail_settings_content_search_header_title">メール本文検索</string>
   <string name="mail_settings_content_search_description">メッセージ内容で検索できるようにするため、メッセージはこのデバイスにダウンロードされます。</string>
-  <string name="mail_settings_content_search_learn_more">Learn more…</string>
-  <string name="mail_settings_content_search_toggle_title">Email content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
+  <string name="mail_settings_content_search_learn_more">詳細を見る…</string>
+  <string name="mail_settings_content_search_toggle_title">メール本文検索</string>
+  <string name="mail_settings_content_search_mobile_data_title">モバイルデータ通信経由でのダウンロードを許可</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Wi-Fi が切断された場合でも、モバイルデータ通信でダウンロードを継続します。</string>
   <string name="mail_settings_content_search_syncing_status">準備中 %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">準備中…</string>
-  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
-  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
-  <string name="mail_settings_content_search_failed_retry">Try again</string>
-  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
-  <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
-  <string name="mail_settings_content_search_indexing_section">Indexing</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Wi-Fi を待機中…</string>
+  <string name="mail_settings_content_search_failed_status">メール本文検索の準備中に問題が発生しました。</string>
+  <string name="mail_settings_content_search_failed_retry">再試行</string>
+  <string name="mail_settings_content_search_update_error">問題が発生しました。もう一度お試しください。</string>
+  <string name="mail_settings_content_search_retry_error">メール本文検索を準備できません。</string>
+  <string name="mail_settings_content_search_indexing_section">インデックス作成中</string>
   <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>
   <string name="mail_settings_content_search_indexing_in_progress">In progress</string>
   <string name="mail_settings_content_search_indexing_up_to_date">Up to date</string>
