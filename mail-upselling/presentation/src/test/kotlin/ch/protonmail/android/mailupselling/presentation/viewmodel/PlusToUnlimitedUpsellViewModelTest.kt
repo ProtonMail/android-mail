@@ -144,7 +144,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
         // When
         viewModel.state.test {
             awaitItem()
-            viewModel.recordUpsellButtonTapped()
+            viewModel.recordUpsellButtonTapped(UpsellEntryPoint.NAVBAR_UPSELL)
         }
 
         // Then
@@ -172,7 +172,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
         // When
         viewModel.state.test {
             awaitItem()
-            viewModel.recordUpsellButtonTapped()
+            viewModel.recordUpsellButtonTapped(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO)
         }
 
         // Then
@@ -180,7 +180,7 @@ internal class PlusToUnlimitedUpsellViewModelTest {
             recordUpsellButtonTapped(
                 userId = UserIdTestData.userId,
                 generalDimensions = GeneralDimensions(
-                    upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
+                    upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO,
                     planBeforeUpgrade = "mail2022",
                     modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
                     upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7PlusToUnlimitedUpsell"),

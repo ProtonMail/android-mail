@@ -84,11 +84,11 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
             initialValue = null
         )
 
-    fun recordUpsellButtonTapped() = viewModelScope.launch {
+    fun recordUpsellButtonTapped(upsellEntryPoint: UpsellEntryPoint) = viewModelScope.launch {
         recordUpsellButtonTapped(
             userId = observePrimaryUserId().filterNotNull().first(),
             generalDimensions = GeneralDimensions(
-                upsellEntryPoint = UpsellEntryPoint.NAVBAR_UPSELL,
+                upsellEntryPoint = upsellEntryPoint,
                 planBeforeUpgrade = resolvePlanBeforeUpgrade(),
                 modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
                 upsellExperimentFlag = UpsellExperimentFlag(flagName = PlusToUnlimitedUpsellExperiment.key),

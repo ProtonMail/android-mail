@@ -49,6 +49,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTe
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.ui.PlusToUnlimitedMailButton
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingMailButton
 import ch.protonmail.android.uicomponents.SearchView
 import me.proton.android.core.accountmanager.domain.model.CoreAccountAvatarItem
@@ -137,6 +138,12 @@ fun MailboxTopAppBar(
                     if (uiModel.shouldShowActions) {
                         UpsellingMailButton(onClick = { type ->
                             actions.onNavigateToUpselling(UpsellingEntryPoint.Feature.Navbar, type)
+                        })
+                        PlusToUnlimitedMailButton(onClick = {
+                            actions.onNavigateToUpselling(
+                                UpsellingEntryPoint.Feature.PlusUnlimited,
+                                UpsellingVisibility.Normal.Unlimited
+                            )
                         })
                         if (isSearchButtonVisible) {
                             IconButton(

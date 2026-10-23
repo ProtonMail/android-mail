@@ -41,6 +41,7 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.viewmodel.hiltViewModelOrNull
+import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellContentTheme
 import ch.protonmail.android.mailupselling.presentation.viewmodel.PlusToUnlimitedUpsellViewModel
@@ -56,7 +57,7 @@ fun PlusToUnlimitedUpsellItem(modifier: Modifier = Modifier, onClick: () -> Unit
         isBlackFriday = entryPoint.isBlackFriday,
         modifier = modifier,
         onClick = {
-            viewModel.recordUpsellButtonTapped()
+            viewModel.recordUpsellButtonTapped(UpsellEntryPoint.NAVBAR_UPSELL)
             onClick()
         }
     )
