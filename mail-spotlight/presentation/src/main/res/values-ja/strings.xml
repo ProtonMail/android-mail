@@ -51,24 +51,24 @@
   <string name="spotlight_screen_category_view_button_try">はい、整理します</string>
   <string name="spotlight_screen_category_view_button_dismiss">受信トレイを以前のままに保つ</string>
   <!-- Content Search Spotlight -->
-  <string name="spotlight_screen_content_search_title">Search just got better.</string>
-  <string name="spotlight_screen_content_search_subtitle">Find what matters, without giving up your privacy.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
-  <string name="spotlight_screen_content_search_message_content_subtitle">Find emails by message content, not just subject or sender.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
-  <string name="spotlight_screen_content_search_recent_searches_title">Pick up where you left off</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
-  <string name="spotlight_screen_whats_new_pill">What’s new</string>
-  <string name="spotlight_screen_content_search_button_continue">Continue</string>
-  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
-  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <string name="spotlight_screen_content_search_title">検索がさらに使いやすくなりました。</string>
+  <string name="spotlight_screen_content_search_subtitle">プライバシーを犠牲にすることなく、大切なメールをすばやく発見。</string>
+  <string name="spotlight_screen_content_search_message_content_title">すべての言葉が、検索可能に</string>
+  <string name="spotlight_screen_content_search_message_content_subtitle">件名や送信者だけでなく、メッセージの本文からメールを見つけ出せます。</string>
+  <string name="spotlight_screen_content_search_encryption_title">変わらずエンドツーエンドで暗号化</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">インデックス作成はお使いのデバイス上で行われ、お客様固有の暗号鍵で暗号化されます。Proton にデータが送信されることはありません。</string>
+  <string name="spotlight_screen_content_search_recent_searches_title">前回の続きから再開</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">最近の検索やその結果をすばやく再確認できます。エンドツーエンドの暗号化を維持するため、データはお使いのデバイス内にのみ保存されます。</string>
+  <string name="spotlight_screen_whats_new_pill">新機能</string>
+  <string name="spotlight_screen_content_search_button_continue">続行</string>
+  <string name="spotlight_screen_content_search_button_turn_on">オンにする</string>
+  <string name="spotlight_screen_content_search_button_not_now">今はしない</string>
   <!-- How email content search works -->
-  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_title">本文検索の仕組み</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">メールがこのスマートフォンにダウンロードされます</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">メールの本文を検索できるようにするため、Proton Mail は安全に暗号化されたコピーをお使いのデバイスにダウンロードします。</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">プライベートなインデックスがデバイス上で構築されます</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">お使いのデバイス上で軽量な検索インデックスがローカルに作成されます。これは、探しているメッセージを見つけ出すための地図のようなものとお考えください。</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">バックグラウンドでインデックスを作成します</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">メールのインデックス作成には多少の時間がかかりますが、バックグラウンドで処理されるため、通常どおりメールをご利用いただけます。</string>
 </resources>

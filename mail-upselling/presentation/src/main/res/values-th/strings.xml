@@ -153,5 +153,5 @@
   <string name="upselling_snackbar_error_no_user_id">เกิดข้อผิดพลาด</string>
   <string name="upselling_snackbar_error_no_subscriptions">ไม่สามารถดึงข้อมูลการสมัครสมาชิกได้</string>
   <!-- Snackbar texts -->
-  <string name="upselling_black_friday">11.11</string>
+  <string name="upselling_black_friday">Black Friday</string>
 </resources>

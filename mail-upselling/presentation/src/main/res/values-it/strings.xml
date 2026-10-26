@@ -40,15 +40,15 @@
   <string name="upselling_pu_cta">Ottieni Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
   <string name="upselling_monthly_to_yearly_row_title">Paga annualmente e risparmia il %s</string>
-  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Modifica il tuo ciclo di fatturazione</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Risparmia il %s</string>
-  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_title">Risparmia notevolmente con la fatturazione annuale</string>
   <string name="upselling_monthly_to_yearly_subtitle">Blocca uno sconto su %s</string>
-  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
-  <string name="upselling_monthly_to_yearly_currently">Currently</string>
-  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 anno</string>
+  <string name="upselling_monthly_to_yearly_currently">Attualmente</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">piano di 12 mesi</string>
   <string name="upselling_monthly_to_yearly_cta">Cambia e risparmia il %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Resta sul mensile</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proteggi ulteriormente la tua privacy online con Proton Unlimited.</string>
   <string name="upselling_pu_threat_protection_title">Proteggi il tuo account dalle minacce con Proton Sentinel</string>
