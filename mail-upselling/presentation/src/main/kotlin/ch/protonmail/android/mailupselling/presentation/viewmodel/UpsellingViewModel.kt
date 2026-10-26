@@ -53,6 +53,7 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenCon
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -161,6 +162,12 @@ internal class UpsellingViewModel @Inject constructor(
 
         // Invalidate the upgrades list cache (for all user ids)
         resetPlanUpgradesCache()
+    }
+
+    fun optOutOfPlusToUnlimitedAfterBlackFriday() = appScope.launch {
+        val variant = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.variant
+        if (variant !is PlanUpgradeVariant.BlackFriday) return@launch
+        recordPlusToUnlimitedOptOut(primaryUserId.first())
     }
 
     fun recordDoNotShowAgain() = appScope.launch {
