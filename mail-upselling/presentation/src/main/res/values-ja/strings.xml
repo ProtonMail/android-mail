@@ -33,22 +33,22 @@
   <string name="upselling_mailbox_plus_promo_renewal">最初の1ヶ月間%s、その後は月額%s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimitedへアップグレード</string>
-  <string name="upselling_do_not_show_again">Do not show this offer again</string>
+  <string name="upselling_do_not_show_again">このオファーを今後表示しない</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus を使い続ける</string>
   <string name="upselling_pu_choose_plan">プランを選択</string>
   <string name="upselling_pu_whats_included">含まれるもの</string>
   <string name="upselling_pu_cta">Proton Unlimitedを入手</string>
   <!-- Upselling: Monthly to Yearly -->
   <string name="upselling_monthly_to_yearly_row_title">年払いで%sお得</string>
-  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">請求サイクルを変更</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">%s節約</string>
-  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_title">年払いで大幅にお得</string>
   <string name="upselling_monthly_to_yearly_subtitle">%sの割引を確定</string>
-  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
-  <string name="upselling_monthly_to_yearly_currently">Currently</string>
-  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 年</string>
+  <string name="upselling_monthly_to_yearly_currently">現在のご契約</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12か月プラン</string>
   <string name="upselling_monthly_to_yearly_cta">変更して%s節約</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">月払いを継続</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimitedでオンラインプライバシーをさらに強化</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinelでアカウントを脅威から保護する</string>
@@ -112,12 +112,12 @@
   <string name="upselling_comparison_table_folders_labels">フォルダーとラベル</string>
   <string name="upselling_comparison_table_premium_products">プレミアムVPN、パスワードマネージャー、ストレージ</string>
   <string name="upselling_comparison_table_dark_web_monitoring">ダークウェブモニタリング</string>
-  <string name="upselling_comparison_table_premium_access">Premium access to Mail, VPN, Drive, Pass, and Calendar</string>
-  <string name="upselling_comparison_table_unlimited_aliases">Unlimited aliases to hide your identity</string>
+  <string name="upselling_comparison_table_premium_access">Mail、VPN、Drive、Pass、Calendar へのプレミアムアクセス</string>
+  <string name="upselling_comparison_table_unlimited_aliases">個人情報を隠すための無制限のエイリアス</string>
   <string name="upselling_comparison_table_ultrafast_vpn">110か国以上に対応した超高速VPN</string>
   <string name="upselling_comparison_table_password_manager">暗号化済みのパスワードマネージャー</string>
   <string name="upselling_comparison_table_threat_protection">高度な脅威保護</string>
-  <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
+  <string name="upselling_comparison_table_unlimited_folders_filters_labels">フォルダー、フィルター、ラベルが無制限</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">サブスクリプションを選択</string>
   <string name="upselling_select_plan_year">12ヶ月</string>
@@ -153,5 +153,5 @@
   <string name="upselling_snackbar_error_no_user_id">エラーが発生しました。</string>
   <string name="upselling_snackbar_error_no_subscriptions">サブスクリプションを取得できませんでした。</string>
   <!-- Snackbar texts -->
-  <string name="upselling_black_friday">ブラックフライデー</string>
+  <string name="upselling_black_friday">Black Friday</string>
 </resources>

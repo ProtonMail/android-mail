@@ -153,5 +153,5 @@
   <string name="upselling_snackbar_error_no_user_id">오류가 발생했습니다.</string>
   <string name="upselling_snackbar_error_no_subscriptions">구독을 가져올 수 없습니다.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_black_friday">블랙프라이데이</string>
+  <string name="upselling_black_friday">Black Friday</string>
 </resources>
