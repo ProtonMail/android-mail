@@ -549,6 +549,40 @@ internal class UpsellingViewModelTest {
         verify(exactly = 1) { upsellRatingTriggerRepository.emitUpsellSuccess() }
     }
 
+    @Test
+    fun `should opt out of Plus to Unlimited after a Black Friday purchase`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.BlackFriday.Wave2 }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        viewModel().optOutOfPlusToUnlimitedAfterBlackFriday()
+
+        // Then
+        coVerify(exactly = 1) { recordPlusToUnlimitedOptOut(UserIdTestData.userId) }
+    }
+
+    @Test
+    fun `should not opt out of Plus to Unlimited after a normal purchase`() = runTest {
+        // Given
+        val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
+        val expectedModel = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk { every { variant } returns PlanUpgradeVariant.Normal.MailPlus }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
+
+        // When
+        viewModel().optOutOfPlusToUnlimitedAfterBlackFriday()
+
+        // Then
+        coVerify(exactly = 0) { recordPlusToUnlimitedOptOut(any()) }
+    }
+
     private fun viewModel() = UpsellingViewModel(
         savedStateHandle,
         observePlanUpgrades,
