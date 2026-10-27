@@ -35,6 +35,7 @@
   <string name="upselling_unlimited_title">Proton Unlimited tarifesine yükseltin</string>
   <string name="upselling_do_not_show_again">Bu teklif bir daha görüntülenmesin</string>
   <string name="upselling_stay_on_mail_plus">Mail Plus tarifesinde kalın</string>
+  <string name="upselling_black_friday_do_not_show_again">Bir daha görüntülenmesin</string>
   <string name="upselling_pu_choose_plan">Tarifenizi seçin</string>
   <string name="upselling_pu_whats_included">Neler bulunuyor</string>
   <string name="upselling_pu_cta">Proton Unlimited edinin</string>

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailupselling.domain.usecase
 
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayUpsellOptedOut
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
@@ -33,6 +35,8 @@ import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignSupported
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellOptOutRepository
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -50,10 +54,15 @@ class ObservePlanUpgrades @Inject constructor(
     private val getCurrentFallPromoPhase: GetCurrentFallPromoPhase,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
     private val resolveUpsellVariant: ResolveUpsellVariant,
-    private val upsellEligibilityRepository: UpsellEligibilityRepository
+    private val upsellEligibilityRepository: UpsellEligibilityRepository,
+    private val upsellOptOutRepository: UpsellOptOutRepository,
+    @IsBlackFridayUpsellOptedOut private val blackFridayOptedOut: FeatureFlag<Boolean>
 ) {
 
-    operator fun invoke(entryPoint: UpsellingEntryPoint.Feature) = observePrimaryUserId().flatMapLatest { userId ->
+    operator fun invoke(entryPoint: UpsellingEntryPoint.Feature) = combine(
+        observePrimaryUserId(),
+        upsellOptOutRepository.observeOptOutChanges()
+    ) { userId, _ -> userId }.flatMapLatest { userId ->
         userId ?: return@flatMapLatest flowOf(emptyList())
 
         if (entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited && isPlusToUnlimitedBlackFriday(userId)) {
@@ -68,7 +77,8 @@ class ObservePlanUpgrades @Inject constructor(
         val isBlackFridayOngoing = blackFridayPhase != BlackFridayPhase.None
         val supportsBlackFridayPromo = flowSupportsBlackFriday &&
             isBlackFridayOngoing &&
-            isEligibleForBlackFridayPromotion(userId)
+            isEligibleForBlackFridayPromotion(userId) &&
+            !blackFridayOptedOut.get()
 
         val flowSupportsSpringPromo = entryPoint is SpringPromoSupported
         val isSpringPromoOngoing = getCurrentSpringPromoPhase() != SpringPromoPhase.None
@@ -120,7 +130,9 @@ class ObservePlanUpgrades @Inject constructor(
 
     private suspend fun isPlusToUnlimitedBlackFriday(userId: UserId): Boolean {
         val eligibility = upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId).getOrNull()
-        return eligibility == PlusToUnlimitedOffer.BlackFriday && isEligibleForBlackFridayPromotion(userId)
+        return eligibility == PlusToUnlimitedOffer.BlackFriday &&
+            isEligibleForBlackFridayPromotion(userId) &&
+            !blackFridayOptedOut.get()
     }
 
     private fun BlackFridayPhase.targetPlan() = when (this) {

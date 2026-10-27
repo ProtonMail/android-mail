@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailupselling.domain
 
+import app.cash.turbine.test
 import arrow.core.right
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
@@ -29,6 +31,7 @@ import ch.protonmail.android.mailupselling.domain.model.SpringPromoPhase
 import ch.protonmail.android.mailupselling.domain.model.SummerCampaignPhase
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellOptOutRepository
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentFallPromoPhase
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentSpringPromoPhase
@@ -50,6 +53,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -67,6 +71,12 @@ internal class ObservePlanUpgradesTest {
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val resolveUpsellVariant = mockk<ResolveUpsellVariant>()
     private val upsellEligibilityRepository = mockk<UpsellEligibilityRepository>()
+    private val upsellOptOutRepository = mockk<UpsellOptOutRepository> {
+        every { observeOptOutChanges() } returns flowOf(Unit)
+    }
+    private val blackFridayOptedOut = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
+    }
 
     private val blackFridayUpgrades = listOf(
         UpsellingTestData.MailPlusProducts.MonthlyProductOfferList,
@@ -94,7 +104,9 @@ internal class ObservePlanUpgradesTest {
             getCurrentFallPromoPhase,
             isEligibleForBlackFridayPromotion,
             resolveUpsellVariant,
-            upsellEligibilityRepository
+            upsellEligibilityRepository,
+            upsellOptOutRepository,
+            blackFridayOptedOut
         )
     }
 
@@ -333,5 +345,67 @@ internal class ObservePlanUpgradesTest {
             actualPlans.map { it.offer }
         )
         assertTrue(actualPlans.all { it.metadata.planName == PlanUpgradeIds.UnlimitedPlanId })
+    }
+
+    @Test
+    fun `should return the regular unlimited offers when the user opted out of black friday`() = runTest {
+        // Given
+        coEvery {
+            upsellEligibilityRepository.getPlusToUnlimitedEligibility(userId)
+        } returns PlusToUnlimitedOffer.BlackFriday.right()
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns true
+        coEvery { blackFridayOptedOut.get() } returns true
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(blackFridayUpgrades)
+
+        // When
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.PlusUnlimited).first()
+
+        // Then
+        assertEquals(
+            listOf(
+                UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail.offer,
+                UpsellingTestData.UnlimitedMailProduct.YearlyProductDetail.offer
+            ),
+            actualPlans.map { it.offer }
+        )
+    }
+
+    @Test
+    fun `should not return the black friday offers during black friday when the user opted out`() = runTest {
+        // Given
+        coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.Active.Wave2
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns true
+        coEvery { blackFridayOptedOut.get() } returns true
+        coEvery { resolveUpsellVariant(userId) } returns UpsellVariantPlan.MAIL_PLUS
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(blackFridayUpgrades)
+
+        // When
+        val actualPlans = observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).first()
+
+        // Then
+        assertTrue(actualPlans.none { it.offer == UpsellingTestData.MailPlusProducts.YearlyBFProductDetail.offer })
+    }
+
+    @Test
+    fun `should drop the black friday offers once the user opts out`() = runTest {
+        // Given
+        val optOutChanges = MutableSharedFlow<Unit>(replay = 1).apply { tryEmit(Unit) }
+        every { upsellOptOutRepository.observeOptOutChanges() } returns optOutChanges
+        coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.Active.Wave2
+        coEvery { isEligibleForBlackFridayPromotion(userId) } returns true
+        coEvery { resolveUpsellVariant(userId) } returns UpsellVariantPlan.MAIL_PLUS
+        coEvery { availableUpgradesCache.observe(userId) } returns flowOf(blackFridayUpgrades)
+
+        observePlanUpgrades(entryPoint = UpsellingEntryPoint.Feature.Navbar).test {
+            assertTrue(awaitItem().any { it.offer == UpsellingTestData.MailPlusProducts.YearlyBFProductDetail.offer })
+
+            // When
+            coEvery { blackFridayOptedOut.get() } returns true
+            optOutChanges.emit(Unit)
+
+            // Then
+            assertTrue(awaitItem().none { it.offer == UpsellingTestData.MailPlusProducts.YearlyBFProductDetail.offer })
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 }

@@ -29,11 +29,13 @@ import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellOptOutRepository
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -54,22 +56,30 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         every { this@mockk(userId) } returns flowOf(UserTestData.Primary.right())
     }
     private val upsellEligibilityRepository = mockk<UpsellEligibilityRepository>()
+    private val upsellOptOutRepository = mockk<UpsellOptOutRepository> {
+        every { observeOptOutChanges() } returns flowOf(Unit)
+    }
     private val availableUpgradesCache = mockk<AvailableUpgradesCache>()
     private val getCurrentSubscriptions = mockk<GetCurrentSubscriptions>()
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val sdkUpgradesReadEnabled = mockk<FeatureFlag<Boolean>>()
     private val sdkUpgradesPurchaseEnabled = mockk<FeatureFlag<Boolean>>()
     private val regularUpsellEnabled = mockk<FeatureFlag<Boolean>>()
+    private val blackFridayOptedOut = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
+    }
 
     private val observePlusToUnlimitedEligibility = ObservePlusToUnlimitedEligibility(
         observeUser,
         upsellEligibilityRepository,
+        upsellOptOutRepository,
         availableUpgradesCache,
         getCurrentSubscriptions,
         isEligibleForBlackFridayPromotion,
         regularUpsellEnabled,
         sdkUpgradesReadEnabled,
-        sdkUpgradesPurchaseEnabled
+        sdkUpgradesPurchaseEnabled,
+        blackFridayOptedOut
     )
 
     @Test
@@ -221,6 +231,44 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         observePlusToUnlimitedEligibility(userId).test {
             assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `falls back to the regular offer when the user opted out of Black Friday`() = runTest {
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(true)
+        coEvery { blackFridayOptedOut.get() } returns true
+        coEvery { regularUpsellEnabled.get() } returns true
+        expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
+        expectCurrentPlusSubscription(cycle = 12)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `falls back to the regular offer once the user opts out of Black Friday`() = runTest {
+        val optOutChanges = MutableSharedFlow<Unit>(replay = 1).apply { tryEmit(Unit) }
+        every { upsellOptOutRepository.observeOptOutChanges() } returns optOutChanges
+        expectSdkFlags(read = true, purchase = true)
+        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
+        expectBlackFridayPromotionEligibility(true)
+        coEvery { regularUpsellEnabled.get() } returns true
+        expectUpgradeOffers(UpsellingTestData.UnlimitedMailProduct.YearlyBFProductOfferList)
+        expectCurrentPlusSubscription(cycle = 12)
+
+        observePlusToUnlimitedEligibility(userId).test {
+            assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), awaitItem())
+
+            coEvery { blackFridayOptedOut.get() } returns true
+            optOutChanges.emit(Unit)
+
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
