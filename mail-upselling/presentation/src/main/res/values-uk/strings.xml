@@ -35,6 +35,7 @@
   <string name="upselling_unlimited_title">Покращити до Proton Unlimited</string>
   <string name="upselling_do_not_show_again">Більше не показувати цю пропозицію</string>
   <string name="upselling_stay_on_mail_plus">Залишитися на Mail Plus</string>
+  <string name="upselling_black_friday_do_not_show_again">Не показувати знову</string>
   <string name="upselling_pu_choose_plan">Виберіть тариф</string>
   <string name="upselling_pu_whats_included">Що включено</string>
   <string name="upselling_pu_cta">Отримати Proton Unlimited</string>

@@ -98,6 +98,10 @@ annotation class IsShowRatingBoosterEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsBlackFridayUpsellOptedOut
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsRateOnUpsellEnabled
 
 @Qualifier

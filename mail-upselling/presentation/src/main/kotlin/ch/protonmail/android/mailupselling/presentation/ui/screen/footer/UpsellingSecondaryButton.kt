@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 @Composable
 internal fun UpsellingSecondaryButton(
     text: String,
+    textColor: Color,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -55,7 +57,7 @@ internal fun UpsellingSecondaryButton(
             text = text,
             style = ProtonTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = UpsellingLayoutValues.PaymentButtons.planNameColor
+            color = textColor
         )
     }
 }
@@ -71,6 +73,7 @@ private fun UpsellingSecondaryButtonPreview() {
         ) {
             UpsellingSecondaryButton(
                 text = "Stay on monthly",
+                textColor = UpsellingLayoutValues.PaymentButtons.planNameColor,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {}
             )

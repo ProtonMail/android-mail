@@ -77,7 +77,8 @@ internal fun UpsellingPlanButtonsFooter(
                     buttonVariant = MailPurchaseButtonVariant.SpringPromo,
                     actions = actions,
                     colors = variantColors,
-                    modalVariant = plans.variant.toUpsellModalVariant()
+                    modalVariant = plans.variant.toUpsellModalVariant(),
+                    showDoNotShowAgain = false
                 )
             }
 
@@ -88,7 +89,8 @@ internal fun UpsellingPlanButtonsFooter(
                     buttonVariant = MailPurchaseButtonVariant.FallPromo,
                     actions = actions,
                     colors = variantColors,
-                    modalVariant = plans.variant.toUpsellModalVariant()
+                    modalVariant = plans.variant.toUpsellModalVariant(),
+                    showDoNotShowAgain = false
                 )
             }
 
@@ -99,7 +101,8 @@ internal fun UpsellingPlanButtonsFooter(
                     buttonVariant = MailPurchaseButtonVariant.SummerCampaign,
                     actions = actions,
                     colors = variantColors,
-                    modalVariant = plans.variant.toUpsellModalVariant()
+                    modalVariant = plans.variant.toUpsellModalVariant(),
+                    showDoNotShowAgain = false
                 )
             }
 
@@ -110,7 +113,8 @@ internal fun UpsellingPlanButtonsFooter(
                     buttonVariant = MailPurchaseButtonVariant.BlackFriday,
                     actions = actions,
                     colors = variantColors,
-                    modalVariant = plans.variant.toUpsellModalVariant()
+                    modalVariant = plans.variant.toUpsellModalVariant(),
+                    showDoNotShowAgain = true
                 )
             }
 

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 
 import app.cash.turbine.test
 import arrow.core.right
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.BlackFridaySeenPreference
 import ch.protonmail.android.mailupselling.domain.repository.BlackFridayRepository
@@ -42,6 +43,9 @@ internal class BlackFridayModalTriggerTest {
     private val repository = mockk<BlackFridayRepository>()
     private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase>()
     private val clock = mockk<Clock>()
+    private val blackFridayOptedOut = mockk<FeatureFlag<Boolean>> {
+        coEvery { get() } returns false
+    }
 
     private lateinit var blackFridayModalTrigger: BlackFridayModalTrigger
 
@@ -50,7 +54,8 @@ internal class BlackFridayModalTriggerTest {
         blackFridayModalTrigger = BlackFridayModalTrigger(
             repository,
             getCurrentBlackFridayPhase,
-            clock
+            clock,
+            blackFridayOptedOut
         )
     }
 
@@ -125,6 +130,21 @@ internal class BlackFridayModalTriggerTest {
         expectPreferenceAt(wave = BlackFridayPhase.Active.Wave1, 0L)
         expectPreferenceAt(BlackFridayPhase.Active.Wave2, 1_759_269_600_000) // 10/10/25
         expectBlackFridayPhase(BlackFridayPhase.Active.Wave2)
+
+        // When + Then
+        blackFridayModalTrigger.observe().test {
+            assertEquals(BlackFridayPhase.None, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should not show a trigger when the user opted out of black friday`() = runTest {
+        // Given
+        expectPreferenceAt(BlackFridayPhase.Active.Wave1, 0L)
+        expectPreferenceAt(BlackFridayPhase.Active.Wave2, 0L)
+        expectBlackFridayPhase(BlackFridayPhase.Active.Wave2)
+        coEvery { blackFridayOptedOut.get() } returns true
 
         // When + Then
         blackFridayModalTrigger.observe().test {
