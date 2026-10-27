@@ -35,6 +35,7 @@
   <string name="upselling_unlimited_title">Nâng cấp lên Proton Unlimited</string>
   <string name="upselling_do_not_show_again">Không hiển thị lại ưu đãi này</string>
   <string name="upselling_stay_on_mail_plus">Tiếp tục dùng Mail Plus</string>
+  <string name="upselling_black_friday_do_not_show_again">Không hiển thị lại</string>
   <string name="upselling_pu_choose_plan">Chọn gói</string>
   <string name="upselling_pu_whats_included">Bao gồm những gì</string>
   <string name="upselling_pu_cta">Mua Proton Unlimited</string>

@@ -35,6 +35,7 @@
   <string name="upselling_unlimited_title">อัปเกรดเป็น Proton Unlimited</string>
   <string name="upselling_do_not_show_again">ไม่ต้องแสดงข้อเสนอนี้อีก</string>
   <string name="upselling_stay_on_mail_plus">ใช้ Mail Plus ต่อไป</string>
+  <string name="upselling_black_friday_do_not_show_again">ไม่ต้องแสดงอีก</string>
   <string name="upselling_pu_choose_plan">เลือกแผน</string>
   <string name="upselling_pu_whats_included">มีอะไรบ้าง</string>
   <string name="upselling_pu_cta">รับ Proton Unlimited</string>
