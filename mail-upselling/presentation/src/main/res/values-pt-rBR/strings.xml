@@ -35,6 +35,7 @@
   <string name="upselling_unlimited_title">Faça upgrade à Proton Unlimited</string>
   <string name="upselling_do_not_show_again">Não mostrar mais esta oferta</string>
   <string name="upselling_stay_on_mail_plus">Seguir o Mail Plus</string>
+  <string name="upselling_black_friday_do_not_show_again">Não mostrar novamente</string>
   <string name="upselling_pu_choose_plan">Escolha seu plano</string>
   <string name="upselling_pu_whats_included">O que está incluído</string>
   <string name="upselling_pu_cta">Obter o Proton Unlimited</string>

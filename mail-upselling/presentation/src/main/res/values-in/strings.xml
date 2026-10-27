@@ -33,8 +33,9 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s untuk bulan pertama, lalu %s per bulan</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Tingkatkan ke Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Do not show this offer again</string>
+  <string name="upselling_do_not_show_again">Jangan tampilkan penawaran ini lagi</string>
   <string name="upselling_stay_on_mail_plus">Tetap di Mail Plus</string>
+  <string name="upselling_black_friday_do_not_show_again">Jangan tampilkan lagi</string>
   <string name="upselling_pu_choose_plan">Pilih paket Anda</string>
   <string name="upselling_pu_whats_included">Apa yang termasuk</string>
   <string name="upselling_pu_cta">Dapatkan Proton Unlimited</string>
