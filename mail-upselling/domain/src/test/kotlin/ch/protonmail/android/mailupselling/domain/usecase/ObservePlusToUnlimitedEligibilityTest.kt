@@ -44,7 +44,6 @@ import me.proton.android.core.payment.domain.model.ProductMetadata
 import me.proton.android.core.payment.domain.model.SubscriptionDetail
 import me.proton.android.core.payment.domain.usecase.GetCurrentSubscriptions
 import me.proton.android.core.payment.domain.model.ProductOfferList
-import me.proton.android.core.payment.domain.model.ProductOfferPrice
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -64,7 +63,6 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val sdkUpgradesReadEnabled = mockk<FeatureFlag<Boolean>>()
     private val sdkUpgradesPurchaseEnabled = mockk<FeatureFlag<Boolean>>()
-    private val regularUpsellEnabled = mockk<FeatureFlag<Boolean>>()
     private val blackFridayOptedOut = mockk<FeatureFlag<Boolean>> {
         coEvery { get() } returns false
     }
@@ -76,7 +74,6 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         availableUpgradesCache,
         getCurrentSubscriptions,
         isEligibleForBlackFridayPromotion,
-        regularUpsellEnabled,
         sdkUpgradesReadEnabled,
         sdkUpgradesPurchaseEnabled,
         blackFridayOptedOut
@@ -220,46 +217,38 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     }
 
     @Test
-    fun `falls back to the regular offer when the user cannot get the Black Friday promotion`() = runTest {
+    fun `is not eligible when the user cannot get the Black Friday promotion`() = runTest {
         expectSdkFlags(read = true, purchase = true)
         expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
         expectBlackFridayPromotionEligibility(false)
-        coEvery { regularUpsellEnabled.get() } returns true
-        expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
-        expectCurrentPlusSubscription(cycle = 12)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `falls back to the regular offer when the user opted out of Black Friday`() = runTest {
+    fun `is not eligible when the user opted out of Black Friday`() = runTest {
         expectSdkFlags(read = true, purchase = true)
         expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
         expectBlackFridayPromotionEligibility(true)
         coEvery { blackFridayOptedOut.get() } returns true
-        coEvery { regularUpsellEnabled.get() } returns true
-        expectUpgrades(PlanUpgradeIds.UnlimitedPlanId)
-        expectCurrentPlusSubscription(cycle = 12)
 
         observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `falls back to the regular offer once the user opts out of Black Friday`() = runTest {
+    fun `stops being eligible once the user opts out of Black Friday`() = runTest {
         val optOutChanges = MutableSharedFlow<Unit>(replay = 1).apply { tryEmit(Unit) }
         every { upsellOptOutRepository.observeOptOutChanges() } returns optOutChanges
         expectSdkFlags(read = true, purchase = true)
         expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
         expectBlackFridayPromotionEligibility(true)
-        coEvery { regularUpsellEnabled.get() } returns true
         expectUpgradeOffers(UpsellingTestData.UnlimitedMailProduct.YearlyBFProductOfferList)
-        expectCurrentPlusSubscription(cycle = 12)
 
         observePlusToUnlimitedEligibility(userId).test {
             assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), awaitItem())
@@ -267,35 +256,8 @@ internal class ObservePlusToUnlimitedEligibilityTest {
             coEvery { blackFridayOptedOut.get() } returns true
             optOutChanges.emit(Unit)
 
-            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
             cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `is not eligible when Black Friday is blocked and the regular upsell is off`() = runTest {
-        expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
-        expectBlackFridayPromotionEligibility(false)
-        coEvery { regularUpsellEnabled.get() } returns false
-
-        observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `is not eligible when Black Friday is blocked and the plan is monthly`() = runTest {
-        expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
-        expectBlackFridayPromotionEligibility(false)
-        coEvery { regularUpsellEnabled.get() } returns true
-        expectCurrentPlusSubscription(cycle = 1)
-
-        observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
-            awaitComplete()
         }
     }
 
@@ -322,15 +284,6 @@ internal class ObservePlusToUnlimitedEligibilityTest {
             mockk<SubscriptionDetail> { every { name } returns planName }
         }
         coEvery { getCurrentSubscriptions() } returns subscriptions
-    }
-
-    private fun expectCurrentPlusSubscription(cycle: Int) {
-        val price = mockk<ProductOfferPrice> { every { this@mockk.cycle } returns cycle }
-        val subscription = mockk<SubscriptionDetail> {
-            every { name } returns PlanUpgradeIds.PlusPlanId
-            every { this@mockk.price } returns price
-        }
-        coEvery { getCurrentSubscriptions() } returns listOf(subscription)
     }
 
     private fun expectUpgrades(planName: String) {
