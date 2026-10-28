@@ -552,7 +552,7 @@ internal class UpsellingViewModelTest {
     }
 
     @Test
-    fun `should opt out of Plus to Unlimited after a Black Friday purchase`() = runTest {
+    fun `should opt out of Black Friday offers after a Black Friday purchase`() = runTest {
         // Given
         val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
         coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
@@ -562,14 +562,15 @@ internal class UpsellingViewModelTest {
         coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
 
         // When
-        viewModel().optOutOfPlusToUnlimitedAfterBlackFriday()
+        viewModel().optOutOfBlackFridayAfterPurchase()
 
         // Then
-        coVerify(exactly = 1) { recordPlusToUnlimitedOptOut(UserIdTestData.userId) }
+        coVerify(exactly = 1) { recordBlackFridayOptOut(UserIdTestData.userId) }
+        coVerify(exactly = 0) { recordPlusToUnlimitedOptOut(any()) }
     }
 
     @Test
-    fun `should not opt out of Plus to Unlimited after a normal purchase`() = runTest {
+    fun `should not opt out after a normal purchase`() = runTest {
         // Given
         val expectedList = listOf<ProductOfferDetail>(mockk(), mockk())
         coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedList)
@@ -579,9 +580,10 @@ internal class UpsellingViewModelTest {
         coEvery { upsellingContentReducer.newStateFrom(any()) } returns expectedModel
 
         // When
-        viewModel().optOutOfPlusToUnlimitedAfterBlackFriday()
+        viewModel().optOutOfBlackFridayAfterPurchase()
 
         // Then
+        coVerify(exactly = 0) { recordBlackFridayOptOut(any()) }
         coVerify(exactly = 0) { recordPlusToUnlimitedOptOut(any()) }
     }
 

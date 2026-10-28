@@ -43,7 +43,7 @@ fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifie
             viewModel.recordUpgradeAttempt(upsellingTelemetryPayload)
         },
         onSuccess = { upsellingTelemetryPayload ->
-            viewModel.optOutOfPlusToUnlimitedAfterBlackFriday()
+            viewModel.optOutOfBlackFridayAfterPurchase()
             viewModel.overrideUpsellingVisibility()
             upsellingActions.onSuccess(upsellingTelemetryPayload)
             viewModel.recordUpgradeSuccess(upsellingTelemetryPayload)

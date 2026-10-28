@@ -166,10 +166,10 @@ internal class UpsellingViewModel @Inject constructor(
         resetPlanUpgradesCache()
     }
 
-    fun optOutOfPlusToUnlimitedAfterBlackFriday() = appScope.launch {
+    fun optOutOfBlackFridayAfterPurchase() = appScope.launch {
         val variant = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.variant
         if (variant !is PlanUpgradeVariant.BlackFriday) return@launch
-        recordPlusToUnlimitedOptOut(primaryUserId.first())
+        recordBlackFridayOptOut(primaryUserId.first())
     }
 
     fun recordDoNotShowAgain() = appScope.launch {
