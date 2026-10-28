@@ -114,6 +114,7 @@ internal fun PaymentButtonsPlusToUnlimited(
 
         UpsellingSecondaryButton(
             text = stringResource(R.string.upselling_stay_on_mail_plus),
+            textColor = UpsellingLayoutValues.PaymentButtons.planNameColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = ProtonDimens.Spacing.Large),

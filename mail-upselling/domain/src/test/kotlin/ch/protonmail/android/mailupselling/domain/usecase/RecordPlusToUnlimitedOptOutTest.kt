@@ -21,8 +21,10 @@ package ch.protonmail.android.mailupselling.domain.usecase
 import arrow.core.right
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellOptOut
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellOptOutRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -32,7 +34,8 @@ internal class RecordPlusToUnlimitedOptOutTest {
 
     private val userId = UserId("user-id")
     private val userSessionRepository = mockk<UserSessionRepository>()
-    private val recordPlusToUnlimitedOptOut = RecordPlusToUnlimitedOptOut(userSessionRepository)
+    private val upsellOptOutRepository = mockk<UpsellOptOutRepository>(relaxUnitFun = true)
+    private val recordPlusToUnlimitedOptOut = RecordPlusToUnlimitedOptOut(userSessionRepository, upsellOptOutRepository)
 
     @Test
     fun `writes the opt-out flag override for the user`() = runTest {
@@ -43,5 +46,19 @@ internal class RecordPlusToUnlimitedOptOutTest {
         recordPlusToUnlimitedOptOut(userId)
 
         coVerify { userSessionRepository.overrideFeatureFlag(userId, PlusToUnlimitedUpsellOptOut.key, true) }
+    }
+
+    @Test
+    fun `signals the opt-out change after writing the flag`() = runTest {
+        coEvery {
+            userSessionRepository.overrideFeatureFlag(userId, PlusToUnlimitedUpsellOptOut.key, true)
+        } returns Unit.right()
+
+        recordPlusToUnlimitedOptOut(userId)
+
+        coVerifyOrder {
+            userSessionRepository.overrideFeatureFlag(userId, PlusToUnlimitedUpsellOptOut.key, true)
+            upsellOptOutRepository.emitOptOutChanged()
+        }
     }
 }

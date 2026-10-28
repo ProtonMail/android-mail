@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailupselling.presentation.usecase
 
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayUpsellOptedOut
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.repository.BlackFridayRepository
 import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
@@ -32,7 +34,8 @@ import kotlin.time.times
 class BlackFridayModalTrigger @Inject constructor(
     private val repository: BlackFridayRepository,
     private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase,
-    private val clock: Clock
+    private val clock: Clock,
+    @IsBlackFridayUpsellOptedOut private val blackFridayOptedOut: FeatureFlag<Boolean>
 ) {
 
     fun observe(): Flow<BlackFridayPhase> = combine(
@@ -46,6 +49,7 @@ class BlackFridayModalTrigger @Inject constructor(
     }
 
     private suspend fun invoke(wave1Timestamp: Long, wave2Timestamp: Long): BlackFridayPhase {
+        if (blackFridayOptedOut.get()) return BlackFridayPhase.None
         val currentPhase = getCurrentBlackFridayPhase()
 
         return when (currentPhase) {

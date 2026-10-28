@@ -106,6 +106,10 @@ annotation class IsNpsEnabledInApp
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsBlackFridayUpsellOptedOut
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsRateOnUpsellEnabled
 
 @Qualifier

@@ -20,14 +20,17 @@ package ch.protonmail.android.mailupselling.domain.usecase
 
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellOptOut
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellOptOutRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class RecordPlusToUnlimitedOptOut @Inject constructor(
-    private val userSessionRepository: UserSessionRepository
+    private val userSessionRepository: UserSessionRepository,
+    private val upsellOptOutRepository: UpsellOptOutRepository
 ) {
 
     suspend operator fun invoke(userId: UserId) {
         userSessionRepository.overrideFeatureFlag(userId, PlusToUnlimitedUpsellOptOut.key, true)
+        upsellOptOutRepository.emitOptOutChanged()
     }
 }

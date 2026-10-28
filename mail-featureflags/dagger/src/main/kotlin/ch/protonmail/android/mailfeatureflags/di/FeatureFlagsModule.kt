@@ -25,6 +25,7 @@ import ch.protonmail.android.mailfeatureflags.data.local.factory.BooleanFeatureF
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagValueProvider
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRelaxedBatteryConstraintEnabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayUpsellOptedOut
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
@@ -64,6 +65,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.ConversationDetailWeb
 import ch.protonmail.android.mailfeatureflags.domain.model.DebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Wave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.model.BlackFridayUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
@@ -306,6 +308,12 @@ object FeatureFlagsModule {
 
     @Provides
     @Singleton
+    @IsBlackFridayUpsellOptedOut
+    fun provideIsBlackFridayUpsellOptedOut(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = BlackFridayUpsellOptOut.key, false)
+
+    @Provides
+    @Singleton
     @IsRateOnUpsellEnabled
     fun provideIsRateOnUpsellEnabled(factory: BooleanFeatureFlagFactory) =
         factory.create(key = RateOnUpsellEnabled.key, false)
@@ -409,4 +417,9 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideMonthlyToYearlyOptOutDef(): FeatureFlagDefinition = MonthlyToYearlyUpsellOptOut
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideBlackFridayOptOutDef(): FeatureFlagDefinition = BlackFridayUpsellOptOut
 }

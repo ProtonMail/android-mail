@@ -42,6 +42,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
+import ch.protonmail.android.mailupselling.domain.usecase.RecordBlackFridayOptOut
 import ch.protonmail.android.mailupselling.domain.usecase.RecordPlusToUnlimitedOptOut
 import ch.protonmail.android.mailupselling.domain.usecase.ResetPlanUpgradesCache
 import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
@@ -53,6 +54,7 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenCon
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -89,6 +91,7 @@ internal class UpsellingViewModel @Inject constructor(
     private val upsellRatingTriggerRepository: UpsellRatingTriggerRepository,
     private val resolveActiveUpsellTheme: ResolveActiveUpsellTheme,
     private val recordPlusToUnlimitedOptOut: RecordPlusToUnlimitedOptOut,
+    private val recordBlackFridayOptOut: RecordBlackFridayOptOut,
     private val resolvePlanBeforeUpgrade: ResolvePlanBeforeUpgrade,
     @IsSdkUpgradesPurchaseEnabled private val sdkPurchaseEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
@@ -163,9 +166,20 @@ internal class UpsellingViewModel @Inject constructor(
         resetPlanUpgradesCache()
     }
 
+    fun optOutOfPlusToUnlimitedAfterBlackFriday() = appScope.launch {
+        val variant = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.variant
+        if (variant !is PlanUpgradeVariant.BlackFriday) return@launch
+        recordPlusToUnlimitedOptOut(primaryUserId.first())
+    }
+
     fun recordDoNotShowAgain() = appScope.launch {
         val userId = observePrimaryUserId().first() ?: return@launch
-        recordPlusToUnlimitedOptOut(userId)
+        val variant = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.variant
+        if (variant is PlanUpgradeVariant.BlackFriday) {
+            recordBlackFridayOptOut(userId)
+        } else {
+            recordPlusToUnlimitedOptOut(userId)
+        }
     }
 
     fun recordUpgradeAttempt(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
