@@ -36,6 +36,7 @@ import ch.protonmail.android.mailupselling.data.repository.FallPromoRepositoryIm
 import ch.protonmail.android.mailupselling.data.repository.SpringPromoRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.SummerCampaignRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellEligibilityRepositoryImpl
+import ch.protonmail.android.mailupselling.data.repository.UpsellOptOutRepositoryImpl
 import ch.protonmail.android.mailupselling.data.repository.UpsellRatingTriggerRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.annotation.UpsellingCacheScope
@@ -44,6 +45,7 @@ import ch.protonmail.android.mailupselling.domain.repository.FallPromoRepository
 import ch.protonmail.android.mailupselling.domain.repository.SpringPromoRepository
 import ch.protonmail.android.mailupselling.domain.repository.SummerCampaignRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellOptOutRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import dagger.Binds
 import dagger.Module
@@ -102,6 +104,10 @@ interface UpsellingModule {
     @Binds
     @Singleton
     fun provideUpsellRatingTriggerRepository(impl: UpsellRatingTriggerRepositoryImpl): UpsellRatingTriggerRepository
+
+    @Binds
+    @Singleton
+    fun provideUpsellOptOutRepository(impl: UpsellOptOutRepositoryImpl): UpsellOptOutRepository
 
     @Module
     @InstallIn(SingletonComponent::class)

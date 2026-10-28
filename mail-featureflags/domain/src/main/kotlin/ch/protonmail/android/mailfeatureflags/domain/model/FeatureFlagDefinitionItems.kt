@@ -297,3 +297,11 @@ data object MonthlyToYearlyUpsellOptOut : FeatureFlagDefinition(
     description = "Set when a user hides the monthly to yearly upsell. It stays hidden on all their devices.",
     defaultValue = false
 )
+
+data object BlackFridayUpsellOptOut : FeatureFlagDefinition(
+    key = "MailBlackFridayUpsellOptOut",
+    name = "Black Friday upsell opt-out",
+    category = FeatureFlagCategory.Upselling,
+    description = "Set when a user hides the Black Friday upsell. It stays hidden on all their devices.",
+    defaultValue = false
+)
