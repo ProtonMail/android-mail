@@ -22,13 +22,11 @@ import arrow.core.Either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayUpsellOptedOut
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsPlusToUnlimitedUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.cache.AvailableUpgradesCache
-import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeIds
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeSupportedTags
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
@@ -55,7 +53,6 @@ class ObservePlusToUnlimitedEligibility @Inject constructor(
     private val availableUpgradesCache: AvailableUpgradesCache,
     private val getCurrentSubscriptions: GetCurrentSubscriptions,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
-    @IsPlusToUnlimitedUpsellEnabled private val regularUpsellEnabled: FeatureFlag<Boolean>,
     @IsSdkUpgradesReadEnabled private val sdkUpgradesReadEnabled: FeatureFlag<Boolean>,
     @IsSdkUpgradesPurchaseEnabled private val sdkUpgradesPurchaseEnabled: FeatureFlag<Boolean>,
     @IsBlackFridayUpsellOptedOut private val blackFridayOptedOut: FeatureFlag<Boolean>
@@ -83,17 +80,16 @@ class ObservePlusToUnlimitedEligibility @Inject constructor(
 
         val blackFridayBlocked = rustOffer == PlusToUnlimitedOffer.BlackFriday &&
             (!isEligibleForBlackFridayPromotion(userId) || blackFridayOptedOut.get())
-        if (blackFridayBlocked && !canFallBackToRegular()) {
+        if (blackFridayBlocked) {
             emit(PlusToUnlimitedOffer.None.right())
             return@flow
         }
-        val offer = if (blackFridayBlocked) PlusToUnlimitedOffer.Regular else rustOffer
 
         emitAll(
             availableUpgradesCache.observe(userId).map { upgrades ->
-                val unlimitedAvailable = upgrades.hasUnlimitedOffer(offer)
+                val unlimitedAvailable = upgrades.hasUnlimitedOffer(rustOffer)
                 if (unlimitedAvailable && !isSubscribedToUnlimited()) {
-                    offer.right()
+                    rustOffer.right()
                 } else {
                     PlusToUnlimitedOffer.None.right()
                 }
@@ -111,15 +107,6 @@ class ObservePlusToUnlimitedEligibility @Inject constructor(
         } else {
             unlimitedOffers.isNotEmpty()
         }
-    }
-
-    private suspend fun canFallBackToRegular(): Boolean = regularUpsellEnabled.get() && hasYearlySubscription()
-
-    private suspend fun hasYearlySubscription(): Boolean = runCatching {
-        getCurrentSubscriptions().any { it.price?.cycle == PlanUpgradeCycle.Yearly.months }
-    }.getOrElse {
-        Timber.d(it, "upsell: could not read the current subscriptions")
-        false
     }
 
     private suspend fun isSubscribedToUnlimited(): Boolean = runCatching {
