@@ -38,6 +38,7 @@ import uniffi.mail_uniffi.SyncOrchestartorStartStats
 import uniffi.mail_uniffi.SyncService
 import uniffi.mail_uniffi.SyncServiceIsEnabledResult
 import uniffi.mail_uniffi.SyncServiceStartResult
+import uniffi.mail_uniffi.SyncServiceStatusResult
 import uniffi.mail_uniffi.SyncServiceUserStatusResult
 import uniffi.mail_uniffi.SyncStatus
 import uniffi.mail_uniffi.VoidProtonResult
@@ -103,6 +104,18 @@ internal class SyncServiceWrapperTest {
 
         // Then
         assertEquals(DataError.Remote.NoNetwork.left(), result)
+    }
+
+    @Test
+    fun `status returns the orchestrator status`() = runTest {
+        // Given
+        coEvery { syncService.status() } returns SyncServiceStatusResult.Ok(SyncStatus.OFFLINE)
+
+        // When
+        val result = wrapper.status()
+
+        // Then
+        assertEquals(SyncStatus.OFFLINE.right(), result)
     }
 
     @Test

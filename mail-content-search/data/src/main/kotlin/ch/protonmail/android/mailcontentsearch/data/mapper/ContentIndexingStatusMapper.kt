@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.data.mapper
 
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailcontentsearch.domain.model.FULLY_INDEXED_PERCENTAGE
@@ -33,6 +34,15 @@ internal fun SyncStartOutcome.toStartOutcome(): ContentIndexingStartOutcome = wh
     SyncStartOutcome.DISABLED -> ContentIndexingStartOutcome.Refused
     SyncStartOutcome.COMPLETED -> ContentIndexingStartOutcome.AlreadyCompleted
     SyncStartOutcome.PAUSED -> ContentIndexingStartOutcome.Paused
+}
+
+internal fun SyncStatus.toOrchestratorStatus(): ContentIndexingOrchestratorStatus = when (this) {
+    SyncStatus.PENDING -> ContentIndexingOrchestratorStatus.Pending
+    SyncStatus.ONGOING -> ContentIndexingOrchestratorStatus.Ongoing
+    SyncStatus.OFFLINE -> ContentIndexingOrchestratorStatus.Offline
+    SyncStatus.COMPLETED -> ContentIndexingOrchestratorStatus.Completed
+    SyncStatus.PAUSED -> ContentIndexingOrchestratorStatus.Paused
+    SyncStatus.FAILURE -> ContentIndexingOrchestratorStatus.Failed
 }
 
 internal fun SyncStatus.toIndexingState(progress: Double?): ContentIndexingState = when (this) {

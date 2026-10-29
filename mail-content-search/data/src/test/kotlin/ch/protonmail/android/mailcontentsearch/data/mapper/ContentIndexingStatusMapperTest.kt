@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.data.mapper
 
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import uniffi.mail_uniffi.SyncDriverEvent
 import uniffi.mail_uniffi.SyncEvent
@@ -31,6 +32,19 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class ContentIndexingStatusMapperTest {
+
+    @Test
+    fun `maps every orchestrator status to its domain counterpart`() {
+        val expected = mapOf(
+            SyncStatus.PENDING to ContentIndexingOrchestratorStatus.Pending,
+            SyncStatus.ONGOING to ContentIndexingOrchestratorStatus.Ongoing,
+            SyncStatus.OFFLINE to ContentIndexingOrchestratorStatus.Offline,
+            SyncStatus.COMPLETED to ContentIndexingOrchestratorStatus.Completed,
+            SyncStatus.PAUSED to ContentIndexingOrchestratorStatus.Paused,
+            SyncStatus.FAILURE to ContentIndexingOrchestratorStatus.Failed
+        )
+        assertEquals(expected, SyncStatus.entries.associateWith { it.toOrchestratorStatus() })
+    }
 
     @Test
     fun `maps PENDING status to Idle`() {

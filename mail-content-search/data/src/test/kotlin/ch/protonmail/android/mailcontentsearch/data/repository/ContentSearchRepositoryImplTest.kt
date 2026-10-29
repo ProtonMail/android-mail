@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.usecase.CreateSearchIndex
 import ch.protonmail.android.mailcontentsearch.data.wrapper.SearchIndexWrapper
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
@@ -104,6 +105,19 @@ internal class ContentSearchRepositoryImplTest {
             assertEquals(ContentIndexingActivity.WaitingOnUsers, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `getOrchestratorStatus reads the status rust reports`() = runTest(dispatcher) {
+        // Given
+        coEvery { syncServiceWrapper.status() } returns SyncStatus.OFFLINE.right()
+
+        // When
+        val result = repository.getOrchestratorStatus()
+
+        // Then
+        assertEquals(ContentIndexingOrchestratorStatus.Offline.right(), result)
+        coVerify(exactly = 0) { syncServiceWrapper.start() }
     }
 
     @Test

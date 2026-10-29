@@ -28,8 +28,10 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
@@ -55,6 +57,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.MailBackgroundExecScope
@@ -65,6 +68,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
 
 internal class ContentIndexingWorkerTest {
 
@@ -91,6 +95,10 @@ internal class ContentIndexingWorkerTest {
     private val observeContentIndexingActivity = mockk<ObserveContentIndexingActivity>()
     private val startContentIndexing = mockk<StartContentIndexing> {
         coEvery { this@mockk.invoke() } returns startSummary(pending = 1).right()
+    }
+    // Pending by default, so a silent orchestrator releases the service at the first idle timeout.
+    private val getContentIndexingOrchestratorStatus = mockk<GetContentIndexingOrchestratorStatus> {
+        coEvery { this@mockk.invoke() } returns ContentIndexingOrchestratorStatus.Pending.right()
     }
     private val appInBackground = MutableStateFlow(false)
     private val appInBackgroundState = mockk<AppInBackgroundState> {
@@ -156,6 +164,7 @@ internal class ContentIndexingWorkerTest {
         observeContentIndexingActivity = observeContentIndexingActivity,
         observeContentSearchIndexingStatus = observeContentSearchIndexingStatus,
         startContentIndexing = startContentIndexing,
+        getContentIndexingOrchestratorStatus = getContentIndexingOrchestratorStatus,
         appInBackgroundState = appInBackgroundState,
         workScheduler = workScheduler,
         deviceArchitectureProvider = deviceArchitectureProvider
@@ -610,6 +619,124 @@ internal class ContentIndexingWorkerTest {
     }
 
     @Test
+    fun `holds through a silent batch while the orchestrator is still indexing`() = runTest {
+        // Given - Rust publishes progress only after a whole batch, and one batch can take minutes.
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+
+        // When
+        val work = startSilentAfterProgress()
+        advanceTimeBy(ContentIndexingWorker.IdleTimeout + 1.milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        work.cancel()
+    }
+
+    @Test
+    fun `holds through a silent batch while the orchestrator is offline`() = runTest {
+        // Given - a batch in progress is local work and finishes without the network.
+        givenStatus(ContentIndexingOrchestratorStatus.Offline)
+
+        // When
+        val work = startSilentAfterProgress()
+        advanceTimeBy(ContentIndexingWorker.IdleTimeout + 1.milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        work.cancel()
+    }
+
+    @Test
+    fun `releases after a silent batch when the orchestrator status cannot be read`() = runTest {
+        // Given
+        coEvery { getContentIndexingOrchestratorStatus() } returns DataError.Local.Unknown.left()
+
+        // When
+        val work = startSilentAfterProgress()
+        advanceTimeBy(ContentIndexingWorker.IdleTimeout + 1.milliseconds)
+
+        // Then
+        assertFalse(work.isActive)
+    }
+
+    @Test
+    fun `releases after a silent batch once the orchestrator is no longer indexing`() = runTest {
+        val notIndexing = listOf(
+            ContentIndexingOrchestratorStatus.Pending,
+            ContentIndexingOrchestratorStatus.Completed,
+            ContentIndexingOrchestratorStatus.Paused,
+            ContentIndexingOrchestratorStatus.Failed
+        )
+        notIndexing.forEach { status ->
+            // Given
+            givenStatus(status)
+
+            // When
+            val work = startSilentAfterProgress()
+            advanceTimeBy(ContentIndexingWorker.IdleTimeout + 1.milliseconds)
+
+            // Then
+            assertFalse(work.isActive, "still holding for $status")
+        }
+    }
+
+    @Test
+    fun `reads the orchestrator status rather than starting it again`() = runTest {
+        // Given - a start could restart an account that was stopped on purpose.
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+
+        // When
+        val work = startSilentAfterProgress()
+        advanceTimeBy(ContentIndexingWorker.IdleTimeout + 1.milliseconds)
+
+        // Then
+        coVerify(exactly = 1) { startContentIndexing() }
+        coVerify(exactly = 1) { getContentIndexingOrchestratorStatus() }
+        work.cancel()
+    }
+
+    @Test
+    fun `releases after the longest silence whatever the orchestrator reports`() = runTest {
+        // Given - an account can stay Ongoing without moving at all.
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        val work = startSilentAfterProgress()
+
+        // When
+        advanceTimeBy(ContentIndexingWorker.MaxSilence - 1.milliseconds)
+        val isHoldingBeforeTheCap = work.isActive
+        advanceTimeBy(2.milliseconds)
+
+        // Then
+        assertTrue(isHoldingBeforeTheCap)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `progress starts the longest silence over`() = runTest {
+        // Given
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        val progressAgainAfter = 12.minutes
+        givenActivity(
+            flow {
+                emit(progress())
+                delay(progressAgainAfter)
+                emit(progress())
+                awaitCancellation()
+            }
+        )
+        val work = async { worker().doWork() }
+
+        // When
+        advanceTimeBy(ContentIndexingWorker.MaxSilence + 1.milliseconds)
+        val isHoldingPastTheFirstCap = work.isActive
+        advanceTimeBy(progressAgainAfter)
+
+        // Then
+        assertTrue(isHoldingPastTheFirstCap)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
     fun `does not show a notification while the app is on screen`() = runTest {
         // Given - the worker is enqueued from the foreground, but the service is only worth
         // anything once the app is off screen.
@@ -938,6 +1065,20 @@ internal class ContentIndexingWorkerTest {
 
     private fun account(userId: UserId) = mockk<Account> {
         every { primaryAddress } returns "${userId.id}@proton.me"
+    }
+
+    private fun givenStatus(status: ContentIndexingOrchestratorStatus) {
+        coEvery { getContentIndexingOrchestratorStatus() } returns status.right()
+    }
+
+    private fun TestScope.startSilentAfterProgress() = run {
+        givenActivity(
+            flow {
+                emit(progress())
+                awaitCancellation()
+            }
+        )
+        async { worker().doWork() }.also { runCurrent() }
     }
 
     private fun givenActivity(flow: Flow<ContentIndexingActivity>) {

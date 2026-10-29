@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontentsearch.domain.repository
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
@@ -38,6 +39,9 @@ interface ContentSearchRepository {
      * restarting - so it is safe to call on every foreground transition.
      */
     suspend fun startIndexing(): Either<DataError, ContentIndexingStartSummary>
+
+    /** The orchestrator's status across every account. Read-only: it starts nothing. */
+    suspend fun getOrchestratorStatus(): Either<DataError, ContentIndexingOrchestratorStatus>
 
     /**
      * Starts indexing [userId] specifically, which is the only way out of a recorded failure: Rust

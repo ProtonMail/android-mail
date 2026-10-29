@@ -41,6 +41,7 @@ import uniffi.mail_uniffi.SyncServiceIsEnabledResult
 import uniffi.mail_uniffi.SyncServiceShouldShowMobileSheetResult
 import uniffi.mail_uniffi.SyncServiceStartResult
 import uniffi.mail_uniffi.SyncServiceStartUserResult
+import uniffi.mail_uniffi.SyncServiceStatusResult
 import uniffi.mail_uniffi.SyncServiceSubscribeResult
 import uniffi.mail_uniffi.SyncServiceSubscribeUserResult
 import uniffi.mail_uniffi.SyncServiceUserProgressResult
@@ -129,6 +130,14 @@ class SyncServiceWrapper(
                 VoidProtonResult.Ok -> Unit.right()
             }
         }
+
+    /** The orchestrator's status across every account. Read-only, unlike [start]. */
+    suspend fun status(): Either<DataError, SyncStatus> = actorCall { service ->
+        when (val result = service.status()) {
+            is SyncServiceStatusResult.Error -> result.v1.toDataError().left()
+            is SyncServiceStatusResult.Ok -> result.v1.right()
+        }
+    }
 
     suspend fun userStatus(userSession: MailUserSessionWrapper): Either<DataError, SyncStatus> = actorCall { service ->
         when (val result = service.userStatus(userSession.getRustUserSession())) {
