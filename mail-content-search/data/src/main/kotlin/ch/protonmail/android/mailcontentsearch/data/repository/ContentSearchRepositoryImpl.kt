@@ -28,10 +28,12 @@ import ch.protonmail.android.mailcontentsearch.data.mapper.isTerminal
 import ch.protonmail.android.mailcontentsearch.data.mapper.log
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingActivity
 import ch.protonmail.android.mailcontentsearch.data.mapper.toIndexingState
+import ch.protonmail.android.mailcontentsearch.data.mapper.toOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.data.mapper.toStartOutcome
 import ch.protonmail.android.mailcontentsearch.data.mapper.toStartSummary
 import ch.protonmail.android.mailcontentsearch.data.usecase.CreateSearchIndex
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartOutcome
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingState
@@ -135,6 +137,9 @@ class ContentSearchRepositoryImpl @Inject constructor(
 
     override suspend fun startIndexing(): Either<DataError, ContentIndexingStartSummary> =
         withContext(ioDispatcher) { syncService.start().map { it.toStartSummary() } }
+
+    override suspend fun getOrchestratorStatus(): Either<DataError, ContentIndexingOrchestratorStatus> =
+        withContext(ioDispatcher) { syncService.status().map { it.toOrchestratorStatus() } }
 
     override suspend fun startIndexingForUser(userId: UserId): Either<DataError, ContentIndexingStartOutcome> =
         executeWithUserSession(userId) { wrapper ->

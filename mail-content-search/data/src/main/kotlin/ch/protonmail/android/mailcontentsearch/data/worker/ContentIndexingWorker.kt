@@ -31,7 +31,9 @@ import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.data.util.formatPercentage
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
+import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.backfillPercentage
+import ch.protonmail.android.mailcontentsearch.domain.usecase.GetContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentSearchIndexingStatus
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StartContentIndexing
@@ -83,6 +85,7 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val observeContentIndexingActivity: ObserveContentIndexingActivity,
     private val observeContentSearchIndexingStatus: ObserveContentSearchIndexingStatus,
     private val startContentIndexing: StartContentIndexing,
+    private val getContentIndexingOrchestratorStatus: GetContentIndexingOrchestratorStatus,
     private val appInBackgroundState: AppInBackgroundState,
     private val workScheduler: ContentIndexingWorkScheduler,
     private val deviceArchitectureProvider: DeviceArchitectureProvider
@@ -108,6 +111,9 @@ class ContentIndexingWorker @AssistedInject constructor(
     // Set while the orchestrator is between accounts, so the loop waits on [HandoverTimeout] rather
     // than the long idle one and the notification is left as it is. Only the loop touches this.
     private var isHandingOver = false
+
+    // How many [IdleTimeout] periods in a row have passed without progress. Only the loop touches this.
+    private var silentIdlePeriods = 0
 
     // Set once the orchestrator loop has decided to end, so backgrounding the app before the
     // visibility collector is cancelled cannot promote a worker on its way out. Written by the loop
@@ -233,14 +239,20 @@ class ContentIndexingWorker @AssistedInject constructor(
         // worker hears that indexing stopped - hence the watchdog. receiveCatching so the cancel in
         // [awaitIndexingIdle] releases the service instead of failing the run.
         val activity = withTimeoutOrNull(timeout) { activities.receiveCatching().getOrNull() }
-        when {
-            activity == null ->
-                Timber.w("content-search: no indexing progress within $timeout, releasing the service")
+        return when {
+            activity == null -> {
+                val isHolding = timeout == IdleTimeout && shouldHoldThroughSilence()
+                if (!isHolding) {
+                    Timber.w("content-search: no indexing progress within $timeout, releasing the service")
+                }
+                isHolding
+            }
 
             activity is ContentIndexingActivity.Progress -> {
                 isHandingOver = false
+                silentIdlePeriods = 0
                 refreshNotification(activity)
-                return true
+                true
             }
 
             shouldWaitForAnotherAccount(activity) -> {
@@ -251,14 +263,51 @@ class ContentIndexingWorker @AssistedInject constructor(
                     "content-search: orchestrator between accounts ($activity), " +
                         "holding for $HandoverTimeout [${lastCounts()}]"
                 )
-                return true
+                true
             }
 
-            else -> Timber.d(
-                "content-search: orchestrator went idle ($activity), releasing the service [${lastCounts()}]"
-            )
+            else -> {
+                Timber.d(
+                    "content-search: orchestrator went idle ($activity), releasing the service [${lastCounts()}]"
+                )
+                false
+            }
         }
-        return false
+    }
+
+    /**
+     * Whether to keep the service through another [IdleTimeout] without progress.
+     *
+     * Rust publishes progress only after a whole batch. A slow batch can stay silent for many
+     * minutes while Rust is still working, so silence alone does not mean indexing stopped.
+     *
+     * The status is read, not started: [StartContentIndexing] could restart a stopped account.
+     * `Offline` holds too, because a batch in progress is local work and finishes without the
+     * network. A real network loss stops the worker anyway through its network constraint.
+     * [MaxSilence] bounds all of this, because `Ongoing` only says an account is in the indexing
+     * state, not that it is moving.
+     *
+     * An unreadable status releases. Without a confirmed batch the notification must not stay up.
+     */
+    private suspend fun shouldHoldThroughSilence(): Boolean {
+        silentIdlePeriods++
+        val silence = IdleTimeout * silentIdlePeriods
+        if (silence >= MaxSilence) return false
+        val isIndexing = getContentIndexingOrchestratorStatus().fold(
+            ifLeft = { error ->
+                Timber.w("content-search: could not read the orchestrator status, releasing: $error")
+                false
+            },
+            ifRight = { status ->
+                Timber.d("content-search: orchestrator status is $status")
+                status == ContentIndexingOrchestratorStatus.Ongoing ||
+                    status == ContentIndexingOrchestratorStatus.Offline
+            }
+        )
+        if (isIndexing) {
+            Timber.w("content-search: no indexing progress for $silence, holding the service [${lastCounts()}]")
+        }
+        return isIndexing
     }
 
     /**
@@ -489,8 +538,19 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     internal companion object {
 
-        /** An orchestrator that stops publishing must not hold a foreground service forever. */
+        /**
+         * How long the worker waits for the next progress before it asks Rust whether indexing is
+         * still running. See [shouldHoldThroughSilence].
+         */
         val IdleTimeout: Duration = 5.minutes
+
+        /**
+         * The longest the worker holds the service without progress, whatever Rust reports.
+         *
+         * An orchestrator that stops publishing must not hold a foreground service forever. Every
+         * minute held also spends the app-wide Android 15 dataSync budget.
+         */
+        val MaxSilence: Duration = 20.minutes
 
         /**
          * How long the orchestrator has to pick up the next account when its stats say there are
