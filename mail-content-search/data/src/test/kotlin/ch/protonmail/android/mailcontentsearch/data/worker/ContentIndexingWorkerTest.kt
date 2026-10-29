@@ -573,7 +573,7 @@ internal class ContentIndexingWorkerTest {
 
     @Test
     fun `gives up when the orchestrator promises work and then publishes none`() = runTest {
-        // Given
+        // Given - and Rust does not report an account indexing either.
         coEvery { startContentIndexing() } returns startSummary(pending = 1).right()
         appInBackground.value = true
         givenActivity(flow { awaitCancellation() })
@@ -586,6 +586,57 @@ internal class ContentIndexingWorkerTest {
         assertTrue(work.isActive)
         advanceTimeBy(2.milliseconds)
         assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `holds through a slow first batch while the orchestrator is indexing`() = runTest {
+        // Given - a worker that replaces another one often starts in the middle of a batch.
+        coEvery { startContentIndexing() } returns startSummary(pending = 1).right()
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        givenActivity(flow { awaitCancellation() })
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.StartupTimeout + 1.milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        coVerify(exactly = 1) { getContentIndexingOrchestratorStatus() }
+        work.cancel()
+    }
+
+    @Test
+    fun `ends a silent start after the longest silence whatever the orchestrator reports`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } returns startSummary(pending = 1).right()
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        givenActivity(flow { awaitCancellation() })
+        val work = async { worker().doWork() }
+
+        // When
+        advanceTimeBy(ContentIndexingWorker.MaxSilence - 1.milliseconds)
+        val isHoldingBeforeTheCap = work.isActive
+        advanceTimeBy(2.milliseconds)
+
+        // Then
+        assertTrue(isHoldingBeforeTheCap)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+    }
+
+    @Test
+    fun `does not ask the orchestrator when there was nothing to index`() = runTest {
+        // Given
+        coEvery { startContentIndexing() } returns startSummary(completed = 1).right()
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        givenActivity(flow { awaitCancellation() })
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.NoWorkTimeout + 1.milliseconds)
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), work.await())
+        coVerify(exactly = 0) { getContentIndexingOrchestratorStatus() }
     }
 
     private fun startSummary(pending: Long = 0, completed: Long = 0) = ContentIndexingStartSummary(
