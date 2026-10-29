@@ -608,6 +608,7 @@ internal class ContentIndexingWorkerTest {
     @Test
     fun `ends a silent start after the longest silence whatever the orchestrator reports`() = runTest {
         // Given
+        appInBackground.value = true
         coEvery { startContentIndexing() } returns startSummary(pending = 1).right()
         givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
         givenActivity(flow { awaitCancellation() })
@@ -749,6 +750,7 @@ internal class ContentIndexingWorkerTest {
     @Test
     fun `releases after the longest silence whatever the orchestrator reports`() = runTest {
         // Given - an account can stay Ongoing without moving at all.
+        appInBackground.value = true
         givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
         val work = startSilentAfterProgress()
 
@@ -763,8 +765,45 @@ internal class ContentIndexingWorkerTest {
     }
 
     @Test
+    fun `waits through a silent batch on screen without using up the longest silence`() = runTest {
+        // Given - no service is held, so there is no notification and no budget to protect.
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        val work = startSilentAfterProgress()
+
+        // When
+        advanceTimeBy(ContentIndexingWorker.MaxSilence * 2)
+
+        // Then
+        assertTrue(work.isActive)
+        work.cancel()
+    }
+
+    @Test
+    fun `asks the orchestrator before giving up on a handover`() = runTest {
+        // Given - the next account's first batch can run longer than the handover wait.
+        givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
+        givenActivity(
+            flow {
+                emit(progress(completedUsers = 1, userCount = 2))
+                emit(ContentIndexingActivity.WaitingOnUsers)
+                awaitCancellation()
+            }
+        )
+
+        // When
+        val work = async { worker().doWork() }
+        advanceTimeBy(ContentIndexingWorker.HandoverTimeout + 1.milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
+        coVerify(exactly = 1) { getContentIndexingOrchestratorStatus() }
+        work.cancel()
+    }
+
+    @Test
     fun `progress starts the longest silence over`() = runTest {
         // Given
+        appInBackground.value = true
         givenStatus(ContentIndexingOrchestratorStatus.Ongoing)
         val progressAgainAfter = 12.minutes
         givenActivity(

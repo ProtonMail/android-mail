@@ -112,7 +112,8 @@ class ContentIndexingWorker @AssistedInject constructor(
     // than the long idle one and the notification is left as it is. Only the loop touches this.
     private var isHandingOver = false
 
-    // How long the worker has waited without progress, summed over every timeout. Only the loop touches this.
+    // How long the worker has held the service without progress, summed over every timeout. Only the
+    // loop touches this.
     private var silence = Duration.ZERO
 
     // Set once the orchestrator loop has decided to end, so backgrounding the app before the
@@ -235,13 +236,14 @@ class ContentIndexingWorker @AssistedInject constructor(
             latestProgress == null -> if (hasWorkPending) StartupTimeout else NoWorkTimeout
             else -> IdleTimeout
         }
+        // Every wait asks Rust before giving up, except the one where nothing said there was work.
+        val canHold = latestProgress != null || hasWorkPending
         // The activity stream is shared app-wide and never completes, so silence is the only way this
         // worker hears that indexing stopped - hence the watchdog. receiveCatching so the cancel in
         // [awaitIndexingIdle] releases the service instead of failing the run.
         val activity = withTimeoutOrNull(timeout) { activities.receiveCatching().getOrNull() }
         return when {
             activity == null -> {
-                val canHold = timeout == IdleTimeout || timeout == StartupTimeout
                 val isHolding = canHold && shouldHoldThroughSilence(timeout)
                 if (!isHolding) {
                     Timber.w("content-search: no indexing progress within $timeout, ${releaseLabel()}")
@@ -279,19 +281,22 @@ class ContentIndexingWorker @AssistedInject constructor(
      *
      * Rust publishes progress only after a whole batch. A slow batch can stay silent for many
      * minutes while Rust is still working, so silence alone does not mean indexing stopped.
-     * This covers the first batch a worker sees as well. Every return to the screen replaces the
-     * worker, so the new one often starts in the middle of a batch.
+     * This covers the first batch a worker sees, and the first batch of the next account after a
+     * handover. Every return to the screen replaces the worker, so the new one often starts in the
+     * middle of a batch.
      *
      * The status is read, not started: [StartContentIndexing] could restart a stopped account.
      * `Offline` holds too, because a batch in progress is local work and finishes without the
      * network. A real network loss stops the worker anyway through its network constraint.
      * [MaxSilence] bounds all of this, because `Ongoing` only says an account is in the indexing
-     * state, not that it is moving.
+     * state, not that it is moving. Only time with the service held counts towards it. A worker on
+     * screen shows no notification and spends no budget.
      *
      * An unreadable status releases. Without a confirmed batch the notification must not stay up.
      */
     private suspend fun shouldHoldThroughSilence(timeout: Duration): Boolean {
-        silence += timeout
+        val isHeld = isServiceHeld()
+        if (isHeld) silence += timeout
         if (silence >= MaxSilence) return false
         val isIndexing = getContentIndexingOrchestratorStatus().fold(
             ifLeft = { error ->
@@ -305,8 +310,8 @@ class ContentIndexingWorker @AssistedInject constructor(
             }
         )
         if (isIndexing) {
-            val holding = if (isServiceHeld()) "holding the service" else "waiting"
-            Timber.w("content-search: no indexing progress for $silence, $holding [${lastCounts()}]")
+            val holding = if (isHeld) "for $silence, holding the service" else "within $timeout, waiting"
+            Timber.w("content-search: no indexing progress $holding [${lastCounts()}]")
         }
         return isIndexing
     }
@@ -553,13 +558,16 @@ class ContentIndexingWorker @AssistedInject constructor(
          *
          * An orchestrator that stops publishing must not hold a foreground service forever. Every
          * minute held also spends the app-wide Android 15 dataSync budget.
+         *
+         * The slowest batch seen in user logs took about 25 minutes, so this leaves some margin.
          */
-        val MaxSilence: Duration = 20.minutes
+        val MaxSilence: Duration = 30.minutes
 
         /**
          * How long the orchestrator has to pick up the next account when its stats say there are
          * accounts left. Far shorter than [IdleTimeout] because it bounds a notification already on
-         * screen, but long enough to fetch an account's first batch.
+         * screen, but long enough to fetch an account's first batch. When it fires, the worker asks
+         * Rust like it does on [IdleTimeout].
          */
         val HandoverTimeout: Duration = 30.seconds
 

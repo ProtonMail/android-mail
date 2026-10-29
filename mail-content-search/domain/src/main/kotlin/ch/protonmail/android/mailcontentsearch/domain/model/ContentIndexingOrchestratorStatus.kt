@@ -21,7 +21,12 @@ package ch.protonmail.android.mailcontentsearch.domain.model
 /** The orchestrator's status across every account. */
 enum class ContentIndexingOrchestratorStatus {
 
-    /** No account is indexing. Accounts may be waiting to start or still being prepared. */
+    /**
+     * No account is indexing.
+     *
+     * Rust reports this for accounts waiting to start, being prepared, paused or stopped. It does not
+     * tell them apart.
+     */
     Pending,
 
     /** An account is indexing. */
@@ -33,7 +38,12 @@ enum class ContentIndexingOrchestratorStatus {
     /** Every account is indexed. Forward sync for new mail counts as completed. */
     Completed,
 
+    /**
+     * Mirrors Rust's status type. The status across accounts never reports it. Only the per-account
+     * status does.
+     */
     Paused,
 
+    /** An account failed to index. */
     Failed
 }
