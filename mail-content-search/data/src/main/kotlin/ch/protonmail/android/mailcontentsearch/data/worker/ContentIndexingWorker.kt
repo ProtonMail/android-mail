@@ -112,8 +112,8 @@ class ContentIndexingWorker @AssistedInject constructor(
     // than the long idle one and the notification is left as it is. Only the loop touches this.
     private var isHandingOver = false
 
-    // How many [IdleTimeout] periods in a row have passed without progress. Only the loop touches this.
-    private var silentIdlePeriods = 0
+    // How long the worker has waited without progress, summed over every timeout. Only the loop touches this.
+    private var silence = Duration.ZERO
 
     // Set once the orchestrator loop has decided to end, so backgrounding the app before the
     // visibility collector is cancelled cannot promote a worker on its way out. Written by the loop
@@ -241,16 +241,17 @@ class ContentIndexingWorker @AssistedInject constructor(
         val activity = withTimeoutOrNull(timeout) { activities.receiveCatching().getOrNull() }
         return when {
             activity == null -> {
-                val isHolding = timeout == IdleTimeout && shouldHoldThroughSilence()
+                val canHold = timeout == IdleTimeout || timeout == StartupTimeout
+                val isHolding = canHold && shouldHoldThroughSilence(timeout)
                 if (!isHolding) {
-                    Timber.w("content-search: no indexing progress within $timeout, releasing the service")
+                    Timber.w("content-search: no indexing progress within $timeout, ${releaseLabel()}")
                 }
                 isHolding
             }
 
             activity is ContentIndexingActivity.Progress -> {
                 isHandingOver = false
-                silentIdlePeriods = 0
+                silence = Duration.ZERO
                 refreshNotification(activity)
                 true
             }
@@ -267,19 +268,19 @@ class ContentIndexingWorker @AssistedInject constructor(
             }
 
             else -> {
-                Timber.d(
-                    "content-search: orchestrator went idle ($activity), releasing the service [${lastCounts()}]"
-                )
+                Timber.d("content-search: orchestrator went idle ($activity), ${releaseLabel()} [${lastCounts()}]")
                 false
             }
         }
     }
 
     /**
-     * Whether to keep the service through another [IdleTimeout] without progress.
+     * Whether to keep the service through another [timeout] without progress.
      *
      * Rust publishes progress only after a whole batch. A slow batch can stay silent for many
      * minutes while Rust is still working, so silence alone does not mean indexing stopped.
+     * This covers the first batch a worker sees as well. Every return to the screen replaces the
+     * worker, so the new one often starts in the middle of a batch.
      *
      * The status is read, not started: [StartContentIndexing] could restart a stopped account.
      * `Offline` holds too, because a batch in progress is local work and finishes without the
@@ -289,9 +290,8 @@ class ContentIndexingWorker @AssistedInject constructor(
      *
      * An unreadable status releases. Without a confirmed batch the notification must not stay up.
      */
-    private suspend fun shouldHoldThroughSilence(): Boolean {
-        silentIdlePeriods++
-        val silence = IdleTimeout * silentIdlePeriods
+    private suspend fun shouldHoldThroughSilence(timeout: Duration): Boolean {
+        silence += timeout
         if (silence >= MaxSilence) return false
         val isIndexing = getContentIndexingOrchestratorStatus().fold(
             ifLeft = { error ->
@@ -305,10 +305,14 @@ class ContentIndexingWorker @AssistedInject constructor(
             }
         )
         if (isIndexing) {
-            Timber.w("content-search: no indexing progress for $silence, holding the service [${lastCounts()}]")
+            val holding = if (isServiceHeld()) "holding the service" else "waiting"
+            Timber.w("content-search: no indexing progress for $silence, $holding [${lastCounts()}]")
         }
         return isIndexing
     }
+
+    /** Says whether ending the loop drops a service, so the logs do not claim one that was never held. */
+    private suspend fun releaseLabel(): String = if (isServiceHeld()) "releasing the service" else "ending the worker"
 
     /**
      * The counters the session last published, logged beside a hold or a release so a bug report shows
@@ -566,6 +570,9 @@ class ContentIndexingWorker @AssistedInject constructor(
          * network does that: it stops mid-account, and there is no event for it. The notification
          * has nothing to report until the first progress, so this is how long "Preparing" can sit
          * on screen with nothing behind it. [IdleTimeout] would make that five minutes.
+         *
+         * When it fires, the worker asks Rust like it does on [IdleTimeout]. A slow first batch keeps
+         * the service, up to [MaxSilence].
          */
         val StartupTimeout: Duration = 1.minutes
 
