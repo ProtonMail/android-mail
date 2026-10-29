@@ -69,10 +69,10 @@ import kotlin.time.Duration.Companion.seconds
  * and exists only so the process survives being backgrounded.
  *
  * It exits once the orchestrator stops making progress: on [ContentIndexingActivity.Stopped] or
- * [ContentIndexingActivity.Failed], on watchdog silence, or on [ContentIndexingActivity.ForwardMode]
- * / [ContentIndexingActivity.WaitingOnUsers] with no accounts left. Those last two are not exit
- * conditions on their own - they are also published while an account is still to come, see
- * [shouldWaitForAnotherAccount].
+ * [ContentIndexingActivity.Failed], on watchdog silence, [UnpromotedGrace] after a refused service, or
+ * on [ContentIndexingActivity.ForwardMode] / [ContentIndexingActivity.WaitingOnUsers] with no accounts
+ * left. Those last two are not exit conditions on their own - they are also published while an
+ * account is still to come, see [shouldWaitForAnotherAccount].
  */
 @HiltWorker
 class ContentIndexingWorker @AssistedInject constructor(
@@ -98,6 +98,9 @@ class ContentIndexingWorker @AssistedInject constructor(
 
     /** Completed once the orchestrator has answered whether it has anything to index. */
     private val orchestratorHasWork = CompletableDeferred<Boolean>()
+
+    /** Completed once the platform has refused the foreground service. See [UnpromotedGrace]. */
+    private val promotionRefused = CompletableDeferred<Unit>()
 
     @Volatile
     private var latestProgress: ContentIndexingActivity.Progress? = null
@@ -192,8 +195,18 @@ class ContentIndexingWorker @AssistedInject constructor(
         if (!hasWorkPending) Timber.d("content-search: orchestrator reports nothing to index")
         orchestratorHasWork.complete(hasWorkPending)
         try {
-            var isHolding = true
-            while (isHolding) isHolding = awaitNextActivity(activities, hasWorkPending)
+            val holding = launch {
+                var isHolding = true
+                while (isHolding) isHolding = awaitNextActivity(activities, hasWorkPending)
+            }
+            val unpromotedBound = launch {
+                promotionRefused.await()
+                delay(UnpromotedGrace)
+                Timber.w("content-search: no service for $UnpromotedGrace, ending the unprotected run")
+                holding.cancel()
+            }
+            holding.join()
+            unpromotedBound.cancel()
             // Before unwinding, not after: WorkManager still reports this worker as `RUNNING` until
             // it has finished returning.
             isWindingDown = true
@@ -313,11 +326,18 @@ class ContentIndexingWorker @AssistedInject constructor(
                 // Cancelled by collectLatest if the app leaves again within the window. Asked after
                 // the wait, so a worker that took the service during it is not left holding it.
                 delay(ForegroundReturnDebounce)
-                if (!isServiceHeld()) return@collectLatest
+                // A refused worker never asks again, so it is replaced too. The replacement is
+                // enqueued while the app is on screen, so it can promote the next time the app leaves.
+                val isRefused = promotionRefused.isCompleted
+                if (!isServiceHeld() && !isRefused) return@collectLatest
                 isReplacingSelf = true
                 isWindingDown = true
                 workScheduler.markWorkerExiting()
-                Timber.d("content-search: app back on screen, dropping the indexing service")
+                if (isRefused) {
+                    Timber.d("content-search: app back on screen, replacing the worker whose service was refused")
+                } else {
+                    Timber.d("content-search: app back on screen, dropping the indexing service")
+                }
                 workScheduler.restart()
             }
     }
@@ -366,6 +386,9 @@ class ContentIndexingWorker @AssistedInject constructor(
         if (!appInBackgroundState.isAppInBackground()) return
         // Nothing to protect: this worker is leaving, and the service would have to go straight back.
         if (isWindingDown) return
+        // A second attempt always looks granted but starts nothing. WorkManager took the work out of
+        // its queue during the refused attempt, so the retry finds nothing to promote.
+        if (promotionRefused.isCompleted) return
         if (latestProgress == null && !orchestratorHasWork.await()) {
             Timber.d("content-search: nothing to index, leaving the indexing worker unpromoted")
             return
@@ -379,7 +402,11 @@ class ContentIndexingWorker @AssistedInject constructor(
         // cancellation says nothing about whether the service started - assigning from the result can
         // leave one held by a worker that thinks it holds none, and never gives it back.
         isPromoted = true
-        if (!trySetForeground(account?.address, account?.percentage)) isPromoted = false
+        if (!trySetForeground(account?.address, account?.percentage)) {
+            isPromoted = false
+            promotionRefused.complete(Unit)
+            Timber.w("content-search: indexing without a service for at most $UnpromotedGrace")
+        }
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo =
@@ -439,7 +466,7 @@ class ContentIndexingWorker @AssistedInject constructor(
         } catch (e: Exception) {
             // Denied if the app is already in the background on Android 12+, if POST_NOTIFICATIONS
             // was refused, or if the Android 15+ dataSync budget is spent. Rust keeps indexing
-            // either way until the process terminates; only the notification is lost.
+            // without the service until [UnpromotedGrace] ends the run.
             Timber.w(e, "content-search: setForeground denied, continuing without a notification")
             false
         }
@@ -495,6 +522,15 @@ class ContentIndexingWorker @AssistedInject constructor(
          * answering cannot park the loop for ever.
          */
         val OrchestratorAskTimeout: Duration = 30.seconds
+
+        /**
+         * How long a worker keeps indexing after the platform refused its foreground service.
+         *
+         * WorkManager still registers a refused worker as foreground work. So it ignores the job
+         * timeout and the constraint stops that would otherwise end it, and it keeps holding a
+         * partial wake lock. This bound stands in for JobScheduler's ten-minute limit on a normal job.
+         */
+        val UnpromotedGrace: Duration = 10.minutes
 
         /** How long the app has to stay on screen before the service is handed back. */
         val ForegroundReturnDebounce: Duration = 2.seconds

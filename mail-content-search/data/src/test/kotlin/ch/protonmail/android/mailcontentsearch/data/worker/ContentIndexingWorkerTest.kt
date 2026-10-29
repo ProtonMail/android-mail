@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontentsearch.data.worker
 
+import androidx.work.ForegroundUpdater
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import arrow.core.left
@@ -106,6 +107,18 @@ internal class ContentIndexingWorkerTest {
     // never consider itself promoted, which is the distinction most of what follows turns on.
     private var isPromotionGranted = true
 
+    private val platformForegroundUpdater = mockk<ForegroundUpdater> {
+        every { setForegroundAsync(any(), any(), any()) } answers {
+            mockk {
+                every { isDone } returns true
+                every { get() } answers {
+                    if (isPromotionGranted) null else throw IllegalStateException("promotion refused")
+                }
+                every { addListener(any(), any()) } answers { firstArg<Runnable>().run() }
+            }
+        }
+    }
+
     @BeforeTest
     fun setUp() {
         mockkObject(ContentIndexingNotification)
@@ -118,17 +131,7 @@ internal class ContentIndexingWorkerTest {
     fun tearDown() = unmockkObject(ContentIndexingNotification)
 
     private fun workerParameters() = mockk<WorkerParameters>(relaxed = true) {
-        every { foregroundUpdater } returns mockk {
-            every { setForegroundAsync(any(), any(), any()) } answers {
-                mockk {
-                    every { isDone } returns true
-                    every { get() } answers {
-                        if (isPromotionGranted) null else throw IllegalStateException("promotion refused")
-                    }
-                    every { addListener(any(), any()) } answers { firstArg<Runnable>().run() }
-                }
-            }
-        }
+        every { foregroundUpdater } returns platformForegroundUpdater
     }
 
     @Test
@@ -812,9 +815,8 @@ internal class ContentIndexingWorkerTest {
     }
 
     @Test
-    fun `does not replace itself when the promotion was refused`() = runTest {
-        // Given - the platform turned the foreground service down, so there is none to hand back and
-        // replacing this worker would cost a background execution scope for nothing.
+    fun `replaces itself when the app comes back after a refused promotion`() = runTest {
+        // Given - the platform turned the foreground service down, and this worker never asks again.
         isPromotionGranted = false
         appInBackground.value = true
         givenActivity(flow { awaitCancellation() })
@@ -825,8 +827,79 @@ internal class ContentIndexingWorkerTest {
         appInBackground.value = false
         advanceTimeBy((ContentIndexingWorker.ForegroundReturnDebounce.inWholeMilliseconds + 1).milliseconds)
 
+        // Then - a replacement enqueued while the app is on screen can promote next time it leaves.
+        coVerify(exactly = 1) { workScheduler.restart() }
+        work.cancel()
+    }
+
+    @Test
+    fun `does not ask for the service again after a refusal`() = runTest {
+        // Given - after a refusal, WorkManager answers a retry as granted without starting anything.
+        isPromotionGranted = false
+        appInBackground.value = true
+        givenActivity(
+            flow {
+                repeat(3) { emit(progress()) }
+                awaitCancellation()
+            }
+        )
+
+        // When
+        val work = async { worker().doWork() }
+        runCurrent()
+
         // Then
-        coVerify(exactly = 0) { workScheduler.restart() }
+        verify(exactly = 1) { platformForegroundUpdater.setForegroundAsync(any(), any(), any()) }
+        work.cancel()
+    }
+
+    @Test
+    fun `ends an unprotected run once the grace period is over`() = runTest {
+        // Given - refused, but Rust keeps publishing progress, so the watchdog never fires.
+        isPromotionGranted = false
+        appInBackground.value = true
+        givenActivity(
+            flow {
+                while (true) {
+                    emit(progress())
+                    delay((ContentIndexingWorker.IdleTimeout.inWholeMilliseconds / 2).milliseconds)
+                }
+            }
+        )
+        val work = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        advanceTimeBy((ContentIndexingWorker.UnpromotedGrace.inWholeMilliseconds - 1).milliseconds)
+        val isRunningBeforeGraceEnds = work.isActive
+        advanceTimeBy(2.milliseconds)
+
+        // Then
+        assertTrue(isRunningBeforeGraceEnds)
+        assertEquals(ListenableWorker.Result.success(), work.await())
+        coVerify { workScheduler.markWorkerExiting() }
+    }
+
+    @Test
+    fun `is not bounded by the grace period when the service is held`() = runTest {
+        // Given
+        appInBackground.value = true
+        givenActivity(
+            flow {
+                while (true) {
+                    emit(progress())
+                    delay((ContentIndexingWorker.IdleTimeout.inWholeMilliseconds / 2).milliseconds)
+                }
+            }
+        )
+        val work = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        advanceTimeBy((ContentIndexingWorker.UnpromotedGrace.inWholeMilliseconds * 2).milliseconds)
+
+        // Then
+        assertTrue(work.isActive)
         work.cancel()
     }
 
