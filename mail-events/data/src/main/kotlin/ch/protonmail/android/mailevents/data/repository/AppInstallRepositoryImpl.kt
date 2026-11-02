@@ -22,14 +22,17 @@ import android.content.Context
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
+import ch.protonmail.android.mailevents.data.referrer.MetaInstallReferrerDataSource
 import ch.protonmail.android.mailevents.domain.model.InstallReferrer
+import ch.protonmail.android.mailevents.domain.model.MetaInstallReferrer
 import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class AppInstallRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val installReferrerDataSource: InstallReferrerDataSource
+    private val installReferrerDataSource: InstallReferrerDataSource,
+    private val metaInstallReferrerDataSource: MetaInstallReferrerDataSource
 ) : AppInstallRepository {
 
     private val packageInfo by lazy {
@@ -43,4 +46,7 @@ class AppInstallRepositoryImpl @Inject constructor(
 
     override suspend fun getInstallReferrer(): Either<DataError, InstallReferrer> =
         installReferrerDataSource.getInstallReferrer()
+
+    override suspend fun getMetaInstallReferrer(): Either<DataError, MetaInstallReferrer> =
+        metaInstallReferrerDataSource.getMetaInstallReferrer()
 }

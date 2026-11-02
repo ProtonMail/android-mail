@@ -57,7 +57,8 @@ private fun EventMetadata.toInstallPayload(event: AppEvent.Install) = EventPaylo
     metadata = toPayloadMetadata(),
     isReinstall = event.isReinstall,
     installRef = event.installRef,
-    installReceipt = event.installReceipt
+    installReceipt = event.installReceipt,
+    installAttribution = event.installAttribution
 )
 
 private fun EventMetadata.toOpenPayload(event: AppEvent.AppOpen) = EventPayload.Open(

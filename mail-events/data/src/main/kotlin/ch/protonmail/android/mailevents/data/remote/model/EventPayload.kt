@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailevents.data.remote.model
 
+import ch.protonmail.android.mailevents.domain.model.InstallAttribution
+
 /**
  * Common metadata present in all event payloads.
  * Encapsulates device, app, and session information.
@@ -48,7 +50,8 @@ sealed class EventPayload {
         override val metadata: EventPayloadMetadata,
         val isReinstall: Boolean,
         val installRef: String?,
-        val installReceipt: String?
+        val installReceipt: String?,
+        val installAttribution: InstallAttribution?
     ) : EventPayload() {
 
         override val eventType: String = EVENT_TYPE_INSTALL

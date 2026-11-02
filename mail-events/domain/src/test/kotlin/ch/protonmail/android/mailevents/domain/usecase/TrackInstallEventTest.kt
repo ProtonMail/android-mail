@@ -22,22 +22,38 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailevents.domain.model.InstallAttribution
 import ch.protonmail.android.mailevents.domain.model.InstallReferrer
+import ch.protonmail.android.mailevents.domain.model.MetaInstallReferrer
 import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import ch.protonmail.android.mailevents.domain.repository.EventsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 internal class TrackInstallEventTest {
 
     private val eventsRepository = mockk<EventsRepository>(relaxUnitFun = true)
     private val appInstallRepository = mockk<AppInstallRepository>(relaxUnitFun = true)
 
-    private val trackInstallEvent = TrackInstallEvent(eventsRepository, appInstallRepository)
+    private val deviceTime = Instant.fromEpochMilliseconds(3_000_000L)
+    private val clock = mockk<Clock> {
+        every { now() } returns deviceTime
+    }
+
+    private val trackInstallEvent = TrackInstallEvent(eventsRepository, appInstallRepository, clock)
+
+    private val noAttribution = InstallAttribution(
+        playInstallReferrer = null,
+        metaInstallReferrer = null,
+        currentDeviceTime = deviceTime
+    )
 
     @Test
     fun `should skip when install event has already been sent`() = runTest {
@@ -53,7 +69,7 @@ internal class TrackInstallEventTest {
     }
 
     @Test
-    fun `should send Install event with referrer when not yet sent`() = runTest {
+    fun `should send Install event with Play and Meta install referrers when not yet sent`() = runTest {
         // Given
         val referrerUrl = "utm_source=google&utm_campaign=test"
         val installReferrer = InstallReferrer(
@@ -62,8 +78,14 @@ internal class TrackInstallEventTest {
             installBeginTimestampMs = 2000L,
             isGooglePlayInstant = false
         )
+        val metaInstallReferrer = MetaInstallReferrer(
+            installReferrer = "encrypted",
+            isClickThrough = true,
+            actualTimestamp = Instant.fromEpochSeconds(1_000L)
+        )
         coEvery { eventsRepository.hasInstallEventBeenSent() } returns false
         coEvery { appInstallRepository.getInstallReferrer() } returns installReferrer.right()
+        coEvery { appInstallRepository.getMetaInstallReferrer() } returns metaInstallReferrer.right()
         coEvery { eventsRepository.sendEvent(any()) } returns Unit.right()
 
         // When
@@ -76,7 +98,12 @@ internal class TrackInstallEventTest {
                 AppEvent.Install(
                     isReinstall = false,
                     installReceipt = null,
-                    installRef = referrerUrl
+                    installRef = referrerUrl,
+                    installAttribution = InstallAttribution(
+                        playInstallReferrer = installReferrer,
+                        metaInstallReferrer = metaInstallReferrer,
+                        currentDeviceTime = deviceTime
+                    )
                 )
             )
         }
@@ -87,6 +114,7 @@ internal class TrackInstallEventTest {
         // Given
         coEvery { eventsRepository.hasInstallEventBeenSent() } returns false
         coEvery { appInstallRepository.getInstallReferrer() } returns DataError.Remote.Unknown.left()
+        coEvery { appInstallRepository.getMetaInstallReferrer() } returns DataError.Local.NotFound.left()
         coEvery { eventsRepository.sendEvent(any()) } returns Unit.right()
 
         // When
@@ -99,7 +127,8 @@ internal class TrackInstallEventTest {
                 AppEvent.Install(
                     isReinstall = false,
                     installReceipt = null,
-                    installRef = null
+                    installRef = null,
+                    installAttribution = noAttribution
                 )
             )
         }
@@ -110,6 +139,7 @@ internal class TrackInstallEventTest {
         // Given
         coEvery { eventsRepository.hasInstallEventBeenSent() } returns false
         coEvery { appInstallRepository.getInstallReferrer() } returns DataError.Remote.Unknown.left()
+        coEvery { appInstallRepository.getMetaInstallReferrer() } returns DataError.Local.NotFound.left()
         coEvery { eventsRepository.sendEvent(any()) } returns Unit.right()
 
         // When
@@ -122,7 +152,8 @@ internal class TrackInstallEventTest {
                 AppEvent.Install(
                     isReinstall = true,
                     installReceipt = null,
-                    installRef = null
+                    installRef = null,
+                    installAttribution = noAttribution
                 )
             )
         }
@@ -133,6 +164,7 @@ internal class TrackInstallEventTest {
         // Given
         coEvery { eventsRepository.hasInstallEventBeenSent() } returns false
         coEvery { appInstallRepository.getInstallReferrer() } returns DataError.Remote.Unknown.left()
+        coEvery { appInstallRepository.getMetaInstallReferrer() } returns DataError.Local.NotFound.left()
         coEvery { eventsRepository.sendEvent(any()) } returns Unit.right()
 
         // When
@@ -147,6 +179,7 @@ internal class TrackInstallEventTest {
         // Given
         coEvery { eventsRepository.hasInstallEventBeenSent() } returns false
         coEvery { appInstallRepository.getInstallReferrer() } returns DataError.Remote.Unknown.left()
+        coEvery { appInstallRepository.getMetaInstallReferrer() } returns DataError.Local.NotFound.left()
         coEvery { eventsRepository.sendEvent(any()) } returns DataError.Remote.Unknown.left()
 
         // When
@@ -162,6 +195,7 @@ internal class TrackInstallEventTest {
         val error = DataError.Remote.Unknown
         coEvery { eventsRepository.hasInstallEventBeenSent() } returns false
         coEvery { appInstallRepository.getInstallReferrer() } returns DataError.Remote.Unknown.left()
+        coEvery { appInstallRepository.getMetaInstallReferrer() } returns DataError.Local.NotFound.left()
         coEvery { eventsRepository.sendEvent(any()) } returns error.left()
 
         // When

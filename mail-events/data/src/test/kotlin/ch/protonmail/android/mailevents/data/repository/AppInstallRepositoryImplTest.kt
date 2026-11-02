@@ -25,13 +25,16 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
+import ch.protonmail.android.mailevents.data.referrer.MetaInstallReferrerDataSource
 import ch.protonmail.android.mailevents.domain.model.InstallReferrer
+import ch.protonmail.android.mailevents.domain.model.MetaInstallReferrer
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Instant
 
 internal class AppInstallRepositoryImplTest {
 
@@ -50,8 +53,9 @@ internal class AppInstallRepositoryImplTest {
     }
 
     private val installReferrerDataSource = mockk<InstallReferrerDataSource>()
+    private val metaInstallReferrerDataSource = mockk<MetaInstallReferrerDataSource>()
 
-    private val repository = AppInstallRepositoryImpl(context, installReferrerDataSource)
+    private val repository = AppInstallRepositoryImpl(context, installReferrerDataSource, metaInstallReferrerDataSource)
 
     @Test
     fun `should return first install time from package manager`() {
@@ -100,5 +104,22 @@ internal class AppInstallRepositoryImplTest {
 
         // Then
         assertEquals(error.left(), result)
+    }
+
+    @Test
+    fun `should return meta install referrer from data source`() = runTest {
+        // Given
+        val referrer = MetaInstallReferrer(
+            installReferrer = "encrypted",
+            isClickThrough = true,
+            actualTimestamp = Instant.fromEpochSeconds(1_000L)
+        )
+        coEvery { metaInstallReferrerDataSource.getMetaInstallReferrer() } returns referrer.right()
+
+        // When
+        val result = repository.getMetaInstallReferrer()
+
+        // Then
+        assertEquals(referrer.right(), result)
     }
 }

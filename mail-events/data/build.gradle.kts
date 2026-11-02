@@ -58,5 +58,6 @@ dependencies {
     implementation(libs.play.installreferrer)
 
     testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.rust.core)
     testImplementation(project(":test:utils"))
 }

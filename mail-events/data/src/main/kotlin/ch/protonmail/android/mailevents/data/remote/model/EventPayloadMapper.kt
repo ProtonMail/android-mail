@@ -23,8 +23,10 @@ import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Fe
 import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Install
 import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Signup
 import ch.protonmail.android.mailevents.data.remote.model.MeasurementFieldKey.Subscription
+import ch.protonmail.android.mailevents.domain.model.InstallAttribution
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
+import kotlin.time.Duration.Companion.milliseconds
 
 fun EventPayload.toMeasurementEventType(): MeasurementEventType = when (this) {
     is EventPayload.Install -> MeasurementEventType.Install
@@ -51,6 +53,9 @@ fun EventPayload.toMeasurementFields(): Map<String, MeasurementValue?> = buildMa
             put(Install.IS_REINSTALL, MeasurementValue.Bool(isReinstall))
             put(Install.INSTALL_REF, installRef?.let { MeasurementValue.String(it) })
             put(Install.INSTALL_RECEIPT, installReceipt?.let { MeasurementValue.String(it) })
+            installAttribution?.let {
+                put(Install.INSTALL_REF_PARAMETERS, MeasurementValue.Object(it.toInstallRefParameters()))
+            }
         }
 
         is EventPayload.Signup -> {
@@ -78,6 +83,23 @@ fun EventPayload.toMeasurementFields(): Map<String, MeasurementValue?> = buildMa
     }
 }
 
+private fun InstallAttribution.toInstallRefParameters(): Map<String, MeasurementValue> = buildMap {
+    put(Install.CURRENT_DEVICE_TIME, MeasurementValue.Int(currentDeviceTime.toEpochMilliseconds().toULong()))
+
+    playInstallReferrer?.let { referrer ->
+        put(Install.PLAY_CLICK_TIMESTAMP_SECONDS, referrer.referrerClickTimestampMs.toSecondsValue())
+        put(Install.PLAY_INSTALL_BEGIN_TIMESTAMP_SECONDS, referrer.installBeginTimestampMs.toSecondsValue())
+    }
+
+    metaInstallReferrer?.let { referrer ->
+        put(Install.META_INSTALL_REFERRER, MeasurementValue.String(referrer.installReferrer))
+        put(Install.META_IS_CLICK_THROUGH, MeasurementValue.Int(if (referrer.isClickThrough) 1UL else 0UL))
+        put(Install.META_ACTUAL_TIMESTAMP, MeasurementValue.Int(referrer.actualTimestamp.epochSeconds.toULong()))
+    }
+}
+
+private fun Long.toSecondsValue() = MeasurementValue.Int(milliseconds.inWholeSeconds.toULong())
+
 private object MeasurementFieldKey {
 
     object Common {
@@ -98,6 +120,13 @@ private object MeasurementFieldKey {
         const val IS_REINSTALL = "is_reinstall"
         const val INSTALL_REF = "install_ref"
         const val INSTALL_RECEIPT = "install_receipt"
+        const val INSTALL_REF_PARAMETERS = "install_ref_parameters"
+        const val PLAY_CLICK_TIMESTAMP_SECONDS = "go_click_timestamp_seconds"
+        const val PLAY_INSTALL_BEGIN_TIMESTAMP_SECONDS = "go_install_begin_timestamp_seconds"
+        const val CURRENT_DEVICE_TIME = "go_current_device_time"
+        const val META_INSTALL_REFERRER = "me_install_referrer"
+        const val META_IS_CLICK_THROUGH = "me_is_ct"
+        const val META_ACTUAL_TIMESTAMP = "me_actual_timestamp"
     }
 
     object Signup {

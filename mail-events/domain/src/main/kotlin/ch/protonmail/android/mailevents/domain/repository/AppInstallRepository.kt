@@ -21,6 +21,7 @@ package ch.protonmail.android.mailevents.domain.repository
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.domain.model.InstallReferrer
+import ch.protonmail.android.mailevents.domain.model.MetaInstallReferrer
 
 interface AppInstallRepository {
 
@@ -29,4 +30,6 @@ interface AppInstallRepository {
     fun getLastUpdateTime(): Long
 
     suspend fun getInstallReferrer(): Either<DataError, InstallReferrer>
+
+    suspend fun getMetaInstallReferrer(): Either<DataError, MetaInstallReferrer>
 }
