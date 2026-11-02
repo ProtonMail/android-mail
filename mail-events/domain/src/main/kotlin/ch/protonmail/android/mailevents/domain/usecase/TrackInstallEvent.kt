@@ -21,13 +21,16 @@ package ch.protonmail.android.mailevents.domain.usecase
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailevents.domain.model.AppEvent
+import ch.protonmail.android.mailevents.domain.model.InstallAttribution
 import ch.protonmail.android.mailevents.domain.repository.AppInstallRepository
 import ch.protonmail.android.mailevents.domain.repository.EventsRepository
 import javax.inject.Inject
+import kotlin.time.Clock
 
 class TrackInstallEvent @Inject constructor(
     private val eventsRepository: EventsRepository,
-    private val appInstallRepository: AppInstallRepository
+    private val appInstallRepository: AppInstallRepository,
+    private val clock: Clock
 ) {
 
     suspend operator fun invoke(isReinstall: Boolean = false): Either<DataError, Unit> {
@@ -35,12 +38,17 @@ class TrackInstallEvent @Inject constructor(
             return Either.Right(Unit)
         }
 
-        val installRef = appInstallRepository.getInstallReferrer().getOrNull()?.referrerUrl
+        val installReferrer = appInstallRepository.getInstallReferrer().getOrNull()
 
         val event = AppEvent.Install(
             isReinstall = isReinstall,
             installReceipt = null,
-            installRef = installRef
+            installRef = installReferrer?.referrerUrl,
+            installAttribution = InstallAttribution(
+                playInstallReferrer = installReferrer,
+                metaInstallReferrer = appInstallRepository.getMetaInstallReferrer().getOrNull(),
+                currentDeviceTime = clock.now()
+            )
         )
 
         return eventsRepository.sendEvent(event).also {

@@ -23,7 +23,8 @@ sealed interface AppEvent {
     data class Install(
         val isReinstall: Boolean,
         val installReceipt: String?,
-        val installRef: String?
+        val installRef: String?,
+        val installAttribution: InstallAttribution?
     ) : AppEvent
 
     data class AppOpen(val isNewSession: Boolean) : AppEvent

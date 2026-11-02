@@ -34,6 +34,9 @@
         <package android:name="com.android.webview" />
         <package android:name="com.google.android.webview" />
         <package android:name="me.proton.android.calendar" />
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.instagram.android" />
+        <package android:name="com.facebook.lite" />
 
         <!-- Intent action query to determine whether a file can be opened via quick previews. -->
         <intent>

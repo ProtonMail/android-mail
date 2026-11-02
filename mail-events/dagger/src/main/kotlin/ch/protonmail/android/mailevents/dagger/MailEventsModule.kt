@@ -24,6 +24,8 @@ import ch.protonmail.android.mailevents.data.local.EventsDataStoreProvider
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSource
 import ch.protonmail.android.mailevents.data.local.MailEventsDataSourceImpl
 import ch.protonmail.android.mailevents.data.referrer.InstallReferrerDataSource
+import ch.protonmail.android.mailevents.data.referrer.MetaInstallReferrerDataSource
+import ch.protonmail.android.mailevents.data.referrer.MetaInstallReferrerDataSourceImpl
 import ch.protonmail.android.mailevents.data.referrer.PlayInstallReferrerDataSourceImpl
 import ch.protonmail.android.mailevents.data.remote.EventsDataSource
 import ch.protonmail.android.mailevents.data.remote.RustEventsDataSource
@@ -81,6 +83,10 @@ object MailEventsModule {
         @Binds
         @Singleton
         fun bindsInstallReferrerDataSource(impl: PlayInstallReferrerDataSourceImpl): InstallReferrerDataSource
+
+        @Binds
+        @Reusable
+        fun bindsMetaInstallReferrerDataSource(impl: MetaInstallReferrerDataSourceImpl): MetaInstallReferrerDataSource
     }
 }
 
