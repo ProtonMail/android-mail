@@ -26,7 +26,6 @@ import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
 import me.proton.core.domain.entity.UserId
-import uniffi.mail_uniffi.MailUserSessionUpsellEligibilityResult
 import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellType
@@ -40,11 +39,14 @@ class UpsellEligibilityRepositoryImpl @Inject constructor(
 
     override suspend fun getEligibleUpsellPlan(userId: UserId): UpsellVariantPlan? =
         executeWithUserSession(userId) { session ->
-            when (val result = session.getRustUserSession().upsellEligibility(upsellExperimentFlagForAndroid())) {
-                is MailUserSessionUpsellEligibilityResult.Ok -> result.v1.toUpsellPlan()
-                is MailUserSessionUpsellEligibilityResult.Error -> null
-            }
+            session.upsellEligibility(upsellExperimentFlagForAndroid()).getOrNull()?.toUpsellPlan()
         }.getOrNull()
+
+    override suspend fun getUpsellEligibility(userId: UserId): Either<DataError, Boolean> =
+        executeWithUserSession(userId) { session ->
+            session.upsellEligibility(upsellExperimentFlagForAndroid())
+                .map { it is UpsellEligibility.Eligible }
+        }.flatten()
 
     override suspend fun getPlusToUnlimitedEligibility(userId: UserId): Either<DataError, PlusToUnlimitedOffer> =
         executeWithUserSession(userId) { session ->

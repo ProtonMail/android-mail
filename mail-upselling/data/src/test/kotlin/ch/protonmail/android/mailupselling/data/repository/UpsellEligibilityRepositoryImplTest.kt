@@ -34,8 +34,6 @@ import io.mockk.unmockkAll
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import uniffi.mail_uniffi.MailUserSession
-import uniffi.mail_uniffi.MailUserSessionUpsellEligibilityResult
 import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellExperimentFlag
@@ -52,10 +50,7 @@ internal class UpsellEligibilityRepositoryImplTest {
 
     private val userId = UserId("user-1")
     private val dispatcher = UnconfinedTestDispatcher()
-    private val rustSession = mockk<MailUserSession>()
-    private val wrapper = mockk<MailUserSessionWrapper> {
-        every { getRustUserSession() } returns rustSession
-    }
+    private val wrapper = mockk<MailUserSessionWrapper>()
     private val userSessionRepository = mockk<UserSessionRepository> {
         coEvery { getUserSession(userId) } returns wrapper
     }
@@ -75,32 +70,30 @@ internal class UpsellEligibilityRepositoryImplTest {
 
     @Test
     fun `maps Eligible Unlimited to the Unlimited plan`() = runTest {
-        coEvery { rustSession.upsellEligibility(any()) } returns
-            MailUserSessionUpsellEligibilityResult.Ok(UpsellEligibility.Eligible(UpsellType.UNLIMITED, null))
+        coEvery { wrapper.upsellEligibility(any()) } returns
+            UpsellEligibility.Eligible(UpsellType.UNLIMITED, null).right()
 
         assertEquals(UpsellVariantPlan.UNLIMITED, repository.getEligibleUpsellPlan(userId))
     }
 
     @Test
     fun `maps Eligible MailPlus to the Mail Plus plan`() = runTest {
-        coEvery { rustSession.upsellEligibility(any()) } returns
-            MailUserSessionUpsellEligibilityResult.Ok(UpsellEligibility.Eligible(UpsellType.MAIL_PLUS, null))
+        coEvery { wrapper.upsellEligibility(any()) } returns
+            UpsellEligibility.Eligible(UpsellType.MAIL_PLUS, null).right()
 
         assertEquals(UpsellVariantPlan.MAIL_PLUS, repository.getEligibleUpsellPlan(userId))
     }
 
     @Test
     fun `maps NotEligible to null`() = runTest {
-        coEvery { rustSession.upsellEligibility(any()) } returns
-            MailUserSessionUpsellEligibilityResult.Ok(UpsellEligibility.NotEligible)
+        coEvery { wrapper.upsellEligibility(any()) } returns UpsellEligibility.NotEligible.right()
 
         assertNull(repository.getEligibleUpsellPlan(userId))
     }
 
     @Test
     fun `returns null when the session reports an error`() = runTest {
-        coEvery { rustSession.upsellEligibility(any()) } returns
-            mockk<MailUserSessionUpsellEligibilityResult.Error>()
+        coEvery { wrapper.upsellEligibility(any()) } returns DataError.Local.Unknown.left()
 
         assertNull(repository.getEligibleUpsellPlan(userId))
     }
@@ -152,5 +145,27 @@ internal class UpsellEligibilityRepositoryImplTest {
         coEvery { userSessionRepository.getUserSession(userId) } returns null
 
         assertEquals(DataError.Local.NoUserSession.left(), repository.getMonthlyToYearlyEligibility(userId))
+    }
+
+    @Test
+    fun `is eligible for an upsell when Rust says so`() = runTest {
+        coEvery { wrapper.upsellEligibility(any()) } returns
+            UpsellEligibility.Eligible(UpsellType.MAIL_PLUS, null).right()
+
+        assertEquals(true.right(), repository.getUpsellEligibility(userId))
+    }
+
+    @Test
+    fun `is not eligible for an upsell when Rust says NotEligible`() = runTest {
+        coEvery { wrapper.upsellEligibility(any()) } returns UpsellEligibility.NotEligible.right()
+
+        assertEquals(false.right(), repository.getUpsellEligibility(userId))
+    }
+
+    @Test
+    fun `fails when there is no user session for the upsell eligibility check`() = runTest {
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
+
+        assertEquals(DataError.Local.NoUserSession.left(), repository.getUpsellEligibility(userId))
     }
 }
