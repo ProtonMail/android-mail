@@ -51,8 +51,8 @@
   <string name="content_search_placeholder_text">Sök</string>
   <string name="content_search_clear_query_content_description">Rensa sökfråga</string>
   <string name="content_search_close_content_description">Stäng sök</string>
-  <string name="content_search_first_run_description">Type anything to search privately…</string>
-  <string name="content_search_results_searching">Searching…</string>
+  <string name="content_search_first_run_description">Skriv vad som helst för att söka privat …</string>
+  <string name="content_search_results_searching">Söker …</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d resultat</item>
     <item quantity="other">%1$d resultat</item>
