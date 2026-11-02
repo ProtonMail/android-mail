@@ -25,6 +25,7 @@ import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.annotation.PlayServicesAvailableValue
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +42,7 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val observePlanUpgrades: ObservePlanUpgrades,
     private val observeUser: ObserveUser,
     private val observePrimaryUserId: ObservePrimaryUserId,
+    private val upsellEligibilityRepository: UpsellEligibilityRepository,
     @PlayServicesAvailableValue private val playServicesAvailable: Provider<Boolean>,
     @IsUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>
 ) {
@@ -55,6 +57,11 @@ class ObserveUpsellingVisibility @Inject constructor(
 
             if (!isUpsellEnabled.get()) {
                 Timber.d("upsell: FF disabled - hiding entry point")
+                return@flatMapLatest flowOf(UpsellingVisibility.Hidden)
+            }
+
+            if (upsellEligibilityRepository.getUpsellEligibility(userId).getOrNull() == false) {
+                Timber.d("upsell: user not eligible - hiding entry point")
                 return@flatMapLatest flowOf(UpsellingVisibility.Hidden)
             }
 

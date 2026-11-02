@@ -19,11 +19,14 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -47,6 +50,9 @@ internal class ObserveUpsellingVisibilityTest {
     private val observePlanUpgrades = mockk<ObservePlanUpgrades>()
     private val observeUser = mockk<ObserveUser>()
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
+    private val upsellEligibilityRepository = mockk<UpsellEligibilityRepository> {
+        coEvery { getUpsellEligibility(UserIdTestData.userId) } returns true.right()
+    }
 
     private val isUpsellEnabled = mockk<FeatureFlag<Boolean>>()
 
@@ -65,6 +71,7 @@ internal class ObserveUpsellingVisibilityTest {
             observePlanUpgrades,
             observeUser,
             observePrimaryUserId,
+            upsellEligibilityRepository,
             playServicesAvailable,
             isUpsellEnabled
         )
@@ -97,6 +104,40 @@ internal class ObserveUpsellingVisibilityTest {
         observeUpselling(UpsellingEntryPoint.Feature.Navbar).test {
             // Then
             assertEquals(UpsellingVisibility.Hidden, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return hidden when the user is not eligible for an upsell`() = runTest {
+        // Given
+        coEvery { isUpsellEnabled.get() } returns true
+        coEvery { upsellEligibilityRepository.getUpsellEligibility(UserIdTestData.userId) } returns false.right()
+
+        // When
+        observeUpselling(UpsellingEntryPoint.Feature.Navbar).test {
+            // Then
+            assertEquals(UpsellingVisibility.Hidden, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should resolve visibility when the eligibility check fails`() = runTest {
+        // Given
+        every { observeUser(userId = UserIdTestData.userId) } returns flowOf(UserTestData.freeUser.right())
+        val expectedPlans = listOf(mockk<ProductOfferDetail>())
+        coEvery { observePlanUpgrades(UpsellingEntryPoint.Feature.Navbar) } returns flowOf(expectedPlans)
+        coEvery { resolveUpsellingVisibilityForPlans(expectedPlans) } returns UpsellingVisibility.Normal.MailPlus
+        coEvery { isUpsellEnabled.get() } returns true
+        coEvery {
+            upsellEligibilityRepository.getUpsellEligibility(UserIdTestData.userId)
+        } returns DataError.Local.NoUserSession.left()
+
+        // When
+        observeUpselling(UpsellingEntryPoint.Feature.Navbar).test {
+            // Then
+            assertEquals(UpsellingVisibility.Normal.MailPlus, awaitItem())
             awaitComplete()
         }
     }

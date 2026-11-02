@@ -40,12 +40,14 @@ import uniffi.mail_uniffi.MailUserSessionMonthlyToYearlyEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionPlusToUnlimitedEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
+import uniffi.mail_uniffi.MailUserSessionUpsellEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
 import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.SenderImageSize
 import uniffi.mail_uniffi.UpdateCategoryViewResult
+import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellExperimentFlag
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.VoidEventResult
@@ -117,6 +119,15 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
     }
 
     fun observeEventLoopErrors(callback: EventLoopErrorObserver) = userSession.observeEventLoopErrors(callback)
+
+    suspend fun upsellEligibility(flag: UpsellExperimentFlag): Either<DataError, UpsellEligibility> =
+        when (val result = userSession.upsellEligibility(flag)) {
+            is MailUserSessionUpsellEligibilityResult.Ok -> result.v1.right()
+            is MailUserSessionUpsellEligibilityResult.Error -> {
+                Timber.e("MailUserSession upsell eligibility:: ${result.v1}")
+                result.v1.toDataError().left()
+            }
+        }
 
     suspend fun plusToUnlimitedEligibility(flag: UpsellExperimentFlag): Either<DataError, PlusToUnlimitedEligibility> =
         when (val result = userSession.plusToUnlimitedEligibility(flag)) {
