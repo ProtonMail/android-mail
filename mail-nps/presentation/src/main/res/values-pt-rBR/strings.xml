@@ -22,7 +22,7 @@
   <string name="nps_subtext_high">10 = muito provável</string>
   <string name="nps_comment_placeholder">Conte-nos por que você deu essa nota.</string>
   <string name="nps_share_button">Compartilhar anonimamente</string>
-  <string name="nps_privacy_note">We never send your name, email, or message contents.</string>
+  <string name="nps_privacy_note">Nos nunca enviamos seu nome. e-mail ou o conteúdo das suas mensagens.</string>
   <string name="nps_thank_you">Obrigado por compartilhar. Seu feedback nos ajuda a melhorar o Proton Mail.</string>
   <string name="nps_score_content_description">Avaliação %1$d</string>
 </resources>

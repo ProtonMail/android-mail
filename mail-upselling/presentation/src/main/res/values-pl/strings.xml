@@ -41,15 +41,15 @@
   <string name="upselling_pu_cta">Wybierz plan Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
   <string name="upselling_monthly_to_yearly_row_title">Zapałać rocznie i oszczędź %s</string>
-  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Zmień cykl rozliczeniowy</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Zaoszczędź %s</string>
-  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_title">Zaoszczędź w planie rocznym</string>
   <string name="upselling_monthly_to_yearly_subtitle">Zagwarantuj sobie zniżkę na %s</string>
-  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
-  <string name="upselling_monthly_to_yearly_currently">Currently</string>
-  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 rok</string>
+  <string name="upselling_monthly_to_yearly_currently">Obecny</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">Plan roczny</string>
   <string name="upselling_monthly_to_yearly_cta">Zmień i zaoszczędź %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Zachowaj plan miesięczny</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Rozszerz swoją prywatność online dzięki planowi Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Chroń swoje konto przed zagrożeniami dzięki funkcji Proton Sentinel</string>
@@ -149,7 +149,7 @@
   <string name="upselling_description_social_proof">Ulepsz konto do planu, który zachwyca miliony subskrybentów.</string>
   <string name="upselling_month">/miesiąc</string>
   <string name="upselling_month_only">tylko %s / miesiąc</string>
-  <string name="upselling_year">/year</string>
+  <string name="upselling_year">/ rok</string>
   <!-- Errors -->
   <string name="upselling_snackbar_error_no_user_id">Wystąpił błąd.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Nie można pobrać subskrypcji.</string>
