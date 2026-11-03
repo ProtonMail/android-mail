@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -59,6 +60,7 @@ internal fun DebugMenuScaffold(
     @StringRes title: Int,
     onCloseClick: () -> Unit,
     modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {},
     content: LazyListScope.() -> Unit
 ) {
     Scaffold(
@@ -73,7 +75,8 @@ internal fun DebugMenuScaffold(
                             contentDescription = stringResource(id = R.string.presentation_back)
                         )
                     }
-                }
+                },
+                actions = actions
             )
         },
         content = { paddingValues ->

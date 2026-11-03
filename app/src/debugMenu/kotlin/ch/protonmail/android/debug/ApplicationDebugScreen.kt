@@ -26,14 +26,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.R
+import ch.protonmail.android.debug.environment.EnvironmentDebugViewModel
+import ch.protonmail.android.debug.environment.EnvironmentDialog
+import ch.protonmail.android.debug.environment.EnvironmentRowUiModel
+import ch.protonmail.android.debug.environment.EnvironmentSwitchState
+import ch.protonmail.android.debug.environment.environmentSection
+import ch.protonmail.android.debug.environment.restartApp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
@@ -44,26 +57,75 @@ import me.proton.core.presentation.utils.showToast
 internal fun ApplicationDebugScreen(
     modifier: Modifier = Modifier,
     actions: ApplicationDebugScreen.Actions,
-    viewModel: ApplicationDebugViewModel = hiltViewModel()
+    viewModel: ApplicationDebugViewModel = hiltViewModel(),
+    environmentViewModel: EnvironmentDebugViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    var showEnvironmentDialog by rememberSaveable { mutableStateOf(false) }
+    val environment by environmentViewModel.selection.collectAsStateWithLifecycle()
+
     ApplicationDebugScreen(
         modifier = modifier,
         appVersion = viewModel.appVersion,
+        environment = EnvironmentRowUiModel(
+            host = environment.host,
+            isOverridden = environment.isOverridden,
+            isPendingRestart = environment.host != environmentViewModel.runningHost
+        ),
+        onEnvironmentClick = { showEnvironmentDialog = true },
+        onRestartClick = { context.restartApp() },
         actions = actions
     )
+
+    val switchState by environmentViewModel.switchState.collectAsStateWithLifecycle()
+    val closeEnvironmentDialog = {
+        showEnvironmentDialog = false
+        environmentViewModel.onDialogClosed()
+    }
+    LaunchedEffect(switchState) {
+        if (switchState == EnvironmentSwitchState.Done) closeEnvironmentDialog()
+    }
+
+    if (showEnvironmentDialog) {
+        val signsOut by environmentViewModel.hasSignedInAccounts.collectAsStateWithLifecycle(initialValue = false)
+        EnvironmentDialog(
+            currentHost = environment.host,
+            defaultHost = environmentViewModel.defaultHost,
+            isOverridden = environment.isOverridden,
+            recentHosts = environment.recentHosts,
+            signsOut = signsOut,
+            switchState = switchState,
+            onSave = environmentViewModel::save,
+            onReset = environmentViewModel::reset,
+            onDismiss = closeEnvironmentDialog
+        )
+    }
 }
 
 @Composable
 private fun ApplicationDebugScreen(
     appVersion: String,
+    environment: EnvironmentRowUiModel,
+    onEnvironmentClick: () -> Unit,
+    onRestartClick: () -> Unit,
     actions: ApplicationDebugScreen.Actions,
     modifier: Modifier = Modifier
 ) {
     DebugMenuScaffold(
         modifier = modifier,
         title = R.string.app_debug_screen,
-        onCloseClick = actions.onBackClick
+        onCloseClick = actions.onBackClick,
+        actions = {
+            // A changed environment only applies to a new process.
+            if (environment.isPendingRestart) {
+                TextButton(onClick = onRestartClick) {
+                    Text(text = stringResource(R.string.app_debug_screen_environment_restart))
+                }
+            }
+        }
     ) {
+        environmentSection(row = environment, onClick = onEnvironmentClick)
+
         debugMenuSection(title = R.string.app_debug_screen_logs_title) {
             DebugMenuRow(
                 icon = R.drawable.ic_proton_window_terminal,
@@ -194,6 +256,13 @@ private fun ApplicationDebugScreenPreview() {
     ProtonTheme {
         ApplicationDebugScreen(
             appVersion = "7.12.0-alpha (1) - 0.169.18",
+            environment = EnvironmentRowUiModel(
+                host = "maury.proton.black",
+                isOverridden = true,
+                isPendingRestart = true
+            ),
+            onEnvironmentClick = {},
+            onRestartClick = {},
             actions = ApplicationDebugScreen.Actions.Empty
         )
     }

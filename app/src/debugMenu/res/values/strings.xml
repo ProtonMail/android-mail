@@ -22,6 +22,22 @@
 -->
 <resources>
     <string name="app_debug_screen" translatable="false">Debug Menu</string>
+    <string name="app_debug_screen_environment_section_title" translatable="false">Environment</string>
+    <string name="app_debug_screen_environment_default_description" translatable="false">Default for this build</string>
+    <string name="app_debug_screen_environment_pending_description" translatable="false">Applies when the app restarts</string>
+    <string name="app_debug_screen_environment_custom_description" translatable="false">Custom environment</string>
+    <string name="app_debug_screen_environment_web_app" translatable="false">Open Proton Mail on the web</string>
+    <string name="app_debug_screen_environment_dialog_title" translatable="false">Change environment</string>
+    <string name="app_debug_screen_environment_field_label" translatable="false">Environment</string>
+    <string name="app_debug_screen_environment_helper" translatable="false">Type the full host (maury.proton.black, proton.me) or paste a link, or pick a recent one.</string>
+    <string name="app_debug_screen_environment_error" translatable="false">Enter a full proton.black or proton.me host, e.g. maury.proton.black.</string>
+    <string name="app_debug_screen_environment_recent" translatable="false">Recently used</string>
+    <string name="app_debug_screen_environment_signs_out" translatable="false">Switching signs out every account, as accounts only exist on the environment they signed in to.</string>
+    <string name="app_debug_screen_environment_sign_out_failed" translatable="false">Couldn\'t sign out every account, so the environment didn\'t change. Try again.</string>
+    <string name="app_debug_screen_environment_restart" translatable="false">Restart</string>
+    <string name="app_debug_screen_environment_apply" translatable="false">Apply</string>
+    <string name="app_debug_screen_environment_cancel" translatable="false">Cancel</string>
+    <string name="app_debug_screen_environment_reset" translatable="false">Reset to default</string>
     <string name="app_debug_screen_logs_title" translatable="false">Application logs</string>
     <string name="app_debug_screen_logs_subtitle" translatable="false">View and share logs</string>
     <string name="app_debug_screen_logs_description" translatable="false">Read App/SDK logs, then share or export</string>

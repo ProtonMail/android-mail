@@ -24,6 +24,7 @@ import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.logging.RustLogsAttachmentProcessor
 import ch.protonmail.android.logging.SentryUserObserver
 import ch.protonmail.android.logging.SentryWebViewInfoProvider
+import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -45,7 +46,8 @@ class SentryInitializer : Initializer<Unit> {
         SentryAndroid.init(context.applicationContext) { options: SentryOptions ->
             options.dsn = BuildConfig.SENTRY_DSN
             options.release = BuildConfig.VERSION_NAME
-            options.environment = BuildConfig.API_HOST
+            // The debug menu can switch the host, so report the one the app talks to.
+            options.environment = entryPoint.apiEnvironment().host
             options.addIntegration(
                 SentryTimberIntegration(
                     minEventLevel = SentryLevel.WARNING,
@@ -70,6 +72,7 @@ class SentryInitializer : Initializer<Unit> {
         fun observer(): SentryUserObserver
         fun rustLogsAttachmentProcessor(): RustLogsAttachmentProcessor
         fun webViewInfoProvider(): SentryWebViewInfoProvider
+        fun apiEnvironment(): ApiEnvironment
     }
 
     companion object {
