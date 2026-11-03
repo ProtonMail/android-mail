@@ -236,6 +236,7 @@ dependencies {
     implementation(project(":mail-attachments"))
     implementation(project(":mail-tracking-protection"))
     implementation(project(":mail-bugreport"))
+    implementation(project(":mail-byoe"))
     implementation(project(":mail-common"))
     implementation(project(":mail-composer"))
     implementation(project(":mail-contact"))

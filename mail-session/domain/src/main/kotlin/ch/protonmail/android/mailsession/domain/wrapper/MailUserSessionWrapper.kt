@@ -32,8 +32,10 @@ import uniffi.mail_uniffi.AsyncLiveQueryCallback
 import uniffi.mail_uniffi.EventLoopErrorObserver
 import uniffi.mail_uniffi.ExecuteWhenOnlineCallbackAsync
 import uniffi.mail_uniffi.Fork
+import uniffi.mail_uniffi.ForkWithKeyPayload
 import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.MailUserSessionForkResult
+import uniffi.mail_uniffi.MailUserSessionForkWithKeyPayloadResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
 import uniffi.mail_uniffi.MailUserSessionMonthlyToYearlyEligibilityResult
@@ -62,6 +64,12 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
         is MailUserSessionForkResult.Error -> result.v1.toDataError().left()
         is MailUserSessionForkResult.Ok -> result.v1.right()
     }
+
+    suspend fun forkWithKeyPayload(): Either<DataError, ForkWithKeyPayload> =
+        when (val result = userSession.forkWithKeyPayload("android", "mail")) {
+            is MailUserSessionForkWithKeyPayloadResult.Error -> result.v1.toDataError().left()
+            is MailUserSessionForkWithKeyPayloadResult.Ok -> result.v1.right()
+        }
 
     suspend fun pollEvents(): Either<EventLoopError, Unit> = when (val result = userSession.forceEventLoopPoll()) {
         is VoidEventResult.Error -> result.v1.toEventLoopError().left()

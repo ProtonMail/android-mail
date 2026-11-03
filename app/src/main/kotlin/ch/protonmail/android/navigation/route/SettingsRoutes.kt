@@ -29,6 +29,7 @@ import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsScreen
 import ch.protonmail.android.mailbugreport.presentation.ui.report.BugReportScreen
+import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionScreen
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
@@ -189,6 +190,14 @@ internal fun NavGraphBuilder.addAppIconSettings(navController: NavHostController
                 modifier = Modifier,
                 onBackClick = { navController.navigateBack() }
             )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.addGmailConnection(navController: NavHostController) {
+    composableWithTransitions(route = Screen.GmailConnection.route) {
+        ProtonInvertedTheme {
+            GmailConnectionScreen(onClose = { navController.navigateBack() })
         }
     }
 }

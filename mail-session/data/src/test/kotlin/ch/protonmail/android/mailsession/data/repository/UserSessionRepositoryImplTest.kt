@@ -10,6 +10,7 @@ import ch.protonmail.android.mailsession.data.user.RustUserDataSource
 import ch.protonmail.android.mailsession.data.wrapper.MailSessionWrapper
 import ch.protonmail.android.mailsession.domain.model.CookieSessionId
 import ch.protonmail.android.mailsession.domain.model.Fork
+import ch.protonmail.android.mailsession.domain.model.ForkWithKeyPayload
 import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.model.User
@@ -31,6 +32,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import uniffi.mail_uniffi.Fork as RustFork
+import uniffi.mail_uniffi.ForkWithKeyPayload as RustForkWithKeyPayload
 
 class UserSessionRepositoryImplTest {
 
@@ -191,6 +193,67 @@ class UserSessionRepositoryImplTest {
         // Then
         assertEquals(SessionError.Local.Unknown.left(), result)
         coVerify { expectedMailUserSession.fork() }
+    }
+
+    @Test
+    fun `fork session with key payload should return the fork with a url-safe encoded key`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val rustFork = RustForkWithKeyPayload(
+            selector = "selector",
+            id = "forked-session-id",
+            payloadKey = byteArrayOf(-5, -17, 63),
+            payloadVersion = 3u,
+            payloadType = "default"
+        )
+        val userSession = mockk<MailUserSessionWrapper> {
+            coEvery { forkWithKeyPayload() } returns rustFork.right()
+        }
+        coEvery { mailSessionRepository.getMailSession() } returns mailSessionWithReadyInitializedSession(userSession)
+
+        // When
+        val result = userSessionRepository.forkSessionWithKeyPayload(userId)
+
+        // Then
+        assertEquals(
+            ForkWithKeyPayload(
+                selector = Selector("selector"),
+                sessionId = CookieSessionId("forked-session-id"),
+                payloadKey = "--8_",
+                payloadVersion = 3,
+                payloadType = "default"
+            ).right(),
+            result
+        )
+    }
+
+    @Test
+    fun `fork session with key payload should return SessionError when session is null`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        coEvery { mailSessionRepository.getMailSession() } returns mailSessionWithNoStoredAccount()
+
+        // When
+        val result = userSessionRepository.forkSessionWithKeyPayload(userId)
+
+        // Then
+        assertEquals(SessionError.Local.Unknown.left(), result)
+    }
+
+    @Test
+    fun `fork session with key payload should return SessionError when fork operation fails`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val userSession = mockk<MailUserSessionWrapper> {
+            coEvery { forkWithKeyPayload() } returns DataError.Local.NoUserSession.left()
+        }
+        coEvery { mailSessionRepository.getMailSession() } returns mailSessionWithReadyInitializedSession(userSession)
+
+        // When
+        val result = userSessionRepository.forkSessionWithKeyPayload(userId)
+
+        // Then
+        assertEquals(SessionError.Local.Unknown.left(), result)
     }
 
     @Test

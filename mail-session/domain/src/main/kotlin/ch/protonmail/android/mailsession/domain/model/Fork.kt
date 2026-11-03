@@ -23,6 +23,19 @@ data class Fork(
     val sessionId: CookieSessionId
 )
 
+data class ForkWithKeyPayload(
+    val selector: Selector,
+    val sessionId: CookieSessionId,
+    val payloadKey: String,
+    val payloadVersion: Int,
+    val payloadType: String
+) {
+
+    // The payload key unlocks the forked key password, so keep it out of logs and crash reports.
+    override fun toString(): String = "ForkWithKeyPayload(selector=$selector, sessionId=$sessionId, " +
+        "payloadKey=<redacted>, payloadVersion=$payloadVersion, payloadType=$payloadType)"
+}
+
 data class Selector(
     val value: String
 )

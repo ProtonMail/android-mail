@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsession.data.repository
 
+import java.util.Base64
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.getOrElse
@@ -36,6 +37,7 @@ import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.model.CookieSessionId
 import ch.protonmail.android.mailsession.domain.model.Fork
+import ch.protonmail.android.mailsession.domain.model.ForkWithKeyPayload
 import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.model.User
@@ -208,6 +210,25 @@ class UserSessionRepositoryImpl @Inject constructor(
             .map { fork -> Fork(Selector(fork.selector), CookieSessionId(fork.id)) }
             .mapLeft {
                 Timber.e("user-session: Forking session failed $it")
+                SessionError.Local.Unknown
+            }
+    }
+
+    override suspend fun forkSessionWithKeyPayload(userId: UserId): Either<SessionError, ForkWithKeyPayload> {
+        val userSession = getUserSession(userId) ?: return SessionError.Local.Unknown.left()
+
+        return userSession.forkWithKeyPayload()
+            .map { fork ->
+                ForkWithKeyPayload(
+                    selector = Selector(fork.selector),
+                    sessionId = CookieSessionId(fork.id),
+                    payloadKey = Base64.getUrlEncoder().withoutPadding().encodeToString(fork.payloadKey),
+                    payloadVersion = fork.payloadVersion.toInt(),
+                    payloadType = fork.payloadType
+                )
+            }
+            .mapLeft {
+                Timber.e("user-session: Forking session with a key payload failed $it")
                 SessionError.Local.Unknown
             }
     }

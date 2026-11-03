@@ -101,6 +101,9 @@ include(":mail-bugreport:data")
 include(":mail-bugreport:domain")
 include(":mail-bugreport:presentation")
 
+include(":mail-byoe:domain")
+include(":mail-byoe:presentation")
+
 include(":mail-category-view:dagger")
 include(":mail-category-view:data")
 include(":mail-category-view:domain")

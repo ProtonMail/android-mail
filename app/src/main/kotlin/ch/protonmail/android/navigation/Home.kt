@@ -142,6 +142,7 @@ import ch.protonmail.android.navigation.route.addEntireMessageBody
 import ch.protonmail.android.navigation.route.addExportLogsSettings
 import ch.protonmail.android.navigation.route.addFeatureFlagsOverrides
 import ch.protonmail.android.navigation.route.addFeatureSpotlight
+import ch.protonmail.android.navigation.route.addGmailConnection
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMobileSignatureSettings
@@ -970,6 +971,7 @@ fun Home(
                         )
                         addAppIconSettings(navController, onLearnMoreClick = activityActions.openInActivityInNewTask)
                         addContentSearchSettings(navController)
+                        addGmailConnection(navController)
                         addPinDialog(navController)
                         addSwipeActionsSettings(navController)
                         addThemeSettings(navController)

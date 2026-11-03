@@ -194,6 +194,7 @@ sealed class Destination(val route: String) {
         object LanguageSettings : Destination("settings/appLanguage")
         object AppIconSettings : Destination("settings/appIcon")
         object ContentSearchSettings : Destination("settings/contentSearch")
+        object GmailConnection : Destination("settings/gmailConnection")
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
 
