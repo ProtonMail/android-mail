@@ -38,6 +38,12 @@ internal class PlanUpgradeDescriptionUiMapper @Inject constructor() {
             return PlanUpgradeDescriptionUiModel.SocialProof
         }
 
+        if (upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeStorage) {
+            return PlanUpgradeDescriptionUiModel.Simple(
+                TextUiModel.TextRes(R.string.upselling_byoe_storage_description_override)
+            )
+        }
+
         val description = when (productDetail.metadata.planName) {
             PlanUpgradeIds.UnlimitedPlanId -> getUnlimitedDescription()
             PlanUpgradeIds.PlusPlanId -> getPlusDescription(variant, upsellingEntryPoint)
@@ -63,6 +69,7 @@ internal class PlanUpgradeDescriptionUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.MobileSignature -> R.string.upselling_mobile_signature_plus_description_override
             UpsellingEntryPoint.Feature.ScheduleSend -> R.string.upselling_schedule_send_plus_description_override
             UpsellingEntryPoint.Feature.Snooze -> R.string.upselling_snooze_plus_description_override
+            UpsellingEntryPoint.Feature.ByoeStorage -> R.string.upselling_byoe_storage_description_override
 
             UpsellingEntryPoint.Feature.PlusUnlimited,
             UpsellingEntryPoint.Feature.Sidebar,

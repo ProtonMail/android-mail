@@ -198,6 +198,32 @@ internal class PlanUpgradeUiMapperTest {
     }
 
     @Test
+    fun `should show the proton apps for a gmail import paused by storage`() = runTest {
+        // Given
+        expectIconUiModel()
+        expectTitleUiModel()
+        expectDescriptionUiModel()
+        expectEntitlementsUiModel()
+        val shorterInstance = UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail
+        val longerInstance = UpsellingTestData.MailPlusProducts.YearlyProductOfferDetail
+        expectInstanceUiModel(
+            monthlyInstance = shorterInstance,
+            yearlyInstance = longerInstance,
+            expectedInstance = Pair(mockk(relaxed = true), mockk(relaxed = true))
+        )
+
+        // When
+        val actual = planUpgradeUiMapper.toUiModel(
+            ProductInstances(listOf(shorterInstance, longerInstance)),
+            UpsellingEntryPoint.Feature.ByoeStorage,
+            theme = null
+        )
+
+        // Then
+        assertEquals(true, actual.getOrNull()?.showsProtonApps)
+    }
+
+    @Test
     fun `should return a plan with promo if the variant FF is on`() = runTest {
         // Given
         expectIconUiModel()

@@ -61,6 +61,11 @@ object UpsellingLayoutValues {
         val height = 76.dp
     }
 
+    object ProtonApps {
+
+        val dividerColor = Color.White.copy(alpha = 0.12f)
+    }
+
     object ComparisonTable {
 
         val highlightBarColor = Color.White.copy(alpha = 0.08f)

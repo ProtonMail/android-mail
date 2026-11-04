@@ -209,4 +209,43 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
             actual
         )
     }
+
+    @Test
+    fun `should compare the free storage with unlimited in the gmail import comparison table`() {
+        // When
+        val actual = mapper.toTableUiModel(PlanUpgradeVariant.IntroductoryPrice, UpsellingEntryPoint.Feature.ByoeStorage)
+
+        // Then
+        val storage = (actual as PlanUpgradeEntitlementsListUiModel.ComparisonTableList).items.first()
+        assertEquals(
+            Free.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_free)
+            ),
+            storage.freeValue
+        )
+        assertEquals(
+            Paid.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_unlimited)
+            ),
+            storage.paidValue
+        )
+    }
+
+    @Test
+    fun `should return the gmail import comparison table for a paused gmail import, whatever the plan`() {
+        // Given
+        val expected = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+            items = ComparisonTableEntitlements.ByoeStorageEntitlements,
+            titleLabel = TextUiModel.TextRes(R.string.upselling_pu_whats_included),
+            paidColumnLabel = TextUiModel.TextRes(R.string.upselling_unlimited_plan)
+        )
+
+        // When
+        val actual = listOf(PlanUpgradeVariant.IntroductoryPrice, PlanUpgradeVariant.Normal.Unlimited).map {
+            mapper.toTableUiModel(it, UpsellingEntryPoint.Feature.ByoeStorage)
+        }
+
+        // Then
+        assertEquals(listOf(expected, expected), actual)
+    }
 }

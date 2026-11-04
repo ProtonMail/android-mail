@@ -111,7 +111,6 @@ import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
-import ch.protonmail.android.mailbyoe.presentation.storage.ByoeStorageBanner
 import ch.protonmail.android.mailbyoe.presentation.storage.isByoeStorageBannerVisible
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
@@ -957,14 +956,8 @@ private fun MailboxItemsList(
 
         if (state is MailboxListState.Data.ViewMode && state.isInInboxLabel() && isByoeStorageBannerVisible) {
             item(key = "byoe-storage-banner") {
-                ByoeStorageBanner(
-                    // TODO: Replace with the BYOE storage upsell once it exists.
-                    onUpgrade = {
-                        actions.onNavigateToUpselling(
-                            UpsellingEntryPoint.Feature.Navbar,
-                            UpsellingVisibility.Normal.MailPlus
-                        )
-                    },
+                MailboxByoeStorageBanner(
+                    onNavigateToUpselling = actions.onNavigateToUpselling,
                     modifier = Modifier.animateItem()
                 )
             }

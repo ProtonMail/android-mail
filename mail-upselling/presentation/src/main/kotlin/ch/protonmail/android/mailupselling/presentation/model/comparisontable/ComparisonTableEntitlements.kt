@@ -248,4 +248,19 @@ internal object ComparisonTableEntitlements {
             paidValue = ComparisonTableEntitlement.Paid.Present
         )
     )
+
+    // Declared last: it reuses rows declared above, which must already be initialised. The storage row is the Free
+    // one, since this table compares Free with Unlimited.
+    val ByoeStorageEntitlements = listOf(
+        UnlimitedEntitlements.first(),
+        ComparisonTableEntitlementItemUiModel(
+            title = TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections),
+            freeValue = ComparisonTableEntitlement.Free.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections_value_free)
+            ),
+            paidValue = ComparisonTableEntitlement.Paid.Value(
+                TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections_value_unlimited)
+            )
+        )
+    ) + PlusToUnlimitedEntitlements.drop(1)
 }

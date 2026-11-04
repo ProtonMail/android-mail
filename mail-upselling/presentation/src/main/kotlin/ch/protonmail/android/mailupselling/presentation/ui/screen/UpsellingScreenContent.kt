@@ -235,6 +235,11 @@ internal fun UpsellingScreenContent(
 
                 Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
 
+                if (state.plans.showsProtonApps) {
+                    UpsellingProtonApps()
+                    Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraLarge))
+                }
+
                 when (state.plans.entitlements) {
                     is PlanUpgradeEntitlementsListUiModel.ComparisonTableList ->
                         ComparisonTable(state.plans.entitlements, state.plans.variant)

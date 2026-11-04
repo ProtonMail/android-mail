@@ -146,4 +146,17 @@ internal class PlanUpgradeIconUiMapperTest {
         // Then
         assertEquals(PlanUpgradeIconUiModel(R.drawable.black_friday_bg), actual)
     }
+
+    @Test
+    fun `should map the paused gmail import to the gmail to proton illustration`() {
+        // When
+        val actual = mapper.toUiModel(
+            upsellingEntryPoint = UpsellingEntryPoint.Feature.ByoeStorage,
+            variant = PlanUpgradeVariant.Normal.Unlimited,
+            theme = null
+        )
+
+        // Then
+        assertEquals(PlanUpgradeIconUiModel(R.drawable.illustration_upselling_byoe_storage), actual)
+    }
 }

@@ -70,7 +70,8 @@ internal class PlanUpgradeUiMapper @Inject constructor(
                 longerCycleUiModel,
                 variant,
                 upsellingEntryPoint
-            )
+            ),
+            showsProtonApps = upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeStorage
         ).right()
     }
 }

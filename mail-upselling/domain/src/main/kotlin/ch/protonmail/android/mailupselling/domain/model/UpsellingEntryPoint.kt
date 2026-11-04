@@ -70,6 +70,10 @@ sealed interface UpsellingEntryPoint {
 
         @Serializable
         data object ScheduleSend : Feature
+
+        /** The mailbox banner shown while a Gmail import is paused because storage is full. */
+        @Serializable
+        data object ByoeStorage : Feature
     }
 
     object PostOnboarding : UpsellingEntryPoint

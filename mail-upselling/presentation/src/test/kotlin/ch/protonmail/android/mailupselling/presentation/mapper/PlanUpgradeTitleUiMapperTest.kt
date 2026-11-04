@@ -160,6 +160,30 @@ internal class PlanUpgradeTitleUiMapperTest {
         assertEquals(PlanUpgradeTitleUiModel(TextUiModel(theme.titleRes)), actual)
     }
 
+    @Test
+    fun `should map the paused gmail import to its own title, whatever the plan`() {
+        // Given
+        val expected = PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_byoe_storage_title))
+
+        // When
+        val variants = listOf(
+            PlanUpgradeVariant.Normal.Unlimited,
+            PlanUpgradeVariant.Normal.MailPlus,
+            PlanUpgradeVariant.IntroductoryPrice
+        )
+        val actual = variants.map {
+            mapper.toUiModel(
+                initialPrice = initialPrice,
+                upsellingEntryPoint = UpsellingEntryPoint.Feature.ByoeStorage,
+                variant = it,
+                theme = null
+            )
+        }
+
+        // Then
+        assertEquals(listOf(expected, expected, expected), actual)
+    }
+
     private companion object {
 
         val initialPrice = PlanUpgradePriceDisplayUiModel(

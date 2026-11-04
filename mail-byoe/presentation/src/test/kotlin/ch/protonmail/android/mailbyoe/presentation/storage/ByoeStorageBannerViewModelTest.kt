@@ -21,6 +21,9 @@ package ch.protonmail.android.mailbyoe.presentation.storage
 import app.cash.turbine.test
 import ch.protonmail.android.mailbyoe.domain.usecase.ObserveByoeImportPausedForStorage
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.every
 import io.mockk.mockk
@@ -48,11 +51,16 @@ internal class ByoeStorageBannerViewModelTest {
         every { this@mockk(userId) } returns isPaused
         every { this@mockk(otherUserId) } returns flowOf(true)
     }
+    private val upsellingVisibility = MutableStateFlow<UpsellingVisibility>(UpsellingVisibility.Normal.MailPlus)
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk(UpsellingEntryPoint.Feature.ByoeStorage) } returns upsellingVisibility
+    }
 
     private fun viewModel() = ByoeStorageBannerViewModel(
         observePrimaryUserId,
         observeByoeImportPausedForStorage,
-        ByoeStorageBannerDismissal()
+        ByoeStorageBannerDismissal(),
+        observeUpsellingVisibility
     )
 
     @AfterTest
@@ -99,6 +107,38 @@ internal class ByoeStorageBannerViewModelTest {
 
             // When
             viewModel.submit(ByoeStorageBannerAction.NotNowClicked)
+
+            // Then
+            assertEquals(ByoeStorageBannerState.Hidden, awaitItem())
+        }
+    }
+
+    @Test
+    fun `given an import paused for storage but no upsell to offer, when observing, then the banner is hidden`() =
+        runTest {
+            // Given
+            upsellingVisibility.value = UpsellingVisibility.Hidden
+            val viewModel = viewModel()
+
+            // When
+            viewModel.state.test {
+
+                // Then
+                assertEquals(ByoeStorageBannerState.Hidden, awaitItem())
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `given the banner shows, when there is no longer an upsell to offer, then the banner hides`() = runTest {
+        // Given
+        val viewModel = viewModel()
+
+        viewModel.state.test {
+            assertEquals(ByoeStorageBannerState.Visible, awaitItem())
+
+            // When
+            upsellingVisibility.value = UpsellingVisibility.Hidden
 
             // Then
             assertEquals(ByoeStorageBannerState.Hidden, awaitItem())

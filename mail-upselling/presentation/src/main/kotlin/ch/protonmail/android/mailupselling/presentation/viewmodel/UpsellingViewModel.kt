@@ -279,6 +279,8 @@ internal class UpsellingViewModel @Inject constructor(
             UpsellingEntryPoint.Feature.PlusUnlimited -> UpsellEntryPoint.NAVBAR_UPSELL
             UpsellingEntryPoint.Feature.Sidebar -> UpsellEntryPoint.NAVBAR_UPSELL
             UpsellingEntryPoint.Feature.Snooze -> UpsellEntryPoint.SNOOZE
+            // TODO: Switch to the BYOE storage entry point once the SDK exposes one.
+            UpsellingEntryPoint.Feature.ByoeStorage -> UpsellEntryPoint.MAILBOX_TOP_BAR
         }
     }
 

@@ -237,6 +237,33 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_snooze_plus_description_override)
                 )
+            ),
+            arrayOf(
+                "byoe storage entry point - normal variant",
+                UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
+                UpsellingEntryPoint.Feature.ByoeStorage,
+                PlanUpgradeVariant.Normal.MailPlus,
+                PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_byoe_storage_description_override)
+                )
+            ),
+            arrayOf(
+                "byoe storage entry point - unlimited plan",
+                UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+                UpsellingEntryPoint.Feature.ByoeStorage,
+                PlanUpgradeVariant.Normal.Unlimited,
+                PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_byoe_storage_description_override)
+                )
+            ),
+            arrayOf(
+                "byoe storage entry point - promo variant",
+                UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
+                UpsellingEntryPoint.Feature.ByoeStorage,
+                PlanUpgradeVariant.IntroductoryPrice,
+                PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_byoe_storage_description_override)
+                )
             )
         )
     }

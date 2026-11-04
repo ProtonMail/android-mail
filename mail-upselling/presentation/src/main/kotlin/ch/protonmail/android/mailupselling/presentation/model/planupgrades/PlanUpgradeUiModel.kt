@@ -24,7 +24,8 @@ internal data class PlanUpgradeUiModel(
     val description: PlanUpgradeDescriptionUiModel,
     val variant: PlanUpgradeVariant,
     val entitlements: PlanUpgradeEntitlementsListUiModel,
-    val list: PlanUpgradeInstanceListUiModel
+    val list: PlanUpgradeInstanceListUiModel,
+    val showsProtonApps: Boolean = false
 )
 
 sealed interface UnlimitedPlanVariant

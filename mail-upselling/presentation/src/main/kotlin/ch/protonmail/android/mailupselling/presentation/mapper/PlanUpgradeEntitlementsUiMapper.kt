@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.BlackFridayMailPlusEntitlements
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.ByoeStorageEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.FallPromoEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.MailPlusEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlements.PlusToUnlimitedEntitlements
@@ -42,6 +43,13 @@ class PlanUpgradeEntitlementsUiMapper @Inject constructor() {
         mapToComparisonTable(variant, entryPoint)
 
     private fun mapToComparisonTable(variant: PlanUpgradeVariant, entryPoint: UpsellingEntryPoint.Feature) = when {
+        entryPoint == UpsellingEntryPoint.Feature.ByoeStorage ->
+            PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+                items = ByoeStorageEntitlements,
+                titleLabel = TextUiModel.TextRes(R.string.upselling_pu_whats_included),
+                paidColumnLabel = TextUiModel.TextRes(R.string.upselling_unlimited_plan)
+            )
+
         entryPoint == UpsellingEntryPoint.Feature.PlusUnlimited && variant is PlanUpgradeVariant.BlackFriday ->
             PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
                 items = PlusToUnlimitedEntitlements,

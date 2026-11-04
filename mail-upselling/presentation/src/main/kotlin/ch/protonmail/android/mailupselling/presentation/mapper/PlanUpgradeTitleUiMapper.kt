@@ -38,6 +38,10 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
 
         if (theme != null) return PlanUpgradeTitleUiModel(TextUiModel(theme.titleRes))
 
+        if (upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeStorage) {
+            return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_byoe_storage_title))
+        }
+
         if (variant == PlanUpgradeVariant.SocialProof)
             return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title_social_proof))
 
@@ -53,6 +57,7 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.MobileSignature -> R.string.upselling_mobile_signature_plus_title
             UpsellingEntryPoint.Feature.ScheduleSend -> R.string.upselling_schedule_send_plus_title
             UpsellingEntryPoint.Feature.Snooze -> R.string.upselling_snooze_plus_title
+            UpsellingEntryPoint.Feature.ByoeStorage -> R.string.upselling_byoe_storage_title
             UpsellingEntryPoint.Feature.PlusUnlimited,
             UpsellingEntryPoint.Feature.Sidebar,
             UpsellingEntryPoint.Feature.Navbar -> if (variant == PlanUpgradeVariant.IntroductoryPrice) {

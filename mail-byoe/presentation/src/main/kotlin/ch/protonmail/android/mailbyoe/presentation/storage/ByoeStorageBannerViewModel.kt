@@ -22,35 +22,56 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailbyoe.domain.usecase.ObserveByoeImportPausedForStorage
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * The mailbox banner shown while a Gmail import is paused because the user ran out of storage. It goes away by
  * itself once the import resumes after an upgrade, or is cancelled or undone.
+ *
+ * Its copy and buttons are written for a free user, so it only shows when there is a storage upsell to offer: a
+ * paying user, for one, doesn't see it until there is a banner for them.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ByoeStorageBannerViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     observeByoeImportPausedForStorage: ObserveByoeImportPausedForStorage,
-    private val dismissal: ByoeStorageBannerDismissal
+    private val dismissal: ByoeStorageBannerDismissal,
+    observeUpsellingVisibility: ObserveUpsellingVisibility
 ) : ViewModel() {
 
     val state: StateFlow<ByoeStorageBannerState> = observePrimaryUserId()
         .filterNotNull()
         .flatMapLatest { userId ->
-            combine(observeByoeImportPausedForStorage(userId), dismissal.isDismissed(userId)) { isPaused, isDismissed ->
-                if (isPaused && !isDismissed) ByoeStorageBannerState.Visible else ByoeStorageBannerState.Hidden
+            combine(
+                observeByoeImportPausedForStorage(userId),
+                dismissal.isDismissed(userId),
+                // Deduplicated, so the hidden banner is logged once per change, not on every plans update.
+                observeUpsellingVisibility(UpsellingEntryPoint.Feature.ByoeStorage).distinctUntilChanged()
+            ) { isPaused, isDismissed, upselling ->
+                when {
+                    !isPaused || isDismissed -> ByoeStorageBannerState.Hidden
+                    upselling == UpsellingVisibility.Hidden -> {
+                        Timber.i("byoe: Gmail import paused for storage, but no upsell to offer, so no storage banner")
+                        ByoeStorageBannerState.Hidden
+                    }
+                    else -> ByoeStorageBannerState.Visible
+                }
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), ByoeStorageBannerState.Hidden)
