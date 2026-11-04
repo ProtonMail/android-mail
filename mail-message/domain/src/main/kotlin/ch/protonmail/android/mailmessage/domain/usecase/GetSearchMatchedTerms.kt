@@ -28,7 +28,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * The text [searchQuery] matched in one message's subject and addresses, fuzzy matches included.
+ * The text [searchQuery] matched in one message's subject, addresses and attachment names, fuzzy matches included.
  *
  * Positions come from the active search, so this is empty once [searchQuery] is no longer being searched.
  * Highlighting is best effort, so a failure also returns no terms.

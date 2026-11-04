@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.mapper
 
+import ch.protonmail.android.mailattachments.data.mapper.toAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.mailmessage.domain.model.SearchMatchField
 import ch.protonmail.android.mailmessage.domain.model.SearchMatchPosition
@@ -30,12 +31,14 @@ fun LocalSearchMatchPosition.toSearchMatchPosition(): SearchMatchPosition? {
         "to" -> SearchMatchField.To
         "cc" -> SearchMatchField.Cc
         "bcc" -> SearchMatchField.Bcc
+        "attachment" -> SearchMatchField.Attachment
         else -> return null
     }
     return SearchMatchPosition(
         field = field,
         valueIndex = valueIndex.toInt(),
         start = start.toInt(),
-        end = end.toInt()
+        end = end.toInt(),
+        attachmentId = attachmentId?.toAttachmentId()
     )
 }

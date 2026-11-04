@@ -59,7 +59,8 @@ fun AttachmentList(
     modifier: Modifier = Modifier,
     messageAttachmentsUiModel: AttachmentGroupUiModel,
     actions: AttachmentList.Actions,
-    downloadingAttachmentId: AttachmentId? = null
+    downloadingAttachmentId: AttachmentId? = null,
+    highlightText: String = ""
 ) {
     when (messageAttachmentsUiModel.expandCollapseMode) {
 
@@ -67,14 +68,16 @@ fun AttachmentList(
             modifier = modifier,
             messageAttachmentsUiModel = messageAttachmentsUiModel,
             actions = actions,
-            downloadingAttachmentId = downloadingAttachmentId
+            downloadingAttachmentId = downloadingAttachmentId,
+            highlightText = highlightText
         )
 
         else -> ExpandableAttachmentList(
             modifier = modifier,
             messageAttachmentsUiModel = messageAttachmentsUiModel,
             actions = actions,
-            downloadingAttachmentId = downloadingAttachmentId
+            downloadingAttachmentId = downloadingAttachmentId,
+            highlightText = highlightText
         )
     }
 }
@@ -84,7 +87,8 @@ fun ExpandableAttachmentList(
     modifier: Modifier = Modifier,
     messageAttachmentsUiModel: AttachmentGroupUiModel,
     actions: AttachmentList.Actions,
-    downloadingAttachmentId: AttachmentId? = null
+    downloadingAttachmentId: AttachmentId? = null,
+    highlightText: String = ""
 ) {
     Column(
         modifier = modifier
@@ -115,7 +119,8 @@ fun ExpandableAttachmentList(
                         attachmentUiModel = item,
                         onAttachmentItemClicked = actions.onAttachmentClicked,
                         onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked,
-                        isDownloading = downloadingAttachmentId?.id == item.id.value
+                        isDownloading = downloadingAttachmentId?.id == item.id.value,
+                        highlightText = highlightText
                     )
                 }
             }
@@ -128,7 +133,8 @@ fun DefaultAttachmentList(
     modifier: Modifier = Modifier,
     messageAttachmentsUiModel: AttachmentGroupUiModel,
     actions: AttachmentList.Actions,
-    downloadingAttachmentId: AttachmentId? = null
+    downloadingAttachmentId: AttachmentId? = null,
+    highlightText: String = ""
 ) {
     Column(
         modifier = modifier
@@ -147,7 +153,8 @@ fun DefaultAttachmentList(
                 attachmentUiModel = item,
                 onAttachmentItemClicked = actions.onAttachmentClicked,
                 onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked,
-                isDownloading = downloadingAttachmentId?.id == item.id.value
+                isDownloading = downloadingAttachmentId?.id == item.id.value,
+                highlightText = highlightText
             )
         }
     }

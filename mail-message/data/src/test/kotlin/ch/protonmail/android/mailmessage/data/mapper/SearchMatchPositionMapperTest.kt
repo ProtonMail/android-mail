@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.mapper
 
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
+import ch.protonmail.android.mailcommon.data.mapper.LocalAttachmentId
 import ch.protonmail.android.mailcommon.data.mapper.LocalSearchMatchPosition
 import ch.protonmail.android.mailmessage.domain.model.SearchMatchField
 import ch.protonmail.android.mailmessage.domain.model.SearchMatchPosition
@@ -35,7 +37,8 @@ class SearchMatchPositionMapperTest {
             "from" to SearchMatchField.From,
             "to" to SearchMatchField.To,
             "cc" to SearchMatchField.Cc,
-            "bcc" to SearchMatchField.Bcc
+            "bcc" to SearchMatchField.Bcc,
+            "attachment" to SearchMatchField.Attachment
         )
 
         // When
@@ -57,6 +60,27 @@ class SearchMatchPositionMapperTest {
 
         // Then
         assertEquals(SearchMatchPosition(SearchMatchField.Subject, valueIndex = 1, start = 4, end = 14), actual)
+    }
+
+    @Test
+    fun `should keep the attachment the position points into`() {
+        // Given
+        val local = LocalSearchMatchPosition("attachment", 1u, 3u, 10u, LocalAttachmentId(7uL))
+
+        // When
+        val actual = local.toSearchMatchPosition()
+
+        // Then
+        assertEquals(
+            SearchMatchPosition(
+                SearchMatchField.Attachment,
+                valueIndex = 1,
+                start = 3,
+                end = 10,
+                attachmentId = AttachmentId("7")
+            ),
+            actual
+        )
     }
 
     @Test

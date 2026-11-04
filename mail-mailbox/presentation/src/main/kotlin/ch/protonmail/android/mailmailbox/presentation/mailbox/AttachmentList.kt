@@ -34,19 +34,29 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.SubcomposeMeasureScope
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
@@ -55,6 +65,8 @@ import ch.protonmail.android.mailattachments.presentation.model.AttachmentMetada
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.Attachment.TotalIconAndPaddingDp
+import ch.protonmail.android.uicomponents.text.containsHighlight
+import ch.protonmail.android.uicomponents.text.rememberSearchHighlightedText
 import kotlin.math.max
 import kotlin.math.min
 
@@ -64,19 +76,27 @@ fun AttachmentList(
     attachments: List<AttachmentMetadataUiModel>,
     onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
     textColor: Color,
-    downloadingAttachmentId: AttachmentIdUiModel? = null
+    downloadingAttachmentId: AttachmentIdUiModel? = null,
+    highlightText: String = ""
 ) {
+    // In search results, the attachments that matched come first, so they are not hidden behind "+N"
+    val orderedAttachments = remember(attachments, highlightText) {
+        val (matching, others) = attachments.partition { chipHighlights(it.name, highlightText) }
+        matching + others
+    }
+
     SubcomposeLayout(
         modifier = modifier
             .wrapContentSize()
     ) { constraints ->
 
         val (placeableWithInfoList, height) = measureAttachments(
-            attachments = attachments,
+            attachments = orderedAttachments,
             constraints = constraints,
             textColor = textColor,
             onAttachmentClicked = onAttachmentClicked,
-            downloadingAttachmentId = downloadingAttachmentId
+            downloadingAttachmentId = downloadingAttachmentId,
+            highlightText = highlightText
         )
 
         layout(
@@ -97,7 +117,8 @@ private fun SubcomposeMeasureScope.measureAttachments(
     constraints: Constraints,
     textColor: Color,
     onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
-    downloadingAttachmentId: AttachmentIdUiModel? = null
+    downloadingAttachmentId: AttachmentIdUiModel? = null,
+    highlightText: String
 ): MeasureResult {
 
     val filteredAttachments = attachments.filter { it.includeInPreview }
@@ -114,7 +135,8 @@ private fun SubcomposeMeasureScope.measureAttachments(
             textColor,
             constraints,
             onAttachmentClicked,
-            downloadingAttachmentId
+            downloadingAttachmentId,
+            highlightText
         )
 
     var attachmentsWidth = 0
@@ -160,7 +182,8 @@ private fun SubcomposeMeasureScope.measureAttachments(
                 maxAttachmentWidth = maxAttachmentWidth,
                 baseNameWidth = maxAttachmentWidth - extensionWidth - iconAndPaddingWidth - externalPadding,
                 onAttachmentClicked = onAttachmentClicked,
-                isDownloading = downloadingAttachmentId == attachment.id
+                isDownloading = downloadingAttachmentId == attachment.id,
+                highlightText = highlightText
             )
             attachmentPlaceables.add(truncatedPlaceable)
             attachmentsWidth += truncatedPlaceable.width
@@ -181,7 +204,8 @@ private fun SubcomposeMeasureScope.createTruncatedPlaceable(
     maxAttachmentWidth: Int,
     baseNameWidth: Int,
     onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
-    isDownloading: Boolean = false
+    isDownloading: Boolean = false,
+    highlightText: String
 ): Placeable {
     // Ensure minWidth doesn't exceed maxWidth to prevent constraint errors
     val safeMinWidth = min(minTruncatedAttachmentWidth, maxAttachmentWidth)
@@ -195,7 +219,8 @@ private fun SubcomposeMeasureScope.createTruncatedPlaceable(
             maxWidth = maxAttachmentWidth,
             baseNameWidth = safeBaseNameWidth,
             onAttachmentClicked = onAttachmentClicked,
-            isDownloading = isDownloading
+            isDownloading = isDownloading,
+            highlightText = highlightText
         )
     }.single().measure(
         Constraints(
@@ -226,7 +251,8 @@ private fun SubcomposeMeasureScope.measureAttachmentsFullWidth(
     textColor: Color,
     constraints: Constraints,
     onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
-    downloadingAttachmentId: AttachmentIdUiModel? = null
+    downloadingAttachmentId: AttachmentIdUiModel? = null,
+    highlightText: String
 ): List<FullWidthAttachmentInfo> {
     val result = mutableListOf<FullWidthAttachmentInfo>()
 
@@ -242,7 +268,8 @@ private fun SubcomposeMeasureScope.measureAttachmentsFullWidth(
                 minWidth = 0,
                 maxWidth = constraints.maxWidth,
                 onAttachmentClicked = onAttachmentClicked,
-                isDownloading = downloadingAttachmentId == attachment.id
+                isDownloading = downloadingAttachmentId == attachment.id,
+                highlightText = highlightText
             )
         }.single().measure(constraints)
 
@@ -274,7 +301,8 @@ private fun Attachment(
     maxWidth: Int,
     baseNameWidth: Int? = null,
     onAttachmentClicked: (AttachmentIdUiModel) -> Unit,
-    isDownloading: Boolean = false
+    isDownloading: Boolean = false,
+    highlightText: String = ""
 ) {
     Box(
         modifier = Modifier
@@ -312,15 +340,19 @@ private fun Attachment(
                 )
             }
             Spacer(modifier = Modifier.width(ProtonDimens.Spacing.Compact))
-            val fileName = attachment.name
-            val extension = fileName.substringAfterLast('.', "")
-            val baseName = fileName.substringBeforeLast('.', fileName)
+            val highlightedName = rememberSearchHighlightedText(attachment.name, highlightText)
+            val nameParts = remember(highlightedName) { splitChipName(highlightedName) }
             val baseNameWidthDp = with(LocalDensity.current) { baseNameWidth?.toDp() }
 
             val baseNameModifier = baseNameWidthDp?.let { Modifier.widthIn(max = it) } ?: Modifier
 
-            FileBaseNameText(Modifier.then(baseNameModifier), baseName, textColor)
-            if (extension.isNotEmpty()) {
+            FileBaseNameText(
+                modifier = Modifier.then(baseNameModifier),
+                baseName = nameParts.baseName,
+                textColor = textColor,
+                trailingFill = nameParts.joinBackground
+            )
+            nameParts.extension?.let { extension ->
                 ExtensionText(extension = extension, textColor = textColor)
             }
         }
@@ -350,24 +382,45 @@ private fun MinTruncatedAttachment(maxWidth: Int) {
 @Composable
 private fun FileBaseNameText(
     modifier: Modifier,
-    baseName: String,
-    textColor: Color
+    baseName: AnnotatedString,
+    textColor: Color,
+    trailingFill: Color?
 ) {
+    val layout = remember { mutableStateOf<TextLayoutResult?>(null) }
     Text(
-        modifier = modifier,
+        modifier = modifier.drawBehind {
+            val fill = trailingFill ?: return@drawBehind
+            val textLayout = layout.value ?: return@drawBehind
+            fillAfterText(fill, textLayout)
+        },
         text = baseName,
         style = ProtonTheme.typography.bodySmall.copy(
             color = textColor
         ),
         maxLines = 1,
-        overflow = TextOverflow.Ellipsis
+        overflow = TextOverflow.Ellipsis,
+        onTextLayout = { layout.value = it }
     )
 }
 
+/**
+ * Paints [color] between the end of the text and the edge of its box, on the extension's side.
+ *
+ * The box is wider than the text: it rounds up to whole pixels, and a cut-short name leaves room after
+ * the ellipsis. Without this, a highlight that runs into the extension shows a thin gap there.
+ */
+private fun DrawScope.fillAfterText(color: Color, textLayout: TextLayoutResult) {
+    val (start, end) = when (layoutDirection) {
+        LayoutDirection.Ltr -> textLayout.getLineRight(0) to size.width
+        LayoutDirection.Rtl -> 0f to textLayout.getLineLeft(0)
+    }
+    if (end > start) drawRect(color, topLeft = Offset(start, 0f), size = Size(end - start, size.height))
+}
+
 @Composable
-private fun ExtensionText(extension: String, textColor: Color) {
+private fun ExtensionText(extension: AnnotatedString, textColor: Color) {
     Text(
-        text = ".$extension",
+        text = extension,
         style = ProtonTheme.typography.bodySmall.copy(
             color = textColor
         ),
@@ -375,11 +428,52 @@ private fun ExtensionText(extension: String, textColor: Color) {
     )
 }
 
+/** Whether a chip shows a highlight. The chip highlights its full name, so this checks the full name too. */
+private fun chipHighlights(fileName: String, highlightText: String): Boolean =
+    containsHighlight(fileName, highlightText)
+
+/**
+ * A chip's name, split so the base name can be cut short while the extension stays visible.
+ *
+ * [joinBackground] is the highlight background when a highlight runs across the dot, and null otherwise.
+ */
+internal data class ChipNameParts(
+    val baseName: AnnotatedString,
+    val extension: AnnotatedString?,
+    val joinBackground: Color? = null
+)
+
+/**
+ * Splits [highlightedName] at its last dot, keeping the highlight on both parts.
+ *
+ * The name is highlighted before the split. Search can match a whole name, such as "IMG_1234.jpg" for
+ * "IMG", and highlighting each part on its own would miss that match.
+ *
+ * The extension keeps its leading dot. A trailing dot gives no extension and is dropped.
+ */
+internal fun splitChipName(highlightedName: AnnotatedString): ChipNameParts {
+    val dotIndex = highlightedName.text.lastIndexOf('.')
+    if (dotIndex < 0) return ChipNameParts(baseName = highlightedName, extension = null)
+    val extension = highlightedName.subSequence(dotIndex, highlightedName.length).takeIf { it.length > 1 }
+    val joinBackground = highlightedName.backgroundAt(dotIndex - 1)
+        ?.takeIf { extension != null && highlightedName.backgroundAt(dotIndex) != null }
+    return ChipNameParts(
+        baseName = highlightedName.subSequence(0, dotIndex),
+        extension = extension,
+        joinBackground = joinBackground
+    )
+}
+
+private fun AnnotatedString.backgroundAt(index: Int): Color? = spanStyles
+    .firstOrNull { index >= it.start && index < it.end && it.item.background.isSpecified }
+    ?.item
+    ?.background
+
 private fun SubcomposeMeasureScope.measureExtensionWidth(fileName: String, attachmentId: String): Int {
     val extension = fileName.substringAfterLast('.', "")
     return if (extension.isNotEmpty()) {
         subcompose(generateSlotId("extension", attachmentId)) {
-            ExtensionText(extension = extension, textColor = Color.Unspecified)
+            ExtensionText(extension = AnnotatedString(".$extension"), textColor = Color.Unspecified)
         }
             .single()
             .measure(Constraints())

@@ -55,6 +55,7 @@ import ch.protonmail.android.mailattachments.presentation.model.AttachmentMetada
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentMetadataUiModelSamples
+import ch.protonmail.android.uicomponents.text.rememberSearchHighlightedText
 
 @Composable
 fun AttachmentItem(
@@ -62,7 +63,8 @@ fun AttachmentItem(
     attachmentUiModel: AttachmentMetadataUiModel,
     onAttachmentItemClicked: (mode: AttachmentOpenMode, attachmentId: AttachmentId) -> Unit,
     onAttachmentItemDeleteClicked: (attachmentId: AttachmentId) -> Unit,
-    isDownloading: Boolean = false
+    isDownloading: Boolean = false,
+    highlightText: String = ""
 ) {
     val context = LocalContext.current
     val nameTextColor = if (attachmentUiModel.status == AttachmentState.Uploading) ProtonTheme.colors.textHint else
@@ -122,7 +124,7 @@ fun AttachmentItem(
                 modifier = Modifier
                     .weight(1f)
                     .testTag(AttachmentItemTestTags.Name),
-                text = attachmentUiModel.name,
+                text = rememberSearchHighlightedText(attachmentUiModel.name, highlightText),
                 style = ProtonTheme.typography.bodyMedium,
                 color = nameTextColor,
                 maxLines = 1,
