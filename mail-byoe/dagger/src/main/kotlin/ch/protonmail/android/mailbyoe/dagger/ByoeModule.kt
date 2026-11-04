@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailbyoe.dagger
 
 import ch.protonmail.android.mailbyoe.data.repository.ByoeGuidanceRepositoryImpl
+import ch.protonmail.android.mailbyoe.data.repository.ByoeImportRepositoryImpl
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
+import ch.protonmail.android.mailbyoe.domain.repository.ByoeImportRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable
@@ -33,4 +35,8 @@ internal interface ByoeModule {
     @Binds
     @Reusable
     fun bindByoeGuidanceRepository(impl: ByoeGuidanceRepositoryImpl): ByoeGuidanceRepository
+
+    @Binds
+    @Reusable
+    fun bindByoeImportRepository(impl: ByoeImportRepositoryImpl): ByoeImportRepository
 }

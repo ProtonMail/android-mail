@@ -110,6 +110,10 @@ annotation class IsBlackFridayUpsellOptedOut
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class IsByoeMobileKillswitchOn
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IsRateOnUpsellEnabled
 
 @Qualifier

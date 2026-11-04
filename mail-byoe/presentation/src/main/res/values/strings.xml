@@ -35,6 +35,11 @@
   <string name="byoe_gmail_connected_open_inbox">Take me to Inbox</string>
   <!-- Snackbar in the mailbox once the user is back from the success page -->
   <string name="byoe_gmail_import_in_progress">Importing in progress…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Storage limit reached</string>
+  <string name="byoe_storage_banner_body">Import is paused due to storage limit. Upgrade and get more storage to finish your import.</string>
+  <string name="byoe_storage_banner_upgrade">Upgrade</string>
+  <string name="byoe_storage_banner_not_now">Not now</string>
   <!-- BYOE spotlight for existing users -->
   <string name="byoe_spotlight_badge">What\'s new</string>
   <string name="byoe_spotlight_title">Use Gmail in Proton</string>

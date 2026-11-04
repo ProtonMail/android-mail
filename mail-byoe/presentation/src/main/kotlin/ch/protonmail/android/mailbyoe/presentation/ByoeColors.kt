@@ -34,6 +34,7 @@ internal data class ByoeColors(
     val cardBackground: Color,
     val cardBorder: Brush,
     val cardDivider: Color,
+    val bannerBorder: Color,
     val iconBackground: Color
 )
 
@@ -49,6 +50,7 @@ internal fun byoeColors(): ByoeColors {
             cardBackground = Color.Transparent,
             cardBorder = cardBorder(DarkCardBorder, DarkCardBorder),
             cardDivider = colors.borderNorm,
+            bannerBorder = colors.brandMinus30,
             iconBackground = colors.interactionBrandWeakNorm
         )
     } else {
@@ -59,6 +61,7 @@ internal fun byoeColors(): ByoeColors {
             cardBackground = colors.backgroundNorm,
             cardBorder = cardBorder(LightCardBorderTop, LightCardBorderBottom),
             cardDivider = colors.separatorNorm,
+            bannerBorder = LightIconBackground,
             iconBackground = LightIconBackground
         )
     }

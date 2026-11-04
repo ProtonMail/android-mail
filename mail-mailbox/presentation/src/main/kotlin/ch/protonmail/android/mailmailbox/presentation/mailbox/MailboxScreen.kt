@@ -111,6 +111,8 @@ import ch.protonmail.android.mailattachments.presentation.model.FileContent
 import ch.protonmail.android.mailattachments.presentation.ui.OpenAttachmentInput
 import ch.protonmail.android.mailattachments.presentation.ui.fileOpener
 import ch.protonmail.android.mailattachments.presentation.ui.fileSaver
+import ch.protonmail.android.mailbyoe.presentation.storage.ByoeStorageBanner
+import ch.protonmail.android.mailbyoe.presentation.storage.isByoeStorageBannerVisible
 import ch.protonmail.android.mailcategory.presentation.model.CategoryItemUiModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
 import ch.protonmail.android.mailcategory.presentation.model.activeCategory
@@ -853,6 +855,7 @@ private fun MailboxItemsList(
     actions: MailboxScreen.Actions
 ) {
     val downloadingAttachmentId = (state as? MailboxListState.Data.ViewMode)?.downloadingAttachmentId
+    val isByoeStorageBannerVisible = isByoeStorageBannerVisible()
 
     val itemActions = ComposeMailboxItem.Actions(
         onItemClicked = actions.onItemClicked,
@@ -948,6 +951,21 @@ private fun MailboxItemsList(
                         },
                         onClearAll = actions.onClearAll
                     )
+                )
+            }
+        }
+
+        if (state is MailboxListState.Data.ViewMode && state.isInInboxLabel() && isByoeStorageBannerVisible) {
+            item(key = "byoe-storage-banner") {
+                ByoeStorageBanner(
+                    // TODO: Replace with the BYOE storage upsell once it exists.
+                    onUpgrade = {
+                        actions.onNavigateToUpselling(
+                            UpsellingEntryPoint.Feature.Navbar,
+                            UpsellingVisibility.Normal.MailPlus
+                        )
+                    },
+                    modifier = Modifier.animateItem()
                 )
             }
         }

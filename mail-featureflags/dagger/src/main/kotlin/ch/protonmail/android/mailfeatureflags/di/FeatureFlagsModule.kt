@@ -28,6 +28,7 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBgProcessingRe
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayUpsellOptedOut
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave1Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayWave2Enabled
+import ch.protonmail.android.mailfeatureflags.domain.annotation.IsByoeMobileKillswitchOn
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormatMenuEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Enabled
@@ -353,6 +354,12 @@ object FeatureFlagsModule {
     @IsBlackFridayUpsellOptedOut
     fun provideIsBlackFridayUpsellOptedOut(factory: BooleanFeatureFlagFactory) =
         factory.create(key = BlackFridayUpsellOptOut.key, false)
+
+    @Provides
+    @Singleton
+    @IsByoeMobileKillswitchOn
+    fun provideIsByoeMobileKillswitchOn(factory: BooleanFeatureFlagFactory) =
+        factory.create(key = ByoeMobileKillswitch.key, false)
 
     @Provides
     @Singleton
