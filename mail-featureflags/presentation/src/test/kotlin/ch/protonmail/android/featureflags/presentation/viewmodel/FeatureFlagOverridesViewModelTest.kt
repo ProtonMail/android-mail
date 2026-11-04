@@ -23,6 +23,7 @@ import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagCategory
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
 import ch.protonmail.android.mailfeatureflags.presentation.mapper.FeatureFlagsDefinitionsMapper
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagListItem
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagOverridesState
@@ -66,10 +67,10 @@ internal class FeatureFlagOverridesViewModelTest {
         )
 
         val definitions = setOf(systemFlag, testFlag)
-        val expectedOverrides = mapOf(systemFlag to false)
+        val expectedOverrides = mapOf(systemFlag.key to FeatureFlagOverride(enabled = false, variant = null))
         val expectedUiModelsList = mockk<ImmutableList<FeatureFlagListItem>>()
 
-        coEvery { overrideManager.overriddenDebugFlags() } returns mapOf(systemFlag.key to false)
+        coEvery { overrideManager.overriddenDebugFlags() } returns expectedOverrides
         coEvery { mapper.toFlattenedListUiModel(any(), expectedOverrides) } returns expectedUiModelsList
 
         // When + Then
@@ -89,7 +90,7 @@ internal class FeatureFlagOverridesViewModelTest {
         viewModel(definitions).toggleKey("unknownKey")
 
         // Then
-        coVerify(exactly = 0) { overrideManager.setDebugOverride(any(), any()) }
+        coVerify(exactly = 0) { overrideManager.setDebugOverride(any(), any(), any()) }
     }
 
     @Test
@@ -105,7 +106,7 @@ internal class FeatureFlagOverridesViewModelTest {
         viewModel(definitions).toggleKey(flag.key)
 
         // Then
-        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false) }
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false, null) }
     }
 
     @Test
@@ -113,14 +114,70 @@ internal class FeatureFlagOverridesViewModelTest {
         // Given
         val flag = FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition(key = "1")
         val definitions = setOf(flag)
-        coEvery { overrideManager.overriddenDebugFlags() } returns mapOf(flag.key to true)
+        coEvery { overrideManager.overriddenDebugFlags() } returns
+            mapOf(flag.key to FeatureFlagOverride(enabled = true, variant = null))
 
         // When
         viewModel(definitions).toggleKey(flag.key)
 
         // Then
-        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false) }
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false, null) }
         coVerify(exactly = 0) { resolver.getFeatureFlag(any(), any()) }
+    }
+
+    @Test
+    fun `keeps the forced variant when toggling a flag`() = runTest {
+        // Given
+        val flag = experimentFlag()
+        coEvery { overrideManager.overriddenDebugFlags() } returns
+            mapOf(flag.key to FeatureFlagOverride(enabled = true, variant = "Treatment1"))
+
+        // When
+        viewModel(setOf(flag)).toggleKey(flag.key)
+
+        // Then
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, false, "Treatment1") }
+    }
+
+    @Test
+    fun `forces the selected variant and keeps the shown value`() = runTest {
+        // Given
+        val flag = experimentFlag()
+        coEvery { overrideManager.overriddenDebugFlags() } returns emptyMap()
+        coEvery { resolver.getFeatureFlag(flag.key, flag.defaultValue) } returns true
+
+        // When
+        viewModel(setOf(flag)).selectVariant(flag.key, "Treatment2")
+
+        // Then
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, true, "Treatment2") }
+    }
+
+    @Test
+    fun `clears the forced variant when none is selected`() = runTest {
+        // Given
+        val flag = experimentFlag()
+        coEvery { overrideManager.overriddenDebugFlags() } returns
+            mapOf(flag.key to FeatureFlagOverride(enabled = true, variant = "Treatment1"))
+
+        // When
+        viewModel(setOf(flag)).selectVariant(flag.key, null)
+
+        // Then
+        coVerify(exactly = 1) { overrideManager.setDebugOverride(flag.key, true, null) }
+    }
+
+    @Test
+    fun `ignores a variant the flag does not offer`() = runTest {
+        // Given
+        val flag = experimentFlag()
+        coEvery { overrideManager.overriddenDebugFlags() } returns emptyMap()
+
+        // When
+        viewModel(setOf(flag)).selectVariant(flag.key, "Unknown")
+
+        // Then
+        coVerify(exactly = 0) { overrideManager.setDebugOverride(any(), any(), any()) }
     }
 
     @Test
@@ -137,6 +194,12 @@ internal class FeatureFlagOverridesViewModelTest {
         // Then
         coVerify(exactly = 1) { overrideManager.clearAllDebugOverrides() }
     }
+
+    private fun experimentFlag() = FeatureFlagDefinitionsTestData.buildFeatureFlagDefinition(
+        key = "experiment",
+        category = FeatureFlagCategory.Byoe,
+        variants = listOf("Treatment1", "Treatment2")
+    )
 
     private fun viewModel(definitions: Set<FeatureFlagDefinition>) = FeatureFlagOverridesViewModel(
         definitions,

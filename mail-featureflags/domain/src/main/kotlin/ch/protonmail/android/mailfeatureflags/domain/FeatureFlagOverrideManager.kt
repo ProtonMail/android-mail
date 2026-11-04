@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailfeatureflags.domain
 
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
+
 /**
  * Manages device-local, developer-only feature-flag overrides (debug menu only).
  *
@@ -27,12 +29,19 @@ package ch.protonmail.android.mailfeatureflags.domain
 interface FeatureFlagOverrideManager {
 
     /**
-     * Currently overridden flags keyed by flag name, with the overridden boolean value
-     * (`null` when only a variant is forced).
+     * Currently overridden flags keyed by flag name.
      */
-    suspend fun overriddenDebugFlags(): Map<String, Boolean?>
+    suspend fun overriddenDebugFlags(): Map<String, FeatureFlagOverride>
 
-    suspend fun setDebugOverride(key: String, enabled: Boolean)
+    /**
+     * Overrides the flag value. [variant] forces a variant payload for flags the SDK reads by variant,
+     * `null` keeps the remote variant.
+     */
+    suspend fun setDebugOverride(
+        key: String,
+        enabled: Boolean,
+        variant: String? = null
+    )
 
     suspend fun clearAllDebugOverrides()
 }

@@ -21,6 +21,7 @@ package ch.protonmail.android.featureflags.presentation.mapper
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagCategory
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
 import ch.protonmail.android.mailfeatureflags.presentation.mapper.FeatureFlagsDefinitionsMapper
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagListItem
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagUiModel
@@ -28,6 +29,7 @@ import ch.protonmail.android.testdata.featureflags.FeatureFlagDefinitionsTestDat
 import ch.protonmail.android.testdata.featureflags.FeatureFlagDefinitionsTestData.buildSystemFeatureFlagDefinition
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -63,8 +65,8 @@ internal class FeatureFlagsDefinitionsMapperTest {
         )
 
         val overrides = mapOf(
-            systemFlagDefinition to true,
-            testFlagDefinition2 to false
+            systemFlagDefinition.key to FeatureFlagOverride(enabled = true, variant = null),
+            testFlagDefinition2.key to FeatureFlagOverride(enabled = false, variant = null)
         )
 
         val expectedListItems = listOf(
@@ -93,6 +95,36 @@ internal class FeatureFlagsDefinitionsMapperTest {
 
         // Then
         assertEquals(expectedListItems, actual)
+    }
+
+    @Test
+    fun `shows the variants a flag offers and the one forced on it`() = runTest {
+        // Given
+        val mapper = FeatureFlagsDefinitionsMapper(resolver)
+        val experimentFlag = buildFeatureFlagDefinition(
+            key = "experiment",
+            category = FeatureFlagCategory.Byoe,
+            variants = listOf("Treatment1", "Treatment2")
+        )
+        val groupedDefinitions = mapOf<FeatureFlagCategory, List<FeatureFlagDefinition>>(
+            FeatureFlagCategory.Byoe to listOf(experimentFlag)
+        )
+        val overrides = mapOf(experimentFlag.key to FeatureFlagOverride(enabled = true, variant = "Treatment2"))
+
+        // When
+        val actual = mapper.toFlattenedListUiModel(groupedDefinitions, overrides)
+
+        // Then
+        val expected = listOf(
+            FeatureFlagListItem.Header("BYOE"),
+            FeatureFlagListItem.FeatureFlag(
+                experimentFlag.toExpectedUiModel(enabled = true, overridden = true).copy(
+                    variants = persistentListOf("Treatment1", "Treatment2"),
+                    selectedVariant = "Treatment2"
+                )
+            )
+        )
+        assertEquals(expected, actual)
     }
 
     private fun FeatureFlagDefinition.toExpectedUiModel(enabled: Boolean, overridden: Boolean) = FeatureFlagUiModel(

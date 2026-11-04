@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
 import ch.protonmail.android.mailfeatureflags.presentation.mapper.FeatureFlagsDefinitionsMapper
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagOverridesState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,7 +50,7 @@ class FeatureFlagOverridesViewModel @Inject constructor(
 
     val state: StateFlow<FeatureFlagOverridesState> =
         refreshTrigger.mapLatest {
-            val overrides = currentOverrides()
+            val overrides = overrideManager.overriddenDebugFlags()
             val groupedDefinitions = definitions.groupBy { it.category }
             FeatureFlagOverridesState.Loaded(mapper.toFlattenedListUiModel(groupedDefinitions, overrides))
         }.stateIn(
@@ -61,7 +62,30 @@ class FeatureFlagOverridesViewModel @Inject constructor(
     fun toggleKey(key: String) {
         val definition = definitions.firstOrNull { it.key == key } ?: return
         viewModelScope.launch {
-            overrideManager.setDebugOverride(key, !currentValue(definition))
+            val overrides = overrideManager.overriddenDebugFlags()
+            overrideManager.setDebugOverride(
+                key = key,
+                enabled = !currentValue(definition, overrides),
+                variant = overrides[key]?.variant
+            )
+            refresh()
+        }
+    }
+
+    /**
+     * Forces [variant] on the flag, or the remote variant when [variant] is `null`. The flag value stays
+     * as shown in the list.
+     */
+    fun selectVariant(key: String, variant: String?) {
+        val definition = definitions.firstOrNull { it.key == key } ?: return
+        if (variant != null && variant !in definition.variants) return
+        viewModelScope.launch {
+            val overrides = overrideManager.overriddenDebugFlags()
+            overrideManager.setDebugOverride(
+                key = key,
+                enabled = currentValue(definition, overrides),
+                variant = variant
+            )
             refresh()
         }
     }
@@ -78,21 +102,16 @@ class FeatureFlagOverridesViewModel @Inject constructor(
      * otherwise the resolved flag value. Mirrors [FeatureFlagsDefinitionsMapper] so a toggle always
      * flips away from what the user sees rather than from the hardcoded default.
      */
-    private suspend fun currentValue(definition: FeatureFlagDefinition): Boolean {
-        val overrides = overrideManager.overriddenDebugFlags()
-        return if (overrides.containsKey(definition.key)) {
-            overrides[definition.key] ?: definition.defaultValue
+    private suspend fun currentValue(
+        definition: FeatureFlagDefinition,
+        overrides: Map<String, FeatureFlagOverride>
+    ): Boolean {
+        val override = overrides[definition.key]
+        return if (override != null) {
+            override.enabled ?: definition.defaultValue
         } else {
             resolver.getFeatureFlag(definition.key, definition.defaultValue)
         }
-    }
-
-    private suspend fun currentOverrides(): Map<FeatureFlagDefinition, Boolean> {
-        val overriddenByName = overrideManager.overriddenDebugFlags()
-        return definitions.mapNotNull { definition ->
-            if (!overriddenByName.containsKey(definition.key)) return@mapNotNull null
-            definition to (overriddenByName[definition.key] ?: definition.defaultValue)
-        }.toMap()
     }
 
     private fun refresh() {

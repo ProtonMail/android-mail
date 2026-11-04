@@ -30,7 +30,8 @@ sealed class SettingsState {
         val accountInfoUiModel: AccountInformationUiModel?,
         val storageQuotaUiModel: VisibilityUiModel<StorageQuotaUiModel>,
         val appInformation: AppInformation,
-        val isContentSearchEnabled: Boolean
+        val isContentSearchEnabled: Boolean,
+        val isConnectGmailVisible: Boolean
     ) : SettingsState()
 
     data object Loading : SettingsState()

@@ -22,6 +22,7 @@ import arrow.fx.coroutines.parMap
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagResolver
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagCategory
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagListItem
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagUiModel
 import kotlinx.collections.immutable.ImmutableList
@@ -34,7 +35,7 @@ data class FeatureFlagsDefinitionsMapper @Inject constructor(
 
     suspend fun toFlattenedListUiModel(
         groupedDefinitions: Map<FeatureFlagCategory, List<@JvmSuppressWildcards FeatureFlagDefinition>>,
-        overrides: Map<FeatureFlagDefinition, Boolean>
+        overrides: Map<String, FeatureFlagOverride>
     ): ImmutableList<FeatureFlagListItem> {
         return groupedDefinitions.flatMap { (category, flags) ->
             buildList {
@@ -49,11 +50,11 @@ data class FeatureFlagsDefinitionsMapper @Inject constructor(
     }
 
     private suspend fun List<@JvmSuppressWildcards FeatureFlagDefinition>.mapToUiModel(
-        overrides: Map<FeatureFlagDefinition, Boolean>
+        overrides: Map<String, FeatureFlagOverride>
     ) = this.parMap { definition ->
-        val isOverridden = overrides.containsKey(definition)
-        val isEnabled = if (isOverridden) {
-            overrides[definition] ?: definition.defaultValue
+        val override = overrides[definition.key]
+        val isEnabled = if (override != null) {
+            override.enabled ?: definition.defaultValue
         } else {
             resolver.getFeatureFlag(definition.key, definition.defaultValue)
         }
@@ -63,7 +64,9 @@ data class FeatureFlagsDefinitionsMapper @Inject constructor(
             name = definition.name,
             description = definition.description,
             enabled = isEnabled,
-            overridden = isOverridden
+            overridden = override != null,
+            variants = definition.variants.toImmutableList(),
+            selectedVariant = override?.variant
         )
     }
 }

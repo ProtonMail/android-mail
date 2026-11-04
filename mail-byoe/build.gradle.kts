@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    api(project(":mail-byoe:dagger"))
+    api(project(":mail-byoe:data"))
     api(project(":mail-byoe:domain"))
     api(project(":mail-byoe:presentation"))
 }

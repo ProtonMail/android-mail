@@ -156,6 +156,16 @@ fun MainSettingsScreen(
             ) {
 
                 Column {
+                    if (state.isConnectGmailVisible) {
+                        ProtonMainSettingsItem(
+                            name = stringResource(id = string.mail_settings_connect_gmail),
+                            badge = { NewBadge() },
+                            iconRes = R.drawable.ic_proton_link,
+                            onClick = actions.onConnectGmailClick
+                        )
+                        SettingsItemDivider()
+                    }
+
                     ProtonMainSettingsItem(
                         name = stringResource(id = string.mail_settings_mailbox),
                         iconRes = R.drawable.ic_proton_envelopes,
@@ -340,6 +350,7 @@ object MainSettingsScreen {
         val onAccountStorageClicked: () -> Unit,
         val onSignatureClicked: () -> Unit,
         val onContentSearchSettingsClick: () -> Unit,
+        val onConnectGmailClick: () -> Unit,
         val onPlusToUnlimitedUpsellClick: () -> Unit,
         val onMonthlyToYearlyUpsellClick: () -> Unit,
         val onBackClick: () -> Unit

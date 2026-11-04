@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.navigation
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
+import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityState
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
@@ -40,6 +42,7 @@ internal class HomeModalSequencePriorityTest {
             onboardingState = OnboardingEligibilityState.NotRequired,
             notificationsState = NotificationsPermissionState.Granted,
             featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Loading,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -58,6 +61,7 @@ internal class HomeModalSequencePriorityTest {
             onboardingState = OnboardingEligibilityState.NotRequired,
             notificationsState = NotificationsPermissionState.Granted,
             featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -78,6 +82,7 @@ internal class HomeModalSequencePriorityTest {
                 NotificationsPermissionStateType.FirstTime
             ),
             featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -99,6 +104,7 @@ internal class HomeModalSequencePriorityTest {
             onboardingState = OnboardingEligibilityState.NotRequired,
             notificationsState = NotificationsPermissionState.Granted,
             featureSpotlightState = FeatureSpotlightState.Show,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -117,6 +123,7 @@ internal class HomeModalSequencePriorityTest {
             onboardingState = OnboardingEligibilityState.NotRequired,
             notificationsState = NotificationsPermissionState.Granted,
             featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -135,6 +142,7 @@ internal class HomeModalSequencePriorityTest {
             onboardingState = OnboardingEligibilityState.NotRequired,
             notificationsState = NotificationsPermissionState.Granted,
             featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
             contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
             blackFridayState = BlackFridayModalState.NotRequired,
             springSaleState = SpringPromoModalState.NotRequired,
@@ -144,5 +152,62 @@ internal class HomeModalSequencePriorityTest {
 
         // Then
         assertEquals(HomeInterstitialPriority.None, result)
+    }
+
+    @Test
+    fun `resolves to the BYOE spotlight over the content search bottom sheet`() {
+        // When
+        val result = resolveHomeInterstitialPriority(
+            onboardingState = OnboardingEligibilityState.NotRequired,
+            notificationsState = NotificationsPermissionState.Granted,
+            featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Show(ByoeTreatment.Treatment2),
+            contentSearchBottomSheetState = ContentSearchBottomSheetState.Show,
+            blackFridayState = BlackFridayModalState.NotRequired,
+            springSaleState = SpringPromoModalState.NotRequired,
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
+        )
+
+        // Then
+        assertEquals(HomeInterstitialPriority.ByoeSpotlight(ByoeTreatment.Treatment2), result)
+    }
+
+    @Test
+    fun `resolves to the feature spotlight over the BYOE spotlight`() {
+        // When
+        val result = resolveHomeInterstitialPriority(
+            onboardingState = OnboardingEligibilityState.NotRequired,
+            notificationsState = NotificationsPermissionState.Granted,
+            featureSpotlightState = FeatureSpotlightState.Show,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Show(ByoeTreatment.Treatment1),
+            contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
+            blackFridayState = BlackFridayModalState.NotRequired,
+            springSaleState = SpringPromoModalState.NotRequired,
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
+        )
+
+        // Then
+        assertEquals(HomeInterstitialPriority.FeatureSpotlight, result)
+    }
+
+    @Test
+    fun `resolves to loading while the BYOE spotlight is being decided`() {
+        // When
+        val result = resolveHomeInterstitialPriority(
+            onboardingState = OnboardingEligibilityState.NotRequired,
+            notificationsState = NotificationsPermissionState.Granted,
+            featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Loading,
+            contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
+            blackFridayState = BlackFridayModalState.NotRequired,
+            springSaleState = SpringPromoModalState.NotRequired,
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
+        )
+
+        // Then
+        assertEquals(HomeInterstitialPriority.Loading, result)
     }
 }

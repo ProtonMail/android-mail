@@ -77,6 +77,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewAction
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
+import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.SnackbarError
@@ -125,6 +126,7 @@ import ch.protonmail.android.navigation.route.addAutoLockIntervalSettings
 import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import ch.protonmail.android.navigation.route.addAutoLockSettings
 import ch.protonmail.android.navigation.route.addBugReporting
+import ch.protonmail.android.navigation.route.addByoeSpotlight
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addComposer
 import ch.protonmail.android.navigation.route.addContactDetails
@@ -190,6 +192,7 @@ fun Home(
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
     fallPromoModalUpsellViewModel: FallPromoModalUpsellViewModel = hiltViewModel(),
     featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
+    byoeSpotlightViewModel: ByoeSpotlightEligibilityViewModel = hiltViewModel(),
     contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel(),
     npsViewModel: NpsViewModel = hiltViewModel()
 ) {
@@ -211,6 +214,7 @@ fun Home(
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val fallPromoEligibilityState by fallPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
+    val byoeSpotlightState by byoeSpotlightViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
     val isSearchMobileDataOn by contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
     val npsState by npsViewModel.state.collectAsStateWithLifecycle()
@@ -221,6 +225,7 @@ fun Home(
                 onboardingEligibilityState,
                 notificationsPermissionsState,
                 featureSpotlightState,
+                byoeSpotlightState,
                 contentSearchBottomSheetState,
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
@@ -550,6 +555,7 @@ fun Home(
 
             // Handled by a dedicated effect below
             is HomeInterstitialPriority.FeatureSpotlight -> Unit
+            is HomeInterstitialPriority.ByoeSpotlight -> Unit
 
             is HomeInterstitialPriority.ContentSearch -> {
                 bottomSheetType = BottomSheetType.ContentSearch
@@ -601,6 +607,15 @@ fun Home(
             currentDestinationRoute == Screen.Mailbox.route
         ) {
             navController.navigate(Screen.FeatureSpotlight.route)
+        }
+    }
+
+    // Opened once: the ViewModel hides it as soon as it is on screen, so returning to the mailbox does not reopen it.
+    LaunchedEffect(interstitialPriority, currentDestinationRoute) {
+        val priority = interstitialPriority
+        if (priority is HomeInterstitialPriority.ByoeSpotlight && currentDestinationRoute == Screen.Mailbox.route) {
+            byoeSpotlightViewModel.onOpened()
+            navController.navigate(Screen.ByoeSpotlight.route)
         }
     }
 
@@ -1005,6 +1020,18 @@ fun Home(
                             }
                         )
                         addContentSearchSetUp(navController)
+                        addByoeSpotlight(
+                            // The connection page has no import option yet, so the choice is not passed on.
+                            onConnect = { _ ->
+                                navController.navigate(Screen.GmailConnection.route) {
+                                    popUpTo(Screen.ByoeSpotlight.route) { inclusive = true }
+                                }
+                            },
+                            onLater = {
+                                byoeSpotlightViewModel.onDismissed()
+                                navController.navigateBack()
+                            }
+                        )
                     }
                 }
 
@@ -1038,7 +1065,8 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onUpselling = { entryPoint, type -> navController.navigate(Screen.FeatureUpselling(entryPoint, type)) },
         onMonthlyToYearlyUpselling = {
             navController.navigate(Dialog.MonthlyToYearlyUpsell(UpsellEntryPoint.NAVBAR_UPSELL))
-        }
+        },
+        onConnectGmail = { navController.navigate(Screen.GmailConnection.route) }
     )
 
 private sealed interface BottomSheetType {

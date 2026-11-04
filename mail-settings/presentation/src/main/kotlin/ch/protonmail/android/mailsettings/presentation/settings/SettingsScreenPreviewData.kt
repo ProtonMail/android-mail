@@ -38,7 +38,8 @@ object SettingsScreenPreviewData {
             )
         ),
         appInformation = AppInformation(appVersionName = "6.0.0-alpha"),
-        isContentSearchEnabled = true
+        isContentSearchEnabled = true,
+        isConnectGmailVisible = true
     )
 
     val Actions = MainSettingsScreen.Actions(
@@ -54,6 +55,7 @@ object SettingsScreenPreviewData {
         onBackClick = {},
         onSignatureClicked = {},
         onContentSearchSettingsClick = {},
+        onConnectGmailClick = {},
         onPlusToUnlimitedUpsellClick = {},
         onMonthlyToYearlyUpsellClick = {}
     )

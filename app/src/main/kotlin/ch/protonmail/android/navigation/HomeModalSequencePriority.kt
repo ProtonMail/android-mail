@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.navigation
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
+import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityState
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
@@ -33,6 +35,7 @@ sealed interface HomeInterstitialPriority {
     data object Onboarding : HomeInterstitialPriority
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
     data object FeatureSpotlight : HomeInterstitialPriority
+    data class ByoeSpotlight(val treatment: ByoeTreatment) : HomeInterstitialPriority
     data object ContentSearch : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
@@ -46,6 +49,7 @@ fun resolveHomeInterstitialPriority(
     onboardingState: OnboardingEligibilityState,
     notificationsState: NotificationsPermissionState,
     featureSpotlightState: FeatureSpotlightState,
+    byoeSpotlightState: ByoeSpotlightEligibilityState,
     contentSearchBottomSheetState: ContentSearchBottomSheetState,
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
@@ -57,6 +61,7 @@ fun resolveHomeInterstitialPriority(
     if (onboardingState is OnboardingEligibilityState.Loading ||
         notificationsState is NotificationsPermissionState.Loading ||
         featureSpotlightState is FeatureSpotlightState.Loading ||
+        byoeSpotlightState is ByoeSpotlightEligibilityState.Loading ||
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Loading ||
         blackFridayState is BlackFridayModalState.Loading ||
         fallPromoState is FallPromoModalState.Loading
@@ -70,6 +75,9 @@ fun resolveHomeInterstitialPriority(
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
 
         featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
+
+        byoeSpotlightState is ByoeSpotlightEligibilityState.Show ->
+            HomeInterstitialPriority.ByoeSpotlight(byoeSpotlightState.treatment)
 
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Show -> HomeInterstitialPriority.ContentSearch
 

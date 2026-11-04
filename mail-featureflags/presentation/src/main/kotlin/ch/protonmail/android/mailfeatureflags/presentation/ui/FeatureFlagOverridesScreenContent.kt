@@ -20,6 +20,8 @@ package ch.protonmail.android.mailfeatureflags.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +32,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,6 +61,8 @@ import ch.protonmail.android.mailfeatureflags.presentation.R
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagListItem
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagOverridesState
 import ch.protonmail.android.mailfeatureflags.presentation.model.FeatureFlagUiModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,7 +120,8 @@ internal fun FeatureFlagOverridesScreenContent(
                             is FeatureFlagListItem.Header -> SectionLabel(item.categoryName)
                             is FeatureFlagListItem.FeatureFlag -> FeatureFlagRow(
                                 model = item.model,
-                                onToggle = { actions.onToggled(item.model.key) }
+                                onToggle = { actions.onToggled(item.model.key) },
+                                onVariantSelected = { variant -> actions.onVariantSelected(item.model.key, variant) }
                             )
                         }
                     }
@@ -211,6 +217,7 @@ private fun SectionLabel(title: String) {
 private fun FeatureFlagRow(
     model: FeatureFlagUiModel,
     onToggle: () -> Unit,
+    onVariantSelected: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -251,11 +258,40 @@ private fun FeatureFlagRow(
                         style = ProtonTheme.typography.bodySmall
                     )
                 }
+                if (model.variants.isNotEmpty()) {
+                    VariantChips(
+                        variants = model.variants,
+                        selectedVariant = model.selectedVariant,
+                        onVariantSelected = onVariantSelected
+                    )
+                }
             }
 
             ProtonSwitch(checked = model.enabled, onCheckedChange = { onToggle() })
         }
         HorizontalDivider(color = ProtonTheme.colors.separatorNorm)
+    }
+}
+
+/**
+ * Tapping the selected variant again clears it, so the remote variant applies.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun VariantChips(
+    variants: ImmutableList<String>,
+    selectedVariant: String?,
+    onVariantSelected: (String?) -> Unit
+) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Standard)) {
+        variants.forEach { variant ->
+            val isSelected = variant == selectedVariant
+            FilterChip(
+                selected = isSelected,
+                onClick = { onVariantSelected(if (isSelected) null else variant) },
+                label = { Text(text = variant, style = ProtonTheme.typography.bodySmall) }
+            )
+        }
     }
 }
 
@@ -305,6 +341,17 @@ val sampleData = FeatureFlagOverridesState.Loaded(
                 description = "Some other description.",
                 enabled = true,
                 overridden = false
+            )
+        ),
+        FeatureFlagListItem.FeatureFlag(
+            FeatureFlagUiModel(
+                key = "key-variants",
+                name = "Experiment",
+                description = "A flag read by variant.",
+                enabled = true,
+                overridden = true,
+                variants = persistentListOf("ControlGroup", "Treatment1", "Treatment2"),
+                selectedVariant = "Treatment1"
             )
         ),
         FeatureFlagListItem.Header("Section 2"),

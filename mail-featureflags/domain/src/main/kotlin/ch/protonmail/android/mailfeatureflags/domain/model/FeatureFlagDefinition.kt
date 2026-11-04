@@ -23,5 +23,7 @@ open class FeatureFlagDefinition(
     val name: String,
     val category: FeatureFlagCategory,
     val description: String,
-    val defaultValue: Boolean
+    val defaultValue: Boolean,
+    // Variant payloads the debug menu can force, for flags the SDK reads by variant.
+    val variants: List<String> = emptyList()
 )

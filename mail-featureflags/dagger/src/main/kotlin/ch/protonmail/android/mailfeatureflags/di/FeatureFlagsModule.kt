@@ -55,6 +55,12 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSummerCampaign
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkModeFallbackEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeConnectionKillswitch
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeMobileKillswitch
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeOnboardingKillswitch
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeSidebarKillswitch
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeSpotlightKillswitch
 import ch.protonmail.android.mailfeatureflags.domain.model.CategoryView
 import ch.protonmail.android.mailfeatureflags.domain.model.ComposerFormatMenu
 import ch.protonmail.android.mailfeatureflags.domain.model.ContentSearchEarlyAccess
@@ -68,6 +74,7 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Wave2Ena
 import ch.protonmail.android.mailfeatureflags.domain.model.BlackFridayUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
+import ch.protonmail.android.mailfeatureflags.domain.model.GmailConnectionEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Wave2Enabled
@@ -305,6 +312,41 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideNpsEnabledInAppDef(): FeatureFlagDefinition = NpsEnabledInApp
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideGmailConnectionEnabledDef(): FeatureFlagDefinition = GmailConnectionEnabled
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeEnabledDef(): FeatureFlagDefinition = ByoeEnabled
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeMobileKillswitchDef(): FeatureFlagDefinition = ByoeMobileKillswitch
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeConnectionKillswitchDef(): FeatureFlagDefinition = ByoeConnectionKillswitch
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeOnboardingKillswitchDef(): FeatureFlagDefinition = ByoeOnboardingKillswitch
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeSpotlightKillswitchDef(): FeatureFlagDefinition = ByoeSpotlightKillswitch
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeSidebarKillswitchDef(): FeatureFlagDefinition = ByoeSidebarKillswitch
 
     @Provides
     @Singleton

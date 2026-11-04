@@ -21,4 +21,16 @@
   <string name="byoe_gmail_connection_title">Connect your Gmail</string>
   <string name="byoe_gmail_connection_error">Your Gmail account couldn\'t be connected. Please try again.</string>
   <string name="byoe_gmail_connection_retry">Try again</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">What\'s new</string>
+  <string name="byoe_spotlight_title">Use Gmail in Proton</string>
+  <string name="byoe_spotlight_subtitle">Import existing emails and sync future ones from Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Read, reply, and stay on top of Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">No ads, no trackers</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google can\'t track what you do in Proton</string>
+  <string name="byoe_spotlight_import_title">Import your emails</string>
+  <string name="byoe_spotlight_import_body">Start with your most recent</string>
+  <string name="byoe_spotlight_connect">Connect and import</string>
+  <string name="byoe_spotlight_later">Not now</string>
+  <string name="byoe_spotlight_permissions_note">Next: approve all permissions. Proton never asks for permission to edit or delete anything in your Gmail</string>
 </resources>

@@ -64,6 +64,7 @@ import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailsidebar.presentation.byoe.SidebarByoeRow
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarAppVersionItem
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarApplicationLogsItem
 import ch.protonmail.android.mailsidebar.presentation.common.ProtonSidebarItem
@@ -191,6 +192,12 @@ fun Sidebar(
                 })
             }
             item { SidebarMonthlyToYearlyUpsellRow(onClick = actions.onMonthlyToYearlyUpselling) }
+            item {
+                SidebarByoeRow(
+                    isSidebarOpen = viewState.drawerState.isOpen,
+                    onClick = actions.onConnectGmail
+                )
+            }
             item { SidebarDivider() }
 
             sidebarSystemLabelItems(viewState.mailLabels.systemLabels, actions.onLabelAction)
@@ -315,7 +322,8 @@ object Sidebar {
         val onReportBug: () -> Unit,
         val onApplicationLogs: () -> Unit,
         val onUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
-        val onMonthlyToYearlyUpselling: () -> Unit
+        val onMonthlyToYearlyUpselling: () -> Unit,
+        val onConnectGmail: () -> Unit
     ) {
 
         companion object {
@@ -328,7 +336,8 @@ object Sidebar {
                 onReportBug = {},
                 onApplicationLogs = {},
                 onUpselling = { _, _ -> },
-                onMonthlyToYearlyUpselling = {}
+                onMonthlyToYearlyUpselling = {},
+                onConnectGmail = {}
             )
         }
     }
@@ -342,7 +351,8 @@ object Sidebar {
         val onReportBug: () -> Unit,
         val onApplicationLogs: () -> Unit,
         val onUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
-        val onMonthlyToYearlyUpselling: () -> Unit
+        val onMonthlyToYearlyUpselling: () -> Unit,
+        val onConnectGmail: () -> Unit
     ) {
 
         fun toSidebarActions(close: () -> Unit, onLabelAction: (SidebarLabelAction) -> Unit) = Actions(
@@ -379,6 +389,10 @@ object Sidebar {
             onMonthlyToYearlyUpselling = {
                 onMonthlyToYearlyUpselling()
                 close()
+            },
+            onConnectGmail = {
+                onConnectGmail()
+                close()
             }
         )
 
@@ -393,7 +407,8 @@ object Sidebar {
                 onReportBug = {},
                 onApplicationLogs = {},
                 onUpselling = { _, _ -> },
-                onMonthlyToYearlyUpselling = {}
+                onMonthlyToYearlyUpselling = {},
+                onConnectGmail = {}
             )
         }
     }

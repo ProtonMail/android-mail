@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailfeatureflags.presentation.model
 
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 sealed interface FeatureFlagOverridesState {
     data object Loading : FeatureFlagOverridesState
@@ -30,7 +31,9 @@ data class FeatureFlagUiModel(
     val name: String,
     val description: String,
     val enabled: Boolean,
-    val overridden: Boolean
+    val overridden: Boolean,
+    val variants: ImmutableList<String> = persistentListOf(),
+    val selectedVariant: String? = null
 )
 
 sealed class FeatureFlagListItem {

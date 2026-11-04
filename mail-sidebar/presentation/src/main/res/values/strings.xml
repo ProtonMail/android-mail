@@ -17,6 +17,10 @@
   -->
 <resources>
     <string name="drawer_title_contacts">Contacts</string>
+    <string name="drawer_byoe_title">Use Gmail in Proton Mail</string>
+    <string name="drawer_byoe_subtitle">Read and send Gmail here, without the tracking.</string>
+    <string name="drawer_byoe_get_started">Get started</string>
+    <string name="drawer_byoe_dismiss">Dismiss</string>
     <string name="drawer_title_bug_report">Report a problem</string>
     <string name="drawer_title_application_logs" translatable="false">Application logs</string>
     <string name="drawer_item_create_label">Create label</string>

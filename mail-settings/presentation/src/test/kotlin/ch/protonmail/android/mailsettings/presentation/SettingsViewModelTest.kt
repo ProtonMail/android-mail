@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
 import arrow.core.Either
 import ch.protonmail.android.design.compose.model.VisibilityUiModel
+import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
+import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
@@ -45,6 +47,8 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -85,6 +89,10 @@ class SettingsViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns true
     }
 
+    private val getGmailConnectionSettingsAccess = mockk<GetGmailConnectionSettingsAccess> {
+        coEvery { this@mockk.invoke(any()) } returns GmailConnectionSettingsAccess.Hidden
+    }
+
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -95,7 +103,8 @@ class SettingsViewModelTest {
             observePrimaryAccount = observePrimaryAccount,
             observeStorageQuotaUseCase = observeStorageQuotaUseCase,
             accountInformationMapper = accountInformationMapper,
-            isContentSearchFeatureEnabled = isContentSearchFeatureEnabled
+            isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
+            getGmailConnectionSettingsAccess = getGmailConnectionSettingsAccess
         )
     }
 
@@ -110,13 +119,6 @@ class SettingsViewModelTest {
     @Test
     fun `state has account info when there is a valid primary user`() = runTest {
         // Given
-        val account = Account(
-            userId = UserId("123"),
-            name = "Display Name",
-            state = AccountState.Ready,
-            primaryAddress = "primary@example.com",
-            avatarInfo = AccountAvatarInfo("D", "#FF5733")
-        )
         val accountUiModel = AccountInformationUiModel(
             userId = UserId("123"),
             name = "Display Name",
@@ -162,4 +164,71 @@ class SettingsViewModelTest {
         }
     }
 
+    @Test
+    fun `given the user can connect a Gmail account, when observed, then Connect your Gmail is shown`() = runTest {
+        // Given
+        coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Full
+
+        // When
+        viewModel.state.test {
+            assertEquals(Loading, awaitItem())
+            accountFlow.emit(account)
+
+            // Then
+            assertTrue((awaitItem() as SettingsState.Data).isConnectGmailVisible)
+        }
+    }
+
+    @Test
+    fun `given only the address list is allowed, when observed, then Connect your Gmail is hidden`() = runTest {
+        // Given
+        coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.ListOnly
+
+        // When
+        viewModel.state.test {
+            assertEquals(Loading, awaitItem())
+            accountFlow.emit(account)
+
+            // Then
+            assertFalse((awaitItem() as SettingsState.Data).isConnectGmailVisible)
+        }
+    }
+
+    @Test
+    fun `given the SDK hides the Gmail connection, when observed, then Connect your Gmail is hidden`() = runTest {
+        // Given
+        coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Hidden
+
+        // When
+        viewModel.state.test {
+            assertEquals(Loading, awaitItem())
+            accountFlow.emit(account)
+
+            // Then
+            assertFalse((awaitItem() as SettingsState.Data).isConnectGmailVisible)
+        }
+    }
+
+    @Test
+    fun `given no primary account, when observed, then Connect your Gmail is hidden`() = runTest {
+        // When
+        viewModel.state.test {
+            assertEquals(Loading, awaitItem())
+            accountFlow.emit(null)
+
+            // Then
+            assertFalse((awaitItem() as SettingsState.Data).isConnectGmailVisible)
+        }
+    }
+
+    private companion object {
+
+        val account = Account(
+            userId = UserId("123"),
+            name = "Display Name",
+            state = AccountState.Ready,
+            primaryAddress = "primary@example.com",
+            avatarInfo = AccountAvatarInfo("D", "#FF5733")
+        )
+    }
 }

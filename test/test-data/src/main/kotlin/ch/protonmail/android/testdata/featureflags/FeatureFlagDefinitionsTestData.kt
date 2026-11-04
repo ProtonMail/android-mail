@@ -41,12 +41,14 @@ object FeatureFlagDefinitionsTestData {
         name: String = "name",
         description: String = "description",
         category: FeatureFlagCategory,
-        defaultValue: Boolean = false
+        defaultValue: Boolean = false,
+        variants: List<String> = emptyList()
     ) = FeatureFlagDefinition(
         key = key,
         name = name,
         category = category,
         description = description,
-        defaultValue = defaultValue
+        defaultValue = defaultValue,
+        variants = variants
     )
 }

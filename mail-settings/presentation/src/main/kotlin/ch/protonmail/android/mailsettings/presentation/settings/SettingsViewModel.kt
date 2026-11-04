@@ -21,6 +21,8 @@ package ch.protonmail.android.mailsettings.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
+import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
+import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryAccount
@@ -42,7 +44,8 @@ class SettingsViewModel @Inject constructor(
     observePrimaryAccount: ObservePrimaryAccount,
     observeStorageQuotaUseCase: ObserveStorageQuotaUseCase,
     private val accountInformationMapper: AccountInformationMapper,
-    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled
+    private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
+    private val getGmailConnectionSettingsAccess: GetGmailConnectionSettingsAccess
 ) : ViewModel() {
 
     val state = combine(observePrimaryAccount(), observeStorageQuotaUseCase()) { account, storageQuota ->
@@ -53,7 +56,10 @@ class SettingsViewModel @Inject constructor(
                 VisibilityUiModel.Visible(quota.toUiModel())
             } ?: VisibilityUiModel.Hidden,
             appInformation = appInformation,
-            isContentSearchEnabled = account != null && isContentSearchFeatureEnabled(account.userId)
+            isContentSearchEnabled = account != null && isContentSearchFeatureEnabled(account.userId),
+            // TODO(DAWG-111): ListOnly stays hidden until the connected-addresses list exists.
+            isConnectGmailVisible = account != null &&
+                getGmailConnectionSettingsAccess(account.userId) == GmailConnectionSettingsAccess.Full
         )
     }.stateIn(
         viewModelScope,

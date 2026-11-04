@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailfeatureflags.data.local
 
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -28,6 +29,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import uniffi.mail_uniffi.DebugFeatureFlagOverride
 import uniffi.mail_uniffi.DebugFeatureFlagOverrideEntry
+import uniffi.mail_uniffi.FeatureFlagPayloadType
+import uniffi.mail_uniffi.FeatureFlagVariant
+import uniffi.mail_uniffi.FeatureFlagVariantPayload
 import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.MailSessionClearAllDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailSessionSetDebugFeatureFlagOverrideResult
@@ -91,7 +95,53 @@ class RustFeatureFlagOverrideManagerTest {
         val result = manager.overriddenDebugFlags()
 
         // Then
-        assertEquals(mapOf("flag_a" to true, "flag_b" to null), result)
+        val expected = mapOf(
+            "flag_a" to FeatureFlagOverride(enabled = true, variant = null),
+            "flag_b" to FeatureFlagOverride(enabled = null, variant = null)
+        )
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `forces a variant with the same name and payload`() = runTest {
+        // Given
+        val variant = FeatureFlagVariant(
+            name = "Treatment1",
+            enabled = true,
+            payload = FeatureFlagVariantPayload(ty = FeatureFlagPayloadType.STRING, value = "Treatment1")
+        )
+        val override = DebugFeatureFlagOverride(enabled = true, variant = variant)
+        coEvery { rustUserSession.setDebugFeatureFlagOverride(key, override) } returns
+            MailUserSessionSetDebugFeatureFlagOverrideResult.Ok
+        coEvery { rustAppSession.setDebugFeatureFlagOverride(key, override) } returns
+            MailSessionSetDebugFeatureFlagOverrideResult.Ok
+
+        // When
+        manager.setDebugOverride(key, enabled = true, variant = "Treatment1")
+
+        // Then
+        coVerify(exactly = 1) { rustUserSession.setDebugFeatureFlagOverride(key, override) }
+    }
+
+    @Test
+    fun `reads the forced variant from its payload`() = runTest {
+        // Given
+        val variant = FeatureFlagVariant(
+            name = "variant-name",
+            enabled = true,
+            payload = FeatureFlagVariantPayload(ty = FeatureFlagPayloadType.STRING, value = "Treatment2")
+        )
+        val entries = listOf(
+            DebugFeatureFlagOverrideEntry("flag_a", DebugFeatureFlagOverride(enabled = true, variant = variant))
+        )
+        coEvery { rustUserSession.listDebugFeatureFlagOverrides() } returns
+            MailUserSessionListDebugFeatureFlagOverridesResult.Ok(entries)
+
+        // When
+        val result = manager.overriddenDebugFlags()
+
+        // Then
+        assertEquals(mapOf("flag_a" to FeatureFlagOverride(enabled = true, variant = "Treatment2")), result)
     }
 
     @Test

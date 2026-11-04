@@ -263,6 +263,8 @@ sealed class Destination(val route: String) {
 
         object FeatureSpotlight : Destination("featureSpotlight")
 
+        object ByoeSpotlight : Destination("byoe/spotlight")
+
         object ContentSearchSetUp : Destination("contentSearch/setUp")
     }
 

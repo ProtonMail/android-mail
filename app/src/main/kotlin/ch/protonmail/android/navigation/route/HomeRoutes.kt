@@ -330,6 +330,9 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                     onContentSearchSettingsClick = {
                         navController.navigate(Destination.Screen.ContentSearchSettings.route)
                     },
+                    onConnectGmailClick = {
+                        navController.navigate(Destination.Screen.GmailConnection.route)
+                    },
                     onPlusToUnlimitedUpsellClick = {
                         navController.navigate(
                             Destination.Screen.FeatureUpselling(

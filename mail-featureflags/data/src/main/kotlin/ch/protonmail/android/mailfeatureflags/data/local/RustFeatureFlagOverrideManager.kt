@@ -20,11 +20,15 @@ package ch.protonmail.android.mailfeatureflags.data.local
 
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailfeatureflags.domain.FeatureFlagOverrideManager
+import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagOverride
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import uniffi.mail_uniffi.DebugFeatureFlagOverride
 import uniffi.mail_uniffi.DebugFeatureFlagOverrideEntry
+import uniffi.mail_uniffi.FeatureFlagPayloadType
+import uniffi.mail_uniffi.FeatureFlagVariant
+import uniffi.mail_uniffi.FeatureFlagVariantPayload
 import uniffi.mail_uniffi.MailSessionClearAllDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailSessionListDebugFeatureFlagOverridesResult
 import uniffi.mail_uniffi.MailSessionSetDebugFeatureFlagOverrideResult
@@ -44,12 +48,21 @@ class RustFeatureFlagOverrideManager @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : FeatureFlagOverrideManager {
 
-    override suspend fun overriddenDebugFlags(): Map<String, Boolean?> = withContext(ioDispatcher) {
-        listOverrideEntries().associate { it.flagName to it.debugOverride.enabled }
+    override suspend fun overriddenDebugFlags(): Map<String, FeatureFlagOverride> = withContext(ioDispatcher) {
+        listOverrideEntries().associate { entry ->
+            entry.flagName to FeatureFlagOverride(
+                enabled = entry.debugOverride.enabled,
+                variant = entry.debugOverride.variant?.payload?.value
+            )
+        }
     }
 
-    override suspend fun setDebugOverride(key: String, enabled: Boolean) {
-        val override = DebugFeatureFlagOverride(enabled = enabled, variant = null)
+    override suspend fun setDebugOverride(
+        key: String,
+        enabled: Boolean,
+        variant: String?
+    ) {
+        val override = DebugFeatureFlagOverride(enabled = enabled, variant = variant?.toFeatureFlagVariant())
         withContext(ioDispatcher) {
             activeUserSession()?.let { userSession ->
                 when (val result = userSession.setDebugFeatureFlagOverride(key, override)) {
@@ -87,6 +100,13 @@ class RustFeatureFlagOverrideManager @Inject constructor(
             }
         }
     }
+
+    // The SDK matches on the payload, never on the variant name, so both carry the same value.
+    private fun String.toFeatureFlagVariant() = FeatureFlagVariant(
+        name = this,
+        enabled = true,
+        payload = FeatureFlagVariantPayload(ty = FeatureFlagPayloadType.STRING, value = this)
+    )
 
     private suspend fun activeUserSession() = (sessionResolver.activeSession() as? ActiveSession.User)?.session
 

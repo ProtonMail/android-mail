@@ -34,6 +34,7 @@ fun FeatureFlagOverridesScreen(onBack: () -> Unit, viewModel: FeatureFlagOverrid
     val screenActions = FeatureFlagOverridesScreen.Actions.Empty.copy(
         onBack = onBack,
         onToggled = { featureKey -> viewModel.toggleKey(featureKey) },
+        onVariantSelected = { featureKey, variant -> viewModel.selectVariant(featureKey, variant) },
         onResetAll = { viewModel.resetAll() }
     )
 
@@ -47,6 +48,7 @@ object FeatureFlagOverridesScreen {
     data class Actions(
         val onBack: () -> Unit,
         val onToggled: (key: String) -> Unit,
+        val onVariantSelected: (key: String, variant: String?) -> Unit,
         val onResetAll: () -> Unit
     ) {
 
@@ -55,6 +57,7 @@ object FeatureFlagOverridesScreen {
             val Empty = Actions(
                 onBack = {},
                 onToggled = {},
+                onVariantSelected = { _, _ -> },
                 onResetAll = {}
             )
         }

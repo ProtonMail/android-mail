@@ -186,6 +186,63 @@ data object NpsEnabledInApp : FeatureFlagDefinition(
     defaultValue = false
 )
 
+data object ByoeEnabled : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmail",
+    name = "BYOE master switch",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmail: Master switch for BYOE, shared with web. When off, BYOE is hidden on mobile and web.",
+    defaultValue = false
+)
+
+data object GmailConnectionEnabled : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileGmailConnection",
+    name = "Connect a Gmail account (BYOE)",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileGmailConnection: The mobile BYOE experiment. Only Treatment1 and Treatment2 users see BYOE.",
+    defaultValue = false,
+    variants = listOf("ControlGroup", "Treatment1", "Treatment2")
+)
+
+data object ByoeMobileKillswitch : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileKillswitch",
+    name = "BYOE mobile killswitch",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileKillswitch: When on, hides all BYOE on mobile. Web is not affected.",
+    defaultValue = false
+)
+
+data object ByoeConnectionKillswitch : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileSettingsConnectionKillswitch",
+    name = "BYOE settings connection killswitch",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileSettingsConnectionKillswitch: When on, Settings only list the connected accounts and the guidance screens are hidden.",
+    defaultValue = false
+)
+
+data object ByoeOnboardingKillswitch : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileOnboardingKillswitch",
+    name = "BYOE onboarding killswitch",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileOnboardingKillswitch: When on, hides the BYOE page in the onboarding.",
+    defaultValue = false
+)
+
+data object ByoeSpotlightKillswitch : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileSpotlightKillswitch",
+    name = "BYOE spotlight killswitch",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileSpotlightKillswitch: When on, hides the BYOE spotlight.",
+    defaultValue = false
+)
+
+data object ByoeSidebarKillswitch : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileSidebarKillswitch",
+    name = "BYOE sidebar killswitch",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileSidebarKillswitch: When on, hides the BYOE banner in the sidebar.",
+    defaultValue = false
+)
+
 data object RateOnUpsellEnabled : FeatureFlagDefinition(
     key = "MailAndroidV7RateOnUpsell",
     name = "Rate on upsell",
