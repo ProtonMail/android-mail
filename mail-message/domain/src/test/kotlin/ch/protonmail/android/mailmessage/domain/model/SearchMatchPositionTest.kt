@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
+import ch.protonmail.android.mailattachments.domain.model.AttachmentId
+import ch.protonmail.android.mailattachments.domain.sample.AttachmentMetadataSamples
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -90,6 +92,23 @@ class SearchMatchPositionTest {
     }
 
     @Test
+    fun `should still read the first value after a position outside it`() {
+        // Given
+        val message = buildMessage(id = "1", subject = "Your invoice")
+
+        // When
+        val terms = message.searchMatchedTerms(
+            listOf(
+                position(SearchMatchField.Subject, start = 5, end = 12, valueIndex = 1),
+                position(SearchMatchField.Subject, start = 5, end = 12)
+            )
+        )
+
+        // Then
+        assertEquals(listOf("invoice"), terms)
+    }
+
+    @Test
     fun `should ignore empty and out of range positions`() {
         // Given
         val message = buildMessage(id = "1", subject = "Short")
@@ -107,10 +126,65 @@ class SearchMatchPositionTest {
         assertEquals(emptyList(), terms)
     }
 
+    @Test
+    fun `should read attachment positions in the name of their attachment`() {
+        // Given
+        val message = buildMessage(
+            id = "1",
+            attachments = listOf(
+                AttachmentMetadataSamples.Invoice.copy(attachmentId = AttachmentId("7"), name = "roadmap.docx"),
+                AttachmentMetadataSamples.Invoice.copy(attachmentId = AttachmentId("9"), name = "Q3_invoice-final.pdf")
+            )
+        )
+
+        // When
+        val terms = message.searchMatchedTerms(
+            listOf(
+                position(
+                    SearchMatchField.Attachment,
+                    start = 3,
+                    end = 10,
+                    valueIndex = 1,
+                    attachmentId = AttachmentId("9")
+                )
+            )
+        )
+
+        // Then
+        assertEquals(listOf("invoice"), terms)
+    }
+
+    @Test
+    fun `should skip attachment positions whose attachment is not previewed`() {
+        // Given
+        val message = buildMessage(
+            id = "1",
+            attachments = listOf(AttachmentMetadataSamples.Invoice.copy(attachmentId = AttachmentId("7")))
+        )
+
+        // When
+        val terms = message.searchMatchedTerms(
+            listOf(
+                position(SearchMatchField.Attachment, start = 0, end = 7, attachmentId = AttachmentId("11")),
+                position(SearchMatchField.Attachment, start = 0, end = 7)
+            )
+        )
+
+        // Then
+        assertEquals(emptyList(), terms)
+    }
+
     private fun position(
         field: SearchMatchField,
         start: Int,
         end: Int,
-        valueIndex: Int = 0
-    ) = SearchMatchPosition(field = field, valueIndex = valueIndex, start = start, end = end)
+        valueIndex: Int = 0,
+        attachmentId: AttachmentId? = null
+    ) = SearchMatchPosition(
+        field = field,
+        valueIndex = valueIndex,
+        start = start,
+        end = end,
+        attachmentId = attachmentId
+    )
 }

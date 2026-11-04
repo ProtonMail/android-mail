@@ -37,7 +37,7 @@ enum class MailboxItemType {
  * @property isReplied always `false` if [type] is [MailboxItemType.Conversation]
  * @property isRepliedAll always `false` if [type] is [MailboxItemType.Conversation]
  * @property isForwarded always `false` if [type] is [MailboxItemType.Conversation]
- * @property searchMatchedTerms the text a search matched in the subject and addresses, fuzzy matches
+ * @property searchMatchedTerms the text a search matched in the subject, addresses and attachment names, fuzzy matches
  *  included. Empty outside search results.
  */
 data class MailboxItem(

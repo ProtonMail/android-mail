@@ -329,7 +329,8 @@ class ConversationDetailViewModel @AssistedInject constructor(
     )
 
     /**
-     * The highlight for the subject and addresses: the query plus what search matched in the opened result.
+     * The highlight for the subject, addresses and attachment names.
+     * It is the query plus what search matched in the opened result.
      *
      * Each pager page has its own view model, so each page reads the terms of its own message.
      * A message outside the active search gets no terms and highlights the query only.

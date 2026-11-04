@@ -138,61 +138,80 @@ fun buildMultiWordHighlightedText(
     highlightTextColor: Color,
     highlightBackgroundColor: Color,
     visibleEnd: Int
-): AnnotatedString {
-    val query = highlight.trim()
-
-    return buildAnnotatedString {
-
-        if (query.isEmpty()) {
-            // Nothing to highlight
-            append(text)
-        } else {
-            // Split query into words
-            val words = query.trim().split(Regex("\\s+"))
-
-            if (words.isEmpty()) {
-                append(text)
-            } else {
-                // Longest first, so "gov" doesn't cut a match for "government" short
-                val pattern = words.sortedByDescending { it.length }.joinToString("|") { Regex.escape(it) }
-                val regex = Regex(pattern, RegexOption.IGNORE_CASE)
-
-                var currentIndex = 0
-
-                for (match in regex.findAll(text)) {
-                    val start = match.range.first
-                    val end = match.range.last + 1
-
-                    // Stop highlighting once we reach truncated area
-                    if (end > visibleEnd) {
-                        break
-                    }
-
-                    // Append text before the match
-                    if (currentIndex < start) {
-                        append(text.substring(currentIndex, start))
-                    }
-
-                    // Append highlighted part
-                    withStyle(
-                        style = SpanStyle(
-                            color = highlightTextColor,
-                            background = highlightBackgroundColor
-                        )
-                    ) {
-                        append(text.substring(start, end))
-                    }
-
-                    currentIndex = end
-                }
-
-                // Append remaining text after the last match
-                if (currentIndex < text.length) {
-                    append(text.substring(currentIndex))
-                }
-            }
-        }
+): AnnotatedString = buildAnnotatedString {
+    val regex = highlightRegex(highlight)
+    if (regex == null) {
+        // Nothing to highlight
+        append(text)
+        return@buildAnnotatedString
     }
+
+    var currentIndex = 0
+
+    for (match in regex.findAll(text)) {
+        val start = match.range.first
+        val end = match.range.last + 1
+
+        // Stop highlighting once we reach truncated area
+        if (end > visibleEnd) {
+            break
+        }
+
+        // Append text before the match
+        if (currentIndex < start) {
+            append(text.substring(currentIndex, start))
+        }
+
+        // Append highlighted part
+        withStyle(
+            style = SpanStyle(
+                color = highlightTextColor,
+                background = highlightBackgroundColor
+            )
+        ) {
+            append(text.substring(start, end))
+        }
+
+        currentIndex = end
+    }
+
+    // Append remaining text after the last match
+    if (currentIndex < text.length) {
+        append(text.substring(currentIndex))
+    }
+}
+
+/**
+ * [text] with every word of [highlight] in the search highlight colors, for short single-line labels.
+ *
+ * Highlights only change colors, so the result measures the same as plain [text].
+ */
+@Composable
+fun rememberSearchHighlightedText(text: String, highlight: String): AnnotatedString {
+    val highlightTextColor = ProtonTheme.colors.searchHighlightText
+    val highlightBackgroundColor = ProtonTheme.colors.searchHighlightBackground
+    return remember(text, highlight, highlightTextColor, highlightBackgroundColor) {
+        buildMultiWordHighlightedText(
+            text = text,
+            highlight = highlight,
+            highlightTextColor = highlightTextColor,
+            highlightBackgroundColor = highlightBackgroundColor,
+            visibleEnd = text.length
+        )
+    }
+}
+
+/** Whether [buildMultiWordHighlightedText] would highlight anything in [text]. */
+fun containsHighlight(text: String, highlight: String): Boolean =
+    highlightRegex(highlight)?.containsMatchIn(text) == true
+
+/** Matches any whitespace-separated word of [highlight], ignoring case. Null when there is no word. */
+private fun highlightRegex(highlight: String): Regex? {
+    val words = highlight.trim().split(Whitespace).filter { it.isNotEmpty() }
+    if (words.isEmpty()) return null
+    // Longest first, so "gov" doesn't cut a match for "government" short
+    val pattern = words.sortedByDescending { it.length }.joinToString("|") { Regex.escape(it) }
+    return Regex(pattern, RegexOption.IGNORE_CASE)
 }
 
 /**

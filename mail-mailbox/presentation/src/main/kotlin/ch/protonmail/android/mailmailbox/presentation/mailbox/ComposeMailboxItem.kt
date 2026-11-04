@@ -283,7 +283,8 @@ fun MailboxItem(
                             attachments = item.attachments,
                             textColor = fontColor,
                             onAttachmentClicked = actions.onAttachmentClicked,
-                            downloadingAttachmentId = downloadingAttachmentId
+                            downloadingAttachmentId = downloadingAttachmentId,
+                            highlightText = highlightText
                         )
                     }
                 }

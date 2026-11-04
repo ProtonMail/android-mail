@@ -41,6 +41,7 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.ui.localcomposition.LocalHighlightQuery
 import ch.protonmail.android.mailmessage.domain.model.MessageBodyImage
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
@@ -114,7 +115,8 @@ fun MessageBody(
                 onAttachmentClicked = actions.onAttachmentClicked,
                 onToggleExpandCollapseMode = actions.onToggleAttachmentsExpandCollapseMode
             ),
-            downloadingAttachmentId = downloadingAttachmentId
+            downloadingAttachmentId = downloadingAttachmentId,
+            highlightText = LocalHighlightQuery.current
         )
     }
 
