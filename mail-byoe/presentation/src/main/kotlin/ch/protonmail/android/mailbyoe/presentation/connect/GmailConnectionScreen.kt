@@ -53,10 +53,13 @@ import timber.log.Timber
  * Opens the Gmail connection web page in an Auth Tab, which hands the `protonmail://` result back to this
  * screen without needing an intent filter. Browsers without Auth Tab support open a Custom Tab instead, whose
  * redirect [GmailConnectionRedirectActivity] catches.
+ *
+ * Once connected, it shows the success page; [onOpenInbox] runs after the Inbox is selected.
  */
 @Composable
 fun GmailConnectionScreen(
     onClose: () -> Unit,
+    onOpenInbox: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GmailConnectionViewModel = hiltViewModel()
 ) {
@@ -74,15 +77,24 @@ fun GmailConnectionScreen(
         }
 
         is GmailConnectionState.Finished -> ConsumableLaunchedEffect(current.close) { onClose() }
+        is GmailConnectionState.Connected -> ConsumableLaunchedEffect(current.openInbox) { onOpenInbox() }
         else -> Unit
     }
 
-    GmailConnectionContent(
-        state = state,
-        onBackClick = onClose,
-        onRetryClick = { viewModel.submit(GmailConnectionAction.RetryClicked) },
-        modifier = modifier
-    )
+    when (val current = state) {
+        is GmailConnectionState.Connected -> GmailConnectedContent(
+            email = current.email,
+            onOpenInbox = { viewModel.submit(GmailConnectionAction.OpenInboxClicked) },
+            modifier = modifier
+        )
+
+        else -> GmailConnectionContent(
+            state = current,
+            onBackClick = onClose,
+            onRetryClick = { viewModel.submit(GmailConnectionAction.RetryClicked) },
+            modifier = modifier
+        )
+    }
 }
 
 @Composable

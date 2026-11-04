@@ -26,6 +26,11 @@ import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 import ch.protonmail.android.mailbyoe.domain.usecase.RefreshAfterGmailConnection
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
+import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.SelectMailLabelId
 import ch.protonmail.android.mailsession.domain.model.CookieSessionId
 import ch.protonmail.android.mailsession.domain.model.ForkWithKeyPayload
 import ch.protonmail.android.mailsession.domain.model.Selector
@@ -38,6 +43,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -60,11 +66,17 @@ internal class GmailConnectionViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns fork.right()
     }
     private val refreshAfterGmailConnection = mockk<RefreshAfterGmailConnection>(relaxUnitFun = true)
+    private val findLocalSystemLabelId = mockk<FindLocalSystemLabelId> {
+        coEvery { this@mockk.invoke(userId, SystemLabelId.Inbox) } returns inbox
+    }
+    private val selectMailLabelId = mockk<SelectMailLabelId>(relaxUnitFun = true)
 
     private fun viewModel(savedStateHandle: SavedStateHandle = SavedStateHandle()) = GmailConnectionViewModel(
         observePrimaryUserId,
         forkSessionWithKeyPayload,
         refreshAfterGmailConnection,
+        findLocalSystemLabelId,
+        selectMailLabelId,
         ApiEnvironment(host = "proton.me", apiPrefix = "mail-api"),
         GmailConnectionReducer(),
         savedStateHandle
@@ -118,18 +130,33 @@ internal class GmailConnectionViewModelTest {
     }
 
     @Test
-    fun `given the account is connected, when the page closes, then the account is refreshed and the screen closes`() =
-        runTest {
-            // Given
-            val viewModel = viewModel()
+    fun `given the account is connected, when the page closes, then the success page shows the address`() = runTest {
+        // Given
+        val viewModel = viewModel()
 
-            // When
-            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected()))
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
 
-            // Then
-            coVerify(exactly = 1) { refreshAfterGmailConnection(userId) }
-            assertIs<GmailConnectionState.Finished>(viewModel.state.value)
-        }
+        // Then
+        coVerify(exactly = 1) { refreshAfterGmailConnection(userId) }
+        val state = assertIs<GmailConnectionState.Connected>(viewModel.state.value)
+        assertEquals(EMAIL, state.email)
+    }
+
+    @Test
+    fun `given the success page, when taking the user to the inbox, then the inbox is selected and opened`() = runTest {
+        // Given
+        val viewModel = viewModel()
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
+
+        // When
+        viewModel.submit(GmailConnectionAction.OpenInboxClicked)
+
+        // Then
+        verify(exactly = 1) { selectMailLabelId(inbox) }
+        val state = assertIs<GmailConnectionState.Connected>(viewModel.state.value)
+        assertEquals(Unit, state.openInbox.consume())
+    }
 
     @Test
     fun `given the page was closed by the user, when it closes, then the account is still refreshed`() = runTest {
@@ -234,7 +261,9 @@ internal class GmailConnectionViewModelTest {
 
     private companion object {
 
+        const val EMAIL = "someone@gmail.com"
         val userId = UserId("user")
+        val inbox = MailLabelId.System(LabelId("inbox"))
         val fork = ForkWithKeyPayload(
             selector = Selector("selector"),
             sessionId = CookieSessionId("session"),

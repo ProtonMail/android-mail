@@ -25,6 +25,7 @@ sealed interface GmailConnectionOperation {
     sealed interface GmailConnectionAction : GmailConnectionOperation {
         data object RetryClicked : GmailConnectionAction
         data class PageClosed(val result: GmailConnectionResult) : GmailConnectionAction
+        data object OpenInboxClicked : GmailConnectionAction
     }
 
     sealed interface GmailConnectionEvent : GmailConnectionOperation {
@@ -32,5 +33,7 @@ sealed interface GmailConnectionOperation {
         data object PreparationFailed : GmailConnectionEvent
         data object ConnectionFailed : GmailConnectionEvent
         data object ConnectionFinished : GmailConnectionEvent
+        data class ConnectionSucceeded(val email: String?) : GmailConnectionEvent
+        data object InboxSelected : GmailConnectionEvent
     }
 }

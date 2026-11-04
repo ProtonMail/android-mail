@@ -21,6 +21,16 @@
   <string name="byoe_gmail_connection_title">Connect your Gmail</string>
   <string name="byoe_gmail_connection_error">Your Gmail account couldn\'t be connected. Please try again.</string>
   <string name="byoe_gmail_connection_retry">Try again</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail connected</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Stay on top of your Gmail here</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Receive, read and send without switching apps</string>
+  <string name="byoe_gmail_connected_notifications_title">Turn off notifications in the Gmail app</string>
+  <string name="byoe_gmail_connected_notifications_body">So you only get notified once</string>
+  <string name="byoe_gmail_connected_import_title">Importing your emails</string>
+  <string name="byoe_gmail_connected_import_body">It runs in the background, so go ahead and use the app. We\'ll notify you once it\'s done.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Learn what gets imported.</string>
+  <string name="byoe_gmail_connected_open_inbox">Take me to Inbox</string>
   <!-- BYOE spotlight for existing users -->
   <string name="byoe_spotlight_badge">What\'s new</string>
   <string name="byoe_spotlight_title">Use Gmail in Proton</string>

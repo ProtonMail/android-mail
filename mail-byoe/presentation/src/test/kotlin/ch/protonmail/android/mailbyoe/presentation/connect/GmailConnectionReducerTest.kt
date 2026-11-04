@@ -21,6 +21,7 @@ package ch.protonmail.android.mailbyoe.presentation.connect
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionEvent
+import ch.protonmail.android.mailcommon.presentation.Effect
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -68,6 +69,30 @@ internal class GmailConnectionReducerTest {
     }
 
     @Test
+    fun `given the connection succeeded, when reduced, then the success page shows the address`() {
+        // When
+        val state = reducer.newStateFrom(GmailConnectionState.Loading, GmailConnectionEvent.ConnectionSucceeded(EMAIL))
+
+        // Then
+        assertIs<GmailConnectionState.Connected>(state)
+        assertEquals(EMAIL, state.email)
+        assertEquals(null, state.openInbox.consume())
+    }
+
+    @Test
+    fun `given the success page, when the inbox is selected, then the inbox opens`() {
+        // Given
+        val current = GmailConnectionState.Connected(email = EMAIL, openInbox = Effect.empty())
+
+        // When
+        val state = reducer.newStateFrom(current, GmailConnectionEvent.InboxSelected)
+
+        // Then
+        assertIs<GmailConnectionState.Connected>(state)
+        assertEquals(Unit, state.openInbox.consume())
+    }
+
+    @Test
     fun `given a failure, when retrying, then the state is loading`() {
         // When
         val state = reducer.newStateFrom(GmailConnectionState.Failed, GmailConnectionAction.RetryClicked)
@@ -91,5 +116,6 @@ internal class GmailConnectionReducerTest {
     private companion object {
 
         const val URL = "https://account.proton.me/lite"
+        const val EMAIL = "someone@gmail.com"
     }
 }

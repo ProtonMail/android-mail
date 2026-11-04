@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<!-- The Proton bell crossed out by a slash, which the Proton icon set does not have. -->
+<vector
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="24"
+  android:viewportHeight="24">
+  <group>
+    <!-- Leaves a gap around the slash. -->
+    <clip-path android:pathData="M2.26,0L24,0L24,21.74ZM0,2.26L0,24L21.74,24Z" />
+    <path
+      android:pathData="M21.0012,17.647L21.1137,17.7622L21.1175,17.7662L21.5239,18.1821C21.8202,18.4855 21.9683,18.6371 21.9775,18.7671C21.9854,18.8798 21.9392,18.9897 21.853,19.0628C21.7536,19.147 21.5416,19.147 21.1175,19.147H20.5361H20.5305H20.3695H3.6359H3.4697H3.4422H2.8689C2.4508,19.147 2.2418,19.147 2.1439,19.064C2.0588,18.9919 2.0133,18.8836 2.0211,18.7724C2.0301,18.6443 2.1762,18.4948 2.4683,18.1957L2.8689,17.7856L2.8881,17.7659L3.0043,17.647L4.7763,15.833C4.937,15.6685 5.0269,15.4476 5.0269,15.2176V8.9836C5.0269,5.131 8.1501,2.0078 12.0027,2.0078C15.8553,2.0078 18.9785,5.131 18.9785,8.9836V15.2176C18.9785,15.4476 19.0685,15.6685 19.2292,15.833L21.0012,17.647ZM18.1562,16.8811L18.9043,17.647H5.1012L5.8493,16.8811C6.2837,16.4364 6.5269,15.8393 6.5269,15.2176V8.9836C6.5269,5.9594 8.9785,3.5078 12.0027,3.5078C15.0269,3.5078 17.4785,5.9594 17.4785,8.9836V15.2176C17.4785,15.8393 17.7217,16.4364 18.1562,16.8811ZM12.0026,22.0035C11.2321,22.0035 10.6074,21.364 10.6074,20.5752H13.3977C13.3977,21.364 12.7731,22.0035 12.0026,22.0035Z"
+      android:fillColor="#FF000000"
+      android:fillType="evenOdd"
+    />
+  </group>
+  <path
+    android:pathData="M3,3L21,21"
+    android:strokeWidth="1.5"
+    android:strokeColor="#FF000000"
+    android:strokeLineCap="round"
+  />
+</vector>

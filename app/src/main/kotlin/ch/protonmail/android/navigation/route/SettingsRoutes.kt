@@ -197,7 +197,10 @@ internal fun NavGraphBuilder.addAppIconSettings(navController: NavHostController
 internal fun NavGraphBuilder.addGmailConnection(navController: NavHostController) {
     composableWithTransitions(route = Screen.GmailConnection.route) {
         ProtonInvertedTheme {
-            GmailConnectionScreen(onClose = { navController.navigateBack() })
+            GmailConnectionScreen(
+                onClose = { navController.navigateBack() },
+                onOpenInbox = { navController.popBackStack(Screen.Mailbox.route, inclusive = false) }
+            )
         }
     }
 }

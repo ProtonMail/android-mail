@@ -27,6 +27,9 @@ import ch.protonmail.android.mailbyoe.presentation.BuildConfig
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionEvent
 import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.SelectMailLabelId
 import ch.protonmail.android.mailsession.domain.usecase.ForkSessionWithKeyPayload
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +47,8 @@ class GmailConnectionViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val forkSessionWithKeyPayload: ForkSessionWithKeyPayload,
     private val refreshAfterGmailConnection: RefreshAfterGmailConnection,
+    private val findLocalSystemLabelId: FindLocalSystemLabelId,
+    private val selectMailLabelId: SelectMailLabelId,
     private val apiEnvironment: ApiEnvironment,
     private val reducer: GmailConnectionReducer,
     private val savedStateHandle: SavedStateHandle
@@ -69,6 +74,7 @@ class GmailConnectionViewModel @Inject constructor(
         when (action) {
             is GmailConnectionAction.RetryClicked -> viewModelScope.launch { openConnectionPage() }
             is GmailConnectionAction.PageClosed -> viewModelScope.launch { onPageClosed(action.result) }
+            is GmailConnectionAction.OpenInboxClicked -> viewModelScope.launch { selectInbox() }
         }
     }
 
@@ -104,9 +110,21 @@ class GmailConnectionViewModel @Inject constructor(
         }
 
         savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Closed.name
+        if (result is GmailConnectionResult.Connected) {
+            emitNewStateFrom(GmailConnectionEvent.ConnectionSucceeded(result.email))
+            observePrimaryUserId().first()?.let { refreshAfterGmailConnection(it) }
+            return
+        }
+
         // Also refresh when cancelled: the connection may have completed before the page was closed.
         observePrimaryUserId().first()?.let { refreshAfterGmailConnection(it) }
         emitNewStateFrom(GmailConnectionEvent.ConnectionFinished)
+    }
+
+    private suspend fun selectInbox() {
+        val inbox = observePrimaryUserId().first()?.let { findLocalSystemLabelId(it, SystemLabelId.Inbox) }
+        if (inbox != null) selectMailLabelId(inbox) else Timber.w("byoe: no inbox to open after the Gmail connection")
+        emitNewStateFrom(GmailConnectionEvent.InboxSelected)
     }
 
     private fun emitNewStateFrom(operation: GmailConnectionOperation) {

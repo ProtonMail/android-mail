@@ -33,7 +33,8 @@ internal data class ByoeColors(
     val badgeText: Color,
     val cardBackground: Color,
     val cardBorder: Brush,
-    val cardDivider: Color
+    val cardDivider: Color,
+    val iconBackground: Color
 )
 
 @Composable
@@ -47,7 +48,8 @@ internal fun byoeColors(): ByoeColors {
             badgeText = DarkBadgeText,
             cardBackground = Color.Transparent,
             cardBorder = cardBorder(DarkCardBorder, DarkCardBorder),
-            cardDivider = colors.borderNorm
+            cardDivider = colors.borderNorm,
+            iconBackground = colors.interactionBrandWeakNorm
         )
     } else {
         ByoeColors(
@@ -56,7 +58,8 @@ internal fun byoeColors(): ByoeColors {
             badgeText = LightBadgeText,
             cardBackground = colors.backgroundNorm,
             cardBorder = cardBorder(LightCardBorderTop, LightCardBorderBottom),
-            cardDivider = colors.separatorNorm
+            cardDivider = colors.separatorNorm,
+            iconBackground = LightIconBackground
         )
     }
 }
@@ -98,5 +101,6 @@ private val DarkBadgeText = Color(0xFFEDEFFD)
 private val LightBadgeBackground = Color(0xFFDDDEFB)
 private val LightBadgeText = Color(0xFF311E71)
 private val LightCardBorderTop = Color(0xFFDDDEFB)
+private val LightIconBackground = Color(0xFFE9EAFC)
 private val LightCardBorderBottom = Color(0xFFF5F6FE)
 private val DarkCardBorder = Color(0xFF50505B)

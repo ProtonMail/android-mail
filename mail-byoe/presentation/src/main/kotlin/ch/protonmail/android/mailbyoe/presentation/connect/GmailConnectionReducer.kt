@@ -28,10 +28,15 @@ class GmailConnectionReducer @Inject constructor() {
     fun newStateFrom(current: GmailConnectionState, operation: GmailConnectionOperation): GmailConnectionState =
         when (operation) {
             is GmailConnectionAction.RetryClicked -> GmailConnectionState.Loading
-            is GmailConnectionAction.PageClosed -> current
+            is GmailConnectionAction.PageClosed,
+            is GmailConnectionAction.OpenInboxClicked -> current
             is GmailConnectionEvent.PageReady -> GmailConnectionState.OpeningPage(Effect.of(operation.url))
             is GmailConnectionEvent.PreparationFailed,
             is GmailConnectionEvent.ConnectionFailed -> GmailConnectionState.Failed
             is GmailConnectionEvent.ConnectionFinished -> GmailConnectionState.Finished(Effect.of(Unit))
+            is GmailConnectionEvent.ConnectionSucceeded ->
+                GmailConnectionState.Connected(email = operation.email, openInbox = Effect.empty())
+            is GmailConnectionEvent.InboxSelected ->
+                if (current is GmailConnectionState.Connected) current.copy(openInbox = Effect.of(Unit)) else current
         }
 }
