@@ -22,6 +22,7 @@ import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionEvent
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -66,6 +67,19 @@ internal class GmailConnectionReducerTest {
         // Then
         assertIs<GmailConnectionState.Finished>(state)
         assertEquals(Unit, state.close.consume())
+    }
+
+    @Test
+    fun `given the upsell has loaded, when reduced, then that upsell opens`() {
+        // When
+        val state = reducer.newStateFrom(
+            GmailConnectionState.Loading,
+            GmailConnectionEvent.UpsellReady(UpsellingVisibility.Normal.MailPlus)
+        )
+
+        // Then
+        assertIs<GmailConnectionState.UpsellRequested>(state)
+        assertEquals(UpsellingVisibility.Normal.MailPlus, state.openUpsell.consume())
     }
 
     @Test

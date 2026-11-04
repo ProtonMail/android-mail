@@ -249,18 +249,21 @@ internal object ComparisonTableEntitlements {
         )
     )
 
-    // Declared last: it reuses rows declared above, which must already be initialised. The storage row is the Free
-    // one, since this table compares Free with Unlimited.
-    val ByoeStorageEntitlements = listOf(
-        UnlimitedEntitlements.first(),
-        ComparisonTableEntitlementItemUiModel(
-            title = TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections),
-            freeValue = ComparisonTableEntitlement.Free.Value(
-                TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections_value_free)
-            ),
-            paidValue = ComparisonTableEntitlement.Paid.Value(
-                TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections_value_unlimited)
-            )
+    private val GmailConnectionsEntitlement = ComparisonTableEntitlementItemUiModel(
+        title = TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections),
+        freeValue = ComparisonTableEntitlement.Free.Value(
+            TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections_value_free)
+        ),
+        paidValue = ComparisonTableEntitlement.Paid.Value(
+            TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections_value_unlimited)
         )
-    ) + PlusToUnlimitedEntitlements.drop(1)
+    )
+
+    // Declared last: these reuse the rows above, which must already be initialised. Both compare Free with
+    // Unlimited, so they take the Free storage row instead of the Plus one.
+    val ByoeStorageEntitlements = listOf(UnlimitedEntitlements.first(), GmailConnectionsEntitlement) +
+        PlusToUnlimitedEntitlements.drop(1)
+
+    val ByoeConnectionLimitEntitlements = listOf(GmailConnectionsEntitlement, UnlimitedEntitlements.first()) +
+        PlusToUnlimitedEntitlements.drop(1)
 }

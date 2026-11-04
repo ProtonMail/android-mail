@@ -66,6 +66,7 @@ import ch.protonmail.android.mailsettings.presentation.webfoldersettings.WebFold
 import ch.protonmail.android.mailsettings.presentation.webprivacysettings.WebPrivacyAndSecuritySettingsScreen
 import ch.protonmail.android.mailsettings.presentation.websettings.WebSettingsScreenActions
 import ch.protonmail.android.mailsettings.presentation.webspamsettings.WebSpamFilterSettingsScreen
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.transitions.RouteTransitionSpec
 import ch.protonmail.android.navigation.transitions.composableWithTransitions
@@ -202,6 +203,13 @@ internal fun NavGraphBuilder.addGmailConnection(navController: NavHostController
                 onOpenInbox = { importEmails ->
                     navController.popBackStack(Screen.Mailbox.route, inclusive = false)
                     if (importEmails) onImportStarted()
+                },
+                onOpenUpsell = { visibility ->
+                    navController.navigate(
+                        Screen.FeatureUpselling(UpsellingEntryPoint.Feature.ByoeConnectionLimit, visibility)
+                    ) {
+                        popUpTo(Screen.GmailConnection.route) { inclusive = true }
+                    }
                 }
             )
         }

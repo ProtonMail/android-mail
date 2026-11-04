@@ -37,7 +37,9 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
             return PlanUpgradeIconUiModel(theme.headerDrawable)
         }
 
-        if (upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeStorage) {
+        if (upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeStorage ||
+            upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeConnectionLimit
+        ) {
             return PlanUpgradeIconUiModel(R.drawable.illustration_upselling_byoe_storage)
         }
 
@@ -65,7 +67,8 @@ internal class PlanUpgradeIconUiMapper @Inject constructor() {
                 UpsellingEntryPoint.Feature.MobileSignature -> R.drawable.illustration_upselling_mobile_signature
                 UpsellingEntryPoint.Feature.ScheduleSend -> R.drawable.illustration_upselling_schedule_send
                 UpsellingEntryPoint.Feature.Snooze -> R.drawable.illustration_upselling_snooze
-                UpsellingEntryPoint.Feature.ByoeStorage -> R.drawable.illustration_upselling_byoe_storage
+                UpsellingEntryPoint.Feature.ByoeStorage,
+                UpsellingEntryPoint.Feature.ByoeConnectionLimit -> R.drawable.illustration_upselling_byoe_storage
 
                 UpsellingEntryPoint.Feature.PlusUnlimited,
                 UpsellingEntryPoint.Feature.Sidebar,

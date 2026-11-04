@@ -56,6 +56,7 @@ internal object GmailConnectionCallback {
                 email = email?.takeIf { it.length <= MAX_EMAIL_LENGTH && validEmail.matches(it) }
             )
             "cancel" -> GmailConnectionResult.Cancelled
+            "upsell" -> GmailConnectionResult.UpsellRequested
             "error" -> GmailConnectionResult.Failed(code = code?.takeIf { validCode.matches(it) })
             else -> GmailConnectionResult.Failed(code = null)
         }

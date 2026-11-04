@@ -43,6 +43,15 @@ internal class GmailConnectionCallbackTest {
     }
 
     @Test
+    fun `given an upsell callback, when parsing, then the upsell is requested`() {
+        // When
+        val result = parse(status = "upsell")
+
+        // Then
+        assertEquals(GmailConnectionResult.UpsellRequested, result)
+    }
+
+    @Test
     fun `given an error callback with a code, when parsing, then the code is kept`() {
         // When
         val result = parse(status = "error", code = "connection_limit")

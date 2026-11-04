@@ -112,6 +112,9 @@
     <!-- Upselling: Gmail import paused because storage is full -->
     <string name="upselling_byoe_storage_description_override">Upgrade your plan to keep importing without running out of space</string>
     <string name="upselling_byoe_storage_title">Don\'t let your import stall</string>
+    <!-- Upselling: Gmail connection limit reached on a free plan -->
+    <string name="upselling_byoe_connection_limit_description_override">Upgrade and move all your Gmail to one private inbox</string>
+    <string name="upselling_byoe_connection_limit_title">Connect up to 3 Gmail addresses</string>
     <!-- Proton product names, shown under their logos -->
     <string name="upselling_product_mail" translatable="false">Mail</string>
     <string

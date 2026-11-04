@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailbyoe.presentation.connect
 
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailcommon.presentation.Effect
 
 sealed interface GmailConnectionState {
@@ -40,4 +41,7 @@ sealed interface GmailConnectionState {
     ) : GmailConnectionState
 
     data class Finished(val close: Effect<Unit>) : GmailConnectionState
+
+    /** The user reached the connection limit and asked to upgrade; [openUpsell] leaves for that upsell. */
+    data class UpsellRequested(val openUpsell: Effect<UpsellingVisibility>) : GmailConnectionState
 }

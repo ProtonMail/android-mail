@@ -159,4 +159,17 @@ internal class PlanUpgradeIconUiMapperTest {
         // Then
         assertEquals(PlanUpgradeIconUiModel(R.drawable.illustration_upselling_byoe_storage), actual)
     }
+
+    @Test
+    fun `should map the gmail connection limit to the gmail to proton illustration`() {
+        // When
+        val actual = mapper.toUiModel(
+            upsellingEntryPoint = UpsellingEntryPoint.Feature.ByoeConnectionLimit,
+            variant = PlanUpgradeVariant.Normal.Unlimited,
+            theme = null
+        )
+
+        // Then
+        assertEquals(PlanUpgradeIconUiModel(R.drawable.illustration_upselling_byoe_storage), actual)
+    }
 }

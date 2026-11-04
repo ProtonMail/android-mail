@@ -179,7 +179,8 @@ internal class PlanUpgradeMapper @Inject constructor(
         UpsellingEntryPoint.Feature.MobileSignature,
         UpsellingEntryPoint.Feature.ScheduleSend,
         UpsellingEntryPoint.Feature.Snooze,
-        UpsellingEntryPoint.Feature.ByoeStorage -> false
+        UpsellingEntryPoint.Feature.ByoeStorage,
+        UpsellingEntryPoint.Feature.ByoeConnectionLimit -> false
     }
 }
 

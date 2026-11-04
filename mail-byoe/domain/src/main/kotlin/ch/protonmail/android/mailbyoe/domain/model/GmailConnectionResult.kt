@@ -29,5 +29,8 @@ sealed interface GmailConnectionResult {
     /** The user closed the web flow. The connection may still have completed before that. */
     data object Cancelled : GmailConnectionResult
 
+    /** The user is on a free plan at the connection limit and tapped "Upgrade to connect". */
+    data object UpsellRequested : GmailConnectionResult
+
     data class Failed(val code: String?) : GmailConnectionResult
 }

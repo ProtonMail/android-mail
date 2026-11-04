@@ -42,6 +42,10 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
             return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_byoe_storage_title))
         }
 
+        if (upsellingEntryPoint == UpsellingEntryPoint.Feature.ByoeConnectionLimit) {
+            return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_byoe_connection_limit_title))
+        }
+
         if (variant == PlanUpgradeVariant.SocialProof)
             return PlanUpgradeTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title_social_proof))
 
@@ -58,6 +62,7 @@ internal class PlanUpgradeTitleUiMapper @Inject constructor() {
             UpsellingEntryPoint.Feature.ScheduleSend -> R.string.upselling_schedule_send_plus_title
             UpsellingEntryPoint.Feature.Snooze -> R.string.upselling_snooze_plus_title
             UpsellingEntryPoint.Feature.ByoeStorage -> R.string.upselling_byoe_storage_title
+            UpsellingEntryPoint.Feature.ByoeConnectionLimit -> R.string.upselling_byoe_connection_limit_title
             UpsellingEntryPoint.Feature.PlusUnlimited,
             UpsellingEntryPoint.Feature.Sidebar,
             UpsellingEntryPoint.Feature.Navbar -> if (variant == PlanUpgradeVariant.IntroductoryPrice) {

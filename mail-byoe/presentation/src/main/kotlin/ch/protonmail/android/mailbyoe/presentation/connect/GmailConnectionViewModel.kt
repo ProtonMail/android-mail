@@ -39,6 +39,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration.Companion.seconds
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -51,6 +56,7 @@ class GmailConnectionViewModel @Inject constructor(
     private val selectMailLabelId: SelectMailLabelId,
     private val apiEnvironment: ApiEnvironment,
     private val reducer: GmailConnectionReducer,
+    private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -113,6 +119,11 @@ class GmailConnectionViewModel @Inject constructor(
         }
 
         savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Closed.name
+        if (result is GmailConnectionResult.UpsellRequested) {
+            openUpsell()
+            return
+        }
+
         if (result is GmailConnectionResult.Connected) {
             emitNewStateFrom(GmailConnectionEvent.ConnectionSucceeded(result.email, importEmails))
             observePrimaryUserId().first()?.let { refreshAfterGmailConnection(it) }
@@ -122,6 +133,24 @@ class GmailConnectionViewModel @Inject constructor(
         // Also refresh when cancelled: the connection may have completed before the page was closed.
         observePrimaryUserId().first()?.let { refreshAfterGmailConnection(it) }
         emitNewStateFrom(GmailConnectionEvent.ConnectionFinished)
+    }
+
+    /**
+     * Waits here, not in the screen, so the wait survives the activity being recreated. The visibility reads
+     * [UpsellingVisibility.Hidden] while the plans are still loading, which cannot be told apart from "no upsell", so
+     * this waits for a visible upsell and treats the timeout as "no upsell", closing the flow.
+     */
+    private suspend fun openUpsell() {
+        val visibility = withTimeoutOrNull(UPSELL_LOAD_TIMEOUT) {
+            observeUpsellingVisibility(UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+                .first { it != UpsellingVisibility.Hidden }
+        }
+        if (visibility == null) {
+            Timber.w("byoe: no upsell to offer at the Gmail connection limit")
+            emitNewStateFrom(GmailConnectionEvent.ConnectionFinished)
+        } else {
+            emitNewStateFrom(GmailConnectionEvent.UpsellReady(visibility))
+        }
     }
 
     private suspend fun selectInbox() {
@@ -139,5 +168,6 @@ class GmailConnectionViewModel @Inject constructor(
     private companion object {
 
         const val PAGE_PROGRESS_KEY = "gmail_connection_page_progress"
+        val UPSELL_LOAD_TIMEOUT = 5.seconds
     }
 }

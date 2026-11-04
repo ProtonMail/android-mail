@@ -74,6 +74,10 @@ sealed interface UpsellingEntryPoint {
         /** The mailbox banner shown while a Gmail import is paused because storage is full. */
         @Serializable
         data object ByoeStorage : Feature
+
+        /** The Gmail connection page, when a free user at the connection limit taps "Upgrade to connect". */
+        @Serializable
+        data object ByoeConnectionLimit : Feature
     }
 
     object PostOnboarding : UpsellingEntryPoint

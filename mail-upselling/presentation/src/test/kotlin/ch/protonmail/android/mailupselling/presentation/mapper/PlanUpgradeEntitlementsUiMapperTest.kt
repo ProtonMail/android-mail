@@ -248,4 +248,26 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
         // Then
         assertEquals(listOf(expected, expected), actual)
     }
+
+    @Test
+    fun `should lead with the gmail connections for the gmail connection limit, whatever the plan`() {
+        // Given
+        val expected = PlanUpgradeEntitlementsListUiModel.ComparisonTableList(
+            items = ComparisonTableEntitlements.ByoeConnectionLimitEntitlements,
+            titleLabel = TextUiModel.TextRes(R.string.upselling_pu_whats_included),
+            paidColumnLabel = TextUiModel.TextRes(R.string.upselling_unlimited_plan)
+        )
+
+        // When
+        val actual = listOf(PlanUpgradeVariant.IntroductoryPrice, PlanUpgradeVariant.Normal.Unlimited).map {
+            mapper.toTableUiModel(it, UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+        }
+
+        // Then
+        assertEquals(listOf(expected, expected), actual)
+        assertEquals(
+            TextUiModel.TextRes(R.string.upselling_comparison_table_gmail_connections),
+            actual.first().items.first().title
+        )
+    }
 }

@@ -264,6 +264,24 @@ internal class PlanUpgradeDescriptionUiMapperTest(
                 PlanUpgradeDescriptionUiModel.Simple(
                     TextUiModel.TextRes(R.string.upselling_byoe_storage_description_override)
                 )
+            ),
+            arrayOf(
+                "byoe connection limit entry point - unlimited plan",
+                UpsellingTestData.UnlimitedMailProduct.MonthlyProductOfferDetail,
+                UpsellingEntryPoint.Feature.ByoeConnectionLimit,
+                PlanUpgradeVariant.Normal.Unlimited,
+                PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_byoe_connection_limit_description_override)
+                )
+            ),
+            arrayOf(
+                "byoe connection limit entry point - promo variant",
+                UpsellingTestData.MailPlusProducts.MonthlyProductOfferDetail,
+                UpsellingEntryPoint.Feature.ByoeConnectionLimit,
+                PlanUpgradeVariant.IntroductoryPrice,
+                PlanUpgradeDescriptionUiModel.Simple(
+                    TextUiModel.TextRes(R.string.upselling_byoe_connection_limit_description_override)
+                )
             )
         )
     }

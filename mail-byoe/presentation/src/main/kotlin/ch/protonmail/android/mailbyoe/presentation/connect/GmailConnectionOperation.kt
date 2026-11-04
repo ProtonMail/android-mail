@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailbyoe.presentation.connect
 
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 
 sealed interface GmailConnectionOperation {
@@ -35,5 +36,6 @@ sealed interface GmailConnectionOperation {
         data object ConnectionFinished : GmailConnectionEvent
         data class ConnectionSucceeded(val email: String?, val importEmails: Boolean) : GmailConnectionEvent
         data object InboxSelected : GmailConnectionEvent
+        data class UpsellReady(val visibility: UpsellingVisibility) : GmailConnectionEvent
     }
 }

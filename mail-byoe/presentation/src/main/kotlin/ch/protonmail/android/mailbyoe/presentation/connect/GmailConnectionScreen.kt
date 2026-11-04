@@ -46,6 +46,7 @@ import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 import ch.protonmail.android.mailbyoe.presentation.R
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailcommon.presentation.Effect
 import timber.log.Timber
 
@@ -55,12 +56,14 @@ import timber.log.Timber
  * redirect [GmailConnectionRedirectActivity] catches.
  *
  * Once connected, it shows the success page; [onOpenInbox] runs after the Inbox is selected, with whether the user
- * chose to import their emails.
+ * chose to import their emails. When the user is at the connection limit and asks to upgrade, [onOpenUpsell] runs
+ * instead with the upsell to offer, once it has loaded.
  */
 @Composable
 fun GmailConnectionScreen(
     onClose: () -> Unit,
     onOpenInbox: (importEmails: Boolean) -> Unit,
+    onOpenUpsell: (UpsellingVisibility) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GmailConnectionViewModel = hiltViewModel()
 ) {
@@ -79,6 +82,7 @@ fun GmailConnectionScreen(
 
         is GmailConnectionState.Finished -> ConsumableLaunchedEffect(current.close) { onClose() }
         is GmailConnectionState.Connected -> ConsumableLaunchedEffect(current.openInbox) { onOpenInbox(current.importEmails) }
+        is GmailConnectionState.UpsellRequested -> ConsumableLaunchedEffect(current.openUpsell) { onOpenUpsell(it) }
         else -> Unit
     }
 

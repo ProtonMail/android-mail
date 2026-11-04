@@ -34,6 +34,7 @@ class GmailConnectionReducer @Inject constructor() {
             is GmailConnectionEvent.PreparationFailed,
             is GmailConnectionEvent.ConnectionFailed -> GmailConnectionState.Failed
             is GmailConnectionEvent.ConnectionFinished -> GmailConnectionState.Finished(Effect.of(Unit))
+            is GmailConnectionEvent.UpsellReady -> GmailConnectionState.UpsellRequested(Effect.of(operation.visibility))
             is GmailConnectionEvent.ConnectionSucceeded ->
                 GmailConnectionState.Connected(
                     email = operation.email,

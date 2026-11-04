@@ -37,6 +37,9 @@ import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.usecase.ForkSessionWithKeyPayload
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -44,7 +47,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
@@ -71,6 +76,10 @@ internal class GmailConnectionViewModelTest {
         coEvery { this@mockk.invoke(userId, SystemLabelId.Inbox) } returns inbox
     }
     private val selectMailLabelId = mockk<SelectMailLabelId>(relaxUnitFun = true)
+    private val upsellingVisibility = MutableStateFlow<UpsellingVisibility>(UpsellingVisibility.Normal.MailPlus)
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk(UpsellingEntryPoint.Feature.ByoeConnectionLimit) } returns upsellingVisibility
+    }
 
     private fun viewModel(
         importEmails: String? = "true",
@@ -83,6 +92,7 @@ internal class GmailConnectionViewModelTest {
         selectMailLabelId,
         ApiEnvironment(host = "proton.me", apiPrefix = "mail-api"),
         GmailConnectionReducer(),
+        observeUpsellingVisibility,
         savedStateHandle
     )
 
@@ -202,6 +212,54 @@ internal class GmailConnectionViewModelTest {
         coVerify(exactly = 1) { refreshAfterGmailConnection(userId) }
         assertIs<GmailConnectionState.Finished>(viewModel.state.value)
     }
+
+    @Test
+    fun `given the user is at the connection limit, when they ask to upgrade, then the upsell opens`() = runTest {
+        // Given
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.UpsellRequested))
+
+        // Then
+        coVerify(exactly = 0) { refreshAfterGmailConnection(any()) }
+        val state = assertIs<GmailConnectionState.UpsellRequested>(viewModel.state.value)
+        assertEquals(UpsellingVisibility.Normal.MailPlus, state.openUpsell.consume())
+    }
+
+    @Test
+    fun `given the plans are still loading, when the user asks to upgrade, then the upsell opens once loaded`() =
+        runTest {
+            // Given
+            upsellingVisibility.value = UpsellingVisibility.Hidden
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.UpsellRequested))
+            advanceTimeBy(1_000)
+            upsellingVisibility.value = UpsellingVisibility.Normal.Unlimited
+
+            // Then
+            val state = assertIs<GmailConnectionState.UpsellRequested>(viewModel.state.value)
+            assertEquals(UpsellingVisibility.Normal.Unlimited, state.openUpsell.consume())
+        }
+
+    @Test
+    fun `given there is no upsell to offer, when the user asks to upgrade, then the flow closes after the wait`() =
+        runTest {
+            // Given
+            upsellingVisibility.value = UpsellingVisibility.Hidden
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.UpsellRequested))
+            advanceTimeBy(4_000)
+            assertIs<GmailConnectionState.OpeningPage>(viewModel.state.value)
+            advanceTimeBy(2_000)
+
+            // Then
+            assertIs<GmailConnectionState.Finished>(viewModel.state.value)
+        }
 
     @Test
     fun `given the connection failed, when the page closes, then the error is shown`() = runTest {
