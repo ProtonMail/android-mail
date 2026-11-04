@@ -28,4 +28,9 @@ interface OnboardingRepository {
     fun observe(): Flow<Either<PreferencesError, OnboardingPreference>>
 
     suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit>
+
+    /** Whether the onboarding upsell was put off until the user is back in the mailbox. */
+    fun observeUpsellPending(): Flow<Either<PreferencesError, Boolean>>
+
+    suspend fun saveUpsellPending(pending: Boolean): Either<PreferencesError, Unit>
 }

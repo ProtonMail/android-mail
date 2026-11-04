@@ -36,6 +36,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -49,27 +50,40 @@ import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingButton
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingContent
+import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingGmailButtons
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingIndexDots
+import ch.protonmail.android.mailonboarding.presentation.ui.moveToNextPage
+import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingAction
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingViewModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellScreen
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen(
-    exitAction: () -> Unit,
-    onUpsellingError: (String) -> Unit,
-    viewModel: OnboardingViewModel = hiltViewModel()
-) {
+fun OnboardingScreen(actions: OnboardingScreen.Actions, viewModel: OnboardingViewModel = hiltViewModel()) {
+    val exitAction = actions.exitAction
     val state by viewModel.state.collectAsStateWithLifecycle()
     var hasCompletedOnboarding by remember { mutableStateOf(false) }
 
     when {
         hasCompletedOnboarding && (state is OnboardingState.ToUpsell || state is OnboardingState.Loading) ->
-            OnboardingUpsellScreen(exitAction, onUpsellingError)
+            OnboardingUpsellScreen(exitAction, actions.onUpsellingError)
 
         hasCompletedOnboarding && state is OnboardingState.NoUpsell -> exitAction()
-        else -> OnboardingScreen(state, { hasCompletedOnboarding = true }, exitAction)
+        else -> OnboardingScreen(
+            state = state,
+            onUpsellingNavigation = { hasCompletedOnboarding = true },
+            exitAction = exitAction,
+            gmailActions = GmailPageActions(
+                onShown = { viewModel.submit(OnboardingAction.GmailPageShown) },
+                onSkipped = { viewModel.submit(OnboardingAction.GmailPageSkipped) },
+                onExplore = {
+                    viewModel.submit(OnboardingAction.GmailExploreClicked)
+                    actions.onExploreGmail()
+                }
+            )
+        )
     }
 }
 
@@ -77,38 +91,64 @@ fun OnboardingScreen(
 private fun OnboardingScreen(
     state: OnboardingState,
     onUpsellingNavigation: () -> Unit,
-    exitAction: () -> Unit
+    exitAction: () -> Unit,
+    gmailActions: GmailPageActions
 ) {
     val isEligibleForUpselling = state is OnboardingState.ToUpsell
     val isUpsellingEligibilityPending = state is OnboardingState.Loading
-
-    val onExitAction = if (isEligibleForUpselling || isUpsellingEligibilityPending) {
-        { onUpsellingNavigation() }
-    } else {
-        exitAction
+    val showGmailPage = when (state) {
+        is OnboardingState.ToUpsell -> state.showGmailPage
+        is OnboardingState.NoUpsell -> state.showGmailPage
+        is OnboardingState.Loading -> false
     }
 
-    val contentMap = listOfNotNull(
-        OnboardingUiModel(
-            illustrationId = R.drawable.illustration_onboarding_welcome,
-            title = R.string.onboarding_welcome_title,
-            descriptionId = R.string.onboarding_welcome_description
-        ),
-        OnboardingUiModel(
-            illustrationId = R.drawable.illustration_onboarding_focus,
-            title = R.string.onboarding_rebuilt_title,
-            descriptionId = R.string.onboarding_rebuilt_description
-        ),
-        OnboardingUiModel(
-            illustrationId = R.drawable.illustration_onboarding_offline,
-            title = R.string.onboarding_feedback_title,
-            descriptionId = R.string.onboarding_feedback_description
-        ),
-        if (isEligibleForUpselling) OnboardingUiModel.Empty else null
+    // The Gmail page comes last, so leaving onboarding or moving on to the upsell without Explore skips it.
+    val onLeaveOnboarding: (() -> Unit) -> () -> Unit = { action ->
+        {
+            if (showGmailPage) gmailActions.onSkipped()
+            action()
+        }
+    }
+    val onUpsellingNavigationAction = onLeaveOnboarding(onUpsellingNavigation)
+    val onExitAction = if (isEligibleForUpselling || isUpsellingEligibilityPending) {
+        onUpsellingNavigationAction
+    } else {
+        onLeaveOnboarding(exitAction)
+    }
+
+    val welcomePage = OnboardingUiModel(
+        illustrationId = R.drawable.illustration_onboarding_welcome,
+        title = R.string.onboarding_welcome_title,
+        descriptionId = R.string.onboarding_welcome_description
     )
+    val gmailPage = OnboardingUiModel(
+        illustrationId = R.drawable.illustration_onboarding_gmail,
+        title = R.string.onboarding_gmail_title,
+        descriptionId = R.string.onboarding_gmail_description
+    )
+    val featurePages = if (showGmailPage) {
+        listOf(welcomePage, gmailPage)
+    } else {
+        listOf(
+            welcomePage,
+            OnboardingUiModel(
+                illustrationId = R.drawable.illustration_onboarding_focus,
+                title = R.string.onboarding_rebuilt_title,
+                descriptionId = R.string.onboarding_rebuilt_description
+            ),
+            OnboardingUiModel(
+                illustrationId = R.drawable.illustration_onboarding_offline,
+                title = R.string.onboarding_feedback_title,
+                descriptionId = R.string.onboarding_feedback_description
+            )
+        )
+    }
+    val contentMap = featurePages + listOfNotNull(if (isEligibleForUpselling) OnboardingUiModel.Empty else null)
+    val gmailPageIndex = contentMap.indexOf(gmailPage)
 
     val viewCount = contentMap.size
     val pagerState = rememberPagerState(pageCount = { viewCount })
+    val scope = rememberCoroutineScope()
 
     var isSwipingToUpsellingPage by remember { mutableStateOf(false) }
 
@@ -129,8 +169,12 @@ private fun OnboardingScreen(
 
     LaunchedEffect(isSwipingToUpsellingPage) {
         if (isSwipingToUpsellingPage) {
-            onUpsellingNavigation()
+            onUpsellingNavigationAction()
         }
+    }
+
+    LaunchedEffect(pagerState.currentPage, gmailPageIndex) {
+        if (pagerState.currentPage == gmailPageIndex) gmailActions.onShown()
     }
 
     Column(
@@ -151,17 +195,52 @@ private fun OnboardingScreen(
 
         if (!isEligibleForUpselling || pagerState.currentPage != viewCount.minus(1)) {
             OnboardingIndexDots(pagerState.currentPage, viewCount)
-            OnboardingButton(onExitAction, pagerState, viewCount)
+            if (pagerState.currentPage == gmailPageIndex) {
+                OnboardingGmailButtons(
+                    onExplore = gmailActions.onExplore,
+                    onLater = { scope.launch { pagerState.moveToNextPage(viewCount, onExitAction) } }
+                )
+            } else {
+                OnboardingButton(
+                    onClick = { scope.launch { pagerState.moveToNextPage(viewCount, onExitAction) } },
+                    pagerState = pagerState,
+                    viewCount = viewCount
+                )
+            }
         }
     }
 }
+
+object OnboardingScreen {
+
+    /**
+     * [onExploreGmail] runs when a user in a BYOE treatment chooses to connect Gmail from the Gmail page.
+     * Onboarding ends there, and an upsell it would have shown waits until the user is back in the mailbox.
+     */
+    data class Actions(
+        val exitAction: () -> Unit,
+        val onUpsellingError: (String) -> Unit,
+        val onExploreGmail: () -> Unit
+    )
+}
+
+private data class GmailPageActions(
+    val onShown: () -> Unit,
+    val onSkipped: () -> Unit,
+    val onExplore: () -> Unit
+)
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 private fun OnboardingScreenPreview() {
     ProtonTheme {
-        OnboardingScreen(state = OnboardingState.NoUpsell, onUpsellingNavigation = {}, exitAction = {})
+        OnboardingScreen(
+            state = OnboardingState.NoUpsell(showGmailPage = false),
+            onUpsellingNavigation = {},
+            exitAction = {},
+            gmailActions = GmailPageActions(onShown = {}, onSkipped = {}, onExplore = {})
+        )
     }
 }
 

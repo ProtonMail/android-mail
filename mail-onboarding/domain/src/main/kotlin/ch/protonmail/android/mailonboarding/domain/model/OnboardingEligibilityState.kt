@@ -21,5 +21,8 @@ package ch.protonmail.android.mailonboarding.domain.model
 sealed interface OnboardingEligibilityState {
     data object Required : OnboardingEligibilityState
     data object NotRequired : OnboardingEligibilityState
+
+    /** Onboarding is done, but the upsell it put off is still to be shown. */
+    data object UpsellPending : OnboardingEligibilityState
     data object Loading : OnboardingEligibilityState
 }

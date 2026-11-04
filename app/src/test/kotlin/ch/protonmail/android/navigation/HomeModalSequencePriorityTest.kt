@@ -210,4 +210,25 @@ internal class HomeModalSequencePriorityTest {
         // Then
         assertEquals(HomeInterstitialPriority.Loading, result)
     }
+
+    @Test
+    fun `resolves to the pending onboarding upsell over the notifications permissions`() {
+        // When
+        val result = resolveHomeInterstitialPriority(
+            onboardingState = OnboardingEligibilityState.UpsellPending,
+            notificationsState = NotificationsPermissionState.RequiresInteraction(
+                NotificationsPermissionStateType.FirstTime
+            ),
+            featureSpotlightState = FeatureSpotlightState.Hide,
+            byoeSpotlightState = ByoeSpotlightEligibilityState.Hide,
+            contentSearchBottomSheetState = ContentSearchBottomSheetState.Hide,
+            blackFridayState = BlackFridayModalState.NotRequired,
+            springSaleState = SpringPromoModalState.NotRequired,
+            summerCampaignState = SummerCampaignModalState.NotRequired,
+            fallPromoState = FallPromoModalState.NotRequired
+        )
+
+        // Then
+        assertEquals(HomeInterstitialPriority.OnboardingUpsell, result)
+    }
 }

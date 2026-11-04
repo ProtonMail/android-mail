@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2026 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.navigation.route
+
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import ch.protonmail.android.design.compose.navigation.require
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.presentation.intro.GmailIntroScreen
+import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.model.GMAIL_INTRO_SURFACE_KEY
+
+internal fun NavGraphBuilder.addByoeSpotlight(onConnect: (importEmails: Boolean) -> Unit, onLater: () -> Unit) {
+    composable(Destination.Screen.ByoeSpotlight.route) {
+        GmailIntroScreen(isSpotlight = true, onConnect = onConnect, onLater = onLater)
+    }
+}
+
+internal fun NavGraphBuilder.addGmailIntro(
+    onConnect: (surface: ByoeSurface, importEmails: Boolean) -> Unit,
+    onLater: (surface: ByoeSurface) -> Unit
+) {
+    composable(Destination.Screen.GmailIntro.route) {
+        val surface = ByoeSurface.valueOf(it.require<String>(GMAIL_INTRO_SURFACE_KEY))
+        GmailIntroScreen(
+            isSpotlight = false,
+            onConnect = { importEmails -> onConnect(surface, importEmails) },
+            onLater = { onLater(surface) }
+        )
+    }
+}

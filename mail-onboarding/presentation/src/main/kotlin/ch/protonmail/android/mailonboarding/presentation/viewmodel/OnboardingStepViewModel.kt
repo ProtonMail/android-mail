@@ -27,10 +27,12 @@ import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
+import ch.protonmail.android.mailonboarding.domain.usecase.ObservePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.domain.usecase.SaveOnboarding
+import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,11 +41,15 @@ import javax.inject.Inject
 class OnboardingStepViewModel @Inject constructor(
     private val saveOnboarding: SaveOnboarding,
     private val appEventBroadcaster: AppEventBroadcaster,
-    observeOnboarding: ObserveOnboarding
+    private val savePendingOnboardingUpsell: SavePendingOnboardingUpsell,
+    observeOnboarding: ObserveOnboarding,
+    observePendingOnboardingUpsell: ObservePendingOnboardingUpsell
 ) : ViewModel() {
 
-    val onboardingEligibilityState = observeOnboarding()
-        .mapLatest { it.toState() }
+    val onboardingEligibilityState = combine(
+        observeOnboarding(),
+        observePendingOnboardingUpsell()
+    ) { onboarding, upsell -> onboarding.toState(isUpsellPending = upsell.getOrNull() == true) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
@@ -57,16 +63,25 @@ class OnboardingStepViewModel @Inject constructor(
                     saveOnboarding(display = false)
                     appEventBroadcaster.emit(AppEvent.OnboardingCompleted)
                 }
+
+                OnboardingStepAction.MarkPendingUpsellShown -> savePendingOnboardingUpsell(pending = false)
             }
         }
     }
 
-    private fun Either<PreferencesError, OnboardingPreference>.toState(): OnboardingEligibilityState {
+    private fun Either<PreferencesError, OnboardingPreference>.toState(
+        isUpsellPending: Boolean
+    ): OnboardingEligibilityState {
         val preference = this.getOrNull() ?: return OnboardingEligibilityState.Required
-        return if (preference.display) OnboardingEligibilityState.Required else OnboardingEligibilityState.NotRequired
+        return when {
+            preference.display -> OnboardingEligibilityState.Required
+            isUpsellPending -> OnboardingEligibilityState.UpsellPending
+            else -> OnboardingEligibilityState.NotRequired
+        }
     }
 }
 
 sealed interface OnboardingStepAction {
     data object MarkOnboardingComplete : OnboardingStepAction
+    data object MarkPendingUpsellShown : OnboardingStepAction
 }

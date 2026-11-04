@@ -115,4 +115,45 @@ class OnboardingLocalDataSourceImplTest {
         // Then
         assertEquals(PreferencesError.left(), result)
     }
+
+    @Test
+    fun `returns no pending upsell when none is stored locally`() = runTest {
+        // Given
+        coEvery { preferences.get<Boolean>(any()) } returns null
+        every { onboardingDataStoreMock.data } returns flowOf(preferences)
+
+        // When
+        onboardingLocalDataSource.observeUpsellPending().test {
+            // Then
+            assertEquals(false.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns the pending upsell stored locally`() = runTest {
+        // Given
+        coEvery { preferences[booleanPreferencesKey("PendingOnboardingUpsellPrefKey")] } returns true
+        every { onboardingDataStoreMock.data } returns flowOf(preferences)
+
+        // When
+        onboardingLocalDataSource.observeUpsellPending().test {
+            // Then
+            assertEquals(true.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return success when the pending upsell is saved`() = runTest {
+        // Given
+        coEvery { onboardingDataStoreMock.updateData(any()) } returns mockk()
+
+        // When
+        val result = onboardingLocalDataSource.saveUpsellPending(true)
+
+        // Then
+        coVerify { onboardingDataStoreMock.updateData(any()) }
+        assertEquals(Unit.right(), result)
+    }
 }

@@ -29,8 +29,15 @@ sealed interface GmailConnectionState {
 
     data object Failed : GmailConnectionState
 
-    /** The Gmail account is connected; [email] is its address when the web page reported it. */
-    data class Connected(val email: String?, val openInbox: Effect<Unit>) : GmailConnectionState
+    /**
+     * The Gmail account is connected; [email] is its address when the web page reported it, and [importEmails]
+     * whether the user asked for their existing emails to be imported.
+     */
+    data class Connected(
+        val email: String?,
+        val importEmails: Boolean,
+        val openInbox: Effect<Unit>
+    ) : GmailConnectionState
 
     data class Finished(val close: Effect<Unit>) : GmailConnectionState
 }

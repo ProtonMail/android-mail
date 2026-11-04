@@ -40,6 +40,7 @@ import ch.protonmail.android.design.compose.theme.ProtonInvertedTheme
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.feature.contentsearch.ContentSearchEnableSheetHost
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.SnackbarType
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
@@ -331,7 +332,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                         navController.navigate(Destination.Screen.ContentSearchSettings.route)
                     },
                     onConnectGmailClick = {
-                        navController.navigate(Destination.Screen.GmailConnection.route)
+                        navController.navigate(Destination.Screen.GmailIntro(ByoeSurface.Settings))
                     },
                     onPlusToUnlimitedUpsellClick = {
                         navController.navigate(

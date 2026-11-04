@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -36,16 +35,17 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailonboarding.presentation.OnboardingScreenTestTags
 import ch.protonmail.android.mailonboarding.presentation.R
-import kotlinx.coroutines.launch
 
+/**
+ * [onClick] should scroll the pager from the screen's scope: the button can leave the composition mid-scroll, when
+ * the next page shows other actions.
+ */
 @Composable
 internal fun OnboardingButton(
-    onCloseOnboarding: () -> Unit,
+    onClick: () -> Unit,
     pagerState: PagerState,
     viewCount: Int
 ) {
-    val scope = rememberCoroutineScope()
-
     ProtonSolidButton(
         modifier = Modifier
             .testTag(OnboardingScreenTestTags.BottomButton)
@@ -53,16 +53,7 @@ internal fun OnboardingButton(
             .height(MailDimens.onboardingBottomButtonHeight)
             .fillMaxWidth()
             .horizontalScroll(state = ScrollState(0), enabled = true),
-        onClick = {
-            val nextPageIndex = pagerState.currentPage.plus(1)
-            if (nextPageIndex == viewCount) {
-                onCloseOnboarding()
-            } else {
-                scope.launch {
-                    pagerState.animateScrollToPage(nextPageIndex)
-                }
-            }
-        },
+        onClick = onClick,
         shape = ProtonTheme.shapes.huge
     ) {
         val positiveButtonTextId =
@@ -73,5 +64,15 @@ internal fun OnboardingButton(
             style = ProtonTheme.typography.titleSmall,
             color = ProtonTheme.colors.textInverted
         )
+    }
+}
+
+/** Scrolls to the next page, or runs [onLastPage] when already on the last one. */
+internal suspend fun PagerState.moveToNextPage(viewCount: Int, onLastPage: () -> Unit) {
+    val nextPageIndex = currentPage.plus(1)
+    if (nextPageIndex == viewCount) {
+        onLastPage()
+    } else {
+        animateScrollToPage(nextPageIndex)
     }
 }

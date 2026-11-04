@@ -54,6 +54,9 @@ class GmailConnectionViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val importEmails =
+        savedStateHandle.get<String>(GmailConnectionScreen.IMPORT_EMAILS_KEY)?.toBooleanStrictOrNull() ?: true
+
     private val mutableState = MutableStateFlow<GmailConnectionState>(GmailConnectionState.Loading)
     val state: StateFlow<GmailConnectionState> = mutableState.asStateFlow()
 
@@ -92,7 +95,7 @@ class GmailConnectionViewModel @Inject constructor(
                 emitNewStateFrom(GmailConnectionEvent.PreparationFailed)
             },
             ifRight = { fork ->
-                val url = gmailConnectionUrl(apiEnvironment.host, BuildConfig.WEBVIEW_APP_VERSION, fork)
+                val url = gmailConnectionUrl(apiEnvironment.host, BuildConfig.WEBVIEW_APP_VERSION, fork, importEmails)
                 Timber.d("byoe: opening the Gmail connection page on account.${apiEnvironment.host}")
                 savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Opened.name
                 emitNewStateFrom(GmailConnectionEvent.PageReady(url))
@@ -111,7 +114,7 @@ class GmailConnectionViewModel @Inject constructor(
 
         savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Closed.name
         if (result is GmailConnectionResult.Connected) {
-            emitNewStateFrom(GmailConnectionEvent.ConnectionSucceeded(result.email))
+            emitNewStateFrom(GmailConnectionEvent.ConnectionSucceeded(result.email, importEmails))
             observePrimaryUserId().first()?.let { refreshAfterGmailConnection(it) }
             return
         }

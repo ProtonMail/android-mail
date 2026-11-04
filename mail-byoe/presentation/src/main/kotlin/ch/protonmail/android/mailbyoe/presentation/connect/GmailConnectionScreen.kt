@@ -54,12 +54,13 @@ import timber.log.Timber
  * screen without needing an intent filter. Browsers without Auth Tab support open a Custom Tab instead, whose
  * redirect [GmailConnectionRedirectActivity] catches.
  *
- * Once connected, it shows the success page; [onOpenInbox] runs after the Inbox is selected.
+ * Once connected, it shows the success page; [onOpenInbox] runs after the Inbox is selected, with whether the user
+ * chose to import their emails.
  */
 @Composable
 fun GmailConnectionScreen(
     onClose: () -> Unit,
-    onOpenInbox: () -> Unit,
+    onOpenInbox: (importEmails: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GmailConnectionViewModel = hiltViewModel()
 ) {
@@ -77,16 +78,20 @@ fun GmailConnectionScreen(
         }
 
         is GmailConnectionState.Finished -> ConsumableLaunchedEffect(current.close) { onClose() }
-        is GmailConnectionState.Connected -> ConsumableLaunchedEffect(current.openInbox) { onOpenInbox() }
+        is GmailConnectionState.Connected -> ConsumableLaunchedEffect(current.openInbox) { onOpenInbox(current.importEmails) }
         else -> Unit
     }
 
     when (val current = state) {
-        is GmailConnectionState.Connected -> GmailConnectedContent(
-            email = current.email,
-            onOpenInbox = { viewModel.submit(GmailConnectionAction.OpenInboxClicked) },
-            modifier = modifier
-        )
+        // The success page uses the normal theme, like the intro, not the inverted one around this screen.
+        is GmailConnectionState.Connected -> ProtonTheme {
+            GmailConnectedContent(
+                email = current.email,
+                importEmails = current.importEmails,
+                onOpenInbox = { viewModel.submit(GmailConnectionAction.OpenInboxClicked) },
+                modifier = modifier
+            )
+        }
 
         else -> GmailConnectionContent(
             state = current,
@@ -95,6 +100,11 @@ fun GmailConnectionScreen(
             modifier = modifier
         )
     }
+}
+
+object GmailConnectionScreen {
+
+    const val IMPORT_EMAILS_KEY = "gmailImportEmails"
 }
 
 @Composable

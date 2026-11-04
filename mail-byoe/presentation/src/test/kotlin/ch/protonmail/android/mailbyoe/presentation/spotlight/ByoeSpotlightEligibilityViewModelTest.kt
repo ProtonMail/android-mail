@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailbyoe.presentation.spotlight
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSpotlightTreatment
@@ -172,10 +173,10 @@ internal class ByoeSpotlightEligibilityViewModelTest {
         val viewModel = viewModel()
 
         // When
-        viewModel.onDismissed()
+        viewModel.onDismissed(ByoeSurface.Spotlight)
 
         // Then
-        coVerify(exactly = 1) { dismissByoeGuidance(userId) }
+        coVerify(exactly = 1) { dismissByoeGuidance(userId, ByoeSurface.Spotlight) }
     }
 
     private companion object {

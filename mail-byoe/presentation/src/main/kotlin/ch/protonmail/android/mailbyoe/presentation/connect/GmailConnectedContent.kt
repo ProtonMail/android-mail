@@ -72,11 +72,12 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 /**
  * Shown once the Gmail account is connected, whichever entry point started the connection. [email] is the
- * connected address when the web page reported it.
+ * connected address when the web page reported it. Without [importEmails], it says older emails stay in Gmail.
  */
 @Composable
 internal fun GmailConnectedContent(
     email: String?,
+    importEmails: Boolean,
     onOpenInbox: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -97,7 +98,7 @@ internal fun GmailConnectedContent(
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Huge)
         ) {
             GmailConnectedHeader(email)
-            GmailConnectedInfo()
+            GmailConnectedInfo(importEmails)
         }
 
         GmailConnectedActions(onOpenInbox)
@@ -147,7 +148,7 @@ private fun GmailConnectedAnimation() {
 }
 
 @Composable
-private fun GmailConnectedInfo() {
+private fun GmailConnectedInfo(importEmails: Boolean) {
     val shape = RoundedCornerShape(ProtonDimens.CornerRadius.Huge)
     val rows = listOf(
         GmailConnectedInfoRow(
@@ -160,11 +161,19 @@ private fun GmailConnectedInfo() {
             title = R.string.byoe_gmail_connected_notifications_title,
             body = AnnotatedString(stringResource(R.string.byoe_gmail_connected_notifications_body))
         ),
-        GmailConnectedInfoRow(
-            icon = R.drawable.ic_proton_arrows_rotate,
-            title = R.string.byoe_gmail_connected_import_title,
-            body = importBody()
-        )
+        if (importEmails) {
+            GmailConnectedInfoRow(
+                icon = R.drawable.ic_proton_arrows_rotate,
+                title = R.string.byoe_gmail_connected_import_title,
+                body = importBody()
+            )
+        } else {
+            GmailConnectedInfoRow(
+                icon = R.drawable.ic_proton_arrows_rotate,
+                title = R.string.byoe_gmail_connected_older_emails_title,
+                body = AnnotatedString(stringResource(R.string.byoe_gmail_connected_older_emails_body))
+            )
+        }
     )
     Column(
         modifier = Modifier
@@ -282,6 +291,14 @@ private val ActionButtonHeight = 53.dp
 @Composable
 private fun GmailConnectedPreview() {
     ProtonTheme {
-        GmailConnectedContent(email = "james.miller@gmail.com", onOpenInbox = {})
+        GmailConnectedContent(email = "james.miller@gmail.com", importEmails = true, onOpenInbox = {})
+    }
+}
+
+@Preview(widthDp = 412, heightDp = 917)
+@Composable
+private fun GmailConnectedWithoutImportPreview() {
+    ProtonTheme {
+        GmailConnectedContent(email = "james.miller@gmail.com", importEmails = false, onOpenInbox = {})
     }
 }

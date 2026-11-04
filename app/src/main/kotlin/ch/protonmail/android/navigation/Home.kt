@@ -77,6 +77,8 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewAction
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.presentation.R as ByoeR
 import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -110,6 +112,7 @@ import ch.protonmail.android.mailsettings.domain.model.ToolbarType
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.viewmodel.BlackFridayModalUpsellViewModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.FallPromoModalUpsellViewModel
@@ -145,6 +148,7 @@ import ch.protonmail.android.navigation.route.addExportLogsSettings
 import ch.protonmail.android.navigation.route.addFeatureFlagsOverrides
 import ch.protonmail.android.navigation.route.addFeatureSpotlight
 import ch.protonmail.android.navigation.route.addGmailConnection
+import ch.protonmail.android.navigation.route.addGmailIntro
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMobileSignatureSettings
@@ -243,6 +247,7 @@ fun Home(
 
     val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
     val npsThankYouMessage = stringResource(id = NpsR.string.nps_thank_you)
+    val gmailImportInProgressMessage = stringResource(id = ByoeR.string.byoe_gmail_import_in_progress)
     fun showFeatureMissingSnackbar() {
         scope.launch {
             snackbarHost.showSnackbar(message = featureMissingSnackbarMessage, type = ProtonSnackbarType.NORM)
@@ -472,7 +477,8 @@ fun Home(
         confirmValueChange = { !preventBottomSheetDismissal }
     )
 
-    val onBottomSheetDismissed: () -> Unit = {
+    // [onHidden] runs once the sheet is fully hidden, for actions that would otherwise interrupt hiding it.
+    fun dismissBottomSheet(onHidden: () -> Unit = {}) {
         scope.launch { bottomSheetState.hide() }
             .invokeOnCompletion {
                 when (bottomSheetType) {
@@ -482,6 +488,10 @@ fun Home(
 
                     BottomSheetType.Onboarding -> {
                         onboardingStepViewModel.submit(OnboardingStepAction.MarkOnboardingComplete)
+                    }
+
+                    BottomSheetType.OnboardingUpsell -> {
+                        onboardingStepViewModel.submit(OnboardingStepAction.MarkPendingUpsellShown)
                     }
 
                     BottomSheetType.ContentSearch -> {
@@ -494,8 +504,11 @@ fun Home(
                 if (!bottomSheetState.isVisible) {
                     showBottomSheet = false
                 }
+                onHidden()
             }
     }
+
+    val onBottomSheetDismissed: () -> Unit = { dismissBottomSheet() }
 
     // Dismissing the content search sheet opts the user in, so every dismissal path starts indexing.
     val onContentSearchSheetDismissed: () -> Unit = {
@@ -547,13 +560,9 @@ fun Home(
                     .invokeOnCompletion { showBottomSheet = true }
             }
 
-            is HomeInterstitialPriority.NotificationsPermissions -> {
-                bottomSheetType = BottomSheetType.NotificationsPermissions(priority.type)
-                scope.launch { bottomSheetState.show() }
-                    .invokeOnCompletion { showBottomSheet = true }
-            }
-
             // Handled by a dedicated effect below
+            is HomeInterstitialPriority.OnboardingUpsell,
+            is HomeInterstitialPriority.NotificationsPermissions,
             is HomeInterstitialPriority.FeatureSpotlight -> Unit
             is HomeInterstitialPriority.ByoeSpotlight -> Unit
 
@@ -598,6 +607,23 @@ fun Home(
                 }
             }
         }
+    }
+
+    // Onboarding can hand over to the Gmail connection, which leaves the mailbox before these sheets are due.
+    // Re-key on the destination so they show once the user is back in the mailbox.
+    LaunchedEffect(interstitialPriority, currentDestinationRoute) {
+        if (currentDestinationRoute != Screen.Mailbox.route || bottomSheetState.isVisible) return@LaunchedEffect
+
+        val sheetType = when (val priority = interstitialPriority) {
+            is HomeInterstitialPriority.OnboardingUpsell -> BottomSheetType.OnboardingUpsell
+            is HomeInterstitialPriority.NotificationsPermissions ->
+                BottomSheetType.NotificationsPermissions(priority.type)
+
+            else -> return@LaunchedEffect
+        }
+        bottomSheetType = sheetType
+        scope.launch { bottomSheetState.show() }
+            .invokeOnCompletion { showBottomSheet = true }
     }
 
     // A notification deep-link can pop the feature spotlight off the back stack before it's seen.
@@ -691,13 +717,32 @@ fun Home(
                 }
 
                 is BottomSheetType.Onboarding -> Onboarding(
-                    onExitOnboarding = {
+                    actions = Onboarding.Actions(
+                        onExitOnboarding = {
+                            onBottomSheetDismissed()
+                            preventBottomSheetDismissal = false
+                        },
+                        onUpsellingError = {
+                            showErrorSnackbar(it)
+                        },
+                        onExploreGmail = {
+                            preventBottomSheetDismissal = false
+                            // Navigating recomposes the sheet, which would block it from hiding halfway.
+                            dismissBottomSheet {
+                                navController.navigate(Screen.GmailIntro(ByoeSurface.Onboarding))
+                            }
+                        }
+                    )
+                ).also {
+                    preventBottomSheetDismissal = true
+                }
+
+                is BottomSheetType.OnboardingUpsell -> OnboardingUpsellScreen(
+                    onDismiss = {
                         onBottomSheetDismissed()
                         preventBottomSheetDismissal = false
                     },
-                    onUpsellingError = {
-                        showErrorSnackbar(it)
-                    }
+                    onError = { showErrorSnackbar(it) }
                 ).also {
                     preventBottomSheetDismissal = true
                 }
@@ -986,7 +1031,10 @@ fun Home(
                         )
                         addAppIconSettings(navController, onLearnMoreClick = activityActions.openInActivityInNewTask)
                         addContentSearchSettings(navController)
-                        addGmailConnection(navController)
+                        addGmailConnection(
+                            navController,
+                            onImportStarted = { showNormalSnackbar(gmailImportInProgressMessage) }
+                        )
                         addPinDialog(navController)
                         addSwipeActionsSettings(navController)
                         addThemeSettings(navController)
@@ -1021,14 +1069,25 @@ fun Home(
                         )
                         addContentSearchSetUp(navController)
                         addByoeSpotlight(
-                            // The connection page has no import option yet, so the choice is not passed on.
-                            onConnect = { _ ->
-                                navController.navigate(Screen.GmailConnection.route) {
+                            onConnect = { importEmails ->
+                                navController.navigate(Screen.GmailConnection(importEmails)) {
                                     popUpTo(Screen.ByoeSpotlight.route) { inclusive = true }
                                 }
                             },
                             onLater = {
-                                byoeSpotlightViewModel.onDismissed()
+                                byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight)
+                                navController.navigateBack()
+                            }
+                        )
+                        addGmailIntro(
+                            onConnect = { _, importEmails ->
+                                navController.navigate(Screen.GmailConnection(importEmails)) {
+                                    popUpTo(Screen.GmailIntro.route) { inclusive = true }
+                                }
+                            },
+                            onLater = { surface ->
+                                // Declining the intro from onboarding dismisses the onboarding page it came from.
+                                if (surface == ByoeSurface.Onboarding) byoeSpotlightViewModel.onDismissed(surface)
                                 navController.navigateBack()
                             }
                         )
@@ -1066,11 +1125,12 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onMonthlyToYearlyUpselling = {
             navController.navigate(Dialog.MonthlyToYearlyUpsell(UpsellEntryPoint.NAVBAR_UPSELL))
         },
-        onConnectGmail = { navController.navigate(Screen.GmailConnection.route) }
+        onConnectGmail = { navController.navigate(Screen.GmailIntro(ByoeSurface.SidebarBanner)) }
     )
 
 private sealed interface BottomSheetType {
     data object Onboarding : BottomSheetType
+    data object OnboardingUpsell : BottomSheetType
     data class NotificationsPermissions(val permissionsState: NotificationsPermissionStateType) : BottomSheetType
     data object ContentSearch : BottomSheetType
     data object Nps : BottomSheetType

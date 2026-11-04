@@ -20,14 +20,23 @@ package ch.protonmail.android.mailonboarding.presentation
 
 import app.cash.turbine.test
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
+import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
+import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeOnboardingTreatment
+import ch.protonmail.android.mailbyoe.domain.usecase.RecordByoeOnboardingPageShown
+import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
+import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingAction
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingViewModel
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.presentation.usecase.GetUpsellingOnboardingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -43,11 +52,25 @@ internal class OnboardingViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val observePrimaryUser = mockk<ObservePrimaryUser>()
+    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
+        every { this@mockk() } returns flowOf(UserTestData.Primary.userId)
+    }
     private val getUpsellingOnboardingVisibility = mockk<GetUpsellingOnboardingVisibility>()
+    private val getByoeOnboardingTreatment = mockk<GetByoeOnboardingTreatment> {
+        coEvery { this@mockk(any()) } returns null
+    }
+    private val recordByoeOnboardingPageShown = mockk<RecordByoeOnboardingPageShown>(relaxed = true)
+    private val dismissByoeGuidance = mockk<DismissByoeGuidance>(relaxed = true)
+    private val savePendingOnboardingUpsell = mockk<SavePendingOnboardingUpsell>(relaxed = true)
 
     private fun viewModel() = OnboardingViewModel(
         observePrimaryUser,
-        getUpsellingOnboardingVisibility
+        observePrimaryUserId,
+        getUpsellingOnboardingVisibility,
+        getByoeOnboardingTreatment,
+        recordByoeOnboardingPageShown,
+        dismissByoeGuidance,
+        savePendingOnboardingUpsell
     )
 
     @AfterTest
@@ -62,20 +85,94 @@ internal class OnboardingViewModelTest {
 
         // When + Then
         viewModel().state.test {
-            assertEquals(OnboardingState.NoUpsell, awaitItem())
+            assertEquals(OnboardingState.NoUpsell(showGmailPage = false), awaitItem())
         }
     }
 
     @Test
     fun `should return upsell when user has no subscription and visibility is on`() = runTest {
         // Given
-        val user = UserTestData.Primary.copy(subscribed = 0)
-        every { observePrimaryUser() } returns flowOf(user.right())
-        coEvery { getUpsellingOnboardingVisibility(user.userId) } returns true
+        givenFreeUserWithUpsell()
 
         // When + Then
         viewModel().state.test {
-            assertEquals(OnboardingState.ToUpsell, awaitItem())
+            assertEquals(OnboardingState.ToUpsell(showGmailPage = false), awaitItem())
         }
+    }
+
+    @Test
+    fun `should show the Gmail page when the user is in a BYOE onboarding treatment`() = runTest {
+        // Given
+        givenFreeUserWithUpsell()
+        coEvery { getByoeOnboardingTreatment(UserTestData.Primary.userId) } returns ByoeTreatment.Treatment1
+
+        // When + Then
+        viewModel().state.test {
+            assertEquals(OnboardingState.ToUpsell(showGmailPage = true), awaitItem())
+        }
+    }
+
+    @Test
+    fun `should record the Gmail page only the first time it shows`() = runTest {
+        // Given
+        givenFreeUserWithUpsell()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(OnboardingAction.GmailPageShown)
+        viewModel.submit(OnboardingAction.GmailPageShown)
+
+        // Then
+        coVerify(exactly = 1) { recordByoeOnboardingPageShown(UserTestData.Primary.userId) }
+    }
+
+    @Test
+    fun `should dismiss BYOE when the Gmail page is skipped`() = runTest {
+        // Given
+        givenFreeUserWithUpsell()
+
+        // When
+        viewModel().submit(OnboardingAction.GmailPageSkipped)
+
+        // Then
+        coVerify(exactly = 1) { dismissByoeGuidance(UserTestData.Primary.userId, ByoeSurface.Onboarding) }
+    }
+
+    @Test
+    fun `should put off the upsell when the user explores Gmail`() = runTest {
+        // Given
+        givenFreeUserWithUpsell()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.state.test {
+            awaitItem()
+            viewModel.submit(OnboardingAction.GmailExploreClicked)
+        }
+
+        // Then
+        coVerify(exactly = 1) { savePendingOnboardingUpsell(true) }
+    }
+
+    @Test
+    fun `should not put off an upsell when the user explores Gmail without one`() = runTest {
+        // Given
+        every { observePrimaryUser() } returns flowOf(UserTestData.Primary.copy(subscribed = 1).right())
+        val viewModel = viewModel()
+
+        // When
+        viewModel.state.test {
+            awaitItem()
+            viewModel.submit(OnboardingAction.GmailExploreClicked)
+        }
+
+        // Then
+        coVerify(exactly = 0) { savePendingOnboardingUpsell(any()) }
+    }
+
+    private fun givenFreeUserWithUpsell() {
+        val user = UserTestData.Primary.copy(subscribed = 0)
+        every { observePrimaryUser() } returns flowOf(user.right())
+        coEvery { getUpsellingOnboardingVisibility(user.userId) } returns true
     }
 }

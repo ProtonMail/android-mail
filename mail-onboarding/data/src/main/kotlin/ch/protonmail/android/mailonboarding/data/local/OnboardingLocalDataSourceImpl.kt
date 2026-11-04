@@ -37,6 +37,8 @@ class OnboardingLocalDataSourceImpl @Inject constructor(
         OnboardingDataStoreProvider.V7_SHOW_ONBOARDING_KEY
     )
 
+    private val pendingUpsellPrefKey = booleanPreferencesKey(OnboardingDataStoreProvider.PENDING_UPSELL_KEY)
+
     override fun observe(): Flow<Either<PreferencesError, OnboardingPreference>> =
         dataStoreProvider.onboardingDataStore.safeData.map { prefsEither ->
             prefsEither.map { prefs ->
@@ -48,6 +50,16 @@ class OnboardingLocalDataSourceImpl @Inject constructor(
     override suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit> =
         dataStoreProvider.onboardingDataStore.safeEdit { mutablePreferences ->
             mutablePreferences[shouldDisplayOnboardingPrefKey] = onboardingPreference.display
+        }.map { }
+
+    override fun observeUpsellPending(): Flow<Either<PreferencesError, Boolean>> =
+        dataStoreProvider.onboardingDataStore.safeData.map { prefsEither ->
+            prefsEither.map { prefs -> prefs[pendingUpsellPrefKey] ?: false }
+        }
+
+    override suspend fun saveUpsellPending(pending: Boolean): Either<PreferencesError, Unit> =
+        dataStoreProvider.onboardingDataStore.safeEdit { mutablePreferences ->
+            mutablePreferences[pendingUpsellPrefKey] = pending
         }.map { }
 }
 

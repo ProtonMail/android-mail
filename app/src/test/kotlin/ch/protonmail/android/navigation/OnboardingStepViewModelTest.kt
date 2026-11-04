@@ -27,7 +27,9 @@ import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
+import ch.protonmail.android.mailonboarding.domain.usecase.ObservePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.domain.usecase.SaveOnboarding
+import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepAction
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingStepViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -52,9 +54,19 @@ internal class OnboardingStepViewModelTest {
     private val saveOnboarding = mockk<SaveOnboarding>(relaxed = true)
     private val appEventBroadcaster = mockk<AppEventBroadcaster>()
     private val observeOnboarding = mockk<ObserveOnboarding>()
+    private val savePendingOnboardingUpsell = mockk<SavePendingOnboardingUpsell>(relaxed = true)
+    private val observePendingOnboardingUpsell = mockk<ObservePendingOnboardingUpsell> {
+        every { this@mockk() } returns flowOf(false.right())
+    }
 
     private val viewModel by lazy {
-        OnboardingStepViewModel(saveOnboarding, appEventBroadcaster, observeOnboarding)
+        OnboardingStepViewModel(
+            saveOnboarding,
+            appEventBroadcaster,
+            savePendingOnboardingUpsell,
+            observeOnboarding,
+            observePendingOnboardingUpsell
+        )
     }
 
     @Test
@@ -104,5 +116,28 @@ internal class OnboardingStepViewModelTest {
             assertEquals(OnboardingEligibilityState.Required, awaitItem())
         }
     }
-}
 
+    @Test
+    fun `should emit upsell pending state when onboarding is done and its upsell was put off`() = runTest {
+        // Given
+        every { observeOnboarding() } returns flowOf(OnboardingPreference(false).right())
+        every { observePendingOnboardingUpsell() } returns flowOf(true.right())
+
+        // When + Then
+        viewModel.onboardingEligibilityState.test {
+            assertEquals(OnboardingEligibilityState.UpsellPending, awaitItem())
+        }
+    }
+
+    @Test
+    fun `should clear the pending upsell once it is shown`() = runTest {
+        // Given
+        every { observeOnboarding() } returns flowOf(OnboardingPreference(false).right())
+
+        // When
+        viewModel.submit(OnboardingStepAction.MarkPendingUpsellShown)
+
+        // Then
+        coVerify(exactly = 1) { savePendingOnboardingUpsell(false) }
+    }
+}

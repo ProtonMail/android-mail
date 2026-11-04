@@ -20,6 +20,7 @@ package ch.protonmail.android.mailbyoe.presentation.spotlight
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSpotlightTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.RecordByoeSpotlightShown
@@ -83,9 +84,9 @@ class ByoeSpotlightEligibilityViewModel @Inject constructor(
         viewModelScope.launch { recordByoeSpotlightShown(primaryUserId()) }
     }
 
-    /** "Later" or back: the user dismissed the spotlight, which starts the sidebar entry. */
-    fun onDismissed() {
-        viewModelScope.launch { dismissByoeGuidance(primaryUserId()) }
+    /** "Later" or back on the spotlight or the onboarding page: BYOE was dismissed, which starts the sidebar entry. */
+    fun onDismissed(surface: ByoeSurface) {
+        viewModelScope.launch { dismissByoeGuidance(primaryUserId(), surface) }
     }
 
     private suspend fun eligibilityFor(userId: UserId): ByoeSpotlightEligibilityState = try {

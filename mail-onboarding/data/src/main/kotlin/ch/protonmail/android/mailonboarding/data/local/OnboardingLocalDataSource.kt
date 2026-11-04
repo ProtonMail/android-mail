@@ -28,4 +28,8 @@ interface OnboardingLocalDataSource {
     fun observe(): Flow<Either<PreferencesError, OnboardingPreference>>
 
     suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit>
+
+    fun observeUpsellPending(): Flow<Either<PreferencesError, Boolean>>
+
+    suspend fun saveUpsellPending(pending: Boolean): Either<PreferencesError, Unit>
 }

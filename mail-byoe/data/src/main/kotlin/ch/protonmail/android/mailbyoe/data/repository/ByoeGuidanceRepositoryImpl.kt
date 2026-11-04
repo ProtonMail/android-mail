@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbyoe.data.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
@@ -63,8 +64,15 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
     override suspend fun markSpotlightShown(userId: UserId): Either<DataError, Unit> =
         withByoeGuidance(userId) { guidance -> guidance.markSpotlightShown() }
 
-    override suspend fun markGuidanceDismissed(userId: UserId): Either<DataError, Unit> =
-        withByoeGuidance(userId) { guidance -> guidance.markSpotlightDismissed(ByoeDismissMethod.BUTTON) }
+    override suspend fun markGuidanceDismissed(userId: UserId, surface: ByoeSurface): Either<DataError, Unit> =
+        withByoeGuidance(userId) { guidance ->
+            when (surface) {
+                ByoeSurface.Onboarding -> guidance.markOnboardingDismissed(ByoeDismissMethod.BUTTON)
+                ByoeSurface.Spotlight -> guidance.markSpotlightDismissed(ByoeDismissMethod.BUTTON)
+                ByoeSurface.SidebarBanner,
+                ByoeSurface.Settings -> Timber.w("byoe: no guidance to dismiss on $surface")
+            }
+        }
 
     override suspend fun isOnboardingFinishedRecorded(userId: UserId): Either<DataError, Boolean> =
         executeWithUserSession(userId) { session ->
@@ -77,6 +85,13 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
         executeWithUserSession(userId) { session ->
             session.getRustUserSession().screenVisibilityStore().use { store ->
                 store.markOnboardingStep(OnboardingStep.FINISHED)
+            }
+        }
+
+    override suspend fun recordOnboardingPageShown(userId: UserId): Either<DataError, Unit> =
+        executeWithUserSession(userId) { session ->
+            session.getRustUserSession().screenVisibilityStore().use { store ->
+                store.markOnboardingStep(OnboardingStep.BYOE)
             }
         }
 

@@ -35,7 +35,11 @@ class GmailConnectionReducer @Inject constructor() {
             is GmailConnectionEvent.ConnectionFailed -> GmailConnectionState.Failed
             is GmailConnectionEvent.ConnectionFinished -> GmailConnectionState.Finished(Effect.of(Unit))
             is GmailConnectionEvent.ConnectionSucceeded ->
-                GmailConnectionState.Connected(email = operation.email, openInbox = Effect.empty())
+                GmailConnectionState.Connected(
+                    email = operation.email,
+                    importEmails = operation.importEmails,
+                    openInbox = Effect.empty()
+                )
             is GmailConnectionEvent.InboxSelected ->
                 if (current is GmailConnectionState.Connected) current.copy(openInbox = Effect.of(Unit)) else current
         }

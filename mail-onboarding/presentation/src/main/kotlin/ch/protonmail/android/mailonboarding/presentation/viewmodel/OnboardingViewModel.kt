@@ -20,42 +20,77 @@ package ch.protonmail.android.mailonboarding.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
+import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeOnboardingTreatment
+import ch.protonmail.android.mailbyoe.domain.usecase.RecordByoeOnboardingPageShown
+import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailsession.domain.model.hasSubscription
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.presentation.usecase.GetUpsellingOnboardingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
-    getUpsellingOnboardingVisibility: GetUpsellingOnboardingVisibility
+    private val observePrimaryUserId: ObservePrimaryUserId,
+    private val getUpsellingOnboardingVisibility: GetUpsellingOnboardingVisibility,
+    private val getByoeOnboardingTreatment: GetByoeOnboardingTreatment,
+    private val recordByoeOnboardingPageShown: RecordByoeOnboardingPageShown,
+    private val dismissByoeGuidance: DismissByoeGuidance,
+    private val savePendingOnboardingUpsell: SavePendingOnboardingUpsell
 ) : ViewModel() {
+
+    private var isGmailPageRecorded = false
 
     val state: StateFlow<OnboardingState> = observePrimaryUser().filterNotNull()
         .map { it.getOrNull() }
         .filterNotNull()
-        .flatMapLatest { user ->
-            when {
-                user.hasSubscription() -> flowOf(OnboardingState.NoUpsell)
-
-                else -> {
-                    val showUpselling = getUpsellingOnboardingVisibility(user.userId)
-                    if (showUpselling) flowOf(OnboardingState.ToUpsell) else flowOf(OnboardingState.NoUpsell)
-                }
-            }
+        .mapLatest { user ->
+            val showGmailPage = getByoeOnboardingTreatment(user.userId) != null
+            val showUpselling = !user.hasSubscription() && getUpsellingOnboardingVisibility(user.userId)
+            if (showUpselling) OnboardingState.ToUpsell(showGmailPage) else OnboardingState.NoUpsell(showGmailPage)
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = OnboardingState.Loading
         )
+
+    fun submit(action: OnboardingAction) {
+        viewModelScope.launch {
+            when (action) {
+                OnboardingAction.GmailPageShown -> onGmailPageShown()
+                OnboardingAction.GmailPageSkipped -> primaryUserId()?.let { dismissByoeGuidance(it, ByoeSurface.Onboarding) }
+                // The user leaves for the Gmail connection, so the upsell waits until they are back in the mailbox.
+                OnboardingAction.GmailExploreClicked ->
+                    if (state.value is OnboardingState.ToUpsell) savePendingOnboardingUpsell(pending = true)
+            }
+        }
+    }
+
+    private suspend fun onGmailPageShown() {
+        if (isGmailPageRecorded) return
+        isGmailPageRecorded = true
+        primaryUserId()?.let { recordByoeOnboardingPageShown(it) }
+    }
+
+    private suspend fun primaryUserId() = observePrimaryUserId().first()
+}
+
+sealed interface OnboardingAction {
+    data object GmailPageShown : OnboardingAction
+    data object GmailPageSkipped : OnboardingAction
+    data object GmailExploreClicked : OnboardingAction
 }

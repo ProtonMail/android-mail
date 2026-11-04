@@ -25,11 +25,16 @@ import java.net.URLEncoder
  * The web page that runs the Gmail sign-in and creates the address. The fork goes in the fragment, so it is
  * never sent to a server; the web app redeems it and uses the payload key to create the address keys.
  * The page returns to [GmailConnectionCallback.REDIRECT_URI] when it is done.
+ *
+ * The user has already chosen to connect in the app, so the page starts the Gmail sign-in on its own, with
+ * [importEmails] as the choice of importing the existing emails.
  */
 internal fun gmailConnectionUrl(
     apiHost: String,
     appVersion: String,
-    fork: ForkWithKeyPayload
+    fork: ForkWithKeyPayload,
+    importEmails: Boolean
 ): String = "https://account.$apiHost/lite?action=byoe-mobile&app-version=$appVersion" +
+    "&autoconnect=1&importEmails=${if (importEmails) 1 else 0}" +
     "&redirect=${URLEncoder.encode(GmailConnectionCallback.REDIRECT_URI, Charsets.UTF_8)}" +
     "#selector=${fork.selector.value}&sk=${fork.payloadKey}&pv=${fork.payloadVersion}&pt=${fork.payloadType}"

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailbyoe.data.repository
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -193,11 +194,24 @@ internal class ByoeGuidanceRepositoryImplTest {
         coEvery { byoeGuidance.markSpotlightDismissed(ByoeDismissMethod.BUTTON) } just runs
 
         // When
-        val result = repository.markGuidanceDismissed(userId)
+        val result = repository.markGuidanceDismissed(userId, ByoeSurface.Spotlight)
 
         // Then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { byoeGuidance.markSpotlightDismissed(ByoeDismissMethod.BUTTON) }
+    }
+
+    @Test
+    fun `given the onboarding page is dismissed, when recording it, then the guidance records it`() = runTest {
+        // Given
+        coEvery { byoeGuidance.markOnboardingDismissed(ByoeDismissMethod.BUTTON) } just runs
+
+        // When
+        val result = repository.markGuidanceDismissed(userId, ByoeSurface.Onboarding)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify(exactly = 1) { byoeGuidance.markOnboardingDismissed(ByoeDismissMethod.BUTTON) }
     }
 
     @Test
@@ -223,5 +237,18 @@ internal class ByoeGuidanceRepositoryImplTest {
         // Then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.FINISHED) }
+    }
+
+    @Test
+    fun `given the onboarding page appeared, when recording it, then the BYOE step is recorded`() = runTest {
+        // Given
+        coEvery { screenVisibilityStore.markOnboardingStep(OnboardingStep.BYOE) } just runs
+
+        // When
+        val result = repository.recordOnboardingPageShown(userId)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.BYOE) }
     }
 }

@@ -34,4 +34,10 @@ class OnboardingRepositoryImpl @Inject constructor(
 
     override suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit> =
         onboardingLocalDataSource.save(onboardingPreference)
+
+    override fun observeUpsellPending(): Flow<Either<PreferencesError, Boolean>> =
+        onboardingLocalDataSource.observeUpsellPending()
+
+    override suspend fun saveUpsellPending(pending: Boolean): Either<PreferencesError, Unit> =
+        onboardingLocalDataSource.saveUpsellPending(pending)
 }

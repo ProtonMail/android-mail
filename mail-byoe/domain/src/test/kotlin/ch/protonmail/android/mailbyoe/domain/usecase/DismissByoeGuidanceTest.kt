@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbyoe.domain.usecase
 
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -42,13 +43,13 @@ internal class DismissByoeGuidanceTest {
     @Test
     fun `given the guidance, when it is dismissed, then the guidance records it`() = runTest {
         // Given
-        coEvery { byoeGuidanceRepository.markGuidanceDismissed(userId) } returns Unit.right()
+        coEvery { byoeGuidanceRepository.markGuidanceDismissed(userId, ByoeSurface.Spotlight) } returns Unit.right()
 
         // When
-        dismissByoeGuidance(userId)
+        dismissByoeGuidance(userId, ByoeSurface.Spotlight)
 
         // Then
-        coVerify(exactly = 1) { byoeGuidanceRepository.markGuidanceDismissed(userId) }
+        coVerify(exactly = 1) { byoeGuidanceRepository.markGuidanceDismissed(userId, ByoeSurface.Spotlight) }
     }
 
     private companion object {

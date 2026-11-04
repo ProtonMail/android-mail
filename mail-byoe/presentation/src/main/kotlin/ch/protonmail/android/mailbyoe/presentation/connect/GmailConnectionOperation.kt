@@ -33,7 +33,7 @@ sealed interface GmailConnectionOperation {
         data object PreparationFailed : GmailConnectionEvent
         data object ConnectionFailed : GmailConnectionEvent
         data object ConnectionFinished : GmailConnectionEvent
-        data class ConnectionSucceeded(val email: String?) : GmailConnectionEvent
+        data class ConnectionSucceeded(val email: String?, val importEmails: Boolean) : GmailConnectionEvent
         data object InboxSelected : GmailConnectionEvent
     }
 }

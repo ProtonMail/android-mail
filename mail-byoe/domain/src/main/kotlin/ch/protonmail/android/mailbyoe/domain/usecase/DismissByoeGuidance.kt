@@ -18,21 +18,22 @@
 
 package ch.protonmail.android.mailbyoe.domain.usecase
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Records that the user dismissed the BYOE spotlight. Only for an explicit dismissal, not when the user goes on
- * to connect.
+ * Records that the user dismissed the BYOE onboarding page or spotlight, as told by the [ByoeSurface]. Only for an
+ * explicit dismissal, not when the user goes on to connect.
  */
 class DismissByoeGuidance @Inject constructor(
     private val byoeGuidanceRepository: ByoeGuidanceRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId) {
-        byoeGuidanceRepository.markGuidanceDismissed(userId)
+    suspend operator fun invoke(userId: UserId, surface: ByoeSurface) {
+        byoeGuidanceRepository.markGuidanceDismissed(userId, surface)
             .onLeft { Timber.e("byoe: unable to record the guidance as dismissed: $it") }
             .onRight { Timber.d("byoe: guidance dismissed") }
     }

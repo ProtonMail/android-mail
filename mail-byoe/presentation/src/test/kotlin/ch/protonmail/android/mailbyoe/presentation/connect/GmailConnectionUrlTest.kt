@@ -23,6 +23,7 @@ import ch.protonmail.android.mailsession.domain.model.ForkWithKeyPayload
 import ch.protonmail.android.mailsession.domain.model.Selector
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class GmailConnectionUrlTest {
 
@@ -38,14 +39,43 @@ internal class GmailConnectionUrlTest {
         )
 
         // When
-        val url = gmailConnectionUrl(apiHost = "proton.me", appVersion = "android-mail@7.12.0", fork = fork)
+        val url = gmailConnectionUrl(
+            apiHost = "proton.me",
+            appVersion = "android-mail@7.12.0",
+            fork = fork,
+            importEmails = true
+        )
 
         // Then
         assertEquals(
             "https://account.proton.me/lite?action=byoe-mobile&app-version=android-mail@7.12.0" +
+                "&autoconnect=1&importEmails=1" +
                 "&redirect=protonmail%3A%2F%2Fconnect-gmail%2Fcomplete" +
                 "#selector=selector&sk=key&pv=3&pt=default",
             url
         )
+    }
+
+    @Test
+    fun `given the user turned off the import, when building the url, then the page connects without importing`() {
+        // Given
+        val fork = ForkWithKeyPayload(
+            selector = Selector("selector"),
+            sessionId = CookieSessionId("session"),
+            payloadKey = "key",
+            payloadVersion = 3,
+            payloadType = "default"
+        )
+
+        // When
+        val url = gmailConnectionUrl(
+            apiHost = "proton.me",
+            appVersion = "android-mail@7.12.0",
+            fork = fork,
+            importEmails = false
+        )
+
+        // Then
+        assertTrue(url.contains("&autoconnect=1&importEmails=0&"))
     }
 }

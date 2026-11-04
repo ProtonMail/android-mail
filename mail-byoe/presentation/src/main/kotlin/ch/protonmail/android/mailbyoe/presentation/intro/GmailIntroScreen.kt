@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailbyoe.presentation.spotlight
+package ch.protonmail.android.mailbyoe.presentation.intro
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -65,6 +66,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import ch.protonmail.android.design.compose.component.ProtonButton
 import ch.protonmail.android.design.compose.component.ProtonSolidButton
 import ch.protonmail.android.design.compose.component.ProtonSwitch
@@ -75,23 +77,27 @@ import ch.protonmail.android.mailbyoe.presentation.R
 import ch.protonmail.android.mailbyoe.presentation.byoeColors
 
 /**
- * Full-screen BYOE prompt for existing users in a treatment group.
+ * Full-screen introduction to the Gmail connection, shown before the connection page opens. Existing users get it
+ * as a spotlight that presents the feature as new; onboarding, the sidebar and settings show it as [isSpotlight]
+ * false.
  *
  * [onConnect] receives whether the user wants their existing Gmail emails imported.
  */
 @Composable
-fun ByoeSpotlightScreen(
+fun GmailIntroScreen(
+    isSpotlight: Boolean,
     onConnect: (importEmails: Boolean) -> Unit,
     onLater: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler(onBack = onLater)
 
-    ByoeSpotlightContent(onConnect = onConnect, onLater = onLater, modifier = modifier)
+    GmailIntroContent(isSpotlight = isSpotlight, onConnect = onConnect, onLater = onLater, modifier = modifier)
 }
 
 @Composable
-private fun ByoeSpotlightContent(
+private fun GmailIntroContent(
+    isSpotlight: Boolean,
     onConnect: (importEmails: Boolean) -> Unit,
     onLater: () -> Unit,
     modifier: Modifier = Modifier
@@ -113,15 +119,25 @@ private fun ByoeSpotlightContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.ExtraLarge)
         ) {
-            ByoeSpotlightIllustration()
-            ByoeSpotlightHeader()
-            ByoeSpotlightBenefits(
+            if (isSpotlight) {
+                ByoeSpotlightIllustration()
+                GmailIntroHeader(showBadge = true)
+            } else {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.ModeratelyLarge)
+                ) {
+                    GmailIntroIllustration()
+                    GmailIntroHeader(showBadge = false)
+                }
+            }
+            GmailIntroBenefits(
                 importEmails = importEmails,
                 onImportEmailsChange = { importEmails = it }
             )
         }
 
-        ByoeSpotlightActions(onConnect = { onConnect(importEmails) }, onLater = onLater)
+        GmailIntroActions(onConnect = { onConnect(importEmails) }, onLater = onLater)
     }
 }
 
@@ -137,40 +153,43 @@ private fun ByoeSpotlightIllustration() {
 }
 
 @Composable
-private fun ByoeSpotlightHeader() {
+private fun GmailIntroIllustration() {
+    Image(
+        painter = painterResource(R.drawable.byoe_intro_gmail_to_proton),
+        contentDescription = null,
+        modifier = Modifier
+            .padding(top = ProtonDimens.Spacing.ExtraLarge)
+            .size(IntroIllustrationWidth, IntroIllustrationHeight)
+    )
+}
+
+@Composable
+private fun GmailIntroHeader(showBadge: Boolean) {
     Column(
         modifier = Modifier.padding(
             start = ProtonDimens.Spacing.ExtraLarge,
             end = ProtonDimens.Spacing.ExtraLarge,
-            bottom = ProtonDimens.Spacing.MediumLight
+            // The intro's header sits closer to the benefits than the spotlight's.
+            bottom = if (showBadge) ProtonDimens.Spacing.MediumLight else ProtonDimens.Spacing.Standard
         ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.ModeratelyLarge)
     ) {
-        Text(
-            text = stringResource(R.string.byoe_spotlight_badge),
-            style = ProtonTheme.typography.labelMedium,
-            fontWeight = FontWeight.Bold,
-            color = byoeColors().badgeText,
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(byoeColors().badgeBackground)
-                .padding(horizontal = ProtonDimens.Spacing.Standard, vertical = ProtonDimens.Spacing.Small)
-        )
+        if (showBadge) ByoeSpotlightBadge()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.MediumLight)
         ) {
             Text(
                 text = stringResource(R.string.byoe_spotlight_title),
-                style = ProtonTheme.typography.headlineMedium,
+                style = ProtonTheme.typography.headlineMedium.copy(lineHeight = TitleLineHeight),
                 fontWeight = FontWeight.Bold,
                 color = ProtonTheme.colors.textNorm,
                 textAlign = TextAlign.Center
             )
             Text(
                 text = stringResource(R.string.byoe_spotlight_subtitle),
-                style = ProtonTheme.typography.bodyMedium,
+                style = ProtonTheme.typography.bodyMedium.copy(fontSize = BodyFontSize),
                 fontWeight = FontWeight.Medium,
                 color = ProtonTheme.colors.textWeak,
                 textAlign = TextAlign.Center
@@ -180,7 +199,21 @@ private fun ByoeSpotlightHeader() {
 }
 
 @Composable
-private fun ByoeSpotlightBenefits(importEmails: Boolean, onImportEmailsChange: (Boolean) -> Unit) {
+private fun ByoeSpotlightBadge() {
+    Text(
+        text = stringResource(R.string.byoe_spotlight_badge),
+        style = ProtonTheme.typography.labelMedium,
+        fontWeight = FontWeight.Bold,
+        color = byoeColors().badgeText,
+        modifier = Modifier
+            .clip(CircleShape)
+            .background(byoeColors().badgeBackground)
+            .padding(horizontal = ProtonDimens.Spacing.Standard, vertical = ProtonDimens.Spacing.Small)
+    )
+}
+
+@Composable
+private fun GmailIntroBenefits(importEmails: Boolean, onImportEmailsChange: (Boolean) -> Unit) {
     val shape = RoundedCornerShape(ProtonDimens.CornerRadius.Huge)
     Column(
         modifier = Modifier
@@ -198,15 +231,15 @@ private fun ByoeSpotlightBenefits(importEmails: Boolean, onImportEmailsChange: (
             ),
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Standard)
         ) {
-            benefits.forEach { benefit -> ByoeSpotlightBenefitRow(benefit) }
+            benefits.forEach { benefit -> GmailIntroBenefitRow(benefit) }
         }
         HorizontalDivider(color = byoeColors().cardDivider)
-        ByoeSpotlightImportRow(checked = importEmails, onCheckedChange = onImportEmailsChange)
+        GmailIntroImportRow(checked = importEmails, onCheckedChange = onImportEmailsChange)
     }
 }
 
 @Composable
-private fun ByoeSpotlightBenefitRow(@StringRes benefit: Int) {
+private fun GmailIntroBenefitRow(@StringRes benefit: Int) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Medium),
         verticalAlignment = Alignment.CenterVertically
@@ -221,14 +254,14 @@ private fun ByoeSpotlightBenefitRow(@StringRes benefit: Int) {
         }
         Text(
             text = stringResource(benefit),
-            style = ProtonTheme.typography.bodyMedium,
+            style = ProtonTheme.typography.bodyMedium.copy(fontSize = BodyFontSize),
             color = ProtonTheme.colors.textNorm
         )
     }
 }
 
 @Composable
-private fun ByoeSpotlightImportRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+private fun GmailIntroImportRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     // The whole row toggles, so TalkBack reads the label with the switch and the tap target is the row.
     Row(
         modifier = Modifier
@@ -236,34 +269,38 @@ private fun ByoeSpotlightImportRow(checked: Boolean, onCheckedChange: (Boolean) 
             .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
             .padding(ProtonDimens.Spacing.Large),
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Medium),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .heightIn(min = ImportRowContentHeight)
+                .padding(vertical = ProtonDimens.Spacing.Tiny),
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Small)
         ) {
             Text(
                 text = stringResource(R.string.byoe_spotlight_import_title),
-                style = ProtonTheme.typography.titleSmall,
+                style = ProtonTheme.typography.titleSmall.copy(fontSize = BodyFontSize),
                 fontWeight = FontWeight.SemiBold,
                 color = ProtonTheme.colors.textNorm
             )
             Text(
                 text = stringResource(R.string.byoe_spotlight_import_body),
-                style = ProtonTheme.typography.bodySmall,
+                style = ProtonTheme.typography.bodySmall.copy(fontSize = SmallFontSize, lineHeight = SmallLineHeight),
                 color = ProtonTheme.colors.textWeak
             )
         }
+        // The switch keeps its touch target but takes only the design's row height.
         ProtonSwitch(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            modifier = Modifier.clearAndSetSemantics {}
+            modifier = Modifier.height(ImportRowContentHeight).clearAndSetSemantics {}
         )
     }
 }
 
 @Composable
-private fun ByoeSpotlightActions(onConnect: () -> Unit, onLater: () -> Unit) {
+private fun GmailIntroActions(onConnect: () -> Unit, onLater: () -> Unit) {
     Column(
         modifier = Modifier.padding(top = ProtonDimens.Spacing.Standard, bottom = ProtonDimens.Spacing.Compact),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -294,12 +331,12 @@ private fun ByoeSpotlightActions(onConnect: () -> Unit, onLater: () -> Unit) {
         ) {
             ActionLabel(R.string.byoe_spotlight_later)
         }
-        ByoeSpotlightPermissionsNote()
+        GmailIntroPermissionsNote()
     }
 }
 
 @Composable
-private fun ByoeSpotlightPermissionsNote() {
+private fun GmailIntroPermissionsNote() {
     val text = buildAnnotatedString {
         appendInlineContent(INFO_ICON_ID)
         append(" ")
@@ -319,7 +356,7 @@ private fun ByoeSpotlightPermissionsNote() {
     Text(
         text = text,
         inlineContent = inlineContent,
-        style = ProtonTheme.typography.bodySmall,
+        style = ProtonTheme.typography.bodySmall.copy(fontSize = SmallFontSize, lineHeight = SmallLineHeight),
         color = ProtonTheme.colors.textWeak,
         textAlign = TextAlign.Center
     )
@@ -329,8 +366,8 @@ private fun ByoeSpotlightPermissionsNote() {
 private fun ActionLabel(@StringRes text: Int) {
     Text(
         text = stringResource(text),
-        style = ProtonTheme.typography.bodyLarge,
-        fontWeight = FontWeight.Bold
+        style = ProtonTheme.typography.bodyLarge.copy(lineHeight = ActionLineHeight),
+        fontWeight = FontWeight.SemiBold
     )
 }
 
@@ -343,10 +380,18 @@ private val benefits = listOf(
 // The artwork's own size, which includes room for its shadows.
 private val IllustrationWidth = 252.dp
 private val IllustrationHeight = 144.dp
+private val IntroIllustrationWidth = 259.dp
+private val IntroIllustrationHeight = 142.dp
 private val BenefitIconContainerSize = 32.dp
 // Leaves the design's gap between the last benefit and the import row.
 private val BenefitListBottomPadding = 34.dp
-private val ActionButtonHeight = 52.dp
+private val ImportRowContentHeight = 46.dp
+private val TitleLineHeight = 34.sp
+private val BodyFontSize = 15.sp
+private val SmallFontSize = 13.sp
+private val SmallLineHeight = 18.sp
+private val ActionLineHeight = 21.sp
+private val ActionButtonHeight = 53.dp
 private const val INFO_ICON_ID = "info"
 
 @Preview(widthDp = 412, heightDp = 917)
@@ -354,6 +399,15 @@ private const val INFO_ICON_ID = "info"
 @Composable
 private fun ByoeSpotlightPreview() {
     ProtonTheme {
-        ByoeSpotlightScreen(onConnect = {}, onLater = {})
+        GmailIntroScreen(isSpotlight = true, onConnect = {}, onLater = {})
+    }
+}
+
+@Preview(widthDp = 412, heightDp = 917)
+@Preview(widthDp = 412, heightDp = 917, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun GmailIntroPreview() {
+    ProtonTheme {
+        GmailIntroScreen(isSpotlight = false, onConnect = {}, onLater = {})
     }
 }

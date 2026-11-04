@@ -71,7 +71,10 @@ internal class GmailConnectionReducerTest {
     @Test
     fun `given the connection succeeded, when reduced, then the success page shows the address`() {
         // When
-        val state = reducer.newStateFrom(GmailConnectionState.Loading, GmailConnectionEvent.ConnectionSucceeded(EMAIL))
+        val state = reducer.newStateFrom(
+            GmailConnectionState.Loading,
+            GmailConnectionEvent.ConnectionSucceeded(EMAIL, importEmails = true)
+        )
 
         // Then
         assertIs<GmailConnectionState.Connected>(state)
@@ -82,7 +85,7 @@ internal class GmailConnectionReducerTest {
     @Test
     fun `given the success page, when the inbox is selected, then the inbox opens`() {
         // Given
-        val current = GmailConnectionState.Connected(email = EMAIL, openInbox = Effect.empty())
+        val current = GmailConnectionState.Connected(email = EMAIL, importEmails = true, openInbox = Effect.empty())
 
         // When
         val state = reducer.newStateFrom(current, GmailConnectionEvent.InboxSelected)

@@ -33,6 +33,7 @@ import ch.protonmail.android.mailupselling.presentation.model.summercampaign.Sum
 sealed interface HomeInterstitialPriority {
     data object Loading : HomeInterstitialPriority
     data object Onboarding : HomeInterstitialPriority
+    data object OnboardingUpsell : HomeInterstitialPriority
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
     data object FeatureSpotlight : HomeInterstitialPriority
     data class ByoeSpotlight(val treatment: ByoeTreatment) : HomeInterstitialPriority
@@ -71,6 +72,8 @@ fun resolveHomeInterstitialPriority(
 
     return when {
         onboardingState is OnboardingEligibilityState.Required -> HomeInterstitialPriority.Onboarding
+        // Before the notifications, so their system dialog stays the last step of onboarding.
+        onboardingState is OnboardingEligibilityState.UpsellPending -> HomeInterstitialPriority.OnboardingUpsell
         notificationsState is NotificationsPermissionState.RequiresInteraction ->
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
 

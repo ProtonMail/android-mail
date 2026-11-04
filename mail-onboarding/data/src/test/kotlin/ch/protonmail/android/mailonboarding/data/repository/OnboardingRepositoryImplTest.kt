@@ -39,6 +39,8 @@ class OnboardingRepositoryImplTest {
     private val onboardingLocalDataSource: OnboardingLocalDataSource = mockk {
         every { observe() } returns onboardingPreferenceFlow
         coEvery { save(any()) } returns Unit.right()
+        every { observeUpsellPending() } returns flowOf(true.right())
+        coEvery { saveUpsellPending(any()) } returns Unit.right()
     }
 
     private val onboardingRepository = OnboardingRepositoryImpl(onboardingLocalDataSource)
@@ -63,5 +65,24 @@ class OnboardingRepositoryImplTest {
 
         // Then
         coVerify { onboardingLocalDataSource.save(onboardingPreference) }
+    }
+
+    @Test
+    fun `returns the pending upsell from the local data source`() = runTest {
+        // When
+        onboardingRepository.observeUpsellPending().test {
+            // Then
+            assertEquals(true.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `saves the pending upsell in the local data source`() = runTest {
+        // When
+        onboardingRepository.saveUpsellPending(true)
+
+        // Then
+        coVerify { onboardingLocalDataSource.saveUpsellPending(true) }
     }
 }

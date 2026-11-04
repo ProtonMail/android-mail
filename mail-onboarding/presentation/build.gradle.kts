@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.bundles.module.presentation)
     implementation(libs.proton.core.user.domain)
 
+    implementation(project(":mail-byoe:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-events:domain"))

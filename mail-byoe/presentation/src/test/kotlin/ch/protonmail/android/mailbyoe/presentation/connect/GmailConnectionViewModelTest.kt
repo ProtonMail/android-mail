@@ -51,6 +51,7 @@ import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -71,7 +72,10 @@ internal class GmailConnectionViewModelTest {
     }
     private val selectMailLabelId = mockk<SelectMailLabelId>(relaxUnitFun = true)
 
-    private fun viewModel(savedStateHandle: SavedStateHandle = SavedStateHandle()) = GmailConnectionViewModel(
+    private fun viewModel(
+        importEmails: String? = "true",
+        savedStateHandle: SavedStateHandle = SavedStateHandle(mapOf(GmailConnectionScreen.IMPORT_EMAILS_KEY to importEmails))
+    ) = GmailConnectionViewModel(
         observePrimaryUserId,
         forkSessionWithKeyPayload,
         refreshAfterGmailConnection,
@@ -97,7 +101,20 @@ internal class GmailConnectionViewModelTest {
             val state = assertIs<GmailConnectionState.OpeningPage>(awaitItem())
             val url = state.openPage.consume().orEmpty()
             assertTrue(url.startsWith("https://account.proton.me/lite?action=byoe-mobile"))
+            assertTrue(url.contains("&autoconnect=1&importEmails=1&"))
             assertTrue(url.endsWith("#selector=selector&sk=key&pv=3&pt=default"))
+        }
+    }
+
+    @Test
+    fun `given the user turned off the import, when opened, then the page connects without importing`() = runTest {
+        // When
+        val viewModel = viewModel(importEmails = "false")
+
+        // Then
+        viewModel.state.test {
+            val state = assertIs<GmailConnectionState.OpeningPage>(awaitItem())
+            assertTrue(state.openPage.consume().orEmpty().contains("&autoconnect=1&importEmails=0&"))
         }
     }
 
@@ -141,7 +158,22 @@ internal class GmailConnectionViewModelTest {
         coVerify(exactly = 1) { refreshAfterGmailConnection(userId) }
         val state = assertIs<GmailConnectionState.Connected>(viewModel.state.value)
         assertEquals(EMAIL, state.email)
+        assertTrue(state.importEmails)
     }
+
+    @Test
+    fun `given the import was turned off, when connected, then the success page leaves out the import`() =
+        runTest {
+            // Given
+            val viewModel = viewModel(importEmails = "false")
+
+            // When
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
+
+            // Then
+            val state = assertIs<GmailConnectionState.Connected>(viewModel.state.value)
+            assertFalse(state.importEmails)
+        }
 
     @Test
     fun `given the success page, when taking the user to the inbox, then the inbox is selected and opened`() = runTest {
@@ -202,10 +234,10 @@ internal class GmailConnectionViewModelTest {
         runTest {
             // Given
             val savedStateHandle = SavedStateHandle()
-            viewModel(savedStateHandle)
+            viewModel(savedStateHandle = savedStateHandle)
 
             // When
-            val restored = viewModel(savedStateHandle)
+            val restored = viewModel(savedStateHandle = savedStateHandle)
 
             // Then
             coVerify(exactly = 1) { forkSessionWithKeyPayload(userId) }
@@ -217,8 +249,8 @@ internal class GmailConnectionViewModelTest {
         runTest {
             // Given
             val savedStateHandle = SavedStateHandle()
-            viewModel(savedStateHandle)
-            val restored = viewModel(savedStateHandle)
+            viewModel(savedStateHandle = savedStateHandle)
+            val restored = viewModel(savedStateHandle = savedStateHandle)
 
             // When
             restored.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
@@ -233,10 +265,10 @@ internal class GmailConnectionViewModelTest {
         runTest {
             // Given
             val savedStateHandle = SavedStateHandle()
-            viewModel(savedStateHandle).submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
+            viewModel(savedStateHandle = savedStateHandle).submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
 
             // When
-            val restored = viewModel(savedStateHandle)
+            val restored = viewModel(savedStateHandle = savedStateHandle)
 
             // Then
             coVerify(exactly = 1) { forkSessionWithKeyPayload(userId) }

@@ -30,7 +30,11 @@
   <string name="byoe_gmail_connected_import_title">Importing your emails</string>
   <string name="byoe_gmail_connected_import_body">It runs in the background, so go ahead and use the app. We\'ll notify you once it\'s done.</string>
   <string name="byoe_gmail_connected_import_learn_more">Learn what gets imported.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Older emails stay in Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Want them here too? Import anytime in Settings.</string>
   <string name="byoe_gmail_connected_open_inbox">Take me to Inbox</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Importing in progress…</string>
   <!-- BYOE spotlight for existing users -->
   <string name="byoe_spotlight_badge">What\'s new</string>
   <string name="byoe_spotlight_title">Use Gmail in Proton</string>

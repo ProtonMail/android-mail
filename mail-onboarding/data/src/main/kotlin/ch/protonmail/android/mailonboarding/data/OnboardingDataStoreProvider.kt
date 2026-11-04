@@ -63,5 +63,6 @@ class OnboardingDataStoreProvider @Inject constructor(
 
         const val V6_SHOW_ONBOARDING_KEY = "shouldDisplayOnboardingPrefKey"
         const val V7_SHOW_ONBOARDING_KEY = "ShouldDisplayV7BetaOnboardingPrefKey"
+        const val PENDING_UPSELL_KEY = "PendingOnboardingUpsellPrefKey"
     }
 }

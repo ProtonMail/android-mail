@@ -16,15 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.route
+package ch.protonmail.android.mailonboarding.domain.usecase
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightScreen
-import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.mailonboarding.domain.repository.OnboardingRepository
+import javax.inject.Inject
 
-internal fun NavGraphBuilder.addByoeSpotlight(onConnect: (importEmails: Boolean) -> Unit, onLater: () -> Unit) {
-    composable(Destination.Screen.ByoeSpotlight.route) {
-        ByoeSpotlightScreen(onConnect = onConnect, onLater = onLater)
-    }
+class SavePendingOnboardingUpsell @Inject constructor(
+    private val onboardingRepository: OnboardingRepository
+) {
+
+    suspend operator fun invoke(pending: Boolean) = onboardingRepository.saveUpsellPending(pending)
 }

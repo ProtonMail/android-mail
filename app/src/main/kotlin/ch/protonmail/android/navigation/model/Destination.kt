@@ -22,6 +22,8 @@ import android.net.Uri
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsViewItemMode
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView.ApplicationLogsViewMode
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionScreen.IMPORT_EMAILS_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
@@ -194,7 +196,11 @@ sealed class Destination(val route: String) {
         object LanguageSettings : Destination("settings/appLanguage")
         object AppIconSettings : Destination("settings/appIcon")
         object ContentSearchSettings : Destination("settings/contentSearch")
-        object GmailConnection : Destination("settings/gmailConnection")
+        object GmailConnection : Destination("settings/gmailConnection/${IMPORT_EMAILS_KEY.wrap()}") {
+
+            operator fun invoke(importEmails: Boolean) =
+                route.replace(IMPORT_EMAILS_KEY.wrap(), importEmails.toString())
+        }
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
 
@@ -265,6 +271,11 @@ sealed class Destination(val route: String) {
 
         object ByoeSpotlight : Destination("byoe/spotlight")
 
+        object GmailIntro : Destination("byoe/intro/${GMAIL_INTRO_SURFACE_KEY.wrap()}") {
+
+            operator fun invoke(surface: ByoeSurface) = route.replace(GMAIL_INTRO_SURFACE_KEY.wrap(), surface.name)
+        }
+
         object ContentSearchSetUp : Destination("contentSearch/setUp")
     }
 
@@ -285,6 +296,8 @@ sealed class Destination(val route: String) {
         }
     }
 }
+
+const val GMAIL_INTRO_SURFACE_KEY = "gmailIntroSurface"
 
 /**
  * Wrap a key in the format required by the Navigation framework: `{key_name}`

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbyoe.domain.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -41,9 +42,11 @@ interface ByoeGuidanceRepository {
 
     suspend fun markSpotlightShown(userId: UserId): Either<DataError, Unit>
 
-    suspend fun markGuidanceDismissed(userId: UserId): Either<DataError, Unit>
+    suspend fun markGuidanceDismissed(userId: UserId, surface: ByoeSurface): Either<DataError, Unit>
 
     suspend fun isOnboardingFinishedRecorded(userId: UserId): Either<DataError, Boolean>
 
     suspend fun recordOnboardingFinished(userId: UserId): Either<DataError, Unit>
+
+    suspend fun recordOnboardingPageShown(userId: UserId): Either<DataError, Unit>
 }
