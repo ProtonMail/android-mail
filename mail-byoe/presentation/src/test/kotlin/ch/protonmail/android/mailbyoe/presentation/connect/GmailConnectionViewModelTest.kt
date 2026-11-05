@@ -20,11 +20,18 @@ package ch.protonmail.android.mailbyoe.presentation.connect
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeConnectErrorType
+import ch.protonmail.android.mailbyoe.domain.model.ByoeImportMode
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 import ch.protonmail.android.mailbyoe.domain.usecase.RefreshAfterGmailConnection
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
+import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
 import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import ch.protonmail.android.maillabel.domain.model.LabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -47,6 +54,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -76,6 +84,7 @@ internal class GmailConnectionViewModelTest {
         coEvery { this@mockk.invoke(userId, SystemLabelId.Inbox) } returns inbox
     }
     private val selectMailLabelId = mockk<SelectMailLabelId>(relaxUnitFun = true)
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
     private val upsellingVisibility = MutableStateFlow<UpsellingVisibility>(UpsellingVisibility.Normal.MailPlus)
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
         every { this@mockk(UpsellingEntryPoint.Feature.ByoeConnectionLimit) } returns upsellingVisibility
@@ -83,11 +92,18 @@ internal class GmailConnectionViewModelTest {
 
     private fun viewModel(
         importEmails: String? = "true",
-        savedStateHandle: SavedStateHandle = SavedStateHandle(mapOf(GmailConnectionScreen.IMPORT_EMAILS_KEY to importEmails))
+        surface: ByoeSurface = SURFACE,
+        savedStateHandle: SavedStateHandle = SavedStateHandle(
+            mapOf(
+                GmailConnectionScreen.IMPORT_EMAILS_KEY to importEmails,
+                GmailConnectionScreen.SURFACE_KEY to ByoeSurfaceArgument.encode(surface)
+            )
+        )
     ) = GmailConnectionViewModel(
         observePrimaryUserId,
         forkSessionWithKeyPayload,
         refreshAfterGmailConnection,
+        reportByoeTelemetryEvent,
         findLocalSystemLabelId,
         selectMailLabelId,
         ApiEnvironment(host = "proton.me", apiPrefix = "mail-api"),
@@ -349,9 +365,190 @@ internal class GmailConnectionViewModelTest {
             assertEquals(GmailConnectionState.Failed, restored.state.value)
         }
 
+    @Test
+    fun `given the import is on, when the page opens, then a connection start with import is reported`() = runTest {
+        // When
+        viewModel(surface = ByoeSurface.Spotlight)
+
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectStarted(ByoeSurface.Spotlight, ByoeImportMode.Enabled))
+        }
+    }
+
+    @Test
+    fun `given the import is off, when the page opens, then a connection start without import is reported`() =
+        runTest {
+            // When
+            viewModel(importEmails = "false", surface = ByoeSurface.Settings)
+
+            // Then
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(
+                    ByoeTelemetryEvent.ConnectStarted(ByoeSurface.Settings, ByoeImportMode.Disabled)
+                )
+            }
+        }
+
+    @Test
+    fun `given the fork fails, when opened, then the start and an unknown failure are reported`() = runTest {
+        // Given
+        coEvery { forkSessionWithKeyPayload(userId) } returns SessionError.Local.Unknown.left()
+
+        // When
+        viewModel()
+
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectStarted(SURFACE, ByoeImportMode.Enabled))
+        }
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectFailed(SURFACE, ByoeConnectErrorType.Unknown))
+        }
+    }
+
+    @Test
+    fun `given the account is connected, when the page closes, then a successful connection is reported`() = runTest {
+        // Given
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectSucceeded(SURFACE)) }
+    }
+
+    @Test
+    fun `given the user closed the page, when it closes, then an abandoned connection is reported`() = runTest {
+        // Given
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectAbandoned(SURFACE)) }
+    }
+
+    @Test
+    fun `given the web flow failed with a code, when the page closes, then the failure is reported with its type`() =
+        runTest {
+            // Given
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Failed(code = "already-added")))
+
+            // Then
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectFailed(SURFACE, ByoeConnectErrorType.AlreadyAdded))
+            }
+        }
+
+    @Test
+    fun `given no browser can open the page, when it fails, then the error shows and an unknown failure is reported`() =
+        runTest {
+            // Given
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.PageUnavailable))
+
+            // Then
+            assertEquals(GmailConnectionState.Failed, viewModel.state.value)
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectFailed(SURFACE, ByoeConnectErrorType.Unknown))
+            }
+        }
+
+    @Test
+    fun `given the connection limit, when the user asks to upgrade, then no connection outcome is reported`() =
+        runTest {
+            // Given
+            val viewModel = viewModel()
+
+            // When
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.UpsellRequested))
+
+            // Then
+            verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.ConnectSucceeded>()) }
+            verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.ConnectAbandoned>()) }
+            verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.ConnectFailed>()) }
+        }
+
+    @Test
+    fun `given the session is still being prepared, when the user leaves, then an abandoned connection is reported`() =
+        runTest {
+            // Given
+            val fork = CompletableDeferred<Either<SessionError, ForkWithKeyPayload>>()
+            coEvery { forkSessionWithKeyPayload(userId) } coAnswers { fork.await() }
+            val viewModel = viewModel()
+
+            // When
+            viewModel.reportAbandonedAttempt()
+
+            // Then
+            verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectAbandoned(SURFACE)) }
+        }
+
+    @Test
+    fun `given the connection has an outcome, when the user leaves, then no abandoned connection is reported`() =
+        runTest {
+            // Given
+            val viewModel = viewModel()
+            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.UpsellRequested))
+
+            // When
+            viewModel.reportAbandonedAttempt()
+
+            // Then
+            verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.ConnectAbandoned>()) }
+        }
+
+    @Test
+    fun `given a failure, when retrying, then a new connection start is reported`() = runTest {
+        // Given
+        val viewModel = viewModel()
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Failed(code = null)))
+
+        // When
+        viewModel.submit(GmailConnectionAction.RetryClicked)
+
+        // Then
+        verify(exactly = 2) {
+            reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectStarted(SURFACE, ByoeImportMode.Enabled))
+        }
+    }
+
+    @Test
+    fun `given the app was killed while the page was open, when the page returns, then its outcome is reported`() =
+        runTest {
+            // Given
+            val savedStateHandle = SavedStateHandle(
+                mapOf(GmailConnectionScreen.SURFACE_KEY to ByoeSurfaceArgument.encode(ByoeSurface.OnboardingScreen))
+            )
+            viewModel(savedStateHandle = savedStateHandle)
+            val restored = viewModel(savedStateHandle = savedStateHandle)
+
+            // When
+            restored.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
+
+            // Then
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(
+                    ByoeTelemetryEvent.ConnectStarted(ByoeSurface.OnboardingScreen, ByoeImportMode.Enabled)
+                )
+            }
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectSucceeded(ByoeSurface.OnboardingScreen))
+            }
+        }
+
     private companion object {
 
         const val EMAIL = "someone@gmail.com"
+        val SURFACE = ByoeSurface.SidebarBanner
         val userId = UserId("user")
         val inbox = MailLabelId.System(LabelId("inbox"))
         val fork = ForkWithKeyPayload(

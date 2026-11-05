@@ -33,4 +33,7 @@ sealed interface GmailConnectionResult {
     data object UpsellRequested : GmailConnectionResult
 
     data class Failed(val code: String?) : GmailConnectionResult
+
+    /** No browser could open the web flow, so it never started. */
+    data object PageUnavailable : GmailConnectionResult
 }

@@ -23,10 +23,12 @@ import arrow.core.right
 import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeOnboardingTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.RecordOnboardingStepShown
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingAction
@@ -39,8 +41,10 @@ import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -63,6 +67,7 @@ internal class OnboardingViewModelTest {
     }
     private val recordOnboardingStepShown = mockk<RecordOnboardingStepShown>(relaxed = true)
     private val dismissByoeGuidance = mockk<DismissByoeGuidance>(relaxed = true)
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxed = true)
     private val savePendingOnboardingUpsell = mockk<SavePendingOnboardingUpsell>(relaxed = true)
 
     private fun viewModel() = OnboardingViewModel(
@@ -72,6 +77,7 @@ internal class OnboardingViewModelTest {
         getByoeOnboardingTreatment,
         recordOnboardingStepShown,
         dismissByoeGuidance,
+        reportByoeTelemetryEvent,
         savePendingOnboardingUpsell
     )
 
@@ -121,8 +127,8 @@ internal class OnboardingViewModelTest {
         val viewModel = viewModel()
 
         // When
-        viewModel.submit(OnboardingAction.GmailPageShown)
-        viewModel.submit(OnboardingAction.GmailPageShown)
+        viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Byoe))
+        viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Byoe))
 
         // Then
         coVerify(exactly = 1) { recordOnboardingStepShown(UserTestData.Primary.userId, ByoeOnboardingStep.Byoe) }
@@ -139,6 +145,41 @@ internal class OnboardingViewModelTest {
         // Then
         coVerify(exactly = 1) {
             dismissByoeGuidance(UserTestData.Primary.userId, ByoeSurface.OnboardingScreen, ByoeDismissMethod.Button)
+        }
+    }
+
+    @Test
+    fun `should record each onboarding page once, in the order it appears`() = runTest {
+        // Given
+        givenFreeUserWithUpsell()
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Welcome))
+        viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Offline))
+        viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Welcome))
+        viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Upsell))
+
+        // Then
+        coVerifyOrder {
+            recordOnboardingStepShown(UserTestData.Primary.userId, ByoeOnboardingStep.Welcome)
+            recordOnboardingStepShown(UserTestData.Primary.userId, ByoeOnboardingStep.Offline)
+            recordOnboardingStepShown(UserTestData.Primary.userId, ByoeOnboardingStep.Upsell)
+        }
+        coVerify(exactly = 1) { recordOnboardingStepShown(UserTestData.Primary.userId, ByoeOnboardingStep.Welcome) }
+    }
+
+    @Test
+    fun `should report an explore click on the onboarding page when the user explores Gmail`() = runTest {
+        // Given
+        givenFreeUserWithUpsell()
+
+        // When
+        viewModel().submit(OnboardingAction.GmailExploreClicked)
+
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.OnboardingScreen))
         }
     }
 

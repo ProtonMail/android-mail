@@ -68,6 +68,9 @@ internal sealed interface MailboxOperation {
 
 internal sealed interface MailboxViewAction : MailboxOperation {
 
+    /** The inbox is on screen: on each resume, and when the user switches to it. */
+    data object InboxShown : MailboxViewAction
+
     data class OnItemLongClicked(
         val item: MailboxItemUiModel
     ) : MailboxViewAction

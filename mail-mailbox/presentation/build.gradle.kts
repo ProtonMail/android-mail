@@ -78,6 +78,7 @@ dependencies {
 
     implementation(project(":mail-attachments:domain"))
     implementation(project(":mail-attachments:presentation"))
+    implementation(project(":mail-byoe:domain"))
     implementation(project(":mail-byoe:presentation"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))

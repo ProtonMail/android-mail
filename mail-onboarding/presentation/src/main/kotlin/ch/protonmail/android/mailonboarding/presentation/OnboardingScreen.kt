@@ -46,6 +46,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingButton
@@ -67,16 +68,22 @@ fun OnboardingScreen(actions: OnboardingScreen.Actions, viewModel: OnboardingVie
     var hasCompletedOnboarding by remember { mutableStateOf(false) }
 
     when {
-        hasCompletedOnboarding && (state is OnboardingState.ToUpsell || state is OnboardingState.Loading) ->
+        hasCompletedOnboarding && (state is OnboardingState.ToUpsell || state is OnboardingState.Loading) -> {
+            LaunchedEffect(state) {
+                if (state is OnboardingState.ToUpsell) {
+                    viewModel.submit(OnboardingAction.PageShown(ByoeOnboardingStep.Upsell))
+                }
+            }
             OnboardingUpsellScreen(exitAction, actions.onUpsellingError)
+        }
 
         hasCompletedOnboarding && state is OnboardingState.NoUpsell -> exitAction()
         else -> OnboardingScreen(
             state = state,
             onUpsellingNavigation = { hasCompletedOnboarding = true },
             exitAction = exitAction,
+            onPageShown = { viewModel.submit(OnboardingAction.PageShown(it)) },
             gmailActions = GmailPageActions(
-                onShown = { viewModel.submit(OnboardingAction.GmailPageShown) },
                 onSkipped = { viewModel.submit(OnboardingAction.GmailPageSkipped) },
                 onExplore = {
                     viewModel.submit(OnboardingAction.GmailExploreClicked)
@@ -92,6 +99,7 @@ private fun OnboardingScreen(
     state: OnboardingState,
     onUpsellingNavigation: () -> Unit,
     exitAction: () -> Unit,
+    onPageShown: (ByoeOnboardingStep) -> Unit,
     gmailActions: GmailPageActions
 ) {
     val isEligibleForUpselling = state is OnboardingState.ToUpsell
@@ -126,6 +134,11 @@ private fun OnboardingScreen(
         title = R.string.onboarding_gmail_title,
         descriptionId = R.string.onboarding_gmail_description
     )
+    val offlinePage = OnboardingUiModel(
+        illustrationId = R.drawable.illustration_onboarding_offline,
+        title = R.string.onboarding_feedback_title,
+        descriptionId = R.string.onboarding_feedback_description
+    )
     val featurePages = if (showGmailPage) {
         listOf(welcomePage, gmailPage)
     } else {
@@ -136,11 +149,7 @@ private fun OnboardingScreen(
                 title = R.string.onboarding_rebuilt_title,
                 descriptionId = R.string.onboarding_rebuilt_description
             ),
-            OnboardingUiModel(
-                illustrationId = R.drawable.illustration_onboarding_offline,
-                title = R.string.onboarding_feedback_title,
-                descriptionId = R.string.onboarding_feedback_description
-            )
+            offlinePage
         )
     }
     val contentMap = featurePages + listOfNotNull(if (isEligibleForUpselling) OnboardingUiModel.Empty else null)
@@ -173,8 +182,15 @@ private fun OnboardingScreen(
         }
     }
 
-    LaunchedEffect(pagerState.currentPage, gmailPageIndex) {
-        if (pagerState.currentPage == gmailPageIndex) gmailActions.onShown()
+    // The SDK records each page as it appears; the "rebuilt" page has no step of its own.
+    LaunchedEffect(pagerState.currentPage, contentMap) {
+        val step = when (contentMap.getOrNull(pagerState.currentPage)) {
+            welcomePage -> ByoeOnboardingStep.Welcome
+            offlinePage -> ByoeOnboardingStep.Offline
+            gmailPage -> ByoeOnboardingStep.Byoe
+            else -> null
+        }
+        step?.let(onPageShown)
     }
 
     Column(
@@ -225,7 +241,6 @@ object OnboardingScreen {
 }
 
 private data class GmailPageActions(
-    val onShown: () -> Unit,
     val onSkipped: () -> Unit,
     val onExplore: () -> Unit
 )
@@ -239,7 +254,8 @@ private fun OnboardingScreenPreview() {
             state = OnboardingState.NoUpsell(showGmailPage = false),
             onUpsellingNavigation = {},
             exitAction = {},
-            gmailActions = GmailPageActions(onShown = {}, onSkipped = {}, onExplore = {})
+            onPageShown = {},
+            gmailActions = GmailPageActions(onSkipped = {}, onExplore = {})
         )
     }
 }

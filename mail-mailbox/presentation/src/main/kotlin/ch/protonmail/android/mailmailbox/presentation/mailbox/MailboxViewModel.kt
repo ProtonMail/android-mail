@@ -35,6 +35,8 @@ import arrow.core.right
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
 import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.domain.model.activeCategoryOrNull
 import ch.protonmail.android.mailcategory.domain.model.isDefault
@@ -221,7 +223,8 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowNps: ShouldShowNps,
     private val observeCategoryViewStatus: ObserveCategoryViewStatus,
     private val setActiveCategoryLabel: SetActiveCategoryLabel,
-    private val selectCategory: SelectCategory
+    private val selectCategory: SelectCategory,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserIdWithValidSession().filterNotNull()
@@ -471,6 +474,9 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnAvatarImageLoadFailed -> handleOnAvatarImageLoadFailed(viewAction.item)
                 is MailboxViewAction.OnItemLongClicked -> handleItemLongClick(viewAction.item)
                 is MailboxViewAction.Refresh -> handlePullToRefresh(viewAction)
+                // The SDK reports only the first inbox view after a Gmail connection.
+                is MailboxViewAction.InboxShown ->
+                    reportByoeTelemetryEvent(ByoeTelemetryEvent.InboxViewed, primaryUserId.first())
                 is MailboxViewAction.ItemClicked -> handleItemClick(viewAction.item)
                 is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)

@@ -21,8 +21,11 @@ package ch.protonmail.android.mailbyoe.presentation.sidebar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.usecase.CloseByoeSidebarBanner
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSidebarBannerTreatment
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -42,7 +45,8 @@ import javax.inject.Inject
 class ByoeSidebarBannerViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val getByoeSidebarBannerTreatment: GetByoeSidebarBannerTreatment,
-    private val closeByoeSidebarBanner: CloseByoeSidebarBanner
+    private val closeByoeSidebarBanner: CloseByoeSidebarBanner,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
@@ -56,6 +60,8 @@ class ByoeSidebarBannerViewModel @Inject constructor(
     fun submit(action: ByoeSidebarBannerAction) {
         when (action) {
             ByoeSidebarBannerAction.SidebarOpened -> refresh()
+            ByoeSidebarBannerAction.ConnectClicked ->
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.SidebarBanner))
             ByoeSidebarBannerAction.CloseClicked -> close()
         }
     }
@@ -65,8 +71,11 @@ class ByoeSidebarBannerViewModel @Inject constructor(
         if (isClosed) return
         refreshJob?.cancel()
         refreshJob = viewModelScope.launch {
-            val treatment = getByoeSidebarBannerTreatment(primaryUserId.first())
+            val userId = primaryUserId.first()
+            val treatment = getByoeSidebarBannerTreatment(userId)
             mutableState.value = treatment?.let(ByoeSidebarBannerState::Visible) ?: ByoeSidebarBannerState.Hidden
+            // Once per sidebar open; the SDK sends only the first on this install.
+            if (treatment != null) reportByoeTelemetryEvent(ByoeTelemetryEvent.SidebarBannerShown, userId)
         }
     }
 

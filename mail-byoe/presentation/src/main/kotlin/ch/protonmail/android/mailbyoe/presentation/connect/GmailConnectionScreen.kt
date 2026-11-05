@@ -76,7 +76,7 @@ fun GmailConnectionScreen(
         is GmailConnectionState.OpeningPage -> ConsumableLaunchedEffect(current.openPage) { url ->
             GmailConnectionRedirects.consume()
             launchConnectionPage(launcher, url) {
-                viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Failed(code = null)))
+                viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.PageUnavailable))
             }
         }
 

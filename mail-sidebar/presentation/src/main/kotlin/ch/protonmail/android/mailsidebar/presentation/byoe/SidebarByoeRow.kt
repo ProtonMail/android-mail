@@ -88,7 +88,10 @@ fun SidebarByoeRow(
             exit = fadeOut() + shrinkVertically()
         ) {
             SidebarByoeCard(
-                onConnect = onClick,
+                onConnect = {
+                    viewModel?.submit(ByoeSidebarBannerAction.ConnectClicked)
+                    onClick()
+                },
                 onDismiss = { viewModel?.submit(ByoeSidebarBannerAction.CloseClicked) },
                 modifier = Modifier.padding(
                     horizontal = ProtonDimens.Spacing.Large,

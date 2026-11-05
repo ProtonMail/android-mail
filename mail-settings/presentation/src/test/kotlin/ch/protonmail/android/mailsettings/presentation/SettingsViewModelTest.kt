@@ -22,8 +22,11 @@ import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
 import arrow.core.Either
 import ch.protonmail.android.design.compose.model.VisibilityUiModel
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
@@ -47,6 +50,7 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -93,6 +97,8 @@ class SettingsViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns GmailConnectionSettingsAccess.Hidden
     }
 
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
+
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -104,7 +110,8 @@ class SettingsViewModelTest {
             observeStorageQuotaUseCase = observeStorageQuotaUseCase,
             accountInformationMapper = accountInformationMapper,
             isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
-            getGmailConnectionSettingsAccess = getGmailConnectionSettingsAccess
+            getGmailConnectionSettingsAccess = getGmailConnectionSettingsAccess,
+            reportByoeTelemetryEvent = reportByoeTelemetryEvent
         )
     }
 
@@ -220,6 +227,65 @@ class SettingsViewModelTest {
             assertFalse((awaitItem() as SettingsState.Data).isConnectGmailVisible)
         }
     }
+
+    @Test
+    fun `given Connect your Gmail is shown, when the screen shows, then the settings shown and view are reported`() =
+        runTest {
+            // Given
+            coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Full
+
+            viewModel.state.test {
+                skipItems(1)
+                accountFlow.emit(account)
+                awaitItem()
+
+                // When
+                viewModel.onConnectGmailShown()
+
+                // Then
+                verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsShown, account.userId) }
+                verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsView, account.userId) }
+            }
+        }
+
+    @Test
+    fun `given Connect your Gmail is hidden, when the screen shows, then nothing is reported`() = runTest {
+        // Given
+        coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.ListOnly
+
+        viewModel.state.test {
+            skipItems(1)
+            accountFlow.emit(account)
+            awaitItem()
+
+            // When
+            viewModel.onConnectGmailShown()
+
+            // Then
+            verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+        }
+    }
+
+    @Test
+    fun `given Connect your Gmail is shown, when the user taps it, then an explore click in settings is reported`() =
+        runTest {
+            // Given
+            coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Full
+
+            viewModel.state.test {
+                skipItems(1)
+                accountFlow.emit(account)
+                awaitItem()
+
+                // When
+                viewModel.onConnectGmailClicked()
+
+                // Then
+                verify(exactly = 1) {
+                    reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.Settings), account.userId)
+                }
+            }
+        }
 
     private companion object {
 

@@ -89,6 +89,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -130,6 +131,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomSheetVisibility
 import ch.protonmail.android.mailcommon.presentation.model.CappedNumberUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheet
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.maillabel.presentation.bottomsheet.LabelAsBottomSheetScreen
@@ -215,6 +218,13 @@ fun MailboxScreen(
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(MailboxViewAction.DismissBottomSheet)
+    }
+
+    val isInboxShown = (mailboxState.mailboxListState as? MailboxListState.Data)?.currentMailLabel
+        ?.let { (it as? MailLabel.System)?.systemLabelId == SystemLabelId.Inbox } == true
+    LifecycleResumeEffect(isInboxShown) {
+        if (isInboxShown) viewModel.submit(MailboxViewAction.InboxShown)
+        onPauseOrDispose {}
     }
 
     LaunchedEffect(key1 = mailboxListItems.itemSnapshotList) {

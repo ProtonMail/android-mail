@@ -27,5 +27,6 @@ sealed interface ByoeSidebarBannerState {
 
 sealed interface ByoeSidebarBannerAction {
     data object SidebarOpened : ByoeSidebarBannerAction
+    data object ConnectClicked : ByoeSidebarBannerAction
     data object CloseClicked : ByoeSidebarBannerAction
 }

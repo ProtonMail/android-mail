@@ -23,9 +23,11 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeOnboardingTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.RecordOnboardingStepShown
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailsession.domain.model.hasSubscription
@@ -51,10 +53,11 @@ class OnboardingViewModel @Inject constructor(
     private val getByoeOnboardingTreatment: GetByoeOnboardingTreatment,
     private val recordOnboardingStepShown: RecordOnboardingStepShown,
     private val dismissByoeGuidance: DismissByoeGuidance,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent,
     private val savePendingOnboardingUpsell: SavePendingOnboardingUpsell
 ) : ViewModel() {
 
-    private var isGmailPageRecorded = false
+    private val recordedSteps = mutableSetOf<ByoeOnboardingStep>()
 
     val state: StateFlow<OnboardingState> = observePrimaryUser().filterNotNull()
         .map { it.getOrNull() }
@@ -73,28 +76,30 @@ class OnboardingViewModel @Inject constructor(
     fun submit(action: OnboardingAction) {
         viewModelScope.launch {
             when (action) {
-                OnboardingAction.GmailPageShown -> onGmailPageShown()
+                is OnboardingAction.PageShown -> onPageShown(action.step)
                 OnboardingAction.GmailPageSkipped -> primaryUserId()?.let {
                     dismissByoeGuidance(it, ByoeSurface.OnboardingScreen, ByoeDismissMethod.Button)
                 }
                 // The user leaves for the Gmail connection, so the upsell waits until they are back in the mailbox.
-                OnboardingAction.GmailExploreClicked ->
+                OnboardingAction.GmailExploreClicked -> {
+                    reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.OnboardingScreen))
                     if (state.value is OnboardingState.ToUpsell) savePendingOnboardingUpsell(pending = true)
+                }
             }
         }
     }
 
-    private suspend fun onGmailPageShown() {
-        if (isGmailPageRecorded) return
-        isGmailPageRecorded = true
-        primaryUserId()?.let { recordOnboardingStepShown(it, ByoeOnboardingStep.Byoe) }
+    /** Each page once per onboarding run: going back to a page does not show it for the first time again. */
+    private suspend fun onPageShown(step: ByoeOnboardingStep) {
+        if (!recordedSteps.add(step)) return
+        primaryUserId()?.let { recordOnboardingStepShown(it, step) }
     }
 
     private suspend fun primaryUserId() = observePrimaryUserId().first()
 }
 
 sealed interface OnboardingAction {
-    data object GmailPageShown : OnboardingAction
+    data class PageShown(val step: ByoeOnboardingStep) : OnboardingAction
     data object GmailPageSkipped : OnboardingAction
     data object GmailExploreClicked : OnboardingAction
 }

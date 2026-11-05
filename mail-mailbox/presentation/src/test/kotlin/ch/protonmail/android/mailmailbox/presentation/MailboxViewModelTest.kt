@@ -29,6 +29,8 @@ import ch.protonmail.android.mailattachments.domain.model.AttachmentOpenMode
 import ch.protonmail.android.mailattachments.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailattachments.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailattachments.presentation.model.AttachmentIdUiModel
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailcategory.domain.model.CategoryViewStatus
 import ch.protonmail.android.mailcategory.presentation.mapper.toDomainModel
 import ch.protonmail.android.mailcategory.presentation.model.CategoryViewState
@@ -425,6 +427,8 @@ internal class MailboxViewModelTest {
         } returns categoryViewStatusFlow
     }
 
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
+
     private val selectCategory = mockk<SelectCategory> {
         every { this@mockk.invoke(any()) } just runs
     }
@@ -484,8 +488,18 @@ internal class MailboxViewModelTest {
             shouldShowNps = shouldShowNps,
             setActiveCategoryLabel = setActiveCategoryLabel,
             selectCategory = selectCategory,
-            observeCategoryViewStatus = observeCategoryViewStatus
+            observeCategoryViewStatus = observeCategoryViewStatus,
+            reportByoeTelemetryEvent = reportByoeTelemetryEvent
         )
+    }
+
+    @Test
+    fun `when the inbox is shown, then an inbox view is reported for the primary user`() = runTest {
+        // When
+        mailboxViewModel.submit(MailboxViewAction.InboxShown)
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.InboxViewed, userId) }
     }
 
     @BeforeTest

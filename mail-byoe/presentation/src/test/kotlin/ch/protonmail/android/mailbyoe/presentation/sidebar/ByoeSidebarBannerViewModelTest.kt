@@ -19,9 +19,12 @@
 package ch.protonmail.android.mailbyoe.presentation.sidebar
 
 import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.CloseByoeSidebarBanner
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSidebarBannerTreatment
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
@@ -29,6 +32,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import io.mockk.verify
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -48,11 +52,13 @@ internal class ByoeSidebarBannerViewModelTest {
     }
     private val getByoeSidebarBannerTreatment = mockk<GetByoeSidebarBannerTreatment>()
     private val closeByoeSidebarBanner = mockk<CloseByoeSidebarBanner>(relaxUnitFun = true)
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
 
     private fun viewModel() = ByoeSidebarBannerViewModel(
         observePrimaryUserId,
         getByoeSidebarBannerTreatment,
-        closeByoeSidebarBanner
+        closeByoeSidebarBanner,
+        reportByoeTelemetryEvent
     )
 
     @AfterTest
@@ -71,6 +77,47 @@ internal class ByoeSidebarBannerViewModelTest {
 
         // Then
         assertEquals(ByoeSidebarBannerState.Visible(ByoeTreatment.Treatment1), viewModel.state.value)
+    }
+
+    @Test
+    fun `given the banner should show, when the sidebar opens twice, then each appearance is reported`() = runTest {
+        // Given
+        coEvery { getByoeSidebarBannerTreatment(userId) } returns ByoeTreatment.Treatment1
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ByoeSidebarBannerAction.SidebarOpened)
+        viewModel.submit(ByoeSidebarBannerAction.SidebarOpened)
+
+        // Then
+        verify(exactly = 2) { reportByoeTelemetryEvent(ByoeTelemetryEvent.SidebarBannerShown, userId) }
+    }
+
+    @Test
+    fun `given the banner should not show, when the sidebar opens, then no appearance is reported`() = runTest {
+        // Given
+        coEvery { getByoeSidebarBannerTreatment(userId) } returns null
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ByoeSidebarBannerAction.SidebarOpened)
+
+        // Then
+        verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+    }
+
+    @Test
+    fun `given a visible banner, when the user taps it, then an explore click on the banner is reported`() = runTest {
+        // Given
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ByoeSidebarBannerAction.ConnectClicked)
+
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.SidebarBanner))
+        }
     }
 
     @Test

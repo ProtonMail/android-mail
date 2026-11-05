@@ -21,8 +21,11 @@ package ch.protonmail.android.mailsettings.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryAccount
@@ -45,7 +48,8 @@ class SettingsViewModel @Inject constructor(
     observeStorageQuotaUseCase: ObserveStorageQuotaUseCase,
     private val accountInformationMapper: AccountInformationMapper,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
-    private val getGmailConnectionSettingsAccess: GetGmailConnectionSettingsAccess
+    private val getGmailConnectionSettingsAccess: GetGmailConnectionSettingsAccess,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent
 ) : ViewModel() {
 
     val state = combine(observePrimaryAccount(), observeStorageQuotaUseCase()) { account, storageQuota ->
@@ -66,5 +70,19 @@ class SettingsViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
         Loading
     )
-}
 
+    /**
+     * The settings show Connect Gmail: on each resume, and when the row appears on a resumed screen. This is the
+     * Android counterpart of the SDK's BYOE settings page with Connect.
+     */
+    fun onConnectGmailShown() {
+        val userId = (state.value as? Data)?.takeIf { it.isConnectGmailVisible }?.userId ?: return
+        reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsShown, userId)
+        reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsView, userId)
+    }
+
+    fun onConnectGmailClicked() {
+        val userId = (state.value as? Data)?.userId ?: return
+        reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.Settings), userId)
+    }
+}

@@ -18,14 +18,21 @@
 
 package ch.protonmail.android.mailbyoe.presentation.connect
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeConnectErrorType
+import ch.protonmail.android.mailbyoe.domain.model.ByoeImportMode
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
 import ch.protonmail.android.mailbyoe.domain.usecase.RefreshAfterGmailConnection
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.presentation.BuildConfig
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionEvent
+import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
 import ch.protonmail.android.mailcommon.domain.model.ApiEnvironment
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.FindLocalSystemLabelId
@@ -52,6 +59,7 @@ class GmailConnectionViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val forkSessionWithKeyPayload: ForkSessionWithKeyPayload,
     private val refreshAfterGmailConnection: RefreshAfterGmailConnection,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent,
     private val findLocalSystemLabelId: FindLocalSystemLabelId,
     private val selectMailLabelId: SelectMailLabelId,
     private val apiEnvironment: ApiEnvironment,
@@ -62,6 +70,12 @@ class GmailConnectionViewModel @Inject constructor(
 
     private val importEmails =
         savedStateHandle.get<String>(GmailConnectionScreen.IMPORT_EMAILS_KEY)?.toBooleanStrictOrNull() ?: true
+
+    // From the route, so it survives process death while the page is open.
+    private val surface = ByoeSurfaceArgument.decode(savedStateHandle.get<String>(GmailConnectionScreen.SURFACE_KEY))
+
+    // A started connection without an outcome yet, so leaving the screen then reports it as abandoned.
+    private var isAttemptOpen = false
 
     private val mutableState = MutableStateFlow<GmailConnectionState>(GmailConnectionState.Loading)
     val state: StateFlow<GmailConnectionState> = mutableState.asStateFlow()
@@ -88,17 +102,21 @@ class GmailConnectionViewModel @Inject constructor(
     }
 
     private suspend fun openConnectionPage() {
+        // Each page open is an attempt, so a retry starts a new one.
+        report { ByoeTelemetryEvent.ConnectStarted(it, ByoeImportMode.of(importEmails)) }
+        isAttemptOpen = true
         val userId = observePrimaryUserId().first()
         if (userId == null) {
+            // Not reported: telemetry needs a user too, so the start and this failure are dropped (and logged).
             Timber.e("byoe: no primary user to connect a Gmail account for")
-            emitNewStateFrom(GmailConnectionEvent.PreparationFailed)
+            onPreparationFailed()
             return
         }
 
         forkSessionWithKeyPayload(userId).fold(
             ifLeft = {
                 Timber.e("byoe: forking the session for the Gmail connection failed: $it")
-                emitNewStateFrom(GmailConnectionEvent.PreparationFailed)
+                onPreparationFailed()
             },
             ifRight = { fork ->
                 val url = gmailConnectionUrl(apiEnvironment.host, BuildConfig.WEBVIEW_APP_VERSION, fork, importEmails)
@@ -109,11 +127,18 @@ class GmailConnectionViewModel @Inject constructor(
         )
     }
 
+    private fun onPreparationFailed() {
+        isAttemptOpen = false
+        report { ByoeTelemetryEvent.ConnectFailed(it, ByoeConnectErrorType.Unknown) }
+        emitNewStateFrom(GmailConnectionEvent.PreparationFailed)
+    }
+
     private suspend fun onPageClosed(result: GmailConnectionResult) {
         Timber.d("byoe: Gmail connection page closed, result = ${result::class.simpleName}")
-        if (result is GmailConnectionResult.Failed) {
+        reportOutcome(result)
+        if (result is GmailConnectionResult.Failed || result is GmailConnectionResult.PageUnavailable) {
             savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Failed.name
-            Timber.w("byoe: the Gmail connection failed, code = ${result.code}")
+            Timber.w("byoe: the Gmail connection failed: $result")
             emitNewStateFrom(GmailConnectionEvent.ConnectionFailed)
             return
         }
@@ -133,6 +158,41 @@ class GmailConnectionViewModel @Inject constructor(
         // Also refresh when cancelled: the connection may have completed before the page was closed.
         observePrimaryUserId().first()?.let { refreshAfterGmailConnection(it) }
         emitNewStateFrom(GmailConnectionEvent.ConnectionFinished)
+    }
+
+    private fun reportOutcome(result: GmailConnectionResult) {
+        isAttemptOpen = false
+        when (result) {
+            is GmailConnectionResult.Connected -> report { ByoeTelemetryEvent.ConnectSucceeded(it) }
+            // The connection may still have gone through before the close; the app cannot tell.
+            GmailConnectionResult.Cancelled -> report { ByoeTelemetryEvent.ConnectAbandoned(it) }
+            is GmailConnectionResult.Failed ->
+                report { ByoeTelemetryEvent.ConnectFailed(it, ByoeConnectErrorType.fromWebCode(result.code)) }
+            GmailConnectionResult.PageUnavailable ->
+                report { ByoeTelemetryEvent.ConnectFailed(it, ByoeConnectErrorType.Unknown) }
+            // The connection-limit upsell reports its own appearance.
+            GmailConnectionResult.UpsellRequested -> Unit
+        }
+    }
+
+    override fun onCleared() {
+        reportAbandonedAttempt()
+        super.onCleared()
+    }
+
+    /** E.g. the user went back while the session was still being prepared for the page. */
+    @VisibleForTesting
+    internal fun reportAbandonedAttempt() {
+        if (isAttemptOpen) report { ByoeTelemetryEvent.ConnectAbandoned(it) }
+        isAttemptOpen = false
+    }
+
+    private fun report(event: (ByoeSurface) -> ByoeTelemetryEvent) {
+        if (surface == null) {
+            Timber.w("byoe: no surface for the Gmail connection, not reporting it")
+            return
+        }
+        reportByoeTelemetryEvent(event(surface))
     }
 
     /**
