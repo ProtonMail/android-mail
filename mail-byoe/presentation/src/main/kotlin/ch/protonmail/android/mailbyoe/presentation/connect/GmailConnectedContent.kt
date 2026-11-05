@@ -43,6 +43,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,13 +75,40 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 /**
  * Shown once the Gmail account is connected, whichever entry point started the connection. [email] is the
- * connected address when the web page reported it. Without [importEmails], it says older emails stay in Gmail.
+ * connected address when the web page reported it. Without [importEmails], it says older emails stay in Gmail;
+ * with it, "Learn what gets imported" opens [GmailImportInfoSheet].
  */
 @Composable
 internal fun GmailConnectedContent(
     email: String?,
     importEmails: Boolean,
     onOpenInbox: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var showImportInfo by rememberSaveable { mutableStateOf(false) }
+
+    GmailImportInfoSheet(
+        show = showImportInfo,
+        email = email,
+        onOpenInbox = onOpenInbox,
+        onDismiss = { showImportInfo = false }
+    ) {
+        GmailConnectedPage(
+            email = email,
+            importEmails = importEmails,
+            onOpenInbox = onOpenInbox,
+            onLearnWhatGetsImported = { showImportInfo = true },
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+private fun GmailConnectedPage(
+    email: String?,
+    importEmails: Boolean,
+    onOpenInbox: () -> Unit,
+    onLearnWhatGetsImported: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -98,10 +128,13 @@ internal fun GmailConnectedContent(
             verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.Huge)
         ) {
             GmailConnectedHeader(email)
-            GmailConnectedInfo(importEmails)
+            GmailConnectedInfo(importEmails, onLearnWhatGetsImported)
         }
 
-        GmailConnectedActions(onOpenInbox)
+        GmailConnectedOpenInboxButton(
+            onClick = onOpenInbox,
+            modifier = Modifier.padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Compact)
+        )
     }
 }
 
@@ -148,7 +181,7 @@ private fun GmailConnectedAnimation() {
 }
 
 @Composable
-private fun GmailConnectedInfo(importEmails: Boolean) {
+private fun GmailConnectedInfo(importEmails: Boolean, onLearnWhatGetsImported: () -> Unit) {
     val shape = RoundedCornerShape(ProtonDimens.CornerRadius.Huge)
     val rows = listOf(
         GmailConnectedInfoRow(
@@ -165,7 +198,7 @@ private fun GmailConnectedInfo(importEmails: Boolean) {
             GmailConnectedInfoRow(
                 icon = R.drawable.ic_proton_arrows_rotate,
                 title = R.string.byoe_gmail_connected_import_title,
-                body = importBody()
+                body = importBody(onLearnWhatGetsImported)
             )
         } else {
             GmailConnectedInfoRow(
@@ -189,7 +222,7 @@ private fun GmailConnectedInfo(importEmails: Boolean) {
 }
 
 @Composable
-private fun importBody(): AnnotatedString {
+private fun importBody(onLearnWhatGetsImported: () -> Unit): AnnotatedString {
     val body = stringResource(R.string.byoe_gmail_connected_import_body)
     val learnMore = stringResource(R.string.byoe_gmail_connected_import_learn_more)
     val linkStyles = TextLinkStyles(
@@ -198,7 +231,12 @@ private fun importBody(): AnnotatedString {
     return buildAnnotatedString {
         append(body)
         append(" ")
-        withLink(LinkAnnotation.Url(url = IMPORT_HELP_URL, styles = linkStyles)) { append(learnMore) }
+        val link = LinkAnnotation.Clickable(
+            tag = LEARN_WHAT_GETS_IMPORTED_TAG,
+            styles = linkStyles,
+            linkInteractionListener = { onLearnWhatGetsImported() }
+        )
+        withLink(link) { append(learnMore) }
     }
 }
 
@@ -253,14 +291,14 @@ private fun GmailConnectedInfoRowContent(row: GmailConnectedInfoRow, showDivider
     }
 }
 
+/** The page's main action, which the import info sheet repeats. */
 @Composable
-private fun GmailConnectedActions(onOpenInbox: () -> Unit) {
+internal fun GmailConnectedOpenInboxButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     ProtonSolidButton(
-        onClick = onOpenInbox,
+        onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.protonButtonColors(contentColor = ProtonTheme.colors.textInverted),
-        modifier = Modifier
-            .padding(top = ProtonDimens.Spacing.ExtraLarge, bottom = ProtonDimens.Spacing.Compact)
+        modifier = modifier
             .fillMaxWidth()
             .height(ActionButtonHeight)
     ) {
@@ -272,8 +310,7 @@ private fun GmailConnectedActions(onOpenInbox: () -> Unit) {
     }
 }
 
-// TODO: Replace with the help article about what the Gmail import covers once it is published.
-private const val IMPORT_HELP_URL = "https://proton.me/support/easy-switch"
+private const val LEARN_WHAT_GETS_IMPORTED_TAG = "learnWhatGetsImported"
 
 private val IllustrationWidth = 200.dp
 private val IllustrationHeight = 172.dp

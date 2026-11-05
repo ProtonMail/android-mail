@@ -33,6 +33,16 @@
   <string name="byoe_gmail_connected_older_emails_title">Older emails stay in Gmail</string>
   <string name="byoe_gmail_connected_older_emails_body">Want them here too? Import anytime in Settings.</string>
   <string name="byoe_gmail_connected_open_inbox">Take me to Inbox</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">What gets imported</string>
+  <string name="byoe_import_info_subtitle">Your Gmail account stays as it is. Nothing there is edited or deleted.</string>
+  <string name="byoe_import_info_label_lead">All your Gmail in one label.</string>
+  <string name="byoe_import_info_label_body">Imported emails are under the %s label.</string>
+  <string name="byoe_import_info_label_body_no_address">Imported emails are under the label named after your Gmail address.</string>
+  <string name="byoe_import_info_folders_lead">Your labels and folders.</string>
+  <string name="byoe_import_info_folders_body">They come over just as you set them up in Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filters and rules stay behind.</string>
+  <string name="byoe_import_info_filters_body">You can set up new ones in Settings.</string>
   <!-- Snackbar in the mailbox once the user is back from the success page -->
   <string name="byoe_gmail_import_in_progress">Importing in progress…</string>
   <!-- Mailbox banner while a Gmail import is paused because storage is full -->
