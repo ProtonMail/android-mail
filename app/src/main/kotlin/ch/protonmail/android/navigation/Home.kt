@@ -77,6 +77,7 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewAction
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.R as ByoeR
 import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityViewModel
@@ -729,7 +730,7 @@ fun Home(
                             preventBottomSheetDismissal = false
                             // Navigating recomposes the sheet, which would block it from hiding halfway.
                             dismissBottomSheet {
-                                navController.navigate(Screen.GmailIntro(ByoeSurface.Onboarding))
+                                navController.navigate(Screen.GmailIntro(ByoeSurface.OnboardingScreen))
                             }
                         }
                     )
@@ -1070,24 +1071,26 @@ fun Home(
                         addContentSearchSetUp(navController)
                         addByoeSpotlight(
                             onConnect = { importEmails ->
-                                navController.navigate(Screen.GmailConnection(importEmails)) {
+                                navController.navigate(Screen.GmailConnection(importEmails, ByoeSurface.Spotlight)) {
                                     popUpTo(Screen.ByoeSpotlight.route) { inclusive = true }
                                 }
                             },
                             onLater = {
-                                byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight)
+                                byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight, ByoeDismissMethod.Button)
                                 navController.navigateBack()
                             }
                         )
                         addGmailIntro(
-                            onConnect = { _, importEmails ->
-                                navController.navigate(Screen.GmailConnection(importEmails)) {
+                            onConnect = { surface, importEmails ->
+                                navController.navigate(Screen.GmailConnection(importEmails, surface)) {
                                     popUpTo(Screen.GmailIntro.route) { inclusive = true }
                                 }
                             },
                             onLater = { surface ->
                                 // Declining the intro from onboarding dismisses the onboarding page it came from.
-                                if (surface == ByoeSurface.Onboarding) byoeSpotlightViewModel.onDismissed(surface)
+                                if (surface == ByoeSurface.OnboardingScreen) {
+                                    byoeSpotlightViewModel.onDismissed(surface, ByoeDismissMethod.Button)
+                                }
                                 navController.navigateBack()
                             }
                         )

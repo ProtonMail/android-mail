@@ -24,6 +24,8 @@ import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsVie
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView.ApplicationLogsViewMode
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionScreen.IMPORT_EMAILS_KEY
+import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionScreen.SURFACE_KEY
+import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
@@ -196,10 +198,12 @@ sealed class Destination(val route: String) {
         object LanguageSettings : Destination("settings/appLanguage")
         object AppIconSettings : Destination("settings/appIcon")
         object ContentSearchSettings : Destination("settings/contentSearch")
-        object GmailConnection : Destination("settings/gmailConnection/${IMPORT_EMAILS_KEY.wrap()}") {
+        object GmailConnection :
+            Destination("settings/gmailConnection/${IMPORT_EMAILS_KEY.wrap()}/${SURFACE_KEY.wrap()}") {
 
-            operator fun invoke(importEmails: Boolean) =
-                route.replace(IMPORT_EMAILS_KEY.wrap(), importEmails.toString())
+            operator fun invoke(importEmails: Boolean, surface: ByoeSurface) = route
+                .replace(IMPORT_EMAILS_KEY.wrap(), importEmails.toString())
+                .replace(SURFACE_KEY.wrap(), ByoeSurfaceArgument.encode(surface))
         }
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
@@ -273,7 +277,8 @@ sealed class Destination(val route: String) {
 
         object GmailIntro : Destination("byoe/intro/${GMAIL_INTRO_SURFACE_KEY.wrap()}") {
 
-            operator fun invoke(surface: ByoeSurface) = route.replace(GMAIL_INTRO_SURFACE_KEY.wrap(), surface.name)
+            operator fun invoke(surface: ByoeSurface) =
+                route.replace(GMAIL_INTRO_SURFACE_KEY.wrap(), ByoeSurfaceArgument.encode(surface))
         }
 
         object ContentSearchSetUp : Destination("contentSearch/setUp")

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbyoe.domain.usecase
 
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import io.mockk.coEvery
@@ -41,15 +42,19 @@ internal class DismissByoeGuidanceTest {
     }
 
     @Test
-    fun `given the guidance, when it is dismissed, then the guidance records it`() = runTest {
+    fun `given the guidance, when it is swiped away, then the guidance records it with the swipe`() = runTest {
         // Given
-        coEvery { byoeGuidanceRepository.markGuidanceDismissed(userId, ByoeSurface.Spotlight) } returns Unit.right()
+        coEvery {
+            byoeGuidanceRepository.markGuidanceDismissed(userId, ByoeSurface.Spotlight, ByoeDismissMethod.SwipeDown)
+        } returns Unit.right()
 
         // When
-        dismissByoeGuidance(userId, ByoeSurface.Spotlight)
+        dismissByoeGuidance(userId, ByoeSurface.Spotlight, ByoeDismissMethod.SwipeDown)
 
         // Then
-        coVerify(exactly = 1) { byoeGuidanceRepository.markGuidanceDismissed(userId, ByoeSurface.Spotlight) }
+        coVerify(exactly = 1) {
+            byoeGuidanceRepository.markGuidanceDismissed(userId, ByoeSurface.Spotlight, ByoeDismissMethod.SwipeDown)
+        }
     }
 
     private companion object {

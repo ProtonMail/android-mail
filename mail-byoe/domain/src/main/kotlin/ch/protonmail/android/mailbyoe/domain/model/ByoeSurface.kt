@@ -18,9 +18,14 @@
 
 package ch.protonmail.android.mailbyoe.domain.model
 
-/** Where the user started connecting a Gmail account from. */
+/** Where the user met BYOE. Mirrors the SDK's `ByoeSurface`. */
 enum class ByoeSurface {
-    Onboarding,
+
+    /** The BYOE drawer of the app shell during onboarding. No Android call site: there is no such drawer. */
+    OnboardingDrawer,
+
+    /** The BYOE page inside the onboarding, and the intro opened from it. */
+    OnboardingScreen,
     Spotlight,
     SidebarBanner,
     Settings

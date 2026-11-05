@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import ch.protonmail.android.design.compose.navigation.require
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.intro.GmailIntroScreen
+import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.GMAIL_INTRO_SURFACE_KEY
 
@@ -37,7 +38,7 @@ internal fun NavGraphBuilder.addGmailIntro(
     onLater: (surface: ByoeSurface) -> Unit
 ) {
     composable(Destination.Screen.GmailIntro.route) {
-        val surface = ByoeSurface.valueOf(it.require<String>(GMAIL_INTRO_SURFACE_KEY))
+        val surface = requireNotNull(ByoeSurfaceArgument.decode(it.require<String>(GMAIL_INTRO_SURFACE_KEY)))
         GmailIntroScreen(
             isSpotlight = false,
             onConnect = { importEmails -> onConnect(surface, importEmails) },

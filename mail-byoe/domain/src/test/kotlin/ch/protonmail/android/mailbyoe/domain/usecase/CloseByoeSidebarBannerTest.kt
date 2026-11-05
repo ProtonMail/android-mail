@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbyoe.domain.usecase
 
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -42,13 +43,15 @@ internal class CloseByoeSidebarBannerTest {
     @Test
     fun `given the banner, when it is closed, then the guidance records it`() = runTest {
         // Given
-        coEvery { byoeGuidanceRepository.markSidebarBannerClosed(userId) } returns Unit.right()
+        coEvery {
+            byoeGuidanceRepository.markSidebarBannerClosed(userId, ByoeDismissMethod.Button)
+        } returns Unit.right()
 
         // When
-        closeByoeSidebarBanner(userId)
+        closeByoeSidebarBanner(userId, ByoeDismissMethod.Button)
 
         // Then
-        coVerify(exactly = 1) { byoeGuidanceRepository.markSidebarBannerClosed(userId) }
+        coVerify(exactly = 1) { byoeGuidanceRepository.markSidebarBannerClosed(userId, ByoeDismissMethod.Button) }
     }
 
     private companion object {

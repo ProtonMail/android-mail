@@ -20,11 +20,13 @@ package ch.protonmail.android.mailonboarding.presentation
 
 import app.cash.turbine.test
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
+import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeOnboardingTreatment
-import ch.protonmail.android.mailbyoe.domain.usecase.RecordByoeOnboardingPageShown
+import ch.protonmail.android.mailbyoe.domain.usecase.RecordOnboardingStepShown
 import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingAction
@@ -59,7 +61,7 @@ internal class OnboardingViewModelTest {
     private val getByoeOnboardingTreatment = mockk<GetByoeOnboardingTreatment> {
         coEvery { this@mockk(any()) } returns null
     }
-    private val recordByoeOnboardingPageShown = mockk<RecordByoeOnboardingPageShown>(relaxed = true)
+    private val recordOnboardingStepShown = mockk<RecordOnboardingStepShown>(relaxed = true)
     private val dismissByoeGuidance = mockk<DismissByoeGuidance>(relaxed = true)
     private val savePendingOnboardingUpsell = mockk<SavePendingOnboardingUpsell>(relaxed = true)
 
@@ -68,7 +70,7 @@ internal class OnboardingViewModelTest {
         observePrimaryUserId,
         getUpsellingOnboardingVisibility,
         getByoeOnboardingTreatment,
-        recordByoeOnboardingPageShown,
+        recordOnboardingStepShown,
         dismissByoeGuidance,
         savePendingOnboardingUpsell
     )
@@ -123,7 +125,7 @@ internal class OnboardingViewModelTest {
         viewModel.submit(OnboardingAction.GmailPageShown)
 
         // Then
-        coVerify(exactly = 1) { recordByoeOnboardingPageShown(UserTestData.Primary.userId) }
+        coVerify(exactly = 1) { recordOnboardingStepShown(UserTestData.Primary.userId, ByoeOnboardingStep.Byoe) }
     }
 
     @Test
@@ -135,7 +137,9 @@ internal class OnboardingViewModelTest {
         viewModel().submit(OnboardingAction.GmailPageSkipped)
 
         // Then
-        coVerify(exactly = 1) { dismissByoeGuidance(UserTestData.Primary.userId, ByoeSurface.Onboarding) }
+        coVerify(exactly = 1) {
+            dismissByoeGuidance(UserTestData.Primary.userId, ByoeSurface.OnboardingScreen, ByoeDismissMethod.Button)
+        }
     }
 
     @Test

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailbyoe.presentation.sidebar
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.CloseByoeSidebarBanner
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSidebarBannerTreatment
@@ -97,7 +98,7 @@ internal class ByoeSidebarBannerViewModelTest {
 
         // Then
         assertEquals(ByoeSidebarBannerState.Hidden, viewModel.state.value)
-        coVerify(exactly = 1) { closeByoeSidebarBanner(userId) }
+        coVerify(exactly = 1) { closeByoeSidebarBanner(userId, ByoeDismissMethod.Button) }
     }
 
     @Test

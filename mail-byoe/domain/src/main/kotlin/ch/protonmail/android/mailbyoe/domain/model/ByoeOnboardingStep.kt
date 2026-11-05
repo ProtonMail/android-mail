@@ -16,23 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailbyoe.domain.usecase
-
-import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
-import me.proton.core.domain.entity.UserId
-import timber.log.Timber
-import javax.inject.Inject
+package ch.protonmail.android.mailbyoe.domain.model
 
 /**
- * Records that the BYOE onboarding page appeared. The SDK starts the sidebar entry's window from it.
+ * An onboarding page, recorded in the SDK when it appears. Mirrors the SDK's `OnboardingStep` without `Finished`,
+ * which is recorded separately after the last page.
  */
-class RecordByoeOnboardingPageShown @Inject constructor(
-    private val byoeGuidanceRepository: ByoeGuidanceRepository
-) {
+enum class ByoeOnboardingStep {
+    Upsell,
+    Welcome,
+    Offline,
+    Byoe,
 
-    suspend operator fun invoke(userId: UserId) {
-        byoeGuidanceRepository.recordOnboardingPageShown(userId)
-            .onLeft { Timber.e("byoe: unable to record the onboarding page as shown: $it") }
-            .onRight { Timber.d("byoe: onboarding page recorded as shown") }
-    }
+    /** No Android call site: the notification permission is a Home interstitial, not an onboarding page. */
+    Notifications
 }

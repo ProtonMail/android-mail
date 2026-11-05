@@ -19,7 +19,10 @@
 package ch.protonmail.android.mailbyoe.domain.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
+import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -38,15 +41,21 @@ interface ByoeGuidanceRepository {
 
     suspend fun getSidebarBannerTreatment(userId: UserId): Either<DataError, ByoeTreatment?>
 
-    suspend fun markSidebarBannerClosed(userId: UserId): Either<DataError, Unit>
+    suspend fun markSidebarBannerClosed(userId: UserId, method: ByoeDismissMethod): Either<DataError, Unit>
 
     suspend fun markSpotlightShown(userId: UserId): Either<DataError, Unit>
 
-    suspend fun markGuidanceDismissed(userId: UserId, surface: ByoeSurface): Either<DataError, Unit>
+    suspend fun markGuidanceDismissed(
+        userId: UserId,
+        surface: ByoeSurface,
+        method: ByoeDismissMethod
+    ): Either<DataError, Unit>
 
     suspend fun isOnboardingFinishedRecorded(userId: UserId): Either<DataError, Boolean>
 
     suspend fun recordOnboardingFinished(userId: UserId): Either<DataError, Unit>
 
-    suspend fun recordOnboardingPageShown(userId: UserId): Either<DataError, Unit>
+    suspend fun recordOnboardingStep(userId: UserId, step: ByoeOnboardingStep): Either<DataError, Unit>
+
+    suspend fun report(userId: UserId, event: ByoeTelemetryEvent): Either<DataError, Unit>
 }

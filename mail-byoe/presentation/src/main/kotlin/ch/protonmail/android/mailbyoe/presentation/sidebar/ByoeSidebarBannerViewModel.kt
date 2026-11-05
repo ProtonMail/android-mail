@@ -20,6 +20,7 @@ package ch.protonmail.android.mailbyoe.presentation.sidebar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.usecase.CloseByoeSidebarBanner
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSidebarBannerTreatment
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
@@ -73,6 +74,6 @@ class ByoeSidebarBannerViewModel @Inject constructor(
         isClosed = true
         refreshJob?.cancel()
         mutableState.value = ByoeSidebarBannerState.Hidden
-        viewModelScope.launch { closeByoeSidebarBanner(primaryUserId.first()) }
+        viewModelScope.launch { closeByoeSidebarBanner(primaryUserId.first(), ByoeDismissMethod.Button) }
     }
 }

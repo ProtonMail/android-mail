@@ -20,10 +20,12 @@ package ch.protonmail.android.mailonboarding.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
+import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.usecase.DismissByoeGuidance
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeOnboardingTreatment
-import ch.protonmail.android.mailbyoe.domain.usecase.RecordByoeOnboardingPageShown
+import ch.protonmail.android.mailbyoe.domain.usecase.RecordOnboardingStepShown
 import ch.protonmail.android.mailonboarding.domain.usecase.SavePendingOnboardingUpsell
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailsession.domain.model.hasSubscription
@@ -47,7 +49,7 @@ class OnboardingViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val getUpsellingOnboardingVisibility: GetUpsellingOnboardingVisibility,
     private val getByoeOnboardingTreatment: GetByoeOnboardingTreatment,
-    private val recordByoeOnboardingPageShown: RecordByoeOnboardingPageShown,
+    private val recordOnboardingStepShown: RecordOnboardingStepShown,
     private val dismissByoeGuidance: DismissByoeGuidance,
     private val savePendingOnboardingUpsell: SavePendingOnboardingUpsell
 ) : ViewModel() {
@@ -72,7 +74,9 @@ class OnboardingViewModel @Inject constructor(
         viewModelScope.launch {
             when (action) {
                 OnboardingAction.GmailPageShown -> onGmailPageShown()
-                OnboardingAction.GmailPageSkipped -> primaryUserId()?.let { dismissByoeGuidance(it, ByoeSurface.Onboarding) }
+                OnboardingAction.GmailPageSkipped -> primaryUserId()?.let {
+                    dismissByoeGuidance(it, ByoeSurface.OnboardingScreen, ByoeDismissMethod.Button)
+                }
                 // The user leaves for the Gmail connection, so the upsell waits until they are back in the mailbox.
                 OnboardingAction.GmailExploreClicked ->
                     if (state.value is OnboardingState.ToUpsell) savePendingOnboardingUpsell(pending = true)
@@ -83,7 +87,7 @@ class OnboardingViewModel @Inject constructor(
     private suspend fun onGmailPageShown() {
         if (isGmailPageRecorded) return
         isGmailPageRecorded = true
-        primaryUserId()?.let { recordByoeOnboardingPageShown(it) }
+        primaryUserId()?.let { recordOnboardingStepShown(it, ByoeOnboardingStep.Byoe) }
     }
 
     private suspend fun primaryUserId() = observePrimaryUserId().first()

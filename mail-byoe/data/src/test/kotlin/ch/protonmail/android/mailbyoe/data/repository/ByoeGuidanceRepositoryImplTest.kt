@@ -20,7 +20,9 @@ package ch.protonmail.android.mailbyoe.data.repository
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -48,6 +50,7 @@ import uniffi.mail_uniffi.ScreenVisibilityStore
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod as DismissMethod
 
 internal class ByoeGuidanceRepositoryImplTest {
 
@@ -168,7 +171,7 @@ internal class ByoeGuidanceRepositoryImplTest {
         coEvery { byoeGuidance.markSidebarBannerClosed(ByoeDismissMethod.BUTTON) } just runs
 
         // When
-        val result = repository.markSidebarBannerClosed(userId)
+        val result = repository.markSidebarBannerClosed(userId, DismissMethod.Button)
 
         // Then
         assertEquals(Unit.right(), result)
@@ -189,16 +192,16 @@ internal class ByoeGuidanceRepositoryImplTest {
     }
 
     @Test
-    fun `given the spotlight is dismissed, when recording it, then the guidance records it`() = runTest {
+    fun `given the spotlight is swiped away, when recording it, then the guidance records the swipe`() = runTest {
         // Given
-        coEvery { byoeGuidance.markSpotlightDismissed(ByoeDismissMethod.BUTTON) } just runs
+        coEvery { byoeGuidance.markSpotlightDismissed(ByoeDismissMethod.SWIPE_DOWN) } just runs
 
         // When
-        val result = repository.markGuidanceDismissed(userId, ByoeSurface.Spotlight)
+        val result = repository.markGuidanceDismissed(userId, ByoeSurface.Spotlight, DismissMethod.SwipeDown)
 
         // Then
         assertEquals(Unit.right(), result)
-        coVerify(exactly = 1) { byoeGuidance.markSpotlightDismissed(ByoeDismissMethod.BUTTON) }
+        coVerify(exactly = 1) { byoeGuidance.markSpotlightDismissed(ByoeDismissMethod.SWIPE_DOWN) }
     }
 
     @Test
@@ -207,7 +210,7 @@ internal class ByoeGuidanceRepositoryImplTest {
         coEvery { byoeGuidance.markOnboardingDismissed(ByoeDismissMethod.BUTTON) } just runs
 
         // When
-        val result = repository.markGuidanceDismissed(userId, ByoeSurface.Onboarding)
+        val result = repository.markGuidanceDismissed(userId, ByoeSurface.OnboardingScreen, DismissMethod.Button)
 
         // Then
         assertEquals(Unit.right(), result)
@@ -245,10 +248,38 @@ internal class ByoeGuidanceRepositoryImplTest {
         coEvery { screenVisibilityStore.markOnboardingStep(OnboardingStep.BYOE) } just runs
 
         // When
-        val result = repository.recordOnboardingPageShown(userId)
+        val result = repository.recordOnboardingStep(userId, ByoeOnboardingStep.Byoe)
 
         // Then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.BYOE) }
+    }
+
+    @Test
+    fun `given each onboarding page, when recording it, then its step is recorded`() = runTest {
+        // Given
+        coEvery { screenVisibilityStore.markOnboardingStep(any()) } just runs
+
+        // When
+        ByoeOnboardingStep.entries.forEach { repository.recordOnboardingStep(userId, it) }
+
+        // Then
+        coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.UPSELL) }
+        coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.WELCOME) }
+        coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.OFFLINE) }
+        coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.BYOE) }
+        coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.NOTIFICATIONS) }
+    }
+
+    @Test
+    fun `given no user session, when reporting an event, then an error is returned`() = runTest {
+        // Given
+        coEvery { userSessionRepository.getUserSession(userId) } returns null
+
+        // When
+        val result = repository.report(userId, ByoeTelemetryEvent.InboxViewed)
+
+        // Then
+        assertEquals(DataError.Local.NoUserSession.left(), result)
     }
 }

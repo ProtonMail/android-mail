@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailbyoe.domain.usecase
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import me.proton.core.domain.entity.UserId
@@ -32,8 +33,8 @@ class DismissByoeGuidance @Inject constructor(
     private val byoeGuidanceRepository: ByoeGuidanceRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, surface: ByoeSurface) {
-        byoeGuidanceRepository.markGuidanceDismissed(userId, surface)
+    suspend operator fun invoke(userId: UserId, surface: ByoeSurface, method: ByoeDismissMethod) {
+        byoeGuidanceRepository.markGuidanceDismissed(userId, surface, method)
             .onLeft { Timber.e("byoe: unable to record the guidance as dismissed: $it") }
             .onRight { Timber.d("byoe: guidance dismissed") }
     }

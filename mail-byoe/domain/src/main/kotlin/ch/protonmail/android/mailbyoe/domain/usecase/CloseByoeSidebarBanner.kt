@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailbyoe.domain.usecase
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -30,8 +31,8 @@ class CloseByoeSidebarBanner @Inject constructor(
     private val byoeGuidanceRepository: ByoeGuidanceRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId) {
-        byoeGuidanceRepository.markSidebarBannerClosed(userId)
+    suspend operator fun invoke(userId: UserId, method: ByoeDismissMethod) {
+        byoeGuidanceRepository.markSidebarBannerClosed(userId, method)
             .onLeft { Timber.e("byoe: unable to record the sidebar banner as closed: $it") }
             .onRight { Timber.d("byoe: sidebar banner closed") }
     }

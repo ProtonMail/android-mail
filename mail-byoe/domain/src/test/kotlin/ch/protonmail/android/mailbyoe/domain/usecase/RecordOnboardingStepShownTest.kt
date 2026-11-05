@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbyoe.domain.usecase
 
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -29,10 +30,10 @@ import me.proton.core.domain.entity.UserId
 import kotlin.test.AfterTest
 import kotlin.test.Test
 
-internal class RecordByoeOnboardingPageShownTest {
+internal class RecordOnboardingStepShownTest {
 
     private val byoeGuidanceRepository = mockk<ByoeGuidanceRepository>()
-    private val recordByoeOnboardingPageShown = RecordByoeOnboardingPageShown(byoeGuidanceRepository)
+    private val recordOnboardingStepShown = RecordOnboardingStepShown(byoeGuidanceRepository)
 
     @AfterTest
     fun tearDown() {
@@ -40,15 +41,15 @@ internal class RecordByoeOnboardingPageShownTest {
     }
 
     @Test
-    fun `given the onboarding page appeared, when recording it, then the guidance records it`() = runTest {
+    fun `given the welcome page appeared, when recording it, then the guidance records the welcome step`() = runTest {
         // Given
-        coEvery { byoeGuidanceRepository.recordOnboardingPageShown(userId) } returns Unit.right()
+        coEvery { byoeGuidanceRepository.recordOnboardingStep(userId, ByoeOnboardingStep.Welcome) } returns Unit.right()
 
         // When
-        recordByoeOnboardingPageShown(userId)
+        recordOnboardingStepShown(userId, ByoeOnboardingStep.Welcome)
 
         // Then
-        coVerify(exactly = 1) { byoeGuidanceRepository.recordOnboardingPageShown(userId) }
+        coVerify(exactly = 1) { byoeGuidanceRepository.recordOnboardingStep(userId, ByoeOnboardingStep.Welcome) }
     }
 
     private companion object {

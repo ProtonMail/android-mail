@@ -109,6 +109,7 @@ fun GmailConnectionScreen(
 object GmailConnectionScreen {
 
     const val IMPORT_EMAILS_KEY = "gmailImportEmails"
+    const val SURFACE_KEY = "gmailConnectionSurface"
 }
 
 @Composable
