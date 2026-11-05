@@ -37,6 +37,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,10 +67,16 @@ import ch.protonmail.android.mailbyoe.presentation.byoeColors
 fun ByoeStorageBanner(onUpgrade: () -> Unit, modifier: Modifier = Modifier) {
     val viewModel = hiltViewModelOrNull<ByoeStorageBannerViewModel>() ?: return
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val isVisible = state is ByoeStorageBannerState.Visible
 
-    AnimatedVisibility(visible = state is ByoeStorageBannerState.Visible, modifier = modifier) {
+    LaunchedEffect(isVisible) { viewModel.submit(ByoeStorageBannerAction.VisibilityChanged(isVisible)) }
+
+    AnimatedVisibility(visible = isVisible, modifier = modifier) {
         ByoeStorageBannerContent(
-            onUpgrade = onUpgrade,
+            onUpgrade = {
+                viewModel.submit(ByoeStorageBannerAction.UpgradeClicked)
+                onUpgrade()
+            },
             onNotNow = { viewModel.submit(ByoeStorageBannerAction.NotNowClicked) }
         )
     }

@@ -22,6 +22,9 @@ import androidx.lifecycle.SavedStateHandle
 import arrow.core.Either
 import arrow.core.right
 import app.cash.turbine.test
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
+import ch.protonmail.android.mailbyoe.domain.model.ByoeUpsellCta
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
@@ -41,6 +44,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeAttempt
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelledByUser
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeError
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
@@ -54,6 +58,8 @@ import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUps
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentOperation.UpsellingScreenContentEvent
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -118,6 +124,7 @@ internal class UpsellingViewModelTest {
     private val sdkPurchaseEnabled = mockk<FeatureFlag<Boolean>> {
         coEvery { get() } returns false
     }
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
 
     @AfterTest
     fun teardown() {
@@ -738,6 +745,202 @@ internal class UpsellingViewModelTest {
         recordPlusToUnlimitedOptOut,
         recordBlackFridayOptOut,
         resolvePlanBeforeUpgrade,
-        sdkPurchaseEnabled
+        sdkPurchaseEnabled,
+        reportByoeTelemetryEvent
+    )
+
+    @Test
+    fun `given the connection limit upsell, when it shows, then the upsell wall is reported once`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+
+        // When
+        viewModel().state.test { awaitItem() }
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellWallShown) }
+        verify(exactly = 0) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellScreenShown) }
+    }
+
+    @Test
+    fun `given the storage upsell, when it shows, then the upsell screen is reported once`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeStorage)
+
+        // When
+        viewModel().state.test { awaitItem() }
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellScreenShown) }
+        verify(exactly = 0) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellWallShown) }
+    }
+
+    @Test
+    fun `given another upsell, when it shows, then no BYOE upsell is reported`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.Navbar)
+
+        // When
+        viewModel().state.test { awaitItem() }
+
+        // Then
+        verify(exactly = 0) { reportByoeTelemetryEvent(any()) }
+    }
+
+    @Test
+    fun `given the storage upsell, when the default plan is bought, then a primary CTA click is reported`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeStorage)
+        val viewModel = viewModel()
+
+        viewModel.state.test {
+            awaitItem()
+
+            // When
+            viewModel.recordUpgradeAttempt(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+
+            // Then
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellCtaClicked(ByoeUpsellCta.Primary))
+            }
+        }
+    }
+
+    @Test
+    fun `given the storage upsell, when the other plan is bought, then a secondary CTA click is reported`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeStorage)
+        val viewModel = viewModel()
+
+        viewModel.state.test {
+            awaitItem()
+
+            // When
+            viewModel.recordUpgradeAttempt(byoePayload(cycle = PlanUpgradeCycle.Monthly))
+
+            // Then
+            verify(exactly = 1) {
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellCtaClicked(ByoeUpsellCta.Secondary))
+            }
+        }
+    }
+
+    @Test
+    fun `given the storage upsell at an intro price, when its only plan is bought, then a primary CTA is reported`() =
+        runTest {
+            // Given
+            val introPrice = PlanUpgradeInstanceListUiModel.Data.IntroPrice(
+                shorterCycle = mockk<PlanUpgradeInstanceUiModel.Promotional.IntroductoryPrice> {
+                    every { cycle } returns PlanUpgradeCycle.Monthly
+                },
+                longerCycle = mockk<PlanUpgradeInstanceUiModel.Standard> {
+                    every { cycle } returns PlanUpgradeCycle.Yearly
+                }
+            )
+            givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeStorage, plansList = introPrice)
+            val viewModel = viewModel()
+
+            viewModel.state.test {
+                awaitItem()
+
+                // When
+                viewModel.recordUpgradeAttempt(byoePayload(cycle = PlanUpgradeCycle.Monthly))
+
+                // Then
+                verify(exactly = 1) {
+                    reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellCtaClicked(ByoeUpsellCta.Primary))
+                }
+            }
+        }
+
+    @Test
+    fun `given the storage upsell in Black Friday wave 2, when its only plan is bought, then a primary CTA is reported`() =
+        runTest {
+            // Given
+            val blackFridayWave2 = PlanUpgradeInstanceListUiModel.Data.BlackFriday(
+                blackFridayVariant = PlanUpgradeVariant.BlackFriday.Wave2,
+                shorterCycle = mockk<PlanUpgradeInstanceUiModel.Promotional.BlackFriday> {
+                    every { cycle } returns PlanUpgradeCycle.Monthly
+                },
+                longerCycle = mockk<PlanUpgradeInstanceUiModel.Standard> {
+                    every { cycle } returns PlanUpgradeCycle.Yearly
+                }
+            )
+            givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeStorage, plansList = blackFridayWave2)
+            val viewModel = viewModel()
+
+            viewModel.state.test {
+                awaitItem()
+
+                // When
+                viewModel.recordUpgradeAttempt(byoePayload(cycle = PlanUpgradeCycle.Monthly))
+
+                // Then
+                verify(exactly = 1) {
+                    reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellCtaClicked(ByoeUpsellCta.Primary))
+                }
+            }
+        }
+
+    @Test
+    fun `given the storage upsell, when the purchase succeeds or fails, then the outcome is reported`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeStorage)
+        val viewModel = viewModel()
+
+        // When
+        viewModel.recordUpgradeSuccess(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+        viewModel.recordUpgradeError(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+        viewModel.recordUpgradeCancelledByUser(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellSucceeded) }
+        verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellFailed("upgrade_error")) }
+        verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.UpsellCtaClicked>()) }
+    }
+
+    @Test
+    fun `given the connection limit upsell, when a plan is bought, then only the wall is reported`() = runTest {
+        // Given
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+        val viewModel = viewModel()
+
+        // When
+        viewModel.recordUpgradeAttempt(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+        viewModel.recordUpgradeSuccess(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+        viewModel.recordUpgradeError(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+
+        // Then
+        verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.UpsellCtaClicked>()) }
+        verify(exactly = 0) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellSucceeded) }
+        verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.UpsellFailed>()) }
+    }
+
+    private fun givenPlansLoadedFor(
+        entryPoint: UpsellingEntryPoint.Feature,
+        plansList: PlanUpgradeInstanceListUiModel.Data = PlanUpgradeInstanceListUiModel.Data.StandardMailPlus(
+            shorterCycle = mockk { every { cycle } returns PlanUpgradeCycle.Monthly },
+            longerCycle = mockk { every { cycle } returns PlanUpgradeCycle.Yearly }
+        )
+    ) {
+        every {
+            savedStateHandle.get<String>(UpsellingEntryPointKey)
+        } returns Json.encodeToString<UpsellingEntryPoint>(entryPoint)
+        coEvery { observePlanUpgrades(entryPoint) } returns flowOf(listOf<ProductOfferDetail>(mockk()))
+        val loaded = mockk<UpsellingScreenContentState.Data> {
+            every { plans } returns mockk {
+                every { variant } returns PlanUpgradeVariant.Normal.MailPlus
+                every { list } returns plansList
+            }
+        }
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns loaded
+    }
+
+    private fun byoePayload(cycle: PlanUpgradeCycle) = UpsellingTelemetryPayload(
+        selectedPlan = "Mail Plus",
+        selectedCycle = cycle.name,
+        upsellIsPromotional = false,
+        modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+        isIntroOffer = false
     )
 }

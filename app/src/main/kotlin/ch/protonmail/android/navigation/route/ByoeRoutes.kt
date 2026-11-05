@@ -21,13 +21,17 @@ package ch.protonmail.android.navigation.route
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ch.protonmail.android.design.compose.navigation.require
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.intro.GmailIntroScreen
 import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.GMAIL_INTRO_SURFACE_KEY
 
-internal fun NavGraphBuilder.addByoeSpotlight(onConnect: (importEmails: Boolean) -> Unit, onLater: () -> Unit) {
+internal fun NavGraphBuilder.addByoeSpotlight(
+    onConnect: (importEmails: Boolean) -> Unit,
+    onLater: (method: ByoeDismissMethod) -> Unit
+) {
     composable(Destination.Screen.ByoeSpotlight.route) {
         GmailIntroScreen(isSpotlight = true, onConnect = onConnect, onLater = onLater)
     }
@@ -35,14 +39,14 @@ internal fun NavGraphBuilder.addByoeSpotlight(onConnect: (importEmails: Boolean)
 
 internal fun NavGraphBuilder.addGmailIntro(
     onConnect: (surface: ByoeSurface, importEmails: Boolean) -> Unit,
-    onLater: (surface: ByoeSurface) -> Unit
+    onLater: (surface: ByoeSurface, method: ByoeDismissMethod) -> Unit
 ) {
     composable(Destination.Screen.GmailIntro.route) {
         val surface = requireNotNull(ByoeSurfaceArgument.decode(it.require<String>(GMAIL_INTRO_SURFACE_KEY)))
         GmailIntroScreen(
             isSpotlight = false,
             onConnect = { importEmails -> onConnect(surface, importEmails) },
-            onLater = { onLater(surface) }
+            onLater = { method -> onLater(surface, method) }
         )
     }
 }

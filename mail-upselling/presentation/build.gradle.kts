@@ -80,6 +80,7 @@ dependencies {
     kapt(libs.bundles.app.annotationProcessors)
     implementation(libs.dagger.hilt.android)
 
+    implementation(project(":mail-byoe:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-events:domain"))
     implementation(project(":mail-featureflags:domain"))

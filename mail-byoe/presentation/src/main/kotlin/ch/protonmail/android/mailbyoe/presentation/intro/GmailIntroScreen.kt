@@ -73,6 +73,7 @@ import ch.protonmail.android.design.compose.component.ProtonSwitch
 import ch.protonmail.android.design.compose.component.protonButtonColors
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.presentation.R
 import ch.protonmail.android.mailbyoe.presentation.byoeColors
 
@@ -81,18 +82,24 @@ import ch.protonmail.android.mailbyoe.presentation.byoeColors
  * as a spotlight that presents the feature as new; onboarding, the sidebar and settings show it as [isSpotlight]
  * false.
  *
- * [onConnect] receives whether the user wants their existing Gmail emails imported.
+ * [onConnect] receives whether the user wants their existing Gmail emails imported. [onLater] receives how the user
+ * left: the "Later" button, or the system back gesture (a dismiss gesture, so [ByoeDismissMethod.SwipeDown]).
  */
 @Composable
 fun GmailIntroScreen(
     isSpotlight: Boolean,
     onConnect: (importEmails: Boolean) -> Unit,
-    onLater: () -> Unit,
+    onLater: (method: ByoeDismissMethod) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    BackHandler(onBack = onLater)
+    BackHandler(onBack = { onLater(ByoeDismissMethod.SwipeDown) })
 
-    GmailIntroContent(isSpotlight = isSpotlight, onConnect = onConnect, onLater = onLater, modifier = modifier)
+    GmailIntroContent(
+        isSpotlight = isSpotlight,
+        onConnect = onConnect,
+        onLater = { onLater(ByoeDismissMethod.Button) },
+        modifier = modifier
+    )
 }
 
 @Composable

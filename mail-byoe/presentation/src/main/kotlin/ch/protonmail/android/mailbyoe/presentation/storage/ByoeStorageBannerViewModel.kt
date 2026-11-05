@@ -20,7 +20,11 @@ package ch.protonmail.android.mailbyoe.presentation.storage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeBannerCta
+import ch.protonmail.android.mailbyoe.domain.model.ByoeBannerOrigin
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.usecase.ObserveByoeImportPausedForStorage
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
@@ -52,8 +56,11 @@ class ByoeStorageBannerViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     observeByoeImportPausedForStorage: ObserveByoeImportPausedForStorage,
     private val dismissal: ByoeStorageBannerDismissal,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent,
     observeUpsellingVisibility: ObserveUpsellingVisibility
 ) : ViewModel() {
+
+    private var isAppearanceReported = false
 
     val state: StateFlow<ByoeStorageBannerState> = observePrimaryUserId()
         .filterNotNull()
@@ -78,10 +85,27 @@ class ByoeStorageBannerViewModel @Inject constructor(
 
     fun submit(action: ByoeStorageBannerAction) {
         when (action) {
-            ByoeStorageBannerAction.NotNowClicked -> viewModelScope.launch {
-                dismissal.dismiss(observePrimaryUserId().filterNotNull().first())
+            is ByoeStorageBannerAction.VisibilityChanged -> onVisibilityChanged(action.isVisible)
+            ByoeStorageBannerAction.UpgradeClicked -> reportCta(ByoeBannerCta.Upgrade)
+            ByoeStorageBannerAction.NotNowClicked -> {
+                reportCta(ByoeBannerCta.NotNow)
+                viewModelScope.launch { dismissal.dismiss(observePrimaryUserId().filterNotNull().first()) }
             }
         }
+    }
+
+    private fun onVisibilityChanged(isVisible: Boolean) {
+        if (!isVisible) {
+            isAppearanceReported = false
+            return
+        }
+        if (isAppearanceReported) return
+        isAppearanceReported = true
+        reportByoeTelemetryEvent(ByoeTelemetryEvent.UpgradeBannerShown(ByoeBannerOrigin.InboxStorageLimit))
+    }
+
+    private fun reportCta(cta: ByoeBannerCta) {
+        reportByoeTelemetryEvent(ByoeTelemetryEvent.UpgradeBannerCtaClicked(ByoeBannerOrigin.InboxStorageLimit, cta))
     }
 
     private companion object {

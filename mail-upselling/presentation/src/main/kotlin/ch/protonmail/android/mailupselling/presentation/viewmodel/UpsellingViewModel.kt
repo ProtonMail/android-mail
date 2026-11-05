@@ -21,6 +21,9 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
+import ch.protonmail.android.mailbyoe.domain.model.ByoeUpsellCta
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
@@ -42,6 +45,7 @@ import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeAttempt
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeCancelledByUser
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeError
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpgradeSuccess
+import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.repository.UpsellRatingTriggerRepository
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlanUpgrades
@@ -57,6 +61,8 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenCon
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.mailupselling.presentation.usecase.ResolveActiveUpsellTheme
@@ -106,7 +112,8 @@ internal class UpsellingViewModel @Inject constructor(
     private val recordPlusToUnlimitedOptOut: RecordPlusToUnlimitedOptOut,
     private val recordBlackFridayOptOut: RecordBlackFridayOptOut,
     private val resolvePlanBeforeUpgrade: ResolvePlanBeforeUpgrade,
-    @IsSdkUpgradesPurchaseEnabled private val sdkPurchaseEnabled: FeatureFlag<Boolean>
+    @IsSdkUpgradesPurchaseEnabled private val sdkPurchaseEnabled: FeatureFlag<Boolean>,
+    private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
@@ -167,6 +174,8 @@ internal class UpsellingViewModel @Inject constructor(
             activeTheme = theme
 
             emitNewStateFrom(UpsellingScreenContentEvent.DataLoaded(plans, entryPoint, theme))
+            // Once per screen entry: the plans load once, here.
+            reportByoeShown()
             appEventBroadcaster.emit(AppEvent.SubscriptionPaywallShown)
 
             currentOfferId?.let { appEventBroadcaster.emit(AppEvent.OfferReceived(it)) }
@@ -207,9 +216,12 @@ internal class UpsellingViewModel @Inject constructor(
         }
     }
 
-    fun recordUpgradeAttempt(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
+    fun recordUpgradeAttempt(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeAttempt::invoke)
+        reportByoeStorageUpsell { ByoeTelemetryEvent.UpsellCtaClicked(upsellCta(upsellingTelemetryPayload)) }
+    }
 
+    // A cancelled purchase is not a failure, so it reports no BYOE telemetry.
     fun recordUpgradeCancelledByUser(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         purchaseStarted = false
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeCancelledByUser::invoke)
@@ -218,10 +230,12 @@ internal class UpsellingViewModel @Inject constructor(
     fun recordUpgradeError(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         purchaseStarted = false
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeError::invoke)
+        reportByoeStorageUpsell { ByoeTelemetryEvent.UpsellFailed(BYOE_UPGRADE_ERROR_REASON) }
     }
 
     fun recordUpgradeSuccess(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeSuccess::invoke)
+        reportByoeStorageUpsell { ByoeTelemetryEvent.UpsellSucceeded }
         // Fire-and-forget, scope-independent: the screen-scoped viewModelScope may be cancelled by
         // the navigateBack() that runs on success, so the emit must not rely on it.
         upsellRatingTriggerRepository.emitUpsellSuccess()
@@ -257,6 +271,49 @@ internal class UpsellingViewModel @Inject constructor(
         )
     }
 
+    private fun reportByoeShown() {
+        when (entryPoint) {
+            UpsellingEntryPoint.Feature.ByoeConnectionLimit ->
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellWallShown)
+
+            UpsellingEntryPoint.Feature.ByoeStorage -> reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellScreenShown)
+            else -> Unit
+        }
+    }
+
+    /** The CTA, success and failure events belong to the storage upsell funnel only, not to the connection limit. */
+    private fun reportByoeStorageUpsell(event: () -> ByoeTelemetryEvent) {
+        if (entryPoint == UpsellingEntryPoint.Feature.ByoeStorage) reportByoeTelemetryEvent(event())
+    }
+
+    /**
+     * The primary CTA buys the default plan: the one a single-button layout shows, else the longer cycle. The
+     * secondary CTA buys the other plan, which a two-plan layout lets the user pick.
+     */
+    private fun upsellCta(payload: UpsellingTelemetryPayload): ByoeUpsellCta {
+        val plans = (mutableState.value as? UpsellingScreenContentState.Data)?.plans?.list
+            as? PlanUpgradeInstanceListUiModel.Data
+        if (plans == null) {
+            Timber.w("byoe: no plans to tell the upsell CTA from, reporting it as primary")
+            return ByoeUpsellCta.Primary
+        }
+        val isDefaultPlan = payload.selectedCycle == plans.defaultCycle().name
+        return if (isDefaultPlan) ByoeUpsellCta.Primary else ByoeUpsellCta.Secondary
+    }
+
+    // Mirrors the footer's layout choice (UpsellingPlanButtonsFooter): these layouts show only the shorter cycle.
+    private fun PlanUpgradeInstanceListUiModel.Data.defaultCycle(): PlanUpgradeCycle {
+        val showsOnlyShorterCycle = when (this) {
+            is PlanUpgradeInstanceListUiModel.Data.IntroPrice ->
+                shorterCycle is PlanUpgradeInstanceUiModel.Promotional
+            is PlanUpgradeInstanceListUiModel.Data.BlackFriday ->
+                shorterCycle is PlanUpgradeInstanceUiModel.Promotional.BlackFriday &&
+                    variant == PlanUpgradeVariant.BlackFriday.Wave2
+            else -> false
+        }
+        return if (showsOnlyShorterCycle) shorterCycle.cycle else longerCycle.cycle
+    }
+
     private fun UpsellingEntryPoint.Feature.toGeneralDimension(
         isIntroOffer: Boolean,
         upsellIsPromotional: Boolean
@@ -288,5 +345,11 @@ internal class UpsellingViewModel @Inject constructor(
 
     private suspend fun emitNewStateFrom(operation: UpsellingScreenContentOperation) {
         mutableState.update { upsellingContentReducer.newStateFrom(operation) }
+    }
+
+    private companion object {
+
+        /** A stable code, as the SDK asks: the payment flow only gives a message. */
+        const val BYOE_UPGRADE_ERROR_REASON = "upgrade_error"
     }
 }

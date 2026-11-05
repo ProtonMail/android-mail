@@ -19,7 +19,11 @@
 package ch.protonmail.android.mailbyoe.presentation.storage
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailbyoe.domain.model.ByoeBannerCta
+import ch.protonmail.android.mailbyoe.domain.model.ByoeBannerOrigin
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.usecase.ObserveByoeImportPausedForStorage
+import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
@@ -28,6 +32,7 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -56,10 +61,13 @@ internal class ByoeStorageBannerViewModelTest {
         every { this@mockk(UpsellingEntryPoint.Feature.ByoeStorage) } returns upsellingVisibility
     }
 
+    private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
+
     private fun viewModel() = ByoeStorageBannerViewModel(
         observePrimaryUserId,
         observeByoeImportPausedForStorage,
         ByoeStorageBannerDismissal(),
+        reportByoeTelemetryEvent,
         observeUpsellingVisibility
     )
 
@@ -163,7 +171,62 @@ internal class ByoeStorageBannerViewModelTest {
         }
     }
 
+    @Test
+    fun `given the banner shows, when it scrolls into view again, then its appearance is reported once`() = runTest {
+        // Given
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ByoeStorageBannerAction.VisibilityChanged(isVisible = true))
+        viewModel.submit(ByoeStorageBannerAction.VisibilityChanged(isVisible = true))
+
+        // Then
+        verify(exactly = 1) { reportByoeTelemetryEvent(shown) }
+    }
+
+    @Test
+    fun `given the banner hid, when it shows again, then the new appearance is reported`() = runTest {
+        // Given
+        val viewModel = viewModel()
+        viewModel.submit(ByoeStorageBannerAction.VisibilityChanged(isVisible = true))
+        viewModel.submit(ByoeStorageBannerAction.VisibilityChanged(isVisible = false))
+
+        // When
+        viewModel.submit(ByoeStorageBannerAction.VisibilityChanged(isVisible = true))
+
+        // Then
+        verify(exactly = 2) { reportByoeTelemetryEvent(shown) }
+    }
+
+    @Test
+    fun `given the banner shows, when the user taps upgrade, then an upgrade click is reported`() = runTest {
+        // When
+        viewModel().submit(ByoeStorageBannerAction.UpgradeClicked)
+
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(
+                ByoeTelemetryEvent.UpgradeBannerCtaClicked(ByoeBannerOrigin.InboxStorageLimit, ByoeBannerCta.Upgrade)
+            )
+        }
+    }
+
+    @Test
+    fun `given the banner shows, when the user taps not now, then a not now click is reported`() = runTest {
+        // When
+        viewModel().submit(ByoeStorageBannerAction.NotNowClicked)
+
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(
+                ByoeTelemetryEvent.UpgradeBannerCtaClicked(ByoeBannerOrigin.InboxStorageLimit, ByoeBannerCta.NotNow)
+            )
+        }
+    }
+
     private companion object {
+
+        val shown = ByoeTelemetryEvent.UpgradeBannerShown(ByoeBannerOrigin.InboxStorageLimit)
 
         val userId = UserId("user")
         val otherUserId = UserId("other")

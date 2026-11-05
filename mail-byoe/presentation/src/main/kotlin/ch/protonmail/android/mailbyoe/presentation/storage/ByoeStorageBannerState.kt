@@ -24,5 +24,8 @@ sealed interface ByoeStorageBannerState {
 }
 
 sealed interface ByoeStorageBannerAction {
+    /** The banner is on screen, or is no longer. One appearance reports once, however often it scrolls into view. */
+    data class VisibilityChanged(val isVisible: Boolean) : ByoeStorageBannerAction
+    data object UpgradeClicked : ByoeStorageBannerAction
     data object NotNowClicked : ByoeStorageBannerAction
 }

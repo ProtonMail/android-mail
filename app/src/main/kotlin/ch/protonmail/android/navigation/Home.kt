@@ -77,7 +77,6 @@ import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewAction
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
 import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
-import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.R as ByoeR
 import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityViewModel
@@ -1075,8 +1074,8 @@ fun Home(
                                     popUpTo(Screen.ByoeSpotlight.route) { inclusive = true }
                                 }
                             },
-                            onLater = {
-                                byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight, ByoeDismissMethod.Button)
+                            onLater = { method ->
+                                byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight, method)
                                 navController.navigateBack()
                             }
                         )
@@ -1086,10 +1085,10 @@ fun Home(
                                     popUpTo(Screen.GmailIntro.route) { inclusive = true }
                                 }
                             },
-                            onLater = { surface ->
+                            onLater = { surface, method ->
                                 // Declining the intro from onboarding dismisses the onboarding page it came from.
                                 if (surface == ByoeSurface.OnboardingScreen) {
-                                    byoeSpotlightViewModel.onDismissed(surface, ByoeDismissMethod.Button)
+                                    byoeSpotlightViewModel.onDismissed(surface, method)
                                 }
                                 navController.navigateBack()
                             }
