@@ -28,7 +28,9 @@ import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
+import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
 import ch.protonmail.android.mailupselling.presentation.model.PlusToUnlimitedEntryPointState
@@ -71,13 +73,17 @@ internal class PlusToUnlimitedUpsellViewModelTest {
     private val recordUpsellButtonTapped = mockk<RecordUpsellButtonTapped> {
         coEvery { this@mockk(any(), any()) } just Runs
     }
+    private val getCurrentBlackFridayPhase = mockk<GetCurrentBlackFridayPhase> {
+        coEvery { this@mockk() } returns BlackFridayPhase.None
+    }
 
     private fun viewModel() = PlusToUnlimitedUpsellViewModel(
         observePrimaryUserId,
         observePlusToUnlimitedEligibility,
         resolveActiveUpsellTheme,
         resolvePlanBeforeUpgrade,
-        recordUpsellButtonTapped
+        recordUpsellButtonTapped,
+        getCurrentBlackFridayPhase
     )
 
     @AfterTest
@@ -163,10 +169,11 @@ internal class PlusToUnlimitedUpsellViewModelTest {
     }
 
     @Test
-    fun `records the black friday campaign on the upsell button tap during black friday`() = runTest {
+    fun `records the black friday wave 1 campaign on the upsell button tap during wave 1`() = runTest {
         // Given
         every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns
             flowOf(PlusToUnlimitedOffer.BlackFriday.right())
+        coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.Active.Wave1
         val viewModel = viewModel()
 
         // When
@@ -185,6 +192,35 @@ internal class PlusToUnlimitedUpsellViewModelTest {
                     modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
                     upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7PlusToUnlimitedUpsell"),
                     promoCampaign = "bf26_wave1"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `records the black friday wave 2 campaign on the upsell button tap during wave 2`() = runTest {
+        // Given
+        every { observePlusToUnlimitedEligibility(UserIdTestData.userId) } returns
+            flowOf(PlusToUnlimitedOffer.BlackFriday.right())
+        coEvery { getCurrentBlackFridayPhase() } returns BlackFridayPhase.Active.Wave2
+        val viewModel = viewModel()
+
+        // When
+        viewModel.state.test {
+            awaitItem()
+            viewModel.recordUpsellButtonTapped(UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO)
+        }
+
+        // Then
+        coVerify {
+            recordUpsellButtonTapped(
+                userId = UserIdTestData.userId,
+                generalDimensions = GeneralDimensions(
+                    upsellEntryPoint = UpsellEntryPoint.MAILBOX_TOP_BAR_PROMO,
+                    planBeforeUpgrade = "mail2022",
+                    modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
+                    upsellExperimentFlag = UpsellExperimentFlag(flagName = "MailAndroidV7PlusToUnlimitedUpsell"),
+                    promoCampaign = "bf26_wave2"
                 )
             )
         }

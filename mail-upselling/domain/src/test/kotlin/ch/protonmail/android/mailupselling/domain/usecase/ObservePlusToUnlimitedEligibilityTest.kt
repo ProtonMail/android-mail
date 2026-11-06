@@ -63,9 +63,6 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     private val isEligibleForBlackFridayPromotion = mockk<IsEligibleForBlackFridayPromotion>()
     private val sdkUpgradesReadEnabled = mockk<FeatureFlag<Boolean>>()
     private val sdkUpgradesPurchaseEnabled = mockk<FeatureFlag<Boolean>>()
-    private val blackFridayOptedOut = mockk<FeatureFlag<Boolean>> {
-        coEvery { get() } returns false
-    }
 
     private val observePlusToUnlimitedEligibility = ObservePlusToUnlimitedEligibility(
         observeUser,
@@ -75,8 +72,7 @@ internal class ObservePlusToUnlimitedEligibilityTest {
         getCurrentSubscriptions,
         isEligibleForBlackFridayPromotion,
         sdkUpgradesReadEnabled,
-        sdkUpgradesPurchaseEnabled,
-        blackFridayOptedOut
+        sdkUpgradesPurchaseEnabled
     )
 
     @Test
@@ -229,34 +225,24 @@ internal class ObservePlusToUnlimitedEligibilityTest {
     }
 
     @Test
-    fun `is not eligible when the user opted out of Black Friday`() = runTest {
-        expectSdkFlags(read = true, purchase = true)
-        expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
-        expectBlackFridayPromotionEligibility(true)
-        coEvery { blackFridayOptedOut.get() } returns true
-
-        observePlusToUnlimitedEligibility(userId).test {
-            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `stops being eligible once the user opts out of Black Friday`() = runTest {
+    fun `re-checks eligibility once the user opts out of Black Friday`() = runTest {
         val optOutChanges = MutableSharedFlow<Unit>(replay = 1).apply { tryEmit(Unit) }
         every { upsellOptOutRepository.observeOptOutChanges() } returns optOutChanges
         expectSdkFlags(read = true, purchase = true)
         expectRustEligibility(PlusToUnlimitedOffer.BlackFriday.right())
         expectBlackFridayPromotionEligibility(true)
-        expectUpgradeOffers(UpsellingTestData.UnlimitedMailProduct.YearlyBFProductOfferList)
+        expectUpgradeOffers(
+            UpsellingTestData.UnlimitedMailProduct.YearlyBFProductOfferList,
+            UpsellingTestData.UnlimitedMailProduct.YearlyProductOfferList
+        )
 
         observePlusToUnlimitedEligibility(userId).test {
             assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), awaitItem())
 
-            coEvery { blackFridayOptedOut.get() } returns true
+            expectRustEligibility(PlusToUnlimitedOffer.Regular.right())
             optOutChanges.emit(Unit)
 
-            assertEquals(PlusToUnlimitedOffer.None.right(), awaitItem())
+            assertEquals(PlusToUnlimitedOffer.Regular.right(), awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }

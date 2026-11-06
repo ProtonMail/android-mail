@@ -21,7 +21,6 @@ package ch.protonmail.android.mailupselling.domain.usecase
 import arrow.core.Either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsBlackFridayUpsellOptedOut
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesReadEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
@@ -54,8 +53,7 @@ class ObservePlusToUnlimitedEligibility @Inject constructor(
     private val getCurrentSubscriptions: GetCurrentSubscriptions,
     private val isEligibleForBlackFridayPromotion: IsEligibleForBlackFridayPromotion,
     @IsSdkUpgradesReadEnabled private val sdkUpgradesReadEnabled: FeatureFlag<Boolean>,
-    @IsSdkUpgradesPurchaseEnabled private val sdkUpgradesPurchaseEnabled: FeatureFlag<Boolean>,
-    @IsBlackFridayUpsellOptedOut private val blackFridayOptedOut: FeatureFlag<Boolean>
+    @IsSdkUpgradesPurchaseEnabled private val sdkUpgradesPurchaseEnabled: FeatureFlag<Boolean>
 ) {
 
     operator fun invoke(userId: UserId): Flow<Either<DataError, PlusToUnlimitedOffer>> = observeUser(userId)
@@ -79,7 +77,7 @@ class ObservePlusToUnlimitedEligibility @Inject constructor(
         }
 
         val blackFridayBlocked = rustOffer == PlusToUnlimitedOffer.BlackFriday &&
-            (!isEligibleForBlackFridayPromotion(userId) || blackFridayOptedOut.get())
+            !isEligibleForBlackFridayPromotion(userId)
         if (blackFridayBlocked) {
             emit(PlusToUnlimitedOffer.None.right())
             return@flow
