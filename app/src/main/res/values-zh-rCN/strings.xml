@@ -20,7 +20,7 @@
   <string name="app_icon_name_weather">天气</string>
   <string name="app_icon_name_notes">便签</string>
   <string name="app_icon_name_calculator">计算器</string>
-  <string name="app_welcome_subtitle">Encryption keeps your data private. Your data truly belongs to you.</string>
+  <string name="app_welcome_subtitle">加密可保障您的数据隐私。您的数据真正属于您。</string>
   <string name="dialog_sign_out_account_title">登出</string>
   <string name="dialog_sign_out_account_description">除非您选择删除，否则与您账户关联的数据将保留在此设备上。</string>
   <string name="dialog_sign_out_account_confirm">登出</string>
@@ -42,6 +42,6 @@
   <string name="mailbox_message_scheduling_offline">网络离线：邮件将稍后发送</string>
   <string name="mailbox_message_scheduled_for_sending_success">此消息将于 %1$s 发送</string>
   <string name="launcher_alert_duplicate_account_description">用户已登录</string>
-  <string name="home_content_search_error_snackbar">Email content search couldn\'t be prepared.</string>
-  <string name="home_content_search_error_snackbar_action">Review</string>
+  <string name="home_content_search_error_snackbar">无法准备电子邮件内容搜索。</string>
+  <string name="home_content_search_error_snackbar_action">审查</string>
 </resources>

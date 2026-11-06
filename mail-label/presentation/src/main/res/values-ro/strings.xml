@@ -26,7 +26,7 @@
   <string name="label_title_trash">Gunoi</string>
   <string name="label_title_outbox">De trimis</string>
   <string name="label_title_all_mail">Toate mesajele</string>
-  <string name="label_title_all_scheduled">Programate</string>
+  <string name="label_title_all_scheduled">Planificat</string>
   <string name="label_title_snoozed">Amânat</string>
   <string name="label_title_create_label">Creare etichetă</string>
   <string name="label_title_create_folder">Creare folder</string>
