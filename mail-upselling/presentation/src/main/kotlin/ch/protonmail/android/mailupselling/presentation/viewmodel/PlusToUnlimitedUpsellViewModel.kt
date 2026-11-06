@@ -30,7 +30,9 @@ import ch.protonmail.android.mailtelemetry.domain.model.UpsellEntryPoint
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellExperimentFlag
 import ch.protonmail.android.mailtelemetry.domain.model.UpsellModalVariant
 import ch.protonmail.android.mailtelemetry.domain.usecase.RecordUpsellButtonTapped
+import ch.protonmail.android.mailupselling.domain.model.BlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
+import ch.protonmail.android.mailupselling.domain.usecase.GetCurrentBlackFridayPhase
 import ch.protonmail.android.mailupselling.domain.usecase.ObservePlusToUnlimitedEligibility
 import ch.protonmail.android.mailupselling.domain.usecase.ResolvePlanBeforeUpgrade
 import ch.protonmail.android.mailupselling.presentation.extension.toOfferId
@@ -55,7 +57,8 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
     observePlusToUnlimitedEligibility: ObservePlusToUnlimitedEligibility,
     resolveActiveUpsellTheme: ResolveActiveUpsellTheme,
     private val resolvePlanBeforeUpgrade: ResolvePlanBeforeUpgrade,
-    private val recordUpsellButtonTapped: RecordUpsellButtonTapped
+    private val recordUpsellButtonTapped: RecordUpsellButtonTapped,
+    private val getCurrentBlackFridayPhase: GetCurrentBlackFridayPhase
 ) : ViewModel() {
 
     val state: StateFlow<PlusToUnlimitedEntryPointState?> = observePrimaryUserId()
@@ -85,6 +88,8 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
         )
 
     fun recordUpsellButtonTapped(upsellEntryPoint: UpsellEntryPoint) = viewModelScope.launch {
+        val entryPointState = state.value
+        val blackFridayVariant = if (entryPointState?.isBlackFriday == true) currentBlackFridayVariant() else null
         recordUpsellButtonTapped(
             userId = observePrimaryUserId().filterNotNull().first(),
             generalDimensions = GeneralDimensions(
@@ -92,10 +97,14 @@ class PlusToUnlimitedUpsellViewModel @Inject constructor(
                 planBeforeUpgrade = resolvePlanBeforeUpgrade(),
                 modalVariant = UpsellModalVariant.COMPARISON_UNLIMITED,
                 upsellExperimentFlag = UpsellExperimentFlag(flagName = PlusToUnlimitedUpsellExperiment.key),
-                promoCampaign = state.value?.let {
-                    if (it.isBlackFriday) PlanUpgradeVariant.BlackFriday.Wave1.toOfferId() else it.theme.telemetryId
-                }
+                promoCampaign = blackFridayVariant?.toOfferId() ?: entryPointState?.theme?.telemetryId
             )
         )
+    }
+
+    private suspend fun currentBlackFridayVariant() = when (getCurrentBlackFridayPhase()) {
+        BlackFridayPhase.Active.Wave1 -> PlanUpgradeVariant.BlackFriday.Wave1
+        BlackFridayPhase.Active.Wave2 -> PlanUpgradeVariant.BlackFriday.Wave2
+        BlackFridayPhase.None -> null
     }
 }
