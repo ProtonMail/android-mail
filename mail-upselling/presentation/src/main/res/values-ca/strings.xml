@@ -27,7 +27,7 @@
   <string name="upselling_mailbox_plus_title_social_proof">Proveu el Mail Plus</string>
   <!-- Upselling: Mailbox Promo -->
   <string name="upselling_mailbox_plus_promo_description_override">Aconseguiu el millor del Mail amb aquesta oferta de temps limitat</string>
-  <string name="upselling_mailbox_plus_promo_title">Proveu Mail Plus per %s</string>
+  <string name="upselling_mailbox_plus_promo_title">Proveu el Mail Plus per %s</string>
   <string name="upselling_mailbox_plus_promo_cta">Obté 1 mes per %s</string>
   <string name="upselling_mailbox_plus_promo_skip">Omet l\'oferta</string>
   <string name="upselling_mailbox_plus_promo_renewal">%s per al primer mes, després %s al mes</string>
@@ -41,15 +41,15 @@
   <string name="upselling_pu_cta">Aconseguiu el Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
   <string name="upselling_monthly_to_yearly_row_title">Pagueu anualment i estalvieu %s</string>
-  <string name="upselling_monthly_to_yearly_row_subtitle">Canvieu el vostre cicle de facturació</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Canvieu el cicle de facturació</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Estalvieu el %s</string>
-  <string name="upselling_monthly_to_yearly_title">Estalvieu força amb la facturació anual</string>
+  <string name="upselling_monthly_to_yearly_title">Estalvieu amb la facturació anual</string>
   <string name="upselling_monthly_to_yearly_subtitle">Assegureu-vos un descompte a %s</string>
   <string name="upselling_monthly_to_yearly_one_year">1 any</string>
   <string name="upselling_monthly_to_yearly_currently">Actualment</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">pla de 12 mesos</string>
   <string name="upselling_monthly_to_yearly_cta">Canviar i desar %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Continuar amb el mensual</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Continua amb el mensual</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Aneu un pas més enllà en la privacitat en línia amb el Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Protegiu el compte d\'amenaces amb el Proton Sentinel</string>
