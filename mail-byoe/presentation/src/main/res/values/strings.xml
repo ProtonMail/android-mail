@@ -59,7 +59,8 @@
   <string name="byoe_spotlight_benefit_no_tracking">Google can\'t track what you do in Proton</string>
   <string name="byoe_spotlight_import_title">Import your emails</string>
   <string name="byoe_spotlight_import_body">Start with your most recent</string>
-  <string name="byoe_spotlight_connect">Connect and import</string>
+  <string name="byoe_spotlight_connect_and_import">Connect and import</string>
+  <string name="byoe_spotlight_connect">Connect</string>
   <string name="byoe_spotlight_later">Not now</string>
   <string name="byoe_spotlight_permissions_note">Next: approve all permissions. Proton never asks for permission to edit or delete anything in your Gmail</string>
   <!-- BYOE intro and spotlight, Treatment 2 copy -->

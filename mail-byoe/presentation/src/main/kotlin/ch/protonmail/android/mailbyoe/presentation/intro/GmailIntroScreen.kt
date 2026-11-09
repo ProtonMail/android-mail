@@ -150,6 +150,7 @@ private fun GmailIntroContent(
         }
 
         GmailIntroActions(
+            importEmails = importEmails,
             permissionsNote = copy.permissionsNote,
             onConnect = { onConnect(importEmails) },
             onLater = onLater
@@ -321,6 +322,7 @@ private fun GmailIntroImportRow(checked: Boolean, onCheckedChange: (Boolean) -> 
 
 @Composable
 private fun GmailIntroActions(
+    importEmails: Boolean,
     @StringRes permissionsNote: Int,
     onConnect: () -> Unit,
     onLater: () -> Unit
@@ -338,7 +340,9 @@ private fun GmailIntroActions(
                 .fillMaxWidth()
                 .height(ActionButtonHeight)
         ) {
-            ActionLabel(R.string.byoe_spotlight_connect)
+            ActionLabel(
+                if (importEmails) R.string.byoe_spotlight_connect_and_import else R.string.byoe_spotlight_connect
+            )
         }
         ProtonButton(
             onClick = onLater,
