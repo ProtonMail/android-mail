@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="mail_settings_content_search_header_title">Recherche dans le contenu des e-mails</string>
-  <string name="mail_settings_content_search_description">Pour vous permettre d\'effectuer des recherches dans le contenu de message, les messages seront téléchargés sur cet appareil.</string>
+  <string name="mail_settings_content_search_description">Afin de vous permettre d\'effectuer des recherches dans le contenu des messages, ces derniers seront téléchargés sur cet appareil.</string>
   <string name="mail_settings_content_search_learn_more">En savoir plus…</string>
-  <string name="mail_settings_content_search_toggle_title">Recherche dans le contenu des e-mails</string>
+  <string name="mail_settings_content_search_toggle_title">Recherche dans le contenu des messages</string>
   <string name="mail_settings_content_search_mobile_data_title">Autoriser le téléchargement via les données mobiles</string>
   <string name="mail_settings_content_search_mobile_data_hint">Le téléchargement se poursuit via les données mobiles en cas de perte de connexion Wi-Fi.</string>
   <string name="mail_settings_content_search_syncing_status">Préparation en cours : %1$d %%…</string>

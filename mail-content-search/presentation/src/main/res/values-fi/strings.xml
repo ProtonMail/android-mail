@@ -2,7 +2,7 @@
 <resources>
   <string name="mail_settings_content_search_header_title">Email content search</string>
   <string name="mail_settings_content_search_description">Jotta voit tehdä hakuja viestien sisällön perusteella, viestit ladataan tälle laitteelle.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more…</string>
+  <string name="mail_settings_content_search_learn_more">Lue lisää…</string>
   <string name="mail_settings_content_search_toggle_title">Email content search</string>
   <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
   <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
@@ -28,15 +28,15 @@
   <string name="mail_settings_content_search_clear_data_dialog_title">Clear local search index</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Tyhjennä tiedot</string>
-  <string name="content_search_bottomsheet_title">Mobile data usage</string>
+  <string name="content_search_bottomsheet_title">Mobiilidatan käyttö</string>
   <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
   <string name="content_search_bottomsheet_start_indexing">Aloita indeksointi</string>
-  <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
+  <string name="content_search_bottomsheet_mobile_data_title">Käytä mobiilidataa</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Ei tuloksia haulla \"%1$s\"</string>
   <string name="content_search_no_results_description">Kokeile eri hakusanoja tai tarkista oikeinkirjoitus.</string>
   <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
-  <string name="content_search_no_results_learn_more">Learn more…</string>
+  <string name="content_search_no_results_learn_more">Lue lisää…</string>
   <string name="content_search_no_results_set_up_action">Set up content search</string>
   <string name="content_search_failed_title">Haku epäonnistui</string>
   <string name="content_search_failed_description">Something went wrong. Please try again.</string>
