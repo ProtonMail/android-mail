@@ -74,13 +74,14 @@ import ch.protonmail.android.design.compose.component.protonButtonColors
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.presentation.R
 import ch.protonmail.android.mailbyoe.presentation.byoeColors
 
 /**
  * Full-screen introduction to the Gmail connection, shown before the connection page opens. Existing users get it
  * as a spotlight that presents the feature as new; onboarding, the sidebar and settings show it as [isSpotlight]
- * false.
+ * false. [treatment] picks the experiment copy.
  *
  * [onConnect] receives whether the user wants their existing Gmail emails imported. [onLater] receives how the user
  * left: the "Later" button, or the system back gesture (a dismiss gesture, so [ByoeDismissMethod.SwipeDown]).
@@ -88,6 +89,7 @@ import ch.protonmail.android.mailbyoe.presentation.byoeColors
 @Composable
 fun GmailIntroScreen(
     isSpotlight: Boolean,
+    treatment: ByoeTreatment,
     onConnect: (importEmails: Boolean) -> Unit,
     onLater: (method: ByoeDismissMethod) -> Unit,
     modifier: Modifier = Modifier
@@ -96,6 +98,7 @@ fun GmailIntroScreen(
 
     GmailIntroContent(
         isSpotlight = isSpotlight,
+        copy = GmailIntroCopy.of(treatment),
         onConnect = onConnect,
         onLater = { onLater(ByoeDismissMethod.Button) },
         modifier = modifier
@@ -105,6 +108,7 @@ fun GmailIntroScreen(
 @Composable
 private fun GmailIntroContent(
     isSpotlight: Boolean,
+    copy: GmailIntroCopy,
     onConnect: (importEmails: Boolean) -> Unit,
     onLater: () -> Unit,
     modifier: Modifier = Modifier
@@ -128,23 +132,28 @@ private fun GmailIntroContent(
         ) {
             if (isSpotlight) {
                 ByoeSpotlightIllustration()
-                GmailIntroHeader(showBadge = true)
+                GmailIntroHeader(showBadge = true, subtitle = copy.subtitle)
             } else {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.ModeratelyLarge)
                 ) {
                     GmailIntroIllustration()
-                    GmailIntroHeader(showBadge = false)
+                    GmailIntroHeader(showBadge = false, subtitle = copy.subtitle)
                 }
             }
             GmailIntroBenefits(
+                benefits = copy.benefits,
                 importEmails = importEmails,
                 onImportEmailsChange = { importEmails = it }
             )
         }
 
-        GmailIntroActions(onConnect = { onConnect(importEmails) }, onLater = onLater)
+        GmailIntroActions(
+            permissionsNote = copy.permissionsNote,
+            onConnect = { onConnect(importEmails) },
+            onLater = onLater
+        )
     }
 }
 
@@ -171,7 +180,7 @@ private fun GmailIntroIllustration() {
 }
 
 @Composable
-private fun GmailIntroHeader(showBadge: Boolean) {
+private fun GmailIntroHeader(showBadge: Boolean, @StringRes subtitle: Int) {
     Column(
         modifier = Modifier.padding(
             start = ProtonDimens.Spacing.ExtraLarge,
@@ -195,7 +204,7 @@ private fun GmailIntroHeader(showBadge: Boolean) {
                 textAlign = TextAlign.Center
             )
             Text(
-                text = stringResource(R.string.byoe_spotlight_subtitle),
+                text = stringResource(subtitle),
                 style = ProtonTheme.typography.bodyMedium.copy(fontSize = BodyFontSize),
                 fontWeight = FontWeight.Medium,
                 color = ProtonTheme.colors.textWeak,
@@ -220,7 +229,11 @@ private fun ByoeSpotlightBadge() {
 }
 
 @Composable
-private fun GmailIntroBenefits(importEmails: Boolean, onImportEmailsChange: (Boolean) -> Unit) {
+private fun GmailIntroBenefits(
+    benefits: List<Int>,
+    importEmails: Boolean,
+    onImportEmailsChange: (Boolean) -> Unit
+) {
     val shape = RoundedCornerShape(ProtonDimens.CornerRadius.Huge)
     Column(
         modifier = Modifier
@@ -307,7 +320,11 @@ private fun GmailIntroImportRow(checked: Boolean, onCheckedChange: (Boolean) -> 
 }
 
 @Composable
-private fun GmailIntroActions(onConnect: () -> Unit, onLater: () -> Unit) {
+private fun GmailIntroActions(
+    @StringRes permissionsNote: Int,
+    onConnect: () -> Unit,
+    onLater: () -> Unit
+) {
     Column(
         modifier = Modifier.padding(top = ProtonDimens.Spacing.Standard, bottom = ProtonDimens.Spacing.Compact),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -338,16 +355,16 @@ private fun GmailIntroActions(onConnect: () -> Unit, onLater: () -> Unit) {
         ) {
             ActionLabel(R.string.byoe_spotlight_later)
         }
-        GmailIntroPermissionsNote()
+        GmailIntroPermissionsNote(permissionsNote)
     }
 }
 
 @Composable
-private fun GmailIntroPermissionsNote() {
+private fun GmailIntroPermissionsNote(@StringRes note: Int) {
     val text = buildAnnotatedString {
         appendInlineContent(INFO_ICON_ID)
         append(" ")
-        append(stringResource(R.string.byoe_spotlight_permissions_note))
+        append(stringResource(note))
     }
     val inlineContent = mapOf(
         INFO_ICON_ID to InlineTextContent(
@@ -378,12 +395,6 @@ private fun ActionLabel(@StringRes text: Int) {
     )
 }
 
-private val benefits = listOf(
-    R.string.byoe_spotlight_benefit_read,
-    R.string.byoe_spotlight_benefit_no_ads,
-    R.string.byoe_spotlight_benefit_no_tracking
-)
-
 // The artwork's own size, which includes room for its shadows.
 private val IllustrationWidth = 252.dp
 private val IllustrationHeight = 144.dp
@@ -406,7 +417,15 @@ private const val INFO_ICON_ID = "info"
 @Composable
 private fun ByoeSpotlightPreview() {
     ProtonTheme {
-        GmailIntroScreen(isSpotlight = true, onConnect = {}, onLater = {})
+        GmailIntroScreen(isSpotlight = true, treatment = ByoeTreatment.Treatment1, onConnect = {}, onLater = {})
+    }
+}
+
+@Preview(widthDp = 412, heightDp = 917)
+@Composable
+private fun ByoeSpotlightTreatment2Preview() {
+    ProtonTheme {
+        GmailIntroScreen(isSpotlight = true, treatment = ByoeTreatment.Treatment2, onConnect = {}, onLater = {})
     }
 }
 
@@ -415,6 +434,14 @@ private fun ByoeSpotlightPreview() {
 @Composable
 private fun GmailIntroPreview() {
     ProtonTheme {
-        GmailIntroScreen(isSpotlight = false, onConnect = {}, onLater = {})
+        GmailIntroScreen(isSpotlight = false, treatment = ByoeTreatment.Treatment1, onConnect = {}, onLater = {})
+    }
+}
+
+@Preview(widthDp = 412, heightDp = 917)
+@Composable
+private fun GmailIntroTreatment2Preview() {
+    ProtonTheme {
+        GmailIntroScreen(isSpotlight = false, treatment = ByoeTreatment.Treatment2, onConnect = {}, onLater = {})
     }
 }

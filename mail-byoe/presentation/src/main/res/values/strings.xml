@@ -62,4 +62,10 @@
   <string name="byoe_spotlight_connect">Connect and import</string>
   <string name="byoe_spotlight_later">Not now</string>
   <string name="byoe_spotlight_permissions_note">Next: approve all permissions. Proton never asks for permission to edit or delete anything in your Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Connect your Gmail and we will handle the rest.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Receive and write in your Gmail address. All from within Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">We will not edit or delete your Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Disconnect anytime, nothing breaks</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Next: Google will ask you to approve all permissions. Approve all of them so the connection works.</string>
 </resources>

@@ -47,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingButton
@@ -87,7 +88,7 @@ fun OnboardingScreen(actions: OnboardingScreen.Actions, viewModel: OnboardingVie
                 onSkipped = { viewModel.submit(OnboardingAction.GmailPageSkipped) },
                 onExplore = {
                     viewModel.submit(OnboardingAction.GmailExploreClicked)
-                    actions.onExploreGmail()
+                    state.gmailTreatment?.let(actions.onExploreGmail)
                 }
             )
         )
@@ -104,11 +105,7 @@ private fun OnboardingScreen(
 ) {
     val isEligibleForUpselling = state is OnboardingState.ToUpsell
     val isUpsellingEligibilityPending = state is OnboardingState.Loading
-    val showGmailPage = when (state) {
-        is OnboardingState.ToUpsell -> state.showGmailPage
-        is OnboardingState.NoUpsell -> state.showGmailPage
-        is OnboardingState.Loading -> false
-    }
+    val showGmailPage = state.gmailTreatment != null
 
     // The Gmail page comes last, so leaving onboarding or moving on to the upsell without Explore skips it.
     val onLeaveOnboarding: (() -> Unit) -> () -> Unit = { action ->
@@ -230,13 +227,13 @@ private fun OnboardingScreen(
 object OnboardingScreen {
 
     /**
-     * [onExploreGmail] runs when a user in a BYOE treatment chooses to connect Gmail from the Gmail page.
+     * [onExploreGmail] runs with the user's BYOE treatment when they choose to connect Gmail from the Gmail page.
      * Onboarding ends there, and an upsell it would have shown waits until the user is back in the mailbox.
      */
     data class Actions(
         val exitAction: () -> Unit,
         val onUpsellingError: (String) -> Unit,
-        val onExploreGmail: () -> Unit
+        val onExploreGmail: (ByoeTreatment) -> Unit
     )
 }
 
@@ -251,7 +248,7 @@ private data class GmailPageActions(
 private fun OnboardingScreenPreview() {
     ProtonTheme {
         OnboardingScreen(
-            state = OnboardingState.NoUpsell(showGmailPage = false),
+            state = OnboardingState.NoUpsell(gmailTreatment = null),
             onUpsellingNavigation = {},
             exitAction = {},
             onPageShown = {},

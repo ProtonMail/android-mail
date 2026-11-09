@@ -25,6 +25,8 @@ import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.intro.GmailIntroScreen
 import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
+import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeTreatmentArgument
+import ch.protonmail.android.navigation.model.BYOE_TREATMENT_KEY
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.GMAIL_INTRO_SURFACE_KEY
 
@@ -33,7 +35,12 @@ internal fun NavGraphBuilder.addByoeSpotlight(
     onLater: (method: ByoeDismissMethod) -> Unit
 ) {
     composable(Destination.Screen.ByoeSpotlight.route) {
-        GmailIntroScreen(isSpotlight = true, onConnect = onConnect, onLater = onLater)
+        GmailIntroScreen(
+            isSpotlight = true,
+            treatment = requireNotNull(ByoeTreatmentArgument.decode(it.require<String>(BYOE_TREATMENT_KEY))),
+            onConnect = onConnect,
+            onLater = onLater
+        )
     }
 }
 
@@ -45,6 +52,7 @@ internal fun NavGraphBuilder.addGmailIntro(
         val surface = requireNotNull(ByoeSurfaceArgument.decode(it.require<String>(GMAIL_INTRO_SURFACE_KEY)))
         GmailIntroScreen(
             isSpotlight = false,
+            treatment = requireNotNull(ByoeTreatmentArgument.decode(it.require<String>(BYOE_TREATMENT_KEY))),
             onConnect = { importEmails -> onConnect(surface, importEmails) },
             onLater = { method -> onLater(surface, method) }
         )

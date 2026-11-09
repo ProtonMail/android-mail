@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.route.addOnboarding
 import io.sentry.compose.withSentryObservableEffect
@@ -51,6 +52,6 @@ object Onboarding {
     data class Actions(
         val onExitOnboarding: () -> Unit,
         val onUpsellingError: (String) -> Unit,
-        val onExploreGmail: () -> Unit
+        val onExploreGmail: (ByoeTreatment) -> Unit
     )
 }

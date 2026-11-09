@@ -58,6 +58,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.viewmodel.hiltViewModelOrNull
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.presentation.sidebar.ByoeSidebarBannerAction
 import ch.protonmail.android.mailbyoe.presentation.sidebar.ByoeSidebarBannerState
 import ch.protonmail.android.mailbyoe.presentation.sidebar.ByoeSidebarBannerViewModel
@@ -70,7 +71,7 @@ import ch.protonmail.android.mailsidebar.presentation.R
 @Composable
 fun SidebarByoeRow(
     isSidebarOpen: Boolean,
-    onClick: () -> Unit,
+    onClick: (ByoeTreatment) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = hiltViewModelOrNull<ByoeSidebarBannerViewModel>()
@@ -90,7 +91,7 @@ fun SidebarByoeRow(
             SidebarByoeCard(
                 onConnect = {
                     viewModel?.submit(ByoeSidebarBannerAction.ConnectClicked)
-                    onClick()
+                    (state as? ByoeSidebarBannerState.Visible)?.let { onClick(it.treatment) }
                 },
                 onDismiss = { viewModel?.submit(ByoeSidebarBannerAction.CloseClicked) },
                 modifier = Modifier.padding(

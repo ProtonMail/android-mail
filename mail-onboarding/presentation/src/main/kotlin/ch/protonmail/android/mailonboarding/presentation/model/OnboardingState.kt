@@ -18,12 +18,19 @@
 
 package ch.protonmail.android.mailonboarding.presentation.model
 
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
+
 /**
- * [showGmailPage] is true for users in a BYOE onboarding treatment, who get the Gmail page in place of the second
- * and third pages.
+ * [gmailTreatment] is the BYOE onboarding treatment of a user who gets the Gmail page in place of the second and
+ * third pages, or null for a user who doesn't.
  */
 sealed interface OnboardingState {
-    data class NoUpsell(val showGmailPage: Boolean) : OnboardingState
-    data class ToUpsell(val showGmailPage: Boolean) : OnboardingState
-    data object Loading : OnboardingState
+
+    val gmailTreatment: ByoeTreatment?
+
+    data class NoUpsell(override val gmailTreatment: ByoeTreatment?) : OnboardingState
+    data class ToUpsell(override val gmailTreatment: ByoeTreatment?) : OnboardingState
+    data object Loading : OnboardingState {
+        override val gmailTreatment: ByoeTreatment? = null
+    }
 }

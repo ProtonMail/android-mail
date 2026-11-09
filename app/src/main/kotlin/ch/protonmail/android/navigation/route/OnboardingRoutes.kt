@@ -20,13 +20,14 @@ package ch.protonmail.android.navigation.route
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailonboarding.presentation.OnboardingScreen
 import ch.protonmail.android.navigation.model.Destination
 
 fun NavGraphBuilder.addOnboarding(
     exitAction: () -> Unit,
     onUpsellingError: (String) -> Unit,
-    onExploreGmail: () -> Unit
+    onExploreGmail: (ByoeTreatment) -> Unit
 ) {
     composable(route = Destination.Screen.Onboarding.MainScreen.route) {
         OnboardingScreen(OnboardingScreen.Actions(exitAction, onUpsellingError, onExploreGmail))

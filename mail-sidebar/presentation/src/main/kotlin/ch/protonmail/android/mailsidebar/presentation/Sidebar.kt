@@ -59,6 +59,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.VerticalSpacer
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.maillabel.domain.model.LabelType
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
@@ -323,7 +324,7 @@ object Sidebar {
         val onApplicationLogs: () -> Unit,
         val onUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
         val onMonthlyToYearlyUpselling: () -> Unit,
-        val onConnectGmail: () -> Unit
+        val onConnectGmail: (ByoeTreatment) -> Unit
     ) {
 
         companion object {
@@ -352,7 +353,7 @@ object Sidebar {
         val onApplicationLogs: () -> Unit,
         val onUpselling: (entryPoint: UpsellingEntryPoint.Feature, type: UpsellingVisibility) -> Unit,
         val onMonthlyToYearlyUpselling: () -> Unit,
-        val onConnectGmail: () -> Unit
+        val onConnectGmail: (ByoeTreatment) -> Unit
     ) {
 
         fun toSidebarActions(close: () -> Unit, onLabelAction: (SidebarLabelAction) -> Unit) = Actions(
@@ -390,8 +391,8 @@ object Sidebar {
                 onMonthlyToYearlyUpselling()
                 close()
             },
-            onConnectGmail = {
-                onConnectGmail()
+            onConnectGmail = { treatment ->
+                onConnectGmail(treatment)
                 close()
             }
         )

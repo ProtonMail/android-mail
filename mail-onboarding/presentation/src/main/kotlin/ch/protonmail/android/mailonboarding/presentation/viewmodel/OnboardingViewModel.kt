@@ -63,9 +63,9 @@ class OnboardingViewModel @Inject constructor(
         .map { it.getOrNull() }
         .filterNotNull()
         .mapLatest { user ->
-            val showGmailPage = getByoeOnboardingTreatment(user.userId) != null
+            val gmailTreatment = getByoeOnboardingTreatment(user.userId)
             val showUpselling = !user.hasSubscription() && getUpsellingOnboardingVisibility(user.userId)
-            if (showUpselling) OnboardingState.ToUpsell(showGmailPage) else OnboardingState.NoUpsell(showGmailPage)
+            if (showUpselling) OnboardingState.ToUpsell(gmailTreatment) else OnboardingState.NoUpsell(gmailTreatment)
         }
         .stateIn(
             scope = viewModelScope,

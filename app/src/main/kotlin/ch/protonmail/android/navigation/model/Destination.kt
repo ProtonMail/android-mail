@@ -23,9 +23,11 @@ import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsViewItemMode
 import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView.ApplicationLogsViewMode
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
+import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionScreen.IMPORT_EMAILS_KEY
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionScreen.SURFACE_KEY
 import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeSurfaceArgument
+import ch.protonmail.android.mailbyoe.presentation.navigation.ByoeTreatmentArgument
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
@@ -273,12 +275,18 @@ sealed class Destination(val route: String) {
 
         object FeatureSpotlight : Destination("featureSpotlight")
 
-        object ByoeSpotlight : Destination("byoe/spotlight")
+        object ByoeSpotlight : Destination("byoe/spotlight/${BYOE_TREATMENT_KEY.wrap()}") {
 
-        object GmailIntro : Destination("byoe/intro/${GMAIL_INTRO_SURFACE_KEY.wrap()}") {
+            operator fun invoke(treatment: ByoeTreatment) =
+                route.replace(BYOE_TREATMENT_KEY.wrap(), ByoeTreatmentArgument.encode(treatment))
+        }
 
-            operator fun invoke(surface: ByoeSurface) =
-                route.replace(GMAIL_INTRO_SURFACE_KEY.wrap(), ByoeSurfaceArgument.encode(surface))
+        object GmailIntro :
+            Destination("byoe/intro/${GMAIL_INTRO_SURFACE_KEY.wrap()}/${BYOE_TREATMENT_KEY.wrap()}") {
+
+            operator fun invoke(surface: ByoeSurface, treatment: ByoeTreatment) = route
+                .replace(GMAIL_INTRO_SURFACE_KEY.wrap(), ByoeSurfaceArgument.encode(surface))
+                .replace(BYOE_TREATMENT_KEY.wrap(), ByoeTreatmentArgument.encode(treatment))
         }
 
         object ContentSearchSetUp : Destination("contentSearch/setUp")
@@ -303,6 +311,7 @@ sealed class Destination(val route: String) {
 }
 
 const val GMAIL_INTRO_SURFACE_KEY = "gmailIntroSurface"
+const val BYOE_TREATMENT_KEY = "byoeTreatment"
 
 /**
  * Wrap a key in the format required by the Navigation framework: `{key_name}`

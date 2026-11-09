@@ -93,7 +93,7 @@ internal class OnboardingViewModelTest {
 
         // When + Then
         viewModel().state.test {
-            assertEquals(OnboardingState.NoUpsell(showGmailPage = false), awaitItem())
+            assertEquals(OnboardingState.NoUpsell(gmailTreatment = null), awaitItem())
         }
     }
 
@@ -104,7 +104,7 @@ internal class OnboardingViewModelTest {
 
         // When + Then
         viewModel().state.test {
-            assertEquals(OnboardingState.ToUpsell(showGmailPage = false), awaitItem())
+            assertEquals(OnboardingState.ToUpsell(gmailTreatment = null), awaitItem())
         }
     }
 
@@ -116,7 +116,7 @@ internal class OnboardingViewModelTest {
 
         // When + Then
         viewModel().state.test {
-            assertEquals(OnboardingState.ToUpsell(showGmailPage = true), awaitItem())
+            assertEquals(OnboardingState.ToUpsell(gmailTreatment = ByoeTreatment.Treatment1), awaitItem())
         }
     }
 

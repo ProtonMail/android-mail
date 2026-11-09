@@ -641,7 +641,7 @@ fun Home(
         val priority = interstitialPriority
         if (priority is HomeInterstitialPriority.ByoeSpotlight && currentDestinationRoute == Screen.Mailbox.route) {
             byoeSpotlightViewModel.onOpened()
-            navController.navigate(Screen.ByoeSpotlight.route)
+            navController.navigate(Screen.ByoeSpotlight(priority.treatment))
         }
     }
 
@@ -725,11 +725,11 @@ fun Home(
                         onUpsellingError = {
                             showErrorSnackbar(it)
                         },
-                        onExploreGmail = {
+                        onExploreGmail = { treatment ->
                             preventBottomSheetDismissal = false
                             // Navigating recomposes the sheet, which would block it from hiding halfway.
                             dismissBottomSheet {
-                                navController.navigate(Screen.GmailIntro(ByoeSurface.OnboardingScreen))
+                                navController.navigate(Screen.GmailIntro(ByoeSurface.OnboardingScreen, treatment))
                             }
                         }
                     )
@@ -1127,7 +1127,9 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onMonthlyToYearlyUpselling = {
             navController.navigate(Dialog.MonthlyToYearlyUpsell(UpsellEntryPoint.NAVBAR_UPSELL))
         },
-        onConnectGmail = { navController.navigate(Screen.GmailIntro(ByoeSurface.SidebarBanner)) }
+        onConnectGmail = { treatment ->
+            navController.navigate(Screen.GmailIntro(ByoeSurface.SidebarBanner, treatment))
+        }
     )
 
 private sealed interface BottomSheetType {
