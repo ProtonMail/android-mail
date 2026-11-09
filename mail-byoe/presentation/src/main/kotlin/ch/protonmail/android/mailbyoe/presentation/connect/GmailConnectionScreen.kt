@@ -20,6 +20,7 @@ package ch.protonmail.android.mailbyoe.presentation.connect
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -87,14 +88,18 @@ fun GmailConnectionScreen(
     }
 
     when (val current = state) {
-        // The success page uses the normal theme, like the intro, not the inverted one around this screen.
-        is GmailConnectionState.Connected -> ProtonTheme {
-            GmailConnectedContent(
-                email = current.email,
-                importEmails = current.importEmails,
-                onOpenInbox = { viewModel.submit(GmailConnectionAction.OpenInboxClicked) },
-                modifier = modifier
-            )
+        is GmailConnectionState.Connected -> {
+            // Once connected, back goes to the Inbox like the button, not to the intro below this screen.
+            BackHandler { viewModel.submit(GmailConnectionAction.OpenInboxClicked) }
+            // The success page uses the normal theme, like the intro, not the inverted one around this screen.
+            ProtonTheme {
+                GmailConnectedContent(
+                    email = current.email,
+                    importEmails = current.importEmails,
+                    onOpenInbox = { viewModel.submit(GmailConnectionAction.OpenInboxClicked) },
+                    modifier = modifier
+                )
+            }
         }
 
         else -> GmailConnectionContent(

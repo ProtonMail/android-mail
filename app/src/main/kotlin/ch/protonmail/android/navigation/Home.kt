@@ -1069,10 +1069,9 @@ fun Home(
                         )
                         addContentSearchSetUp(navController)
                         addByoeSpotlight(
+                            // The spotlight stays below the connection page, so cancelling the page returns to it.
                             onConnect = { importEmails ->
-                                navController.navigate(Screen.GmailConnection(importEmails, ByoeSurface.Spotlight)) {
-                                    popUpTo(Screen.ByoeSpotlight.route) { inclusive = true }
-                                }
+                                navController.navigate(Screen.GmailConnection(importEmails, ByoeSurface.Spotlight))
                             },
                             onLater = { method ->
                                 byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight, method)
@@ -1080,10 +1079,9 @@ fun Home(
                             }
                         )
                         addGmailIntro(
+                            // The intro stays below the connection page, so cancelling the page returns to it.
                             onConnect = { surface, importEmails ->
-                                navController.navigate(Screen.GmailConnection(importEmails, surface)) {
-                                    popUpTo(Screen.GmailIntro.route) { inclusive = true }
-                                }
+                                navController.navigate(Screen.GmailConnection(importEmails, surface))
                             },
                             onLater = { surface, method ->
                                 // Declining the intro from onboarding dismisses the onboarding page it came from.
