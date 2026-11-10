@@ -39,16 +39,15 @@ import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
-import ch.protonmail.android.design.compose.component.ProtonErrorMessageWithAction
 import ch.protonmail.android.design.compose.component.ProtonSettingsDetailsAppBar
-import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
+import ch.protonmail.android.mailbyoe.presentation.ByoePromptDialog
 import ch.protonmail.android.mailbyoe.presentation.R
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
-import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import timber.log.Timber
 
 /**
@@ -138,17 +137,20 @@ private fun GmailConnectionContent(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            if (state is GmailConnectionState.Failed) {
-                ProtonErrorMessageWithAction(
-                    modifier = Modifier.padding(ProtonDimens.Spacing.Large),
-                    errorMessage = stringResource(R.string.byoe_gmail_connection_error),
-                    action = stringResource(R.string.byoe_gmail_connection_retry),
-                    onAction = onRetryClick
-                )
-            } else {
-                ProtonCenteredProgress()
-            }
+            // The failure is a dialog over an empty page; there is nothing to load any more.
+            if (state !is GmailConnectionState.Failed) ProtonCenteredProgress()
         }
+    }
+
+    if (state is GmailConnectionState.Failed) {
+        ByoePromptDialog(
+            title = stringResource(R.string.byoe_gmail_connection_title),
+            message = stringResource(R.string.byoe_gmail_connection_error),
+            primaryAction = stringResource(R.string.byoe_gmail_connection_retry),
+            onPrimaryAction = onRetryClick,
+            secondaryAction = stringResource(R.string.byoe_gmail_connection_cancel),
+            onSecondaryAction = onBackClick
+        )
     }
 }
 
