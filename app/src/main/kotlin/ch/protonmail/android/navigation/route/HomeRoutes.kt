@@ -41,7 +41,6 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.feature.contentsearch.ContentSearchEnableSheetHost
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
-import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.SnackbarType
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
@@ -333,9 +332,8 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                         navController.navigate(Destination.Screen.ContentSearchSettings.route)
                     },
                     onConnectGmailClick = {
-                        // The SDK gives settings no treatment, so it shows the default (Treatment 1) copy.
                         navController.navigate(
-                            Destination.Screen.GmailIntro(ByoeSurface.Settings, ByoeTreatment.Treatment1)
+                            Destination.Screen.GmailConnection(importEmails = true, surface = ByoeSurface.Settings)
                         )
                     },
                     onPlusToUnlimitedUpsellClick = {

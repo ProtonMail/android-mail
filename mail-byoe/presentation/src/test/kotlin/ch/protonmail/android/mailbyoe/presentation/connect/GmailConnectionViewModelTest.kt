@@ -145,6 +145,22 @@ internal class GmailConnectionViewModelTest {
     }
 
     @Test
+    fun `given it was opened from settings, when opened, then the page shows the gmail connection settings`() =
+        runTest {
+            // When
+            val viewModel = viewModel(surface = ByoeSurface.Settings)
+
+            // Then
+            viewModel.state.test {
+                val state = assertIs<GmailConnectionState.OpeningPage>(awaitItem())
+                val url = state.openPage.consume().orEmpty()
+                assertTrue(url.startsWith("https://account.proton.me/lite?action=byoe-mobile"))
+                assertFalse(url.contains("autoconnect"))
+                assertFalse(url.contains("importEmails"))
+            }
+        }
+
+    @Test
     fun `given the fork fails, when opened, then the error is shown`() = runTest {
         // Given
         coEvery { forkSessionWithKeyPayload(userId) } returns SessionError.Local.Unknown.left()

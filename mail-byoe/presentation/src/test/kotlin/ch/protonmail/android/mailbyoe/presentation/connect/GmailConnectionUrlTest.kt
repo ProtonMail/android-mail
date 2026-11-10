@@ -43,7 +43,8 @@ internal class GmailConnectionUrlTest {
             apiHost = "proton.me",
             appVersion = "android-mail@7.12.0",
             fork = fork,
-            importEmails = true
+            importEmails = true,
+            autoConnect = true
         )
 
         // Then
@@ -72,10 +73,40 @@ internal class GmailConnectionUrlTest {
             apiHost = "proton.me",
             appVersion = "android-mail@7.12.0",
             fork = fork,
-            importEmails = false
+            importEmails = false,
+            autoConnect = true
         )
 
         // Then
         assertTrue(url.contains("&autoconnect=1&importEmails=0&"))
+    }
+
+    @Test
+    fun `given no auto connect, when building the url, then the page shows the gmail connection settings`() {
+        // Given
+        val fork = ForkWithKeyPayload(
+            selector = Selector("selector"),
+            sessionId = CookieSessionId("session"),
+            payloadKey = "key",
+            payloadVersion = 3,
+            payloadType = "default"
+        )
+
+        // When
+        val url = gmailConnectionUrl(
+            apiHost = "proton.me",
+            appVersion = "android-mail@7.12.0",
+            fork = fork,
+            importEmails = true,
+            autoConnect = false
+        )
+
+        // Then
+        assertEquals(
+            "https://account.proton.me/lite?action=byoe-mobile&app-version=android-mail@7.12.0" +
+                "&redirect=protonmail%3A%2F%2Fconnect-gmail%2Fcomplete" +
+                "#selector=selector&sk=key&pv=3&pt=default",
+            url
+        )
     }
 }

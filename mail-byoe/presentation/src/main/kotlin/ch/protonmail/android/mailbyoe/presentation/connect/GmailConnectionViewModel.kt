@@ -119,7 +119,14 @@ class GmailConnectionViewModel @Inject constructor(
                 onPreparationFailed()
             },
             ifRight = { fork ->
-                val url = gmailConnectionUrl(apiEnvironment.host, BuildConfig.WEBVIEW_APP_VERSION, fork, importEmails)
+                val url = gmailConnectionUrl(
+                    apiHost = apiEnvironment.host,
+                    appVersion = BuildConfig.WEBVIEW_APP_VERSION,
+                    fork = fork,
+                    importEmails = importEmails,
+                    // Settings opens the page directly, so the user still has to choose there.
+                    autoConnect = surface != ByoeSurface.Settings
+                )
                 Timber.d("byoe: opening the Gmail connection page on account.${apiEnvironment.host}")
                 savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Opened.name
                 emitNewStateFrom(GmailConnectionEvent.PageReady(url))
