@@ -28,5 +28,8 @@ enum class ByoeSurface {
     OnboardingScreen,
     Spotlight,
     SidebarBanner,
-    Settings
+    Settings,
+
+    /** The `protonmail://connect-gmail/start` link. */
+    DeepLink
 }

@@ -88,7 +88,8 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
             ByoeSurface.Spotlight -> guidance.markSpotlightDismissed(method.toSdk())
             ByoeSurface.OnboardingDrawer,
             ByoeSurface.SidebarBanner,
-            ByoeSurface.Settings -> Timber.w("byoe: no guidance to dismiss on $surface")
+            ByoeSurface.Settings,
+            ByoeSurface.DeepLink -> Timber.w("byoe: no guidance to dismiss on $surface")
         }
     }
 
@@ -158,11 +159,13 @@ private fun ByoeSurface.toSdk() = when (this) {
     ByoeSurface.Spotlight -> SdkSurface.SPOTLIGHT
     ByoeSurface.SidebarBanner -> SdkSurface.SIDEBAR_BANNER
     ByoeSurface.Settings -> SdkSurface.SETTINGS
+    ByoeSurface.DeepLink -> SdkSurface.DEEP_LINK
 }
 
 private fun ByoeImportMode.toSdk() = when (this) {
     ByoeImportMode.Enabled -> SdkImportMode.ENABLED
     ByoeImportMode.Disabled -> SdkImportMode.DISABLED
+    ByoeImportMode.Unknown -> SdkImportMode.UNKNOWN
 }
 
 private fun ByoeConnectErrorType.toSdk() = when (this) {

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailbyoe.data.repository
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailbyoe.domain.model.ByoeImportMode
 import ch.protonmail.android.mailbyoe.domain.model.ByoeOnboardingStep
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
@@ -37,6 +38,9 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlin.test.AfterTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -47,10 +51,9 @@ import uniffi.mail_uniffi.ByoeSettingsAccess
 import uniffi.mail_uniffi.MailUserSession
 import uniffi.mail_uniffi.OnboardingStep
 import uniffi.mail_uniffi.ScreenVisibilityStore
-import kotlin.test.AfterTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import ch.protonmail.android.mailbyoe.domain.model.ByoeDismissMethod as DismissMethod
+import uniffi.mail_uniffi.ByoeImportMode as SdkImportMode
+import uniffi.mail_uniffi.ByoeSurface as SdkSurface
 
 internal class ByoeGuidanceRepositoryImplTest {
 
@@ -270,6 +273,24 @@ internal class ByoeGuidanceRepositoryImplTest {
         coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.BYOE) }
         coVerify(exactly = 1) { screenVisibilityStore.markOnboardingStep(OnboardingStep.NOTIFICATIONS) }
     }
+
+    @Test
+    fun `given a deep link start, when reporting it, then it is sent with the deep link surface and unknown import`() =
+        runTest {
+            // Given
+            coEvery { byoeGuidance.reportConnectStarted(any(), any()) } just runs
+
+            // When
+            repository.report(
+                userId,
+                ByoeTelemetryEvent.ConnectStarted(ByoeSurface.DeepLink, ByoeImportMode.Unknown)
+            )
+
+            // Then
+            coVerify(exactly = 1) {
+                byoeGuidance.reportConnectStarted(SdkSurface.DEEP_LINK, SdkImportMode.UNKNOWN)
+            }
+        }
 
     @Test
     fun `given no user session, when reporting an event, then an error is returned`() = runTest {

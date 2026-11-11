@@ -71,7 +71,10 @@ sealed interface ByoeTelemetryEvent {
 /** Whether the import box was ticked when the user tapped Connect. */
 enum class ByoeImportMode {
     Enabled,
-    Disabled;
+    Disabled,
+
+    /** The user chooses on the web page, after the app has reported the start. */
+    Unknown;
 
     companion object {
 

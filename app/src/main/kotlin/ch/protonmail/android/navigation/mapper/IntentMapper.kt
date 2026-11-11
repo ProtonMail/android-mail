@@ -18,6 +18,7 @@
 package ch.protonmail.android.navigation.mapper
 
 import android.content.Intent
+import ch.protonmail.android.mailbyoe.presentation.navigation.ConnectGmailDeepLink
 import ch.protonmail.android.mailcommon.data.file.ShareUriValidator
 import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.data.file.isMailToIntent
@@ -35,6 +36,9 @@ class IntentMapper @Inject constructor(
                 HomeNavigationEvent.LauncherIntentReceived(intent)
             }
 
+            intent.isConnectGmailDeepLink() -> {
+                HomeNavigationEvent.ConnectGmailDeepLinkReceived(intent)
+            }
             intent.isShareIntent() -> {
                 if (intent.isMailToIntent()) {
                     return HomeNavigationEvent.MailToIntentReceived(intent)
@@ -68,6 +72,9 @@ class IntentMapper @Inject constructor(
             categories?.contains(Intent.CATEGORY_LAUNCHER) == true ||
                 categories?.contains(Intent.CATEGORY_DEFAULT) == true
             )
+
+    private fun Intent.isConnectGmailDeepLink(): Boolean =
+        action == Intent.ACTION_VIEW && ConnectGmailDeepLink.matches(dataString)
 
     private fun Intent.isShareIntent(): Boolean = action == Intent.ACTION_SEND ||
         action == Intent.ACTION_SEND_MULTIPLE ||

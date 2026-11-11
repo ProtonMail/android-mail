@@ -17,9 +17,9 @@
  */
 package ch.protonmail.android.navigation
 
-import java.net.URLEncoder
 import android.content.Intent
 import android.net.Uri
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -34,6 +34,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.unmockkStatic
+import java.net.URLEncoder
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -149,6 +150,20 @@ class HomeNavigationEventsReducerTest {
         val expectedEffect = Effect.of(expectedNavigation)
 
         assertEquals(expectedEffect, result.navigateToEffect)
+    }
+
+    @Test
+    fun `open the gmail connection from the deep link surface when the connect gmail deep link is received`() {
+        // Given
+        val event = HomeNavigationEvent.ConnectGmailDeepLinkReceived(intent = mockk())
+
+        // When
+        val result = reducer.reduce(HomeState.Initial, event)
+
+        // Then
+        val expectedDestination =
+            Destination.Screen.GmailConnection(importEmails = true, surface = ByoeSurface.DeepLink)
+        assertEquals(Effect.of(NavigationEffect.NavigateTo(expectedDestination)), result.navigateToEffect)
     }
 
     @Test

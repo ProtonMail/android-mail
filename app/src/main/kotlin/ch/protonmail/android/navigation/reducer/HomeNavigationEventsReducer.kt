@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.navigation.reducer
 
-import java.net.URLEncoder
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailcommon.data.file.getMailToUri
 import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -27,8 +27,9 @@ import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeNavigationEvent
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.model.NavigationEffect
-import timber.log.Timber
+import java.net.URLEncoder
 import javax.inject.Inject
+import timber.log.Timber
 
 class HomeNavigationEventsReducer @Inject constructor() {
 
@@ -43,6 +44,8 @@ class HomeNavigationEventsReducer @Inject constructor() {
             is HomeNavigationEvent.InternalShareIntentReceived ->
                 handleInternalShareIntentReceived(state, event)
 
+            is HomeNavigationEvent.ConnectGmailDeepLinkReceived ->
+                handleConnectGmailDeepLinkReceived(state)
             is HomeNavigationEvent.MailToIntentReceived ->
                 handleMailToIntentReceived(state, event)
 
@@ -95,6 +98,15 @@ class HomeNavigationEventsReducer @Inject constructor() {
             )
         )
 
+        return state.copy(navigateToEffect = Effect.of(navigate))
+    }
+
+    private fun handleConnectGmailDeepLinkReceived(state: HomeState): HomeState {
+        Timber.tag("intent-navigation").d("Received the connect Gmail deep link")
+        // The user chooses the import on the page.
+        val navigate = NavigationEffect.NavigateTo(
+            Destination.Screen.GmailConnection(importEmails = true, surface = ByoeSurface.DeepLink)
+        )
         return state.copy(navigateToEffect = Effect.of(navigate))
     }
 

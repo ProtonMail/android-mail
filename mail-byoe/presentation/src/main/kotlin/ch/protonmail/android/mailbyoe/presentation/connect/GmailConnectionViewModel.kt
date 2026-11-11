@@ -27,6 +27,8 @@ import ch.protonmail.android.mailbyoe.domain.model.ByoeImportMode
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
+import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
+import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.usecase.RefreshAfterGmailConnection
 import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.presentation.BuildConfig
@@ -65,6 +67,7 @@ class GmailConnectionViewModel @Inject constructor(
     private val apiEnvironment: ApiEnvironment,
     private val reducer: GmailConnectionReducer,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
+    private val getGmailConnectionSettingsAccess: GetGmailConnectionSettingsAccess,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -73,6 +76,9 @@ class GmailConnectionViewModel @Inject constructor(
 
     // From the route, so it survives process death while the page is open.
     private val surface = ByoeSurfaceArgument.decode(savedStateHandle.get<String>(GmailConnectionScreen.SURFACE_KEY))
+
+    // Settings and the deep link open the page directly, so the user still has to choose there.
+    private val autoConnect = surface != ByoeSurface.Settings && surface != ByoeSurface.DeepLink
 
     // A started connection without an outcome yet, so leaving the screen then reports it as abandoned.
     private var isAttemptOpen = false
@@ -102,8 +108,15 @@ class GmailConnectionViewModel @Inject constructor(
     }
 
     private suspend fun openConnectionPage() {
+        // Anyone can fire the deep link, so the page without auto connect is only opened for those Settings offers it.
+        if (!autoConnect && !canOpenGmailConnectionSettings()) {
+            Timber.w("byoe: the Gmail connection settings are not available to this user, closing")
+            emitNewStateFrom(GmailConnectionEvent.ConnectionFinished)
+            return
+        }
+
         // Each page open is an attempt, so a retry starts a new one.
-        report { ByoeTelemetryEvent.ConnectStarted(it, ByoeImportMode.of(importEmails)) }
+        report { ByoeTelemetryEvent.ConnectStarted(it, importMode()) }
         isAttemptOpen = true
         val userId = observePrimaryUserId().first()
         if (userId == null) {
@@ -124,14 +137,22 @@ class GmailConnectionViewModel @Inject constructor(
                     appVersion = BuildConfig.WEBVIEW_APP_VERSION,
                     fork = fork,
                     importEmails = importEmails,
-                    // Settings opens the page directly, so the user still has to choose there.
-                    autoConnect = surface != ByoeSurface.Settings
+                    autoConnect = autoConnect
                 )
                 Timber.d("byoe: opening the Gmail connection page on account.${apiEnvironment.host}")
                 savedStateHandle[PAGE_PROGRESS_KEY] = PageProgress.Opened.name
                 emitNewStateFrom(GmailConnectionEvent.PageReady(url))
             }
         )
+    }
+
+    // The deep link carries no import choice: the user makes it on the web page.
+    private fun importMode() =
+        if (surface == ByoeSurface.DeepLink) ByoeImportMode.Unknown else ByoeImportMode.of(importEmails)
+
+    private suspend fun canOpenGmailConnectionSettings(): Boolean {
+        val userId = observePrimaryUserId().first() ?: return false
+        return getGmailConnectionSettingsAccess(userId) == GmailConnectionSettingsAccess.Full
     }
 
     private fun onPreparationFailed() {

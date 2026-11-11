@@ -480,6 +480,7 @@ class HomeViewModelTest {
         return mockk {
             every { this@mockk.action } returns action
             every { this@mockk.data } returns data
+            every { this@mockk.dataString } returns data?.toString()
             every { this@mockk.getBooleanExtra(IntentExtraKeys.EXTRA_EXTERNAL_SHARE, false) } returns externalBoolean
             every { this@mockk.categories } returns categories
         }

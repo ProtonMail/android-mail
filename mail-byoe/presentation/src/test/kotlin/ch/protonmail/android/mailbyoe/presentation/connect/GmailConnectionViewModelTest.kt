@@ -28,6 +28,8 @@ import ch.protonmail.android.mailbyoe.domain.model.ByoeImportMode
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionResult
+import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
+import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.usecase.RefreshAfterGmailConnection
 import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.presentation.connect.GmailConnectionOperation.GmailConnectionAction
@@ -44,9 +46,9 @@ import ch.protonmail.android.mailsession.domain.model.Selector
 import ch.protonmail.android.mailsession.domain.model.SessionError
 import ch.protonmail.android.mailsession.domain.usecase.ForkSessionWithKeyPayload
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
-import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingVisibility
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -54,6 +56,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlin.test.AfterTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -61,12 +69,6 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
-import kotlin.test.AfterTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertIs
-import kotlin.test.assertTrue
 
 internal class GmailConnectionViewModelTest {
 
@@ -90,6 +92,10 @@ internal class GmailConnectionViewModelTest {
         every { this@mockk(UpsellingEntryPoint.Feature.ByoeConnectionLimit) } returns upsellingVisibility
     }
 
+    private val getGmailConnectionSettingsAccess = mockk<GetGmailConnectionSettingsAccess> {
+        coEvery { this@mockk(any()) } returns GmailConnectionSettingsAccess.Full
+    }
+
     private fun viewModel(
         importEmails: String? = "true",
         surface: ByoeSurface = SURFACE,
@@ -109,6 +115,7 @@ internal class GmailConnectionViewModelTest {
         ApiEnvironment(host = "proton.me", apiPrefix = "mail-api"),
         GmailConnectionReducer(),
         observeUpsellingVisibility,
+        getGmailConnectionSettingsAccess,
         savedStateHandle
     )
 
@@ -158,6 +165,40 @@ internal class GmailConnectionViewModelTest {
                 assertFalse(url.contains("autoconnect"))
                 assertFalse(url.contains("importEmails"))
             }
+        }
+
+    @Test
+    fun `given it was opened from the deep link, when opened, then the page shows the gmail connection settings`() =
+        runTest {
+            // When
+            val viewModel = viewModel(surface = ByoeSurface.DeepLink)
+
+            // Then
+            viewModel.state.test {
+                val state = assertIs<GmailConnectionState.OpeningPage>(awaitItem())
+                val url = state.openPage.consume().orEmpty()
+                assertTrue(url.startsWith("https://account.proton.me/lite?action=byoe-mobile"))
+                assertFalse(url.contains("autoconnect"))
+            }
+            verify {
+                reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectStarted(ByoeSurface.DeepLink, ByoeImportMode.Unknown))
+            }
+        }
+
+    @Test
+    fun `given the user has no gmail connection settings, when opened from the deep link, then it closes`() =
+        runTest {
+            // Given
+            coEvery { getGmailConnectionSettingsAccess(any()) } returns GmailConnectionSettingsAccess.ListOnly
+
+            // When
+            val viewModel = viewModel(surface = ByoeSurface.DeepLink)
+
+            // Then
+            viewModel.state.test {
+                assertIs<GmailConnectionState.Finished>(awaitItem())
+            }
+            coVerify(exactly = 0) { forkSessionWithKeyPayload(any()) }
         }
 
     @Test

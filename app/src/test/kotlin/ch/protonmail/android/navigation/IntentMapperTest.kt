@@ -141,6 +141,38 @@ class IntentMapperTest {
     }
 
     @Test
+    fun `map the connect gmail deep link`() {
+        // Given
+        val intent = mockIntent(
+            action = Intent.ACTION_VIEW,
+            dataString = "protonmail://connect-gmail/start",
+            scheme = "protonmail"
+        )
+
+        // When
+        val result = mapper.map(intent)
+
+        // Then
+        assertIs<HomeNavigationEvent.ConnectGmailDeepLinkReceived>(result)
+    }
+
+    @Test
+    fun `map another protonmail link as a share intent, not the connect gmail deep link`() {
+        // Given
+        val intent = mockIntent(
+            action = Intent.ACTION_VIEW,
+            dataString = "protonmail://connect-gmail/start?source=test",
+            scheme = "protonmail"
+        )
+
+        // When
+        val result = mapper.map(intent)
+
+        // Then
+        assertIs<HomeNavigationEvent.InvalidShareIntentReceived>(result)
+    }
+
+    @Test
     fun `map mailto intent`() {
         // Given
         val intent = mockIntent(
@@ -268,6 +300,7 @@ class IntentMapperTest {
         action: String = "",
         type: String? = null,
         data: Uri? = null,
+        dataString: String? = null,
         scheme: String = "",
         categories: Set<String> = emptySet(),
         clipData: ClipData? = null,
@@ -284,6 +317,7 @@ class IntentMapperTest {
             every { this@mockk.action } returns action
             every { this@mockk.type } returns type
             every { this@mockk.data } returns data
+            every { this@mockk.dataString } returns dataString
             every { this@mockk.scheme } returns scheme
             every { this@mockk.clipData } returns clipData
             every { this@mockk.categories } returns categories
