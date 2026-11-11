@@ -32,8 +32,10 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionOrchestrator
+import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.mailsession.domain.usecase.RefreshFeatureFlags
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
 import ch.protonmail.android.navigation.model.LauncherState.MigrationInProgress
@@ -45,10 +47,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
 import me.proton.android.core.payment.presentation.onUpgradeResult
@@ -67,6 +68,7 @@ class LauncherViewModel @Inject constructor(
     private val setLegacyMigrationStatus: SetLegacyMigrationStatus,
     private val migrateLegacyApplication: MigrateLegacyApplication,
     private val shouldMigrateLegacyAccount: ShouldMigrateLegacyAccount,
+    private val refreshFeatureFlags: RefreshFeatureFlags,
     @IsUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>
 ) : ViewModel() {
 
@@ -95,32 +97,53 @@ class LauncherViewModel @Inject constructor(
         }
     }
 
-    private fun observeStoredAccounts(afterMigration: Boolean = false) {
+    private suspend fun observeStoredAccounts(afterMigration: Boolean = false) {
+        // A cold start already has the flags of the last session, so only a sign-in, sign-up or migration waits.
+        // The accounts ready at launch are read from the store: the accounts flow can start with an empty list while
+        // the stored accounts load. After that, an account that becomes ready, or leaving PrimaryExist (a sign-out or
+        // a login step), arms the wait again.
+        val storedReadyUserIds = userSessionRepository.getReadyUserIds()
+        var waitForFeatureFlags = afterMigration || storedReadyUserIds.isEmpty()
+        var previousState: LauncherState? = null
+        var previousReadyUserIds = storedReadyUserIds
         userSessionRepository.observeAccounts()
+            // A repeated value would cancel and restart a running wait.
+            .distinctUntilChanged()
             .mapLatest { accounts ->
-                when {
-                    accounts.isEmpty() || accounts.all { it.state == AccountState.Disabled } ->
-                        AccountNeeded
-
-                    accounts.any { it.state == AccountState.TwoPasswordNeeded } ||
-                        accounts.any { it.state == AccountState.TwoFactorNeeded } ||
-                        accounts.any { it.state == AccountState.NewPassNeeded } ->
-                        StepNeeded
-
-                    accounts.any { it.state == AccountState.Ready } ->
-                        PrimaryExist
-
-                    else -> {
-                        if (afterMigration) {
-                            ProcessingAfterMigration
-                        } else {
-                            Processing
-                        }
-                    }
+                val state = accounts.toLauncherState(afterMigration)
+                val readyUserIds = accounts.filter { it.state == AccountState.Ready }.map { it.userId }.toSet()
+                val signedInUserId = (readyUserIds - previousReadyUserIds).firstOrNull()
+                // An empty list is the store loading, or every account removed, so the known accounts stay.
+                if (accounts.isNotEmpty()) previousReadyUserIds = readyUserIds
+                // An account added while another one is ready leaves the launcher in PrimaryExist.
+                if (signedInUserId != null) waitForFeatureFlags = true
+                if (previousState == PrimaryExist && state != PrimaryExist) waitForFeatureFlags = true
+                previousState = state
+                if (state == PrimaryExist && waitForFeatureFlags) {
+                    mutableState.value = if (afterMigration) ProcessingAfterMigration else Processing
+                    // The account that just became ready is the one signing in. An added account becomes the
+                    // primary one only seconds later, so the primary account is only the fallback.
+                    (signedInUserId ?: userSessionRepository.observePrimaryUserId().first())
+                        ?.let { refreshFeatureFlags(it) }
+                    waitForFeatureFlags = false
                 }
+                state
             }
-            .onEach { mutableState.value = it }
-            .launchIn(viewModelScope)
+            .collect { mutableState.value = it }
+    }
+
+    private fun List<Account>.toLauncherState(afterMigration: Boolean): LauncherState = when {
+        isEmpty() || all { it.state == AccountState.Disabled } -> AccountNeeded
+
+        any { it.state == AccountState.TwoPasswordNeeded } ||
+            any { it.state == AccountState.TwoFactorNeeded } ||
+            any { it.state == AccountState.NewPassNeeded } -> StepNeeded
+
+        any { it.state == AccountState.Ready } -> PrimaryExist
+
+        afterMigration -> ProcessingAfterMigration
+
+        else -> Processing
     }
 
     override fun onCleared() {

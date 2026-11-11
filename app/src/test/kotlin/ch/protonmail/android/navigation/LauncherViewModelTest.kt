@@ -31,6 +31,7 @@ import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissi
 import ch.protonmail.android.mailsession.domain.model.Account
 import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
+import ch.protonmail.android.mailsession.domain.usecase.RefreshFeatureFlags
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
@@ -41,11 +42,15 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
+import me.proton.core.domain.entity.UserId
 import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -59,12 +64,18 @@ class LauncherViewModelTest {
 
     private val accountApiProvider = mockk<AccountApiProvider>(relaxUnitFun = true)
     private val paymentOrchestrator = mockk<PaymentOrchestrator>()
-    private val userSessionRepository = mockk<UserSessionRepository>()
+    private val userSessionRepository = mockk<UserSessionRepository> {
+        // A launch with the ready account signed in, unless a test signs in.
+        coEvery { getReadyUserIds() } returns setOf(UserIdSample.Primary)
+    }
     private val notificationsPermissionOrchestrator = mockk<NotificationsPermissionOrchestrator>(relaxUnitFun = true)
     private val observeLegacyMigrationStatus = mockk<ObserveLegacyMigrationStatus>()
     private val setLegacyMigrationStatus = mockk<SetLegacyMigrationStatus>(relaxUnitFun = true)
     private val migrateLegacyApplication = mockk<MigrateLegacyApplication>(relaxUnitFun = true)
     private val shouldMigrateLegacyAccount = mockk<ShouldMigrateLegacyAccount>()
+    private val refreshFeatureFlags = mockk<RefreshFeatureFlags> {
+        coEvery { this@mockk(any()) } just runs
+    }
 
     private val isUpsellEnabled = mockk<FeatureFlag<Boolean>> {
         coEvery { this@mockk.get() } returns true
@@ -77,6 +88,13 @@ class LauncherViewModelTest {
         primaryAddress = "address"
     )
 
+    private val addedAccount = Account(
+        userId = UserId("added"),
+        name = "Added",
+        state = AccountState.Ready,
+        primaryAddress = "added-address"
+    )
+
     private fun viewModel() = LauncherViewModel(
         accountApiProvider,
         paymentOrchestrator,
@@ -86,6 +104,7 @@ class LauncherViewModelTest {
         setLegacyMigrationStatus,
         migrateLegacyApplication,
         shouldMigrateLegacyAccount,
+        refreshFeatureFlags,
         isUpsellEnabled
     )
 
@@ -116,10 +135,196 @@ class LauncherViewModelTest {
     }
 
     @Test
+    fun `does not wait for feature flags when the account is already ready on launch`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns flowOf(listOf(readyAccount))
+
+            viewModel().state.test {
+                assertEquals(LauncherState.PrimaryExist, awaitItem())
+            }
+
+            coVerify(exactly = 0) { refreshFeatureFlags(any()) }
+        }
+
+    @Test
+    fun `does not wait for feature flags when the accounts load after an empty first value`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+
+            viewModel().state.test {
+                assertEquals(LauncherState.Processing, awaitItem())
+                accounts.emit(emptyList())
+                assertEquals(LauncherState.AccountNeeded, awaitItem())
+
+                accounts.emit(listOf(readyAccount))
+                assertEquals(LauncherState.PrimaryExist, awaitItem())
+            }
+
+            coVerify(exactly = 0) { refreshFeatureFlags(any()) }
+        }
+
+    @Test
+    fun `waits for feature flags when signing in again after a sign-out`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
+
+            viewModel().state.test {
+                assertEquals(LauncherState.Processing, awaitItem())
+                accounts.emit(listOf(readyAccount))
+                assertEquals(LauncherState.PrimaryExist, awaitItem())
+                accounts.emit(emptyList())
+                assertEquals(LauncherState.AccountNeeded, awaitItem())
+
+                accounts.emit(listOf(readyAccount))
+                assertEquals(LauncherState.Processing, awaitItem())
+                assertEquals(LauncherState.PrimaryExist, awaitItem())
+            }
+
+            coVerify(exactly = 1) { refreshFeatureFlags(readyAccount.userId) }
+        }
+
+    @Test
+    fun `waits for feature flags before PrimaryExist after a sign-in`() = runTest(mainDispatcherRule.testDispatcher) {
+        val accounts = MutableSharedFlow<List<Account>>()
+        val refreshDone = CompletableDeferred<Unit>()
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns accounts
+        coEvery { userSessionRepository.getReadyUserIds() } returns emptySet()
+        every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
+        coEvery { refreshFeatureFlags(readyAccount.userId) } coAnswers { refreshDone.await() }
+
+        viewModel().state.test {
+            assertEquals(LauncherState.Processing, awaitItem())
+            accounts.emit(emptyList())
+            assertEquals(LauncherState.AccountNeeded, awaitItem())
+
+            accounts.emit(listOf(readyAccount))
+            assertEquals(LauncherState.Processing, awaitItem())
+            expectNoEvents()
+
+            refreshDone.complete(Unit)
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+        }
+
+        coVerify(exactly = 1) { refreshFeatureFlags(readyAccount.userId) }
+    }
+
+    @Test
+    fun `keeps waiting for feature flags when the same accounts are emitted again`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            val accounts = MutableSharedFlow<List<Account>>()
+            val refreshDone = CompletableDeferred<Unit>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            coEvery { userSessionRepository.getReadyUserIds() } returns emptySet()
+            every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
+            coEvery { refreshFeatureFlags(readyAccount.userId) } coAnswers { refreshDone.await() }
+
+            viewModel().state.test {
+                assertEquals(LauncherState.Processing, awaitItem())
+                accounts.emit(listOf(readyAccount))
+                accounts.emit(listOf(readyAccount))
+                expectNoEvents()
+
+                refreshDone.complete(Unit)
+                assertEquals(LauncherState.PrimaryExist, awaitItem())
+            }
+
+            coVerify(exactly = 1) { refreshFeatureFlags(readyAccount.userId) }
+        }
+
+    @Test
+    fun `waits for the flags of an account added without a login step`() = runTest(mainDispatcherRule.testDispatcher) {
+        val accounts = MutableSharedFlow<List<Account>>()
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns accounts
+
+        viewModel().state.test {
+            assertEquals(LauncherState.Processing, awaitItem())
+            accounts.emit(listOf(readyAccount))
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+            accounts.emit(listOf(readyAccount, addedAccount.copy(state = AccountState.NotReady)))
+            expectNoEvents()
+
+            accounts.emit(listOf(readyAccount, addedAccount))
+            assertEquals(LauncherState.Processing, awaitItem())
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+        }
+
+        coVerify(exactly = 1) { refreshFeatureFlags(addedAccount.userId) }
+        coVerify(exactly = 0) { refreshFeatureFlags(readyAccount.userId) }
+    }
+
+    @Test
+    fun `waits for the flags of an added account, not the primary one`() = runTest(mainDispatcherRule.testDispatcher) {
+        val accounts = MutableSharedFlow<List<Account>>()
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns accounts
+        // The added account becomes the primary one only after its wait.
+        every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
+
+        viewModel().state.test {
+            assertEquals(LauncherState.Processing, awaitItem())
+            accounts.emit(listOf(readyAccount))
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+            accounts.emit(listOf(readyAccount, addedAccount.copy(state = AccountState.TwoPasswordNeeded)))
+            assertEquals(LauncherState.StepNeeded, awaitItem())
+
+            accounts.emit(listOf(readyAccount, addedAccount))
+            assertEquals(LauncherState.Processing, awaitItem())
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
+        }
+
+        coVerify(exactly = 1) { refreshFeatureFlags(addedAccount.userId) }
+        coVerify(exactly = 0) { refreshFeatureFlags(readyAccount.userId) }
+    }
+
+    @Test
+    fun `stops waiting for feature flags when the accounts change`() = runTest(mainDispatcherRule.testDispatcher) {
+        val accounts = MutableSharedFlow<List<Account>>()
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns accounts
+        coEvery { userSessionRepository.getReadyUserIds() } returns emptySet()
+        every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
+        coEvery { refreshFeatureFlags(readyAccount.userId) } coAnswers { awaitCancellation() }
+
+        viewModel().state.test {
+            assertEquals(LauncherState.Processing, awaitItem())
+            accounts.emit(emptyList())
+            assertEquals(LauncherState.AccountNeeded, awaitItem())
+            accounts.emit(listOf(readyAccount))
+            assertEquals(LauncherState.Processing, awaitItem())
+
+            accounts.emit(emptyList())
+            assertEquals(LauncherState.AccountNeeded, awaitItem())
+        }
+    }
+
+    @Test
+    fun `waits for feature flags after the legacy migration`() = runTest(mainDispatcherRule.testDispatcher) {
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.NotDone)
+        every { userSessionRepository.observeAccounts() } returns flowOf(listOf(readyAccount))
+        every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
+
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        assertEquals(LauncherState.PrimaryExist, viewModel.state.value)
+        coVerify(exactly = 1) { refreshFeatureFlags(readyAccount.userId) }
+    }
+
+    @Test
     fun `migration is triggered when status is NotDone`() = runTest(mainDispatcherRule.testDispatcher) {
         val migrationStatusFlow = MutableSharedFlow<LegacyMigrationStatus>()
         every { observeLegacyMigrationStatus() } returns migrationStatusFlow
         every { userSessionRepository.observeAccounts() } returns flowOf(listOf(readyAccount))
+        every { userSessionRepository.observePrimaryUserId() } returns flowOf(readyAccount.userId)
         coEvery { migrateLegacyApplication() } returns Unit
 
         viewModel().state.test {
@@ -127,6 +332,7 @@ class LauncherViewModelTest {
             migrationStatusFlow.emit(LegacyMigrationStatus.NotDone)
 
             assertEquals(LauncherState.MigrationInProgress, awaitItem())
+            assertEquals(LauncherState.ProcessingAfterMigration, awaitItem())
             assertEquals(LauncherState.PrimaryExist, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

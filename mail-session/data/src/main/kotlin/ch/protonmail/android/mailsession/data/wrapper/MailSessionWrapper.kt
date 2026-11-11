@@ -33,6 +33,7 @@ import uniffi.mail_uniffi.MailSession
 import uniffi.mail_uniffi.MailSessionDeletePinCodeResult
 import uniffi.mail_uniffi.MailSessionGetAccountResult
 import uniffi.mail_uniffi.MailSessionGetAccountSessionsResult
+import uniffi.mail_uniffi.MailSessionGetAccountsResult
 import uniffi.mail_uniffi.MailSessionGetPrimaryAccountResult
 import uniffi.mail_uniffi.MailSessionGetSessionResult
 import uniffi.mail_uniffi.MailSessionGetSessionsResult
@@ -64,6 +65,11 @@ class MailSessionWrapper(private val mailSession: MailSession) {
                 }
             }
         }
+
+    suspend fun getAccounts(): Either<DataError, List<StoredAccount>> = when (val result = mailSession.getAccounts()) {
+        is MailSessionGetAccountsResult.Error -> result.v1.toDataError().left()
+        is MailSessionGetAccountsResult.Ok -> result.v1.right()
+    }
 
     suspend fun getPrimaryAccount(): Either<DataError, StoredAccount> =
         when (val result = mailSession.getPrimaryAccount()) {

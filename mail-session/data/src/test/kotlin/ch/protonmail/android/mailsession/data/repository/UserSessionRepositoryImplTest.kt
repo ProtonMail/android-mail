@@ -25,12 +25,16 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.account.domain.usecase.ObserveStoredAccounts
+import me.proton.core.domain.entity.UserId
 import org.junit.Rule
+import uniffi.mail_uniffi.FeatureFlagsRefreshOutcome
 import uniffi.mail_uniffi.StoredAccount
+import uniffi.mail_uniffi.StoredAccountState
 import uniffi.mail_uniffi.StoredSession
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.time.Duration.Companion.seconds
 import uniffi.mail_uniffi.Fork as RustFork
 import uniffi.mail_uniffi.ForkWithKeyPayload as RustForkWithKeyPayload
 
@@ -307,6 +311,75 @@ class UserSessionRepositoryImplTest {
             flow.emit(expectedError)
             assertEquals(expectedError, awaitItem())
         }
+    }
+
+    @Test
+    fun `refreshFeatureFlags returns the outcome from the user session`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        val userSession = mockk<MailUserSessionWrapper> {
+            coEvery { refreshFeatureFlags(3.seconds) } returns FeatureFlagsRefreshOutcome.REFRESHED.right()
+        }
+        coEvery { mailSessionRepository.getMailSession() } returns mailSessionWithReadyInitializedSession(userSession)
+
+        // When
+        val result = userSessionRepository.refreshFeatureFlags(userId, 3.seconds)
+
+        // Then
+        assertEquals(FeatureFlagsRefreshOutcome.REFRESHED.right(), result)
+    }
+
+    @Test
+    fun `refreshFeatureFlags returns NoUserSession when there is no user session`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        coEvery { mailSessionRepository.getMailSession() } returns mailSessionWithNoStoredAccount()
+
+        // When
+        val result = userSessionRepository.refreshFeatureFlags(userId, 3.seconds)
+
+        // Then
+        assertEquals(DataError.Local.NoUserSession.left(), result)
+    }
+
+    @Test
+    fun `getReadyUserIds returns the logged-in stored accounts`() = runTest {
+        // Given
+        val disabled = mockk<StoredAccount> {
+            every { userId() } returns "disabled"
+            every { state() } returns StoredAccountState.LoggedOut
+        }
+        val notReady = mockk<StoredAccount> {
+            every { userId() } returns "not-ready"
+            every { state() } returns StoredAccountState.NotReady
+        }
+        val loggedIn = mockk<StoredAccount> {
+            every { userId() } returns "logged-in"
+            every { state() } returns mockk<StoredAccountState.LoggedIn>()
+        }
+        coEvery { mailSessionRepository.getMailSession() } returns mockk {
+            coEvery { getAccounts() } returns listOf(disabled, notReady, loggedIn).right()
+        }
+
+        // When
+        val result = userSessionRepository.getReadyUserIds()
+
+        // Then
+        assertEquals(setOf(UserId("logged-in")), result)
+    }
+
+    @Test
+    fun `getReadyUserIds is empty when the stored accounts cannot be read`() = runTest {
+        // Given
+        coEvery { mailSessionRepository.getMailSession() } returns mockk {
+            coEvery { getAccounts() } returns DataError.Local.NoDataCached.left()
+        }
+
+        // When
+        val result = userSessionRepository.getReadyUserIds()
+
+        // Then
+        assertEquals(emptySet(), result)
     }
 
     private fun mailSessionWithNoStoredAccount() = mockk<MailSessionWrapper> {

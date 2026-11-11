@@ -38,13 +38,21 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
+import uniffi.mail_uniffi.FeatureFlagsRefreshOutcome
 import uniffi.mail_uniffi.MailUserSession
+import kotlin.time.Duration
 
 interface UserSessionRepository {
 
     fun observePrimaryAccount(): Flow<Account?>
 
     fun observeAccounts(): Flow<List<Account>>
+
+    /**
+     * The stored accounts that are ready, read from the store. Unlike [observeAccounts], whose first value can be an
+     * empty list while the stored accounts load, this tells which accounts were signed in at launch.
+     */
+    suspend fun getReadyUserIds(): Set<UserId>
 
     fun observePrimaryUserId(): Flow<UserId?>
 
@@ -83,6 +91,8 @@ interface UserSessionRepository {
         flagName: String,
         newValue: Boolean
     ): Either<DataError, Unit>
+
+    suspend fun refreshFeatureFlags(userId: UserId, timeout: Duration): Either<DataError, FeatureFlagsRefreshOutcome>
 }
 
 fun UserSessionRepository.onAccountState(state: AccountState, initialState: Boolean = true): Flow<Account> =

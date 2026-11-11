@@ -35,6 +35,8 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOf
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
+import uniffi.mail_uniffi.FeatureFlagsRefreshOutcome
+import kotlin.time.Duration
 
 @Suppress("NotImplementedDeclaration")
 internal class FakeUserSessionRepository(
@@ -47,6 +49,10 @@ internal class FakeUserSessionRepository(
     }
 
     override fun observeAccounts(): Flow<List<Account>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getReadyUserIds(): Set<UserId> {
         TODO("Not yet implemented")
     }
 
@@ -116,6 +122,13 @@ internal class FakeUserSessionRepository(
         flagName: String,
         newValue: Boolean
     ): Either<DataError, Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun refreshFeatureFlags(
+        userId: UserId,
+        timeout: Duration
+    ): Either<DataError, FeatureFlagsRefreshOutcome> {
         TODO("Not yet implemented")
     }
 }

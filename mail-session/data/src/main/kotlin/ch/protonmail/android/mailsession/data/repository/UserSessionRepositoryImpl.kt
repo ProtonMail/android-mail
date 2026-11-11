@@ -55,8 +55,10 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
 import timber.log.Timber
 import uniffi.mail_uniffi.MailUserSessionUserSettingsResult
+import uniffi.mail_uniffi.StoredAccountState
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration
 
 @Singleton
 class UserSessionRepositoryImpl @Inject constructor(
@@ -71,6 +73,14 @@ class UserSessionRepositoryImpl @Inject constructor(
 
     override fun observeAccounts(): Flow<List<Account>> = observeStoredAccounts()
         .mapLatest { accounts -> accounts.map { it.toAccount() } }
+
+    override suspend fun getReadyUserIds(): Set<UserId> = mailSession.getAccounts()
+        .onLeft { Timber.w("user-session: unable to read the stored accounts, error=$it") }
+        .getOrNull()
+        .orEmpty()
+        .filter { it.state() is StoredAccountState.LoggedIn }
+        .map { UserId(it.userId()) }
+        .toSet()
 
     override fun observePrimaryUserId(): Flow<UserId?> = observeAccounts()
         .map { list ->
@@ -252,6 +262,9 @@ class UserSessionRepositoryImpl @Inject constructor(
         flagName: String,
         newValue: Boolean
     ) = getUserSession(userId)?.overrideFeatureFlag(flagName, newValue) ?: DataError.Local.NoUserSession.left()
+
+    override suspend fun refreshFeatureFlags(userId: UserId, timeout: Duration) =
+        getUserSession(userId)?.refreshFeatureFlags(timeout) ?: DataError.Local.NoUserSession.left()
 
     override suspend fun isBusiness(userId: UserId): Either<DataError, Boolean> =
         getUserSession(userId)?.isBusiness() ?: DataError.Local.NoUserSession.left()

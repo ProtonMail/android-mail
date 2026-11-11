@@ -31,6 +31,7 @@ import timber.log.Timber
 import uniffi.mail_uniffi.AsyncLiveQueryCallback
 import uniffi.mail_uniffi.EventLoopErrorObserver
 import uniffi.mail_uniffi.ExecuteWhenOnlineCallbackAsync
+import uniffi.mail_uniffi.FeatureFlagsRefreshOutcome
 import uniffi.mail_uniffi.Fork
 import uniffi.mail_uniffi.ForkWithKeyPayload
 import uniffi.mail_uniffi.MailUserSession
@@ -42,6 +43,7 @@ import uniffi.mail_uniffi.MailUserSessionMonthlyToYearlyEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionOnboardingUpsellVariantResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionPlusToUnlimitedEligibilityResult
+import uniffi.mail_uniffi.MailUserSessionRefreshFeatureFlagsResult
 import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
 import uniffi.mail_uniffi.MailUserSessionUpsellEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
@@ -55,6 +57,7 @@ import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellExperimentFlag
 import uniffi.mail_uniffi.User
 import uniffi.mail_uniffi.VoidEventResult
+import kotlin.time.Duration
 
 class MailUserSessionWrapper(private val userSession: MailUserSession) {
 
@@ -173,6 +176,12 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
                 Timber.e("MailUserSession FeatureFlag Override:: Unable set set feature flag ${result.v1}")
                 result.v1.toDataError().left()
             }
+        }
+
+    suspend fun refreshFeatureFlags(timeout: Duration): Either<DataError, FeatureFlagsRefreshOutcome> =
+        when (val result = userSession.refreshFeatureFlags(timeout.inWholeMilliseconds.toULong())) {
+            is MailUserSessionRefreshFeatureFlagsResult.Ok -> result.v1.right()
+            is MailUserSessionRefreshFeatureFlagsResult.Error -> result.v1.toDataError().left()
         }
 
     suspend fun refreshMailSettings(): Either<DataError, Unit> = when (val result = userSession.refreshMailSettings()) {

@@ -69,4 +69,5 @@ dependencies {
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
     testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.rust.core)
 }
