@@ -90,6 +90,7 @@ class ByoeSpotlightEligibilityViewModel @Inject constructor(
         viewModelScope.launch { dismissByoeGuidance(primaryUserId(), surface, method) }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun eligibilityFor(userId: UserId): ByoeSpotlightEligibilityState = try {
         syncOnboardingFinishedToSdk(userId)
         getByoeSpotlightTreatment(userId)

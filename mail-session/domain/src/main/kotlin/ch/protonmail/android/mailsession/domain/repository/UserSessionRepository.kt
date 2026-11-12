@@ -42,6 +42,7 @@ import uniffi.mail_uniffi.FeatureFlagsRefreshOutcome
 import uniffi.mail_uniffi.MailUserSession
 import kotlin.time.Duration
 
+@Suppress("TooManyFunctions", "ComplexInterface")
 interface UserSessionRepository {
 
     fun observePrimaryAccount(): Flow<Account?>

@@ -52,6 +52,7 @@ import ch.protonmail.android.design.compose.theme.titleMediumNorm
  * It always uses the normal theme, so it stays readable over the inverted screens of the Gmail connection.
  */
 @Composable
+@Suppress("UseComposableActions")
 internal fun ByoePromptDialog(
     title: String,
     message: String,

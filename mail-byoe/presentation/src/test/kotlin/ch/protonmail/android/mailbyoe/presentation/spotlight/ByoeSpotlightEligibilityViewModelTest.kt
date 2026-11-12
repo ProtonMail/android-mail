@@ -137,7 +137,7 @@ internal class ByoeSpotlightEligibilityViewModelTest {
         }
 
     @Test
-    fun `given a check that finishes after the timeout, when it returns a treatment, then the spotlight stays hidden`() =
+    fun `given a late check, when it returns a treatment after the timeout, then the spotlight stays hidden`() =
         runTest(mainDispatcherRule.testDispatcher) {
             // Given
             coEvery { getByoeSpotlightTreatment(userId) } coAnswers {

@@ -213,7 +213,10 @@ internal class PlanUpgradeEntitlementsUiMapperTest {
     @Test
     fun `should compare the free storage with unlimited in the gmail import comparison table`() {
         // When
-        val actual = mapper.toTableUiModel(PlanUpgradeVariant.IntroductoryPrice, UpsellingEntryPoint.Feature.ByoeStorage)
+        val actual = mapper.toTableUiModel(
+            PlanUpgradeVariant.IntroductoryPrice,
+            UpsellingEntryPoint.Feature.ByoeStorage
+        )
 
         // Then
         val storage = (actual as PlanUpgradeEntitlementsListUiModel.ComparisonTableList).items.first()

@@ -60,6 +60,7 @@ import timber.log.Timber
  * instead with the upsell to offer, once it has loaded.
  */
 @Composable
+@Suppress("UseComposableActions")
 fun GmailConnectionScreen(
     onClose: () -> Unit,
     onOpenInbox: (importEmails: Boolean) -> Unit,
@@ -81,7 +82,9 @@ fun GmailConnectionScreen(
         }
 
         is GmailConnectionState.Finished -> ConsumableLaunchedEffect(current.close) { onClose() }
-        is GmailConnectionState.Connected -> ConsumableLaunchedEffect(current.openInbox) { onOpenInbox(current.importEmails) }
+        is GmailConnectionState.Connected -> ConsumableLaunchedEffect(current.openInbox) {
+            onOpenInbox(current.importEmails)
+        }
         is GmailConnectionState.UpsellRequested -> ConsumableLaunchedEffect(current.openUpsell) { onOpenUpsell(it) }
         else -> Unit
     }

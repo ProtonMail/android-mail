@@ -100,22 +100,21 @@ internal class DebugEnvironmentStoreTest {
         }
 
     @Test
-    fun `given a recent environment, when saving it again, then it moves to the front without a duplicate`() =
-        runTest {
-            // Given
-            val store = DebugEnvironmentStore(dataStore)
-            store.save("maury.proton.black")
-            store.save("a.proton.black")
+    fun `given a recent environment, when saving it again, then it moves to the front without a duplicate`() = runTest {
+        // Given
+        val store = DebugEnvironmentStore(dataStore)
+        store.save("maury.proton.black")
+        store.save("a.proton.black")
 
-            // When
-            store.save("maury.proton.black")
+        // When
+        store.save("maury.proton.black")
 
-            // Then
-            assertEquals(
-                listOf("maury.proton.black", "a.proton.black"),
-                DebugEnvironmentStore(dataStore).recentHosts()
-            )
-        }
+        // Then
+        assertEquals(
+            listOf("maury.proton.black", "a.proton.black"),
+            DebugEnvironmentStore(dataStore).recentHosts()
+        )
+    }
 
     @Test
     fun `given an override, when clearing it, then the build default is used and recent environments are kept`() =

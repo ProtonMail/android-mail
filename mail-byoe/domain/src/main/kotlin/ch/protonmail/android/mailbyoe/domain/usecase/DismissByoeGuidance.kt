@@ -33,7 +33,11 @@ class DismissByoeGuidance @Inject constructor(
     private val byoeGuidanceRepository: ByoeGuidanceRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, surface: ByoeSurface, method: ByoeDismissMethod) {
+    suspend operator fun invoke(
+        userId: UserId,
+        surface: ByoeSurface,
+        method: ByoeDismissMethod
+    ) {
         byoeGuidanceRepository.markGuidanceDismissed(userId, surface, method)
             .onLeft { Timber.e("byoe: unable to record the guidance as dismissed: $it") }
             .onRight { Timber.d("byoe: guidance dismissed") }

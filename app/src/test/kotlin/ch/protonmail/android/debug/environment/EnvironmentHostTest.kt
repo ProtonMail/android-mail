@@ -24,12 +24,6 @@ import kotlin.test.assertEquals
 
 internal class EnvironmentHostTest {
 
-    private companion object {
-
-        const val DEV = "proton.black"
-        const val ALPHA = "proton.me"
-    }
-
     @Test
     fun `a proton black host is kept as it is`() {
         assertEquals(Input.Valid("maury.proton.black"), EnvironmentHost.parse("maury.proton.black", DEV))
@@ -115,5 +109,11 @@ internal class EnvironmentHostTest {
     @Test
     fun `the default environment's web app link uses the build host`() {
         assertEquals("https://account.proton.black/login", EnvironmentHost.accountLoginUrl("proton.black"))
+    }
+
+    private companion object {
+
+        const val DEV = "proton.black"
+        const val ALPHA = "proton.me"
     }
 }

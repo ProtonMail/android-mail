@@ -56,8 +56,7 @@ internal class EnvironmentDebugViewModelTest {
         coEvery { this@mockk.invoke() } returns Unit.right()
     }
 
-    private fun viewModel() =
-        EnvironmentDebugViewModel(store, userSessionRepository, signOutAllAccounts)
+    private fun viewModel() = EnvironmentDebugViewModel(store, userSessionRepository, signOutAllAccounts)
 
     private fun givenAccount(state: AccountState) {
         every { userSessionRepository.observeAccounts() } returns flowOf(

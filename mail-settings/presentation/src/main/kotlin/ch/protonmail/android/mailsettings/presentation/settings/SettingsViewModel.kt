@@ -61,7 +61,7 @@ class SettingsViewModel @Inject constructor(
             } ?: VisibilityUiModel.Hidden,
             appInformation = appInformation,
             isContentSearchEnabled = account != null && isContentSearchFeatureEnabled(account.userId),
-            // TODO(DAWG-111): ListOnly stays hidden until the connected-addresses list exists.
+            // ListOnly stays hidden until the connected-addresses list exists (DAWG-111).
             isConnectGmailVisible = account != null &&
                 getGmailConnectionSettingsAccess(account.userId) == GmailConnectionSettingsAccess.Full
         )

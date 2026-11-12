@@ -854,7 +854,7 @@ internal class UpsellingViewModelTest {
         }
 
     @Test
-    fun `given the storage upsell in Black Friday wave 2, when its only plan is bought, then a primary CTA is reported`() =
+    fun `given the Black Friday wave 2 storage upsell, when its only plan is bought, then a primary CTA is reported`() =
         runTest {
             // Given
             val blackFridayWave2 = PlanUpgradeInstanceListUiModel.Data.BlackFriday(

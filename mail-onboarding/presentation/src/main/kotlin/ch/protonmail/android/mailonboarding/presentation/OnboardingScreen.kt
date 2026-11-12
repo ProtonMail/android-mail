@@ -96,6 +96,7 @@ fun OnboardingScreen(actions: OnboardingScreen.Actions, viewModel: OnboardingVie
 }
 
 @Composable
+@Suppress("UseComposableActions")
 private fun OnboardingScreen(
     state: OnboardingState,
     onUpsellingNavigation: () -> Unit,

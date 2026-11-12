@@ -181,25 +181,26 @@ internal class GmailConnectionViewModelTest {
                 assertFalse(url.contains("autoconnect"))
             }
             verify {
-                reportByoeTelemetryEvent(ByoeTelemetryEvent.ConnectStarted(ByoeSurface.DeepLink, ByoeImportMode.Unknown))
+                reportByoeTelemetryEvent(
+                    ByoeTelemetryEvent.ConnectStarted(ByoeSurface.DeepLink, ByoeImportMode.Unknown)
+                )
             }
         }
 
     @Test
-    fun `given the user has no gmail connection settings, when opened from the deep link, then it closes`() =
-        runTest {
-            // Given
-            coEvery { getGmailConnectionSettingsAccess(any()) } returns GmailConnectionSettingsAccess.ListOnly
+    fun `given the user has no gmail connection settings, when opened from the deep link, then it closes`() = runTest {
+        // Given
+        coEvery { getGmailConnectionSettingsAccess(any()) } returns GmailConnectionSettingsAccess.ListOnly
 
-            // When
-            val viewModel = viewModel(surface = ByoeSurface.DeepLink)
+        // When
+        val viewModel = viewModel(surface = ByoeSurface.DeepLink)
 
-            // Then
-            viewModel.state.test {
-                assertIs<GmailConnectionState.Finished>(awaitItem())
-            }
-            coVerify(exactly = 0) { forkSessionWithKeyPayload(any()) }
+        // Then
+        viewModel.state.test {
+            assertIs<GmailConnectionState.Finished>(awaitItem())
         }
+        coVerify(exactly = 0) { forkSessionWithKeyPayload(any()) }
+    }
 
     @Test
     fun `given the fork fails, when opened, then the error is shown`() = runTest {
@@ -245,18 +246,17 @@ internal class GmailConnectionViewModelTest {
     }
 
     @Test
-    fun `given the import was turned off, when connected, then the success page leaves out the import`() =
-        runTest {
-            // Given
-            val viewModel = viewModel(importEmails = "false")
+    fun `given the import was turned off, when connected, then the success page leaves out the import`() = runTest {
+        // Given
+        val viewModel = viewModel(importEmails = "false")
 
-            // When
-            viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Connected(email = EMAIL)))
 
-            // Then
-            val state = assertIs<GmailConnectionState.Connected>(viewModel.state.value)
-            assertFalse(state.importEmails)
-        }
+        // Then
+        val state = assertIs<GmailConnectionState.Connected>(viewModel.state.value)
+        assertFalse(state.importEmails)
+    }
 
     @Test
     fun `given the success page, when taking the user to the inbox, then the inbox is selected and opened`() = runTest {
@@ -361,7 +361,7 @@ internal class GmailConnectionViewModelTest {
     }
 
     @Test
-    fun `given the app was killed while the page was open, when the screen comes back, then the page is not opened again`() =
+    fun `given the app was killed with the page open, when the screen comes back, then the page is not reopened`() =
         runTest {
             // Given
             val savedStateHandle = SavedStateHandle()
@@ -396,7 +396,8 @@ internal class GmailConnectionViewModelTest {
         runTest {
             // Given
             val savedStateHandle = SavedStateHandle()
-            viewModel(savedStateHandle = savedStateHandle).submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
+            viewModel(savedStateHandle = savedStateHandle)
+                .submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
 
             // When
             val restored = viewModel(savedStateHandle = savedStateHandle)
@@ -434,18 +435,17 @@ internal class GmailConnectionViewModelTest {
     }
 
     @Test
-    fun `given the import is off, when the page opens, then a connection start without import is reported`() =
-        runTest {
-            // When
-            viewModel(importEmails = "false", surface = ByoeSurface.Settings)
+    fun `given the import is off, when the page opens, then a connection start without import is reported`() = runTest {
+        // When
+        viewModel(importEmails = "false", surface = ByoeSurface.Settings)
 
-            // Then
-            verify(exactly = 1) {
-                reportByoeTelemetryEvent(
-                    ByoeTelemetryEvent.ConnectStarted(ByoeSurface.Settings, ByoeImportMode.Disabled)
-                )
-            }
+        // Then
+        verify(exactly = 1) {
+            reportByoeTelemetryEvent(
+                ByoeTelemetryEvent.ConnectStarted(ByoeSurface.Settings, ByoeImportMode.Disabled)
+            )
         }
+    }
 
     @Test
     fun `given the fork fails, when opened, then the start and an unknown failure are reported`() = runTest {

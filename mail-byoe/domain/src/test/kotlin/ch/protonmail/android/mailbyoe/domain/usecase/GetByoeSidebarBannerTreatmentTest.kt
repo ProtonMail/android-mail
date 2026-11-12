@@ -70,7 +70,9 @@ internal class GetByoeSidebarBannerTreatmentTest {
     @Test
     fun `given the guidance fails, when asking, then there is none`() = runTest {
         // Given
-        coEvery { byoeGuidanceRepository.getSidebarBannerTreatment(userId) } returns DataError.Local.NoUserSession.left()
+        coEvery {
+            byoeGuidanceRepository.getSidebarBannerTreatment(userId)
+        } returns DataError.Local.NoUserSession.left()
 
         // When
         val result = getByoeSidebarBannerTreatment(userId)

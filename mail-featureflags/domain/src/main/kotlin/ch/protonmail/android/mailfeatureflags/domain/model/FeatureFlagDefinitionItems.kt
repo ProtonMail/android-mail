@@ -190,7 +190,8 @@ data object ByoeEnabled : FeatureFlagDefinition(
     key = "InboxBringYourOwnEmail",
     name = "BYOE master switch",
     category = FeatureFlagCategory.Byoe,
-    description = "InboxBringYourOwnEmail: Master switch for BYOE, shared with web. When off, BYOE is hidden on mobile and web.",
+    description = "InboxBringYourOwnEmail: Master switch for BYOE, shared with web. " +
+        "When off, BYOE is hidden on mobile and web.",
     defaultValue = false
 )
 
@@ -198,7 +199,8 @@ data object GmailConnectionEnabled : FeatureFlagDefinition(
     key = "InboxBringYourOwnEmailMobileGmailConnection",
     name = "Connect a Gmail account (BYOE)",
     category = FeatureFlagCategory.Byoe,
-    description = "InboxBringYourOwnEmailMobileGmailConnection: The mobile BYOE experiment. Only Treatment1 and Treatment2 users see BYOE.",
+    description = "InboxBringYourOwnEmailMobileGmailConnection: The mobile BYOE experiment. " +
+        "Only Treatment1 and Treatment2 users see BYOE.",
     defaultValue = false,
     variants = listOf("ControlGroup", "Treatment1", "Treatment2")
 )
@@ -215,7 +217,8 @@ data object ByoeConnectionKillswitch : FeatureFlagDefinition(
     key = "InboxBringYourOwnEmailMobileSettingsConnectionKillswitch",
     name = "BYOE settings connection killswitch",
     category = FeatureFlagCategory.Byoe,
-    description = "InboxBringYourOwnEmailMobileSettingsConnectionKillswitch: When on, Settings only list the connected accounts and the guidance screens are hidden.",
+    description = "InboxBringYourOwnEmailMobileSettingsConnectionKillswitch: When on, Settings only list " +
+        "the connected accounts and the guidance screens are hidden.",
     defaultValue = false
 )
 

@@ -293,6 +293,7 @@ internal fun NavGraphBuilder.addMonthlyToYearlyUpsellSheet(navController: NavHos
     }
 }
 
+@Suppress("LongMethod")
 internal fun NavGraphBuilder.addSettings(navController: NavHostController, activityActions: MainActivity.Actions) {
     composableWithTransitions(
         route = Destination.Screen.Settings.route,
