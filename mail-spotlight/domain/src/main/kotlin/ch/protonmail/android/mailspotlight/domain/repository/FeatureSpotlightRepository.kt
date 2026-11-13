@@ -20,12 +20,9 @@ package ch.protonmail.android.mailspotlight.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
-import kotlinx.coroutines.flow.Flow
 
+/** What the app knew about the What's New before the SDK owned the announcements. */
 interface FeatureSpotlightRepository {
 
-    fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>>
-
-    suspend fun save(): Either<PreferencesError, Unit>
+    suspend fun isContentSearchWhatsNewSeen(): Either<PreferencesError, Boolean>
 }

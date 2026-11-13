@@ -62,11 +62,6 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
             guidance.onboarding().also { Timber.d("byoe: Rust guidance onboarding = $it") }?.toTreatment()
         }
 
-    override suspend fun getSpotlightTreatment(userId: UserId): Either<DataError, ByoeTreatment?> =
-        withByoeGuidance(userId) { guidance ->
-            guidance.spotlight().also { Timber.d("byoe: Rust guidance spotlight = $it") }?.toTreatment()
-        }
-
     override suspend fun getSidebarBannerTreatment(userId: UserId): Either<DataError, ByoeTreatment?> =
         withByoeGuidance(userId) { guidance ->
             guidance.sidebarBanner().also { Timber.d("byoe: Rust guidance sidebar banner = $it") }?.toTreatment()
@@ -74,9 +69,6 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
 
     override suspend fun markSidebarBannerClosed(userId: UserId, method: ByoeDismissMethod): Either<DataError, Unit> =
         withByoeGuidance(userId) { guidance -> guidance.markSidebarBannerClosed(method.toSdk()) }
-
-    override suspend fun markSpotlightShown(userId: UserId): Either<DataError, Unit> =
-        withByoeGuidance(userId) { guidance -> guidance.markSpotlightShown() }
 
     override suspend fun markGuidanceDismissed(
         userId: UserId,

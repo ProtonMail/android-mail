@@ -33,7 +33,6 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsComposerFormat
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsDebugInspectDbEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFallPromo2026Wave2Enabled
-import ch.protonmail.android.mailfeatureflags.domain.annotation.IsFeatureSpotlightEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsInjectCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsLastMessageAutoExpandEnabled
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsMessageBodyImageCacheEnabled
@@ -74,7 +73,6 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BlackFridayUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
-import ch.protonmail.android.mailfeatureflags.domain.model.FeatureSpotlight
 import ch.protonmail.android.mailfeatureflags.domain.model.GmailConnectionEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Enabled
@@ -371,16 +369,6 @@ object FeatureFlagsModule {
     @IntoSet
     @Singleton
     fun provideRateOnUpsellEnabledDef(): FeatureFlagDefinition = RateOnUpsellEnabled
-
-    @Provides
-    @Singleton
-    @IsFeatureSpotlightEnabled
-    fun provideFeatureSpotlightEnabled(factory: BooleanFeatureFlagFactory) = factory.create(FeatureSpotlight.key, false)
-
-    @Provides
-    @IntoSet
-    @Singleton
-    fun provideFeatureSpotlightEnabledDef(): FeatureFlagDefinition = FeatureSpotlight
 
     @Provides
     @IntoSet

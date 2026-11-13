@@ -121,18 +121,6 @@ internal class ByoeGuidanceRepositoryImplTest {
     }
 
     @Test
-    fun `given no spotlight treatment, when getting it, then there is none`() = runTest {
-        // Given
-        coEvery { byoeGuidance.spotlight() } returns null
-
-        // When
-        val result = repository.getSpotlightTreatment(userId)
-
-        // Then
-        assertEquals(null.right(), result)
-    }
-
-    @Test
     fun `given no user session, when getting the settings access, then an error is returned`() = runTest {
         // Given
         coEvery { userSessionRepository.getUserSession(userId) } returns null
@@ -179,19 +167,6 @@ internal class ByoeGuidanceRepositoryImplTest {
         // Then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { byoeGuidance.markSidebarBannerClosed(ByoeDismissMethod.BUTTON) }
-    }
-
-    @Test
-    fun `given the spotlight appeared, when recording it, then the guidance records it`() = runTest {
-        // Given
-        coEvery { byoeGuidance.markSpotlightShown() } just runs
-
-        // When
-        val result = repository.markSpotlightShown(userId)
-
-        // Then
-        assertEquals(Unit.right(), result)
-        coVerify(exactly = 1) { byoeGuidance.markSpotlightShown() }
     }
 
     @Test

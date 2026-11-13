@@ -22,16 +22,14 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.preferencesOf
-import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailspotlight.data.FeatureSpotlightDataStoreProvider
-import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -45,59 +43,44 @@ internal class FeatureSpotlightLocalDataSourceImplTest {
     }
     private val localDataSource = FeatureSpotlightLocalDataSourceImpl(dataStoreProvider)
 
-    @Test
-    fun `observe returns shouldShow true when stored version is lower than current`() = runTest {
-        // Given
-        val preferences = preferencesOf(prefKey to 0)
-        every { dataStore.data } returns flowOf(preferences)
-
-        // When & Then
-        localDataSource.observe().test {
-            val result = awaitItem()
-            assertEquals(FeatureSpotlightDisplay(show = true).right(), result)
-            awaitComplete()
-        }
+    @AfterTest
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
-    fun `observe returns shouldShow false when stored version equals current`() = runTest {
+    fun `given the content search version was seen, when reading it, then the What's New is seen`() = runTest {
         // Given
-        val preferences = preferencesOf(prefKey to FeatureSpotlightVersions.CONTENT_SEARCH)
-        every { dataStore.data } returns flowOf(preferences)
-
-        // When & Then
-        localDataSource.observe().test {
-            val result = awaitItem()
-            assertEquals(FeatureSpotlightDisplay(show = false).right(), result)
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `observe returns shouldShow true when preference key is not set`() = runTest {
-        // Given
-        val emptyPreferences = preferencesOf()
-        every { dataStore.data } returns flowOf(emptyPreferences)
-
-        // When & Then
-        localDataSource.observe().test {
-            val result = awaitItem()
-            assertEquals(FeatureSpotlightDisplay(show = true).right(), result)
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `save stores current spotlight version and returns success`() = runTest {
-        // Given
-        val updatedPreferences = preferencesOf(prefKey to FeatureSpotlightVersions.PRIVACY_BUNDLE)
-        coEvery { dataStore.updateData(any()) } returns updatedPreferences
+        every { dataStore.data } returns flowOf(preferencesOf(prefKey to FeatureSpotlightVersions.CONTENT_SEARCH))
 
         // When
-        val result = localDataSource.save()
+        val result = localDataSource.isContentSearchWhatsNewSeen()
 
         // Then
-        assertEquals(Unit.right(), result)
-        coVerify(exactly = 1) { dataStore.updateData(any()) }
+        assertEquals(true.right(), result)
+    }
+
+    @Test
+    fun `given an older version was seen, when reading it, then the What's New is not seen`() = runTest {
+        // Given
+        every { dataStore.data } returns flowOf(preferencesOf(prefKey to FeatureSpotlightVersions.CATEGORY_VIEW))
+
+        // When
+        val result = localDataSource.isContentSearchWhatsNewSeen()
+
+        // Then
+        assertEquals(false.right(), result)
+    }
+
+    @Test
+    fun `given nothing was stored, when reading it, then the What's New is not seen`() = runTest {
+        // Given
+        every { dataStore.data } returns flowOf(preferencesOf())
+
+        // When
+        val result = localDataSource.isContentSearchWhatsNewSeen()
+
+        // Then
+        assertEquals(false.right(), result)
     }
 }

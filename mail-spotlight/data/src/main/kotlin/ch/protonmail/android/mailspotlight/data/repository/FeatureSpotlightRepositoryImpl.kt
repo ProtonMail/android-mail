@@ -18,20 +18,13 @@
 
 package ch.protonmail.android.mailspotlight.data.repository
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataSource
-import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
 import ch.protonmail.android.mailspotlight.domain.repository.FeatureSpotlightRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FeatureSpotlightRepositoryImpl @Inject constructor(
     private val featureSpotlightLocalDataSource: FeatureSpotlightLocalDataSource
 ) : FeatureSpotlightRepository {
 
-    override fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>> =
-        featureSpotlightLocalDataSource.observe()
-
-    override suspend fun save(): Either<PreferencesError, Unit> = featureSpotlightLocalDataSource.save()
+    override suspend fun isContentSearchWhatsNewSeen() = featureSpotlightLocalDataSource.isContentSearchWhatsNewSeen()
 }

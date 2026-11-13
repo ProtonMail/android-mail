@@ -254,14 +254,6 @@ data object RateOnUpsellEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object FeatureSpotlight : FeatureFlagDefinition(
-    key = "MailAndroidV7FeatureSpotlight",
-    name = "Enable the feature spotlight",
-    category = FeatureFlagCategory.Details,
-    description = "Show a what's new screen on startup when available.",
-    defaultValue = false
-)
-
 data object CategoryView : FeatureFlagDefinition(
     key = "CategoryView",
     name = "Enable category view",

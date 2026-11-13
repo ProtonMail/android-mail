@@ -20,13 +20,9 @@ package ch.protonmail.android.mailspotlight.data.local
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
-
-import kotlinx.coroutines.flow.Flow
 
 interface FeatureSpotlightLocalDataSource {
 
-    fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>>
-
-    suspend fun save(): Either<PreferencesError, Unit>
+    /** Whether this device resolved the content search What's New before the SDK owned it. */
+    suspend fun isContentSearchWhatsNewSeen(): Either<PreferencesError, Boolean>
 }

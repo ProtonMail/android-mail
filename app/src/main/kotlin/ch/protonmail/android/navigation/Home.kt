@@ -76,11 +76,12 @@ import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewAction
 import ch.protonmail.android.feature.contentsearch.HomeContentSearchBottomSheetViewModel
-import ch.protonmail.android.feature.spotlight.HomeFeatureSpotlightViewModel
+import ch.protonmail.android.feature.spotlight.HomeAnnouncementAction
+import ch.protonmail.android.feature.spotlight.HomeAnnouncementViewModel
 import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.presentation.R as ByoeR
-import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailspotlight.domain.model.Announcement
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.SnackbarError
 import ch.protonmail.android.mailcommon.presentation.SnackbarNormal
@@ -195,8 +196,7 @@ fun Home(
     springPromoModalUpsellViewModel: SpringPromoModalUpsellViewModel = hiltViewModel(),
     summerCampaignModalUpsellViewModel: SummerCampaignModalUpsellViewModel = hiltViewModel(),
     fallPromoModalUpsellViewModel: FallPromoModalUpsellViewModel = hiltViewModel(),
-    featureSpotlightViewModel: HomeFeatureSpotlightViewModel = hiltViewModel(),
-    byoeSpotlightViewModel: ByoeSpotlightEligibilityViewModel = hiltViewModel(),
+    announcementViewModel: HomeAnnouncementViewModel = hiltViewModel(),
     contentSearchBottomSheetViewModel: HomeContentSearchBottomSheetViewModel = hiltViewModel(),
     npsViewModel: NpsViewModel = hiltViewModel()
 ) {
@@ -217,8 +217,7 @@ fun Home(
     val springSaleEligibilityState by springPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val summerCampaignEligibilityState by summerCampaignModalUpsellViewModel.state.collectAsStateWithLifecycle()
     val fallPromoEligibilityState by fallPromoModalUpsellViewModel.state.collectAsStateWithLifecycle()
-    val featureSpotlightState by featureSpotlightViewModel.state.collectAsStateWithLifecycle()
-    val byoeSpotlightState by byoeSpotlightViewModel.state.collectAsStateWithLifecycle()
+    val announcementState by announcementViewModel.state.collectAsStateWithLifecycle()
     val contentSearchBottomSheetState by contentSearchBottomSheetViewModel.state.collectAsStateWithLifecycle()
     val isSearchMobileDataOn by contentSearchBottomSheetViewModel.isMobileDataEnabled.collectAsStateWithLifecycle()
     val npsState by npsViewModel.state.collectAsStateWithLifecycle()
@@ -228,8 +227,6 @@ fun Home(
             resolveHomeInterstitialPriority(
                 onboardingEligibilityState,
                 notificationsPermissionsState,
-                featureSpotlightState,
-                byoeSpotlightState,
                 contentSearchBottomSheetState,
                 blackFridayEligibilityState,
                 springSaleEligibilityState,
@@ -562,9 +559,7 @@ fun Home(
 
             // Handled by a dedicated effect below
             is HomeInterstitialPriority.OnboardingUpsell,
-            is HomeInterstitialPriority.NotificationsPermissions,
-            is HomeInterstitialPriority.FeatureSpotlight -> Unit
-            is HomeInterstitialPriority.ByoeSpotlight -> Unit
+            is HomeInterstitialPriority.NotificationsPermissions -> Unit
 
             is HomeInterstitialPriority.ContentSearch -> {
                 bottomSheetType = BottomSheetType.ContentSearch
@@ -626,22 +621,19 @@ fun Home(
             .invokeOnCompletion { showBottomSheet = true }
     }
 
-    // A notification deep-link can pop the feature spotlight off the back stack before it's seen.
-    // Re-key on the destination so it shows again when the user returns to the mailbox (ET-6768).
-    LaunchedEffect(interstitialPriority, currentDestinationRoute) {
-        if (interstitialPriority is HomeInterstitialPriority.FeatureSpotlight &&
-            currentDestinationRoute == Screen.Mailbox.route
-        ) {
-            navController.navigate(Screen.FeatureSpotlight.route)
-        }
+    // The SDK's announcements come after Home's own prompts, on the mailbox with no message open. Re-keyed on the
+    // destination, so one popped off the back stack before it appeared, e.g. by a notification, opens again when the
+    // user is back in the mailbox (ET-6768).
+    val isReadyForAnnouncement = interstitialPriority is HomeInterstitialPriority.None &&
+        currentDestinationRoute == Screen.Mailbox.route
+    LaunchedEffect(isReadyForAnnouncement) {
+        announcementViewModel.submit(HomeAnnouncementAction.HomeReadinessChanged(isReadyForAnnouncement))
     }
-
-    // Opened once: the ViewModel hides it as soon as it is on screen, so returning to the mailbox does not reopen it.
-    LaunchedEffect(interstitialPriority, currentDestinationRoute) {
-        val priority = interstitialPriority
-        if (priority is HomeInterstitialPriority.ByoeSpotlight && currentDestinationRoute == Screen.Mailbox.route) {
-            byoeSpotlightViewModel.onOpened()
-            navController.navigate(Screen.ByoeSpotlight(priority.treatment))
+    ConsumableLaunchedEffect(announcementState.navigateTo) { announcement ->
+        if (navController.currentDestination?.route != Screen.Mailbox.route) return@ConsumableLaunchedEffect
+        when (announcement) {
+            is Announcement.ContentSearchWhatsNew -> navController.navigate(Screen.FeatureSpotlight.route)
+            is Announcement.ByoeSpotlight -> navController.navigate(Screen.ByoeSpotlight(announcement.treatment))
         }
     }
 
@@ -1053,14 +1045,17 @@ fun Home(
                             )
                         )
                         addFeatureSpotlight(
-                            // Either answer to the spotlight is an answer to the offer of content
-                            // search, so the search screen stops making it in its banner.
+                            onShown = {
+                                announcementViewModel.submit(
+                                    HomeAnnouncementAction.Shown(Announcement.ContentSearchWhatsNew)
+                                )
+                            },
                             onBack = {
-                                featureSpotlightViewModel.onSpotlightAnswered()
+                                announcementViewModel.submit(HomeAnnouncementAction.ContentSearchAnswered)
                                 navController.navigateBack()
                             },
                             onTurnOn = {
-                                featureSpotlightViewModel.onSpotlightAnswered()
+                                announcementViewModel.submit(HomeAnnouncementAction.ContentSearchAnswered)
                                 navController.navigateBack()
                                 contentSearchBottomSheetViewModel.submit(
                                     HomeContentSearchBottomSheetViewAction.RequestToEnable
@@ -1069,12 +1064,25 @@ fun Home(
                         )
                         addContentSearchSetUp(navController)
                         addByoeSpotlight(
+                            onShown = { treatment ->
+                                announcementViewModel.submit(
+                                    HomeAnnouncementAction.Shown(Announcement.ByoeSpotlight(treatment))
+                                )
+                            },
                             // The spotlight stays below the connection page, so cancelling the page returns to it.
-                            onConnect = { importEmails ->
+                            onConnect = { treatment, importEmails ->
+                                announcementViewModel.submit(
+                                    HomeAnnouncementAction.ByoeSpotlightConnected(Announcement.ByoeSpotlight(treatment))
+                                )
                                 navController.navigate(Screen.GmailConnection(importEmails, ByoeSurface.Spotlight))
                             },
-                            onLater = { method ->
-                                byoeSpotlightViewModel.onDismissed(ByoeSurface.Spotlight, method)
+                            onLater = { treatment, method ->
+                                announcementViewModel.submit(
+                                    HomeAnnouncementAction.ByoeSpotlightDismissed(
+                                        Announcement.ByoeSpotlight(treatment),
+                                        method
+                                    )
+                                )
                                 navController.navigateBack()
                             }
                         )
@@ -1086,7 +1094,9 @@ fun Home(
                             onLater = { surface, method ->
                                 // Declining the intro from onboarding dismisses the onboarding page it came from.
                                 if (surface == ByoeSurface.OnboardingScreen) {
-                                    byoeSpotlightViewModel.onDismissed(surface, method)
+                                    announcementViewModel.submit(
+                                        HomeAnnouncementAction.ByoeOnboardingPageDismissed(method)
+                                    )
                                 }
                                 navController.navigateBack()
                             }

@@ -21,42 +21,29 @@ package ch.protonmail.android.mailspotlight.data.local
 import androidx.datastore.preferences.core.intPreferencesKey
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.safeData
-import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailspotlight.data.FeatureSpotlightDataStoreProvider
-import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
+/**
+ * Reads the What's New version the app recorded as seen before the SDK owned the announcements. It is only an input to
+ * the SDK migration: nothing writes it any more.
+ */
 class FeatureSpotlightLocalDataSourceImpl @Inject constructor(
     private val dataStoreProvider: FeatureSpotlightDataStoreProvider
 ) : FeatureSpotlightLocalDataSource {
 
-    private val shouldDisplayFeatureSpotlightPrefKey = intPreferencesKey(
-        FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY
-    )
+    private val lastSeenSpotlightVersionKey = intPreferencesKey(FeatureSpotlightDataStoreProvider.FEATURE_SPOTLIGHT_KEY)
 
-    override fun observe(): Flow<Either<PreferencesError, FeatureSpotlightDisplay>> =
-        dataStoreProvider.featureSpotlightDataStore.safeData.map { prefsEither ->
-            prefsEither.map { prefs ->
-                val lastSeenSpotlightVersion = prefs[shouldDisplayFeatureSpotlightPrefKey] ?: DEFAULT_VALUE
-
-                val shouldShow = lastSeenSpotlightVersion < CURRENT_SPOTLIGHT_VERSION
-                FeatureSpotlightDisplay(shouldShow)
-            }
+    override suspend fun isContentSearchWhatsNewSeen(): Either<PreferencesError, Boolean> =
+        dataStoreProvider.featureSpotlightDataStore.safeData.first().map { prefs ->
+            val lastSeenSpotlightVersion = prefs[lastSeenSpotlightVersionKey] ?: DEFAULT_VALUE
+            lastSeenSpotlightVersion >= FeatureSpotlightVersions.CONTENT_SEARCH
         }
-
-    override suspend fun save(): Either<PreferencesError, Unit> =
-        dataStoreProvider.featureSpotlightDataStore.safeEdit { mutablePreferences ->
-            mutablePreferences[shouldDisplayFeatureSpotlightPrefKey] = CURRENT_SPOTLIGHT_VERSION
-        }.map { }
 
     private companion object {
 
         const val DEFAULT_VALUE = 0
-
-        // Update this when releasing a new Feature Spotlight
-        const val CURRENT_SPOTLIGHT_VERSION = FeatureSpotlightVersions.CONTENT_SEARCH
     }
 }

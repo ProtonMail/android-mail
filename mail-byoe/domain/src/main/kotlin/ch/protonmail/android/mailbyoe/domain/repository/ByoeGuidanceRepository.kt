@@ -37,13 +37,9 @@ interface ByoeGuidanceRepository {
 
     suspend fun getOnboardingTreatment(userId: UserId): Either<DataError, ByoeTreatment?>
 
-    suspend fun getSpotlightTreatment(userId: UserId): Either<DataError, ByoeTreatment?>
-
     suspend fun getSidebarBannerTreatment(userId: UserId): Either<DataError, ByoeTreatment?>
 
     suspend fun markSidebarBannerClosed(userId: UserId, method: ByoeDismissMethod): Either<DataError, Unit>
-
-    suspend fun markSpotlightShown(userId: UserId): Either<DataError, Unit>
 
     suspend fun markGuidanceDismissed(
         userId: UserId,

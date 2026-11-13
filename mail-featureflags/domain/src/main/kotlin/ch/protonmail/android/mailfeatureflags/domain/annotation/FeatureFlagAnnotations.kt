@@ -118,10 +118,6 @@ annotation class IsRateOnUpsellEnabled
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IsFeatureSpotlightEnabled
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class IsPushProcessingWithoutWorkerEnabled
 
 @Qualifier

@@ -19,18 +19,13 @@
 package ch.protonmail.android.mailspotlight.presentation
 
 import app.cash.turbine.test
-import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailspotlight.domain.usecase.MarkFeatureSpotlightSeen
 import ch.protonmail.android.mailspotlight.presentation.model.FeatureItem
 import ch.protonmail.android.mailspotlight.presentation.model.HowItWorksStep
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewAction
 import ch.protonmail.android.mailspotlight.presentation.viewmodel.FeatureSpotlightViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -42,16 +37,12 @@ internal class FeatureSpotlightViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val markFeatureSpotlightSeen = mockk<MarkFeatureSpotlightSeen>()
-
     @AfterTest
     fun tearDown() {
         clearAllMocks()
     }
 
-    private fun buildViewModel() = FeatureSpotlightViewModel(
-        markFeatureSpotlightSeen = markFeatureSpotlightSeen
-    )
+    private fun buildViewModel() = FeatureSpotlightViewModel()
 
     @Test
     fun `overviewFeatures contains the three content search items in order`() {
@@ -113,28 +104,22 @@ internal class FeatureSpotlightViewModelTest {
     }
 
     @Test
-    fun `submitting turn on marks the spotlight as seen and reports turn on`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+    fun `submitting turn on reports turn on`() = runTest {
         val viewModel = buildViewModel()
 
         viewModel.dismissEvent.test {
             viewModel.submit(FeatureSpotlightViewAction.TurnOn)
             assertEquals(FeatureSpotlightViewAction.TurnOn, awaitItem())
         }
-
-        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
     }
 
     @Test
-    fun `submitting not now marks the spotlight as seen and reports not now`() = runTest {
-        coEvery { markFeatureSpotlightSeen() } returns Unit.right()
+    fun `submitting not now reports not now`() = runTest {
         val viewModel = buildViewModel()
 
         viewModel.dismissEvent.test {
             viewModel.submit(FeatureSpotlightViewAction.NotNow)
             assertEquals(FeatureSpotlightViewAction.NotNow, awaitItem())
         }
-
-        coVerify(exactly = 1) { markFeatureSpotlightSeen() }
     }
 }

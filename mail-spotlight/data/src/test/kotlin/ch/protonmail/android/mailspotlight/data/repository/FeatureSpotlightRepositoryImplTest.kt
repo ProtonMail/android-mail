@@ -20,60 +20,33 @@ package ch.protonmail.android.mailspotlight.data.repository
 
 import arrow.core.right
 import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataSource
-import ch.protonmail.android.mailspotlight.domain.model.FeatureSpotlightDisplay
-import io.mockk.clearAllMocks
 import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.flow.flowOf
+import io.mockk.unmockkAll
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class FeatureSpotlightRepositoryImplTest {
 
-    private val datasource = mockk<FeatureSpotlightLocalDataSource>()
-    private lateinit var repository: FeatureSpotlightRepositoryImpl
-
-    @BeforeTest
-    fun setUp() {
-        repository = FeatureSpotlightRepositoryImpl(datasource)
-    }
+    private val localDataSource = mockk<FeatureSpotlightLocalDataSource>()
+    private val repository = FeatureSpotlightRepositoryImpl(localDataSource)
 
     @AfterTest
-    fun teardown() {
-        clearAllMocks()
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
-    fun `observe proxies to local data source`() {
+    fun `given the local data says seen, when reading the What's New, then it is seen`() = runTest {
         // Given
-        val expectedFlow = flowOf(FeatureSpotlightDisplay(show = true).right())
-        every { datasource.observe() } returns expectedFlow
+        coEvery { localDataSource.isContentSearchWhatsNewSeen() } returns true.right()
 
         // When
-        val result = repository.observe()
+        val result = repository.isContentSearchWhatsNewSeen()
 
         // Then
-        verify(exactly = 1) { datasource.observe() }
-        assertEquals(expectedFlow, result)
-    }
-
-    @Test
-    fun `save proxies to local data source`() = runTest {
-        // Given
-        val expectedResult = Unit.right()
-        coEvery { datasource.save() } returns expectedResult
-
-        // When
-        val result = repository.save()
-
-        // Then
-        coVerify(exactly = 1) { datasource.save() }
-        assertEquals(expectedResult, result)
+        assertEquals(true.right(), result)
     }
 }

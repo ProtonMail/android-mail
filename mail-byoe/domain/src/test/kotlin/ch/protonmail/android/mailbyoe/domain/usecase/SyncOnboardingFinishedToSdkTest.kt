@@ -22,6 +22,10 @@ import arrow.core.right
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
+import arrow.core.left
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import kotlin.test.assertEquals
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -81,6 +85,33 @@ internal class SyncOnboardingFinishedToSdkTest {
         syncOnboardingFinishedToSdk(userId)
 
         // Then
+        coVerify(exactly = 0) { byoeGuidanceRepository.recordOnboardingFinished(any()) }
+    }
+
+    @Test
+    fun `given the SDK cannot record it, when syncing, then it fails`() = runTest {
+        // Given
+        every { observeOnboarding() } returns flowOf(OnboardingPreference(display = false).right())
+        coEvery { byoeGuidanceRepository.isOnboardingFinishedRecorded(userId) } returns false.right()
+        coEvery { byoeGuidanceRepository.recordOnboardingFinished(userId) } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = syncOnboardingFinishedToSdk(userId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), result)
+    }
+
+    @Test
+    fun `given the onboarding preference cannot be read, when syncing, then it fails`() = runTest {
+        // Given
+        every { observeOnboarding() } returns flowOf(PreferencesError.left())
+
+        // When
+        val result = syncOnboardingFinishedToSdk(userId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), result)
         coVerify(exactly = 0) { byoeGuidanceRepository.recordOnboardingFinished(any()) }
     }
 

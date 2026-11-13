@@ -18,13 +18,10 @@
 
 package ch.protonmail.android.navigation
 
-import ch.protonmail.android.mailbyoe.domain.model.ByoeTreatment
-import ch.protonmail.android.mailbyoe.presentation.spotlight.ByoeSpotlightEligibilityState
 import ch.protonmail.android.mailcontentsearch.presentation.bottomsheet.ContentSearchBottomSheetState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionState
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationsPermissionStateType
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingEligibilityState
-import ch.protonmail.android.mailspotlight.presentation.model.FeatureSpotlightState
 import ch.protonmail.android.mailupselling.presentation.model.blackfriday.BlackFridayModalState
 import ch.protonmail.android.mailupselling.presentation.model.fallpromo.FallPromoModalState
 import ch.protonmail.android.mailupselling.presentation.model.springsale.SpringPromoModalState
@@ -35,8 +32,6 @@ sealed interface HomeInterstitialPriority {
     data object Onboarding : HomeInterstitialPriority
     data object OnboardingUpsell : HomeInterstitialPriority
     data class NotificationsPermissions(val type: NotificationsPermissionStateType) : HomeInterstitialPriority
-    data object FeatureSpotlight : HomeInterstitialPriority
-    data class ByoeSpotlight(val treatment: ByoeTreatment) : HomeInterstitialPriority
     data object ContentSearch : HomeInterstitialPriority
     data class BlackFriday(val state: BlackFridayModalState.Show) : HomeInterstitialPriority
     data class SpringPromo(val state: SpringPromoModalState.Show) : HomeInterstitialPriority
@@ -45,12 +40,14 @@ sealed interface HomeInterstitialPriority {
     data object None : HomeInterstitialPriority
 }
 
+/**
+ * Home's own prompts, in order. The SDK's announcements (the What's New and the BYOE spotlight) are not part of it:
+ * they come once this returns [HomeInterstitialPriority.None].
+ */
 @Suppress("LongParameterList")
 fun resolveHomeInterstitialPriority(
     onboardingState: OnboardingEligibilityState,
     notificationsState: NotificationsPermissionState,
-    featureSpotlightState: FeatureSpotlightState,
-    byoeSpotlightState: ByoeSpotlightEligibilityState,
     contentSearchBottomSheetState: ContentSearchBottomSheetState,
     blackFridayState: BlackFridayModalState,
     springSaleState: SpringPromoModalState,
@@ -61,8 +58,6 @@ fun resolveHomeInterstitialPriority(
     @Suppress("ComplexCondition")
     if (onboardingState is OnboardingEligibilityState.Loading ||
         notificationsState is NotificationsPermissionState.Loading ||
-        featureSpotlightState is FeatureSpotlightState.Loading ||
-        byoeSpotlightState is ByoeSpotlightEligibilityState.Loading ||
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Loading ||
         blackFridayState is BlackFridayModalState.Loading ||
         fallPromoState is FallPromoModalState.Loading
@@ -76,11 +71,6 @@ fun resolveHomeInterstitialPriority(
         onboardingState is OnboardingEligibilityState.UpsellPending -> HomeInterstitialPriority.OnboardingUpsell
         notificationsState is NotificationsPermissionState.RequiresInteraction ->
             HomeInterstitialPriority.NotificationsPermissions(notificationsState.stateType)
-
-        featureSpotlightState is FeatureSpotlightState.Show -> HomeInterstitialPriority.FeatureSpotlight
-
-        byoeSpotlightState is ByoeSpotlightEligibilityState.Show ->
-            HomeInterstitialPriority.ByoeSpotlight(byoeSpotlightState.treatment)
 
         contentSearchBottomSheetState is ContentSearchBottomSheetState.Show -> HomeInterstitialPriority.ContentSearch
 

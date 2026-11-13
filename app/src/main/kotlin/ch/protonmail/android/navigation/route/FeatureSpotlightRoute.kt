@@ -18,13 +18,20 @@
 
 package ch.protonmail.android.navigation.route
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ch.protonmail.android.mailspotlight.presentation.ui.FeatureSpotlightScreen
 import ch.protonmail.android.navigation.model.Destination
 
-internal fun NavGraphBuilder.addFeatureSpotlight(onBack: () -> Unit, onTurnOn: () -> Unit) {
+/** [onShown] runs on the screen's first composition: the What's New is on screen, before any tap. */
+internal fun NavGraphBuilder.addFeatureSpotlight(
+    onShown: () -> Unit,
+    onBack: () -> Unit,
+    onTurnOn: () -> Unit
+) {
     composable(Destination.Screen.FeatureSpotlight.route) {
+        LaunchedEffect(Unit) { onShown() }
         FeatureSpotlightScreen(onDismiss = onBack, onTurnOn = onTurnOn)
     }
 }

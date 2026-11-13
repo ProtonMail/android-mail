@@ -18,7 +18,10 @@
 
 package ch.protonmail.android.mailbyoe.domain.usecase
 
+import arrow.core.Either
+import arrow.core.raise.either
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
@@ -26,23 +29,29 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * The SDK only offers the BYOE spotlight once it knows the onboarding is finished, and the app keeps that in its
- * own preference. Copies it over once per user, which also covers installs that finished the onboarding before.
+ * The SDK shows no announcement until it knows the onboarding is finished, and the app keeps that in its own
+ * preference. Copies it over, which also covers installs that finished the onboarding before.
+ *
+ * Fails when the preference or the SDK cannot be read or written, so the caller can try again. An onboarding still to
+ * finish is not a failure: there is nothing to record yet.
  */
 class SyncOnboardingFinishedToSdk @Inject constructor(
     private val observeOnboarding: ObserveOnboarding,
     private val byoeGuidanceRepository: ByoeGuidanceRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId) {
-        val isOnboardingFinished = observeOnboarding().first().getOrNull()?.display == false
-        if (!isOnboardingFinished) return
+    suspend operator fun invoke(userId: UserId): Either<DataError, Unit> = either {
+        val onboarding = observeOnboarding().first()
+            .onLeft { Timber.e("byoe: unable to read the onboarding preference: $it") }
+            .mapLeft { DataError.Local.Unknown }
+            .bind()
+        if (onboarding.display) return@either
 
-        val isRecorded = byoeGuidanceRepository.isOnboardingFinishedRecorded(userId).getOrNull() ?: return
-        if (isRecorded) return
+        if (byoeGuidanceRepository.isOnboardingFinishedRecorded(userId).bind()) return@either
 
         byoeGuidanceRepository.recordOnboardingFinished(userId)
             .onLeft { Timber.e("byoe: unable to record the onboarding as finished: $it") }
             .onRight { Timber.d("byoe: onboarding recorded as finished") }
+            .bind()
     }
 }
