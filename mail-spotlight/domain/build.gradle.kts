@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation(libs.bundles.module.domain)
     implementation(libs.proton.core.domain)
+    implementation(project(":mail-byoe:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-events:domain"))
 

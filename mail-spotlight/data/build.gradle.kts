@@ -46,11 +46,18 @@ android {
 }
 
 dependencies {
+    compileOnly(libs.proton.rust.core)
+
+    implementation(project(":mail-byoe:domain"))
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
+    implementation(project(":mail-session:data"))
+    implementation(project(":mail-session:domain"))
     implementation(project(":mail-spotlight:domain"))
 
     implementation(libs.bundles.module.data)
+    implementation(libs.proton.core.domain)
 
     testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.rust.core)
 }

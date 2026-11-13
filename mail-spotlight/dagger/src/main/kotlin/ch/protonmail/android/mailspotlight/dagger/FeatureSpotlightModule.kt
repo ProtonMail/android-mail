@@ -22,7 +22,9 @@ import android.content.Context
 import ch.protonmail.android.mailspotlight.data.FeatureSpotlightDataStoreProvider
 import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataSource
 import ch.protonmail.android.mailspotlight.data.local.FeatureSpotlightLocalDataSourceImpl
+import ch.protonmail.android.mailspotlight.data.repository.FeatureGateRepositoryImpl
 import ch.protonmail.android.mailspotlight.data.repository.FeatureSpotlightRepositoryImpl
+import ch.protonmail.android.mailspotlight.domain.repository.FeatureGateRepository
 import ch.protonmail.android.mailspotlight.domain.repository.FeatureSpotlightRepository
 import dagger.Binds
 import dagger.Module
@@ -55,5 +57,10 @@ object FeatureSpotlightModule {
         @Binds
         @Reusable
         fun bindsFeatureSpotlightRepository(impl: FeatureSpotlightRepositoryImpl): FeatureSpotlightRepository
+
+        // Singleton: it keeps the entry point answers for the whole process.
+        @Binds
+        @Singleton
+        fun bindsFeatureGateRepository(impl: FeatureGateRepositoryImpl): FeatureGateRepository
     }
 }
