@@ -117,6 +117,38 @@ internal class HomeAnnouncementReducerTest {
     }
 
     @Test
+    fun `given the announcements are held, when an ask is due, then it waits for the hold to end`() {
+        // Given
+        val ready = reducer.newStateFrom(
+            HomeAnnouncementState.Initial,
+            HomeAnnouncementAction.HomeReadinessChanged(isReady = true)
+        )
+        val held = reducer.newStateFrom(ready, HomeAnnouncementEvent.HoldChanged(isHeld = true))
+
+        // When
+        val due = reducer.newStateFrom(held, HomeAnnouncementEvent.AskDue(userId))
+        val released = reducer.newStateFrom(due, HomeAnnouncementEvent.HoldChanged(isHeld = false))
+
+        // Then
+        assertFalse(due.shouldAsk)
+        assertTrue(released.shouldAsk)
+    }
+
+    @Test
+    fun `given a hold started during the ask, when the answer arrives, then Home does not navigate to it`() {
+        // Given
+        val held = reducer.newStateFrom(askingState(isHomeReady = true), HomeAnnouncementEvent.HoldChanged(true))
+
+        // When
+        val state = reducer.newStateFrom(held, HomeAnnouncementEvent.AnnouncementLoaded(userId, spotlight))
+
+        // Then
+        assertEquals(Effect.empty(), state.navigateTo)
+        assertNull(state.pending)
+        assertTrue(state.isAskDue)
+    }
+
+    @Test
     fun `given a pending announcement, when it appears, then it is no longer pending`() {
         // Given
         val loaded = reducer.newStateFrom(

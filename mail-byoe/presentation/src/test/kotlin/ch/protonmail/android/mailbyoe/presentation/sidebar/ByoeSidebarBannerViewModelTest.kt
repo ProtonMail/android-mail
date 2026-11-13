@@ -27,6 +27,10 @@ import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSidebarBannerTreatme
 import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.mailspotlight.domain.model.ByoeEntryPoint
+import ch.protonmail.android.mailspotlight.domain.model.FeatureEntryPoint
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureEntryPointEnabled
+import kotlinx.coroutines.flow.MutableStateFlow
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -50,12 +54,17 @@ internal class ByoeSidebarBannerViewModelTest {
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk() } returns flowOf(userId)
     }
+    private val isBannerEnabled = MutableStateFlow(true)
+    private val observeFeatureEntryPointEnabled = mockk<ObserveFeatureEntryPointEnabled> {
+        every { this@mockk(userId, FeatureEntryPoint.Byoe(ByoeEntryPoint.SidebarBanner)) } returns isBannerEnabled
+    }
     private val getByoeSidebarBannerTreatment = mockk<GetByoeSidebarBannerTreatment>()
     private val closeByoeSidebarBanner = mockk<CloseByoeSidebarBanner>(relaxUnitFun = true)
     private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
 
     private fun viewModel() = ByoeSidebarBannerViewModel(
         observePrimaryUserId,
+        observeFeatureEntryPointEnabled,
         getByoeSidebarBannerTreatment,
         closeByoeSidebarBanner,
         reportByoeTelemetryEvent
@@ -178,6 +187,20 @@ internal class ByoeSidebarBannerViewModelTest {
         // Then
         assertEquals(ByoeSidebarBannerState.Hidden, viewModel.state.value)
         coVerify(exactly = 1) { getByoeSidebarBannerTreatment(userId) }
+    }
+
+    @Test
+    fun `given the feature gate hides the banner, when the sidebar opens, then it is hidden`() = runTest {
+        // Given
+        isBannerEnabled.value = false
+        coEvery { getByoeSidebarBannerTreatment(userId) } returns ByoeTreatment.Treatment1
+        val viewModel = viewModel()
+
+        // When
+        viewModel.submit(ByoeSidebarBannerAction.SidebarOpened)
+
+        // Then
+        assertEquals(ByoeSidebarBannerState.Hidden, viewModel.state.value)
     }
 
     private companion object {

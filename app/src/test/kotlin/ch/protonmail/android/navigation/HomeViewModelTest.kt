@@ -60,6 +60,9 @@ import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import ch.protonmail.android.mailspotlight.domain.usecase.ShouldOpenConnectGmailDeepLink
+import ch.protonmail.android.mailbyoe.presentation.navigation.ConnectGmailDeepLink
+import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -111,6 +114,7 @@ class HomeViewModelTest {
         every { this@mockk.invoke() } returns flowOf(false)
     }
 
+    private val shouldOpenConnectGmailDeepLink = mockk<ShouldOpenConnectGmailDeepLink>()
     private val newIntentObserver = mockk<NewIntentObserver>(relaxUnitFun = true) {
         every { this@mockk() } returns emptyFlow()
     }
@@ -161,7 +165,8 @@ class HomeViewModelTest {
             observePrimaryUserId,
             newIntentObserver,
             intentMapper,
-            navigationEventsReducer
+            navigationEventsReducer,
+            shouldOpenConnectGmailDeepLink
         )
     }
 
@@ -469,6 +474,46 @@ class HomeViewModelTest {
 
         // Then
         verify { recordMailboxScreenView() }
+    }
+
+    @Test
+    fun `given BYOE is available, when the connect Gmail link is received, then the Gmail connection opens`() =
+        runTest {
+            // Given
+            coEvery { shouldOpenConnectGmailDeepLink(any()) } returns true
+            every { newIntentObserver() } returns flowOf(connectGmailIntent())
+
+            // When
+            homeViewModel.state.test {
+                val actual = awaitItem()
+
+                // Then
+                val expected = NavigationEffect.NavigateTo(
+                    Destination.Screen.GmailConnection(importEmails = true, surface = ByoeSurface.DeepLink)
+                )
+                assertEquals(Effect.of<NavigationEffect>(expected), actual.navigateToEffect)
+            }
+        }
+
+    @Test
+    fun `given BYOE is not available, when the connect Gmail link is received, then it stays on the mailbox`() =
+        runTest {
+            // Given
+            coEvery { shouldOpenConnectGmailDeepLink(any()) } returns false
+            every { newIntentObserver() } returns flowOf(connectGmailIntent())
+
+            // When
+            homeViewModel.state.test {
+                // Then
+                assertEquals(HomeState.Initial, awaitItem())
+                coVerify { shouldOpenConnectGmailDeepLink(any()) }
+            }
+        }
+
+    private fun connectGmailIntent(): Intent = mockk {
+        every { action } returns Intent.ACTION_VIEW
+        every { dataString } returns ConnectGmailDeepLink.LINK
+        every { categories } returns emptySet()
     }
 
     private fun mockIntent(

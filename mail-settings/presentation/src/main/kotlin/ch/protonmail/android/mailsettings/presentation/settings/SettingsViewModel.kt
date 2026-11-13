@@ -35,6 +35,13 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveStorageQuotaUseC
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.converter.toUiModel
+import ch.protonmail.android.mailsession.domain.model.Account
+import ch.protonmail.android.mailsettings.domain.model.StorageQuota
+import ch.protonmail.android.mailspotlight.domain.model.ByoeEntryPoint
+import ch.protonmail.android.mailspotlight.domain.model.FeatureEntryPoint
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureEntryPointEnabled
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -49,26 +56,40 @@ class SettingsViewModel @Inject constructor(
     private val accountInformationMapper: AccountInformationMapper,
     private val isContentSearchFeatureEnabled: IsContentSearchFeatureEnabled,
     private val getGmailConnectionSettingsAccess: GetGmailConnectionSettingsAccess,
+    private val observeFeatureEntryPointEnabled: ObserveFeatureEntryPointEnabled,
     private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent
 ) : ViewModel() {
 
-    val state = combine(observePrimaryAccount(), observeStorageQuotaUseCase()) { account, storageQuota ->
-        Data(
-            userId = account?.userId,
-            accountInfoUiModel = account?.let { accountInformationMapper.toUiModel(it) },
-            storageQuotaUiModel = storageQuota.getOrNull()?.let { quota ->
-                VisibilityUiModel.Visible(quota.toUiModel())
-            } ?: VisibilityUiModel.Hidden,
-            appInformation = appInformation,
-            isContentSearchEnabled = account != null && isContentSearchFeatureEnabled(account.userId),
-            // ListOnly stays hidden until the connected-addresses list exists (DAWG-111).
-            isConnectGmailVisible = account != null &&
-                getGmailConnectionSettingsAccess(account.userId) == GmailConnectionSettingsAccess.Full
-        )
+    val state = observePrimaryAccount().flatMapLatest { account ->
+        combine(observeStorageQuotaUseCase(), observeIsByoeSettingsEnabled(account)) { storageQuota, isByoeEnabled ->
+            buildData(account, storageQuota.getOrNull(), isByoeEnabled)
+        }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
         Loading
+    )
+
+    private fun observeIsByoeSettingsEnabled(account: Account?) = account
+        ?.let { observeFeatureEntryPointEnabled(it.userId, FeatureEntryPoint.Byoe(ByoeEntryPoint.Settings)) }
+        ?: flowOf(false)
+
+    private suspend fun buildData(
+        account: Account?,
+        storageQuota: StorageQuota?,
+        isByoeEnabled: Boolean
+    ) = Data(
+        userId = account?.userId,
+        accountInfoUiModel = account?.let { accountInformationMapper.toUiModel(it) },
+        storageQuotaUiModel = storageQuota?.let { quota ->
+            VisibilityUiModel.Visible(quota.toUiModel())
+        } ?: VisibilityUiModel.Hidden,
+        appInformation = appInformation,
+        isContentSearchEnabled = account != null && isContentSearchFeatureEnabled(account.userId),
+        // The feature gate decides whether the row shows. ListOnly stays hidden until the connected-addresses
+        // list exists (DAWG-111).
+        isConnectGmailVisible = account != null && isByoeEnabled &&
+            getGmailConnectionSettingsAccess(account.userId) == GmailConnectionSettingsAccess.Full
     )
 
     /**

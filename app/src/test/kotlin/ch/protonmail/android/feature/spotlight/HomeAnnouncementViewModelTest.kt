@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailspotlight.domain.AnnouncementHold
 import ch.protonmail.android.mailspotlight.domain.model.Announcement
 import ch.protonmail.android.mailspotlight.domain.usecase.GetNextAnnouncement
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkAnnouncementResolved
@@ -44,7 +45,9 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
@@ -91,9 +94,12 @@ internal class HomeAnnouncementViewModelTest {
         coEvery { this@mockk(any(), any(), any()) } just runs
     }
 
+    private val announcementHold = AnnouncementHold()
+
     private fun viewModel() = HomeAnnouncementViewModel(
         observePrimaryUserId,
         appInBackgroundState,
+        announcementHold,
         migrateAnnouncementState,
         getNextAnnouncement,
         markAnnouncementShown,
@@ -133,6 +139,61 @@ internal class HomeAnnouncementViewModelTest {
             getNextAnnouncement(userId)
         }
         assertEquals(Effect.of<Announcement>(spotlight), viewModel.state.value.navigateTo)
+    }
+
+    @Test
+    fun `given a BYOE deep link is being handled, when Home is ready, then the SDK is asked once it is done`() =
+        runTest {
+            // Given
+            val deepLinkHandled = CompletableDeferred<Unit>()
+            val viewModel = viewModel()
+            val deepLink = launch { announcementHold.hold { deepLinkHandled.await() } }
+            testScheduler.runCurrent()
+
+            // When
+            viewModel.submit(HomeAnnouncementAction.HomeReadinessChanged(isReady = true))
+
+            // Then
+            coVerify(exactly = 0) { getNextAnnouncement(any()) }
+
+            // When
+            deepLinkHandled.complete(Unit)
+            deepLink.join()
+
+            // Then
+            coVerify(exactly = 1) { getNextAnnouncement(userId) }
+        }
+
+    @Test
+    fun `given an announcement popped before it appeared, when the mailbox is back, then the SDK is asked again`() =
+        runTest {
+            // Given
+            val viewModel = viewModel()
+            viewModel.submit(HomeAnnouncementAction.HomeReadinessChanged(isReady = true))
+            viewModel.submit(HomeAnnouncementAction.HomeReadinessChanged(isReady = false))
+            coEvery { getNextAnnouncement(userId) } returns null
+
+            // When
+            viewModel.submit(HomeAnnouncementAction.HomeReadinessChanged(isReady = true))
+
+            // Then
+            coVerify(exactly = 2) { getNextAnnouncement(userId) }
+            assertEquals(null, viewModel.state.value.pending)
+        }
+
+    @Test
+    fun `given it was asked, when the app comes back to the foreground, then it asks again`() = runTest {
+        // Given
+        coEvery { getNextAnnouncement(userId) } returns null
+        val viewModel = viewModel()
+        viewModel.submit(HomeAnnouncementAction.HomeReadinessChanged(isReady = true))
+
+        // When
+        isInBackground.value = true
+        isInBackground.value = false
+
+        // Then
+        coVerify(exactly = 2) { getNextAnnouncement(userId) }
     }
 
     @Test

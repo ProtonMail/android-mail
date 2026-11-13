@@ -39,8 +39,10 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.CancelScheduleSendMessage
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailspotlight.domain.usecase.ShouldOpenConnectGmailDeepLink
 import ch.protonmail.android.navigation.mapper.IntentMapper
 import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.model.HomeNavigationEvent
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.model.NavigationEffect
 import ch.protonmail.android.navigation.reducer.HomeNavigationEventsReducer
@@ -87,10 +89,12 @@ class HomeViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     newIntentObserver: NewIntentObserver,
     private val intentMapper: IntentMapper,
-    private val navigationEventsReducer: HomeNavigationEventsReducer
+    private val navigationEventsReducer: HomeNavigationEventsReducer,
+    private val shouldOpenConnectGmailDeepLink: ShouldOpenConnectGmailDeepLink
 ) : ViewModel() {
 
-    private val primaryUserId = observePrimaryUserId().filterNotNull()
+    private val currentPrimaryUserId = observePrimaryUserId()
+    private val primaryUserId = currentPrimaryUserId.filterNotNull()
 
     private val mutableState = MutableStateFlow(HomeState.Initial)
 
@@ -246,6 +250,17 @@ class HomeViewModel @Inject constructor(
         Timber.tag("intent-navigation").d("Processing intent: $intent")
 
         val navIntent = intentMapper.map(intent)
+
+        // The SDK decides whether BYOE is available, so the link is checked before it navigates anywhere. The
+        // announcements are held from this call on, before the primary account is even known.
+        if (navIntent is HomeNavigationEvent.ConnectGmailDeepLinkReceived) {
+            viewModelScope.launch {
+                if (shouldOpenConnectGmailDeepLink(currentPrimaryUserId)) {
+                    mutableState.update { current -> navigationEventsReducer.reduce(current, navIntent) }
+                }
+            }
+            return
+        }
 
         mutableState.update { current ->
             navigationEventsReducer.reduce(current, navIntent)

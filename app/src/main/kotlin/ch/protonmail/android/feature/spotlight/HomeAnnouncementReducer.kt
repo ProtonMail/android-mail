@@ -27,6 +27,7 @@ import ch.protonmail.android.feature.spotlight.HomeAnnouncementAction.Shown
 import ch.protonmail.android.feature.spotlight.HomeAnnouncementEvent.AnnouncementLoaded
 import ch.protonmail.android.feature.spotlight.HomeAnnouncementEvent.AskDue
 import ch.protonmail.android.feature.spotlight.HomeAnnouncementEvent.AskStarted
+import ch.protonmail.android.feature.spotlight.HomeAnnouncementEvent.HoldChanged
 import ch.protonmail.android.mailcommon.presentation.Effect
 import javax.inject.Inject
 
@@ -37,6 +38,7 @@ class HomeAnnouncementReducer @Inject constructor() {
             is AskDue -> state.onAskDue(operation)
             is AskStarted -> state.copy(isAskDue = false, isAsking = true)
             is AnnouncementLoaded -> state.onAnnouncementLoaded(operation)
+            is HoldChanged -> state.copy(isHeld = operation.isHeld)
             is HomeReadinessChanged -> state.onHomeReadinessChanged(operation.isReady)
             is Shown -> state.onShown(operation)
             is ContentSearchAnswered,
@@ -63,7 +65,7 @@ class HomeAnnouncementReducer @Inject constructor() {
         val announcement = event.announcement ?: return copy(isAsking = false)
         // Home moved on during the ask. The answer is not kept for later, when it may no longer be due: the SDK is
         // asked again once Home can show an announcement.
-        if (!isHomeReady) return copy(isAsking = false, isAskDue = true)
+        if (!isHomeReady || isHeld) return copy(isAsking = false, isAskDue = true)
         return copy(isAsking = false, pending = announcement, navigateTo = Effect.of(announcement))
     }
 

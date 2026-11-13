@@ -27,6 +27,9 @@ import ch.protonmail.android.mailbyoe.domain.usecase.CloseByoeSidebarBanner
 import ch.protonmail.android.mailbyoe.domain.usecase.GetByoeSidebarBannerTreatment
 import ch.protonmail.android.mailbyoe.domain.usecase.ReportByoeTelemetryEvent
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailspotlight.domain.model.ByoeEntryPoint
+import ch.protonmail.android.mailspotlight.domain.model.FeatureEntryPoint
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureEntryPointEnabled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,6 +47,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ByoeSidebarBannerViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
+    private val observeFeatureEntryPointEnabled: ObserveFeatureEntryPointEnabled,
     private val getByoeSidebarBannerTreatment: GetByoeSidebarBannerTreatment,
     private val closeByoeSidebarBanner: CloseByoeSidebarBanner,
     private val reportByoeTelemetryEvent: ReportByoeTelemetryEvent
@@ -72,7 +76,9 @@ class ByoeSidebarBannerViewModel @Inject constructor(
         refreshJob?.cancel()
         refreshJob = viewModelScope.launch {
             val userId = primaryUserId.first()
-            val treatment = getByoeSidebarBannerTreatment(userId)
+            val isEnabled = observeFeatureEntryPointEnabled(userId, SidebarBannerEntryPoint).first()
+            // The feature gate decides whether the banner shows; the guidance keeps its variant and its 14 days.
+            val treatment = if (isEnabled) getByoeSidebarBannerTreatment(userId) else null
             mutableState.value = treatment?.let(ByoeSidebarBannerState::Visible) ?: ByoeSidebarBannerState.Hidden
             // Once per sidebar open; the SDK sends only the first on this install.
             if (treatment != null) reportByoeTelemetryEvent(ByoeTelemetryEvent.SidebarBannerShown, userId)
@@ -86,3 +92,5 @@ class ByoeSidebarBannerViewModel @Inject constructor(
         viewModelScope.launch { closeByoeSidebarBanner(primaryUserId.first(), ByoeDismissMethod.Button) }
     }
 }
+
+private val SidebarBannerEntryPoint = FeatureEntryPoint.Byoe(ByoeEntryPoint.SidebarBanner)

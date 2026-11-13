@@ -81,6 +81,7 @@ dependencies {
     implementation(project(":mail-notifications"))
     implementation(project(":mail-settings:domain"))
     implementation(project(":mail-session:domain"))
+    implementation(project(":mail-spotlight:domain"))
     implementation(project(":mail-session:presentation"))
     implementation(project(":mail-upselling:domain"))
     implementation(project(":mail-upselling:presentation"))

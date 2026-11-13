@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
 import ch.protonmail.android.mailcontentsearch.domain.usecase.DismissContentSearchPrompt
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailspotlight.domain.AnnouncementHold
 import ch.protonmail.android.mailspotlight.domain.model.Announcement
 import ch.protonmail.android.mailspotlight.domain.usecase.GetNextAnnouncement
 import ch.protonmail.android.mailspotlight.domain.usecase.MarkAnnouncementResolved
@@ -58,12 +59,14 @@ import javax.inject.Inject
  * Asks the SDK which announcement to show, and records what the user did with it. The SDK decides the order and the
  * gap; Home only says when it is ready: its own prompts are done and the mailbox is on screen.
  *
- * It asks on every foreground and account switch. When Home is not ready then, it asks once Home is.
+ * It asks on every foreground and account switch. When Home is not ready then, or the announcements are held, it asks
+ * once it can.
  */
 @HiltViewModel
 class HomeAnnouncementViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     appInBackgroundState: AppInBackgroundState,
+    announcementHold: AnnouncementHold,
     private val migrateAnnouncementState: MigrateAnnouncementState,
     private val getNextAnnouncement: GetNextAnnouncement,
     private val markAnnouncementShown: MarkAnnouncementShown,
@@ -87,6 +90,10 @@ class HomeAnnouncementViewModel @Inject constructor(
                 reduce(HomeAnnouncementEvent.AskDue(userId))
                 refreshFeatureEntryPoints(userId)
             }
+            .launchIn(viewModelScope)
+
+        announcementHold.observeIsHeld()
+            .onEach { isHeld -> reduce(HomeAnnouncementEvent.HoldChanged(isHeld)) }
             .launchIn(viewModelScope)
     }
 

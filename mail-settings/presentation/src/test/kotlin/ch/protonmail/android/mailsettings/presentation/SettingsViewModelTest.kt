@@ -47,6 +47,10 @@ import ch.protonmail.android.mailsettings.presentation.settings.SettingsState
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsViewModel
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.mailspotlight.domain.model.ByoeEntryPoint
+import ch.protonmail.android.mailspotlight.domain.model.FeatureEntryPoint
+import ch.protonmail.android.mailspotlight.domain.usecase.ObserveFeatureEntryPointEnabled
+import kotlinx.coroutines.flow.MutableStateFlow
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -96,6 +100,10 @@ class SettingsViewModelTest {
     private val getGmailConnectionSettingsAccess = mockk<GetGmailConnectionSettingsAccess> {
         coEvery { this@mockk.invoke(any()) } returns GmailConnectionSettingsAccess.Hidden
     }
+    private val isByoeSettingsEnabled = MutableStateFlow(true)
+    private val observeFeatureEntryPointEnabled = mockk<ObserveFeatureEntryPointEnabled> {
+        every { this@mockk(any(), FeatureEntryPoint.Byoe(ByoeEntryPoint.Settings)) } returns isByoeSettingsEnabled
+    }
 
     private val reportByoeTelemetryEvent = mockk<ReportByoeTelemetryEvent>(relaxUnitFun = true)
 
@@ -111,6 +119,7 @@ class SettingsViewModelTest {
             accountInformationMapper = accountInformationMapper,
             isContentSearchFeatureEnabled = isContentSearchFeatureEnabled,
             getGmailConnectionSettingsAccess = getGmailConnectionSettingsAccess,
+            observeFeatureEntryPointEnabled = observeFeatureEntryPointEnabled,
             reportByoeTelemetryEvent = reportByoeTelemetryEvent
         )
     }
@@ -183,6 +192,22 @@ class SettingsViewModelTest {
 
             // Then
             assertTrue((awaitItem() as SettingsState.Data).isConnectGmailVisible)
+        }
+    }
+
+    @Test
+    fun `given the feature gate hides the BYOE settings, when observed, then Connect your Gmail is hidden`() = runTest {
+        // Given
+        isByoeSettingsEnabled.value = false
+        coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Full
+
+        // When
+        viewModel.state.test {
+            assertEquals(Loading, awaitItem())
+            accountFlow.emit(account)
+
+            // Then
+            assertFalse((awaitItem() as SettingsState.Data).isConnectGmailVisible)
         }
     }
 

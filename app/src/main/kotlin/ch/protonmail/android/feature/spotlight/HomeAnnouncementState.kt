@@ -26,6 +26,7 @@ import me.proton.core.domain.entity.UserId
 /**
  * @param isHomeReady Home's own prompts are done and the mailbox is on screen, with no message open.
  * @param isAskDue the app came to the foreground or the account changed, and the SDK was not asked since.
+ * @param isHeld something that decides the announcements is being worked out, e.g. a BYOE deep link.
  * @param pending the announcement Home was sent to, until its screen appears. If the mailbox is back before it
  * appeared, e.g. a notification popped it off the back stack, the SDK is asked again (ET-6768). The old answer is
  * not reused: it may no longer be due.
@@ -37,13 +38,14 @@ data class HomeAnnouncementState(
     val isHomeReady: Boolean,
     val isAskDue: Boolean,
     val isAsking: Boolean,
+    val isHeld: Boolean,
     val pending: Announcement?,
     val shown: ShownAnnouncement?,
     val navigateTo: Effect<Announcement>
 ) {
 
     val shouldAsk: Boolean
-        get() = userId != null && isHomeReady && isAskDue && !isAsking && pending == null
+        get() = userId != null && isHomeReady && !isHeld && isAskDue && !isAsking && pending == null
 
     companion object {
 
@@ -52,6 +54,7 @@ data class HomeAnnouncementState(
             isHomeReady = false,
             isAskDue = false,
             isAsking = false,
+            isHeld = false,
             pending = null,
             shown = null,
             navigateTo = Effect.empty()
@@ -92,6 +95,8 @@ sealed interface HomeAnnouncementEvent : HomeAnnouncementOperation {
     data class AskDue(val userId: UserId) : HomeAnnouncementEvent
 
     data object AskStarted : HomeAnnouncementEvent
+
+    data class HoldChanged(val isHeld: Boolean) : HomeAnnouncementEvent
 
     data class AnnouncementLoaded(val userId: UserId, val announcement: Announcement?) : HomeAnnouncementEvent
 }
