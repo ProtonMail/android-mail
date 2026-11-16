@@ -195,14 +195,36 @@ data object ByoeEnabled : FeatureFlagDefinition(
     defaultValue = false
 )
 
-data object GmailConnectionEnabled : FeatureFlagDefinition(
-    key = "InboxBringYourOwnEmailMobileGmailConnection",
-    name = "Connect a Gmail account (BYOE)",
+// The variant payloads the SDK matches on for the BYOE experiments.
+private val ByoeExperimentVariants = listOf("ControlGroup", "Treatment1", "Treatment2")
+
+data object ByoeExperimentNewUsers : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileExperimentNewUsers",
+    name = "BYOE experiment for new users",
     category = FeatureFlagCategory.Byoe,
-    description = "InboxBringYourOwnEmailMobileGmailConnection: The mobile BYOE experiment. " +
-        "Only Treatment1 and Treatment2 users see BYOE.",
+    description = "InboxBringYourOwnEmailMobileExperimentNewUsers: BYOE Exp 2, read at the onboarding. " +
+        "Only Treatment1 and Treatment2 users see the BYOE page.",
     defaultValue = false,
-    variants = listOf("ControlGroup", "Treatment1", "Treatment2")
+    variants = ByoeExperimentVariants
+)
+
+data object ByoeExperimentExistingUsers : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileExperimentExistingUsers",
+    name = "BYOE experiment for existing users",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileExperimentExistingUsers: BYOE Exp 1, for users past the " +
+        "onboarding. Only Treatment1 and Treatment2 users see the spotlight.",
+    defaultValue = false,
+    variants = ByoeExperimentVariants
+)
+
+data object ByoeExperimentRollout : FeatureFlagDefinition(
+    key = "InboxBringYourOwnEmailMobileExperimentRollout",
+    name = "BYOE rollout for existing users",
+    category = FeatureFlagCategory.Byoe,
+    description = "InboxBringYourOwnEmailMobileExperimentRollout: Gives BYOE settings to the existing users " +
+        "outside Exp 1, without a guidance screen.",
+    defaultValue = false
 )
 
 data object ByoeMobileKillswitch : FeatureFlagDefinition(

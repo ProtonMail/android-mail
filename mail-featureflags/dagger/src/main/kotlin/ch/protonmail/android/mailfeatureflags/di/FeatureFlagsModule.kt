@@ -57,6 +57,9 @@ import ch.protonmail.android.mailfeatureflags.domain.annotation.IsWebViewDarkMod
 import ch.protonmail.android.mailfeatureflags.domain.model.BgProcessingRelaxedBatteryConstraint
 import ch.protonmail.android.mailfeatureflags.domain.model.ByoeConnectionKillswitch
 import ch.protonmail.android.mailfeatureflags.domain.model.ByoeEnabled
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeExperimentExistingUsers
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeExperimentNewUsers
+import ch.protonmail.android.mailfeatureflags.domain.model.ByoeExperimentRollout
 import ch.protonmail.android.mailfeatureflags.domain.model.ByoeMobileKillswitch
 import ch.protonmail.android.mailfeatureflags.domain.model.ByoeOnboardingKillswitch
 import ch.protonmail.android.mailfeatureflags.domain.model.ByoeSidebarKillswitch
@@ -73,7 +76,6 @@ import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FallPromo2026Wave2Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.BlackFridayUpsellOptOut
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlagDefinition
-import ch.protonmail.android.mailfeatureflags.domain.model.GmailConnectionEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.InjectDetailCssOverrideEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Enabled
 import ch.protonmail.android.mailfeatureflags.domain.model.MailBlackFriday2026Wave2Enabled
@@ -315,7 +317,17 @@ object FeatureFlagsModule {
     @Provides
     @IntoSet
     @Singleton
-    fun provideGmailConnectionEnabledDef(): FeatureFlagDefinition = GmailConnectionEnabled
+    fun provideByoeExperimentNewUsersDef(): FeatureFlagDefinition = ByoeExperimentNewUsers
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeExperimentExistingUsersDef(): FeatureFlagDefinition = ByoeExperimentExistingUsers
+
+    @Provides
+    @IntoSet
+    @Singleton
+    fun provideByoeExperimentRolloutDef(): FeatureFlagDefinition = ByoeExperimentRollout
 
     @Provides
     @IntoSet
