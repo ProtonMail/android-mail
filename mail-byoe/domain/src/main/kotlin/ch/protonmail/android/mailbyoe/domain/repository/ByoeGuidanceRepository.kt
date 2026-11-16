@@ -53,5 +53,13 @@ interface ByoeGuidanceRepository {
 
     suspend fun recordOnboardingStep(userId: UserId, step: ByoeOnboardingStep): Either<DataError, Unit>
 
+    /**
+     * Makes the SDK forget every onboarding step of [userId], the finished one included, so the onboarding and its
+     * BYOE page can show again.
+     *
+     * For the debug menu only: a release build must never call it.
+     */
+    suspend fun debugResetOnboardingSteps(userId: UserId): Either<DataError, Unit>
+
     suspend fun report(userId: UserId, event: ByoeTelemetryEvent): Either<DataError, Unit>
 }

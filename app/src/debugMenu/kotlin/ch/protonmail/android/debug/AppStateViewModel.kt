@@ -23,6 +23,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
 import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchPromptRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
@@ -30,6 +31,7 @@ import ch.protonmail.android.mailnotifications.data.local.NotificationDataStoreP
 import ch.protonmail.android.mailonboarding.data.OnboardingDataStoreProvider
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailspotlight.data.FeatureSpotlightDataStoreProvider
+import ch.protonmail.android.mailspotlight.domain.repository.FeatureGateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -55,6 +57,8 @@ internal class AppStateViewModel @Inject constructor(
     private val featureSpotlightDataStoreProvider: FeatureSpotlightDataStoreProvider,
     private val notificationDataStoreProvider: NotificationDataStoreProvider,
     private val contentSearchDataStoreProvider: ContentSearchDataStoreProvider,
+    private val featureGateRepository: FeatureGateRepository,
+    private val byoeGuidanceRepository: ByoeGuidanceRepository,
     userSessionRepository: UserSessionRepository
 ) : ViewModel() {
 
@@ -73,12 +77,35 @@ internal class AppStateViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    fun resetOnboarding() = clear(ResetTarget.Onboarding, onboardingDataStoreProvider.onboardingDataStore)
+    /**
+     * Makes the onboarding show again on the next app start, for every signed-in account.
+     *
+     * The SDK keeps its own record of the onboarding steps and reads it to decide on the BYOE page and on which
+     * announcements an account gets, so that record is reset along with the app's own.
+     */
+    fun resetOnboarding() {
+        viewModelScope.launch {
+            onboardingDataStoreProvider.onboardingDataStore.edit { it.clear() }
+            accounts.value.forEach { account ->
+                byoeGuidanceRepository.debugResetOnboardingSteps(account.userId)
+                featureGateRepository.refreshEntryPoints(account.userId)
+            }
+            mutableResets.emit(Reset(ResetTarget.Onboarding))
+        }
+    }
 
-    fun resetFeatureSpotlight() = clear(
-        ResetTarget.FeatureSpotlight,
-        featureSpotlightDataStoreProvider.featureSpotlightDataStore
-    )
+    /**
+     * Makes the content search What's New and the BYOE spotlight show again when due, for every signed-in account.
+     *
+     * The SDK decides which announcement shows, so its records are reset along with the app's own.
+     */
+    fun resetFeatureSpotlight() {
+        viewModelScope.launch {
+            featureSpotlightDataStoreProvider.featureSpotlightDataStore.edit { it.clear() }
+            accounts.value.forEach { account -> featureGateRepository.debugResetAnnouncements(account.userId) }
+            mutableResets.emit(Reset(ResetTarget.FeatureSpotlight))
+        }
+    }
 
     fun resetNotificationPrompt() = clear(
         ResetTarget.NotificationPrompt,

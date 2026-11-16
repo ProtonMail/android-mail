@@ -191,6 +191,25 @@ internal class FeatureGateRepositoryImplTest {
     }
 
     @Test
+    fun `given a kept entry point, when the announcements are reset, then the entry point is asked again`() = runTest {
+        // Given
+        coEvery { featureGate.isEnabled(sdkSidebarBanner) } returnsMany listOf(true, false)
+        coEvery { featureGate.debugResetAnnouncements() } just runs
+
+        repository.observeEntryPointEnabled(userId, sidebarBanner).test {
+            assertEquals(true, awaitItem())
+
+            // When
+            val result = repository.debugResetAnnouncements(userId)
+
+            // Then
+            assertEquals(Unit.right(), result)
+            coVerify(exactly = 1) { featureGate.debugResetAnnouncements() }
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
     fun `given the read fails, when observing an entry point, then it is hidden`() = runTest {
         // Given
         coEvery { featureGate.isEnabled(sdkSidebarBanner) } throws IllegalStateException("boom")

@@ -48,4 +48,11 @@ interface FeatureGateRepository {
     suspend fun migrateClientState(userId: UserId, seen: List<Announcement>): Either<DataError, Unit>
 
     suspend fun markByoeDeepLinkOpened(userId: UserId): Either<DataError, Unit>
+
+    /**
+     * Makes the SDK forget which announcements were shown or resolved, so each shows again when due.
+     *
+     * For the debug menu only: a release build must never call it.
+     */
+    suspend fun debugResetAnnouncements(userId: UserId): Either<DataError, Unit>
 }

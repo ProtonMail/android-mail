@@ -250,6 +250,26 @@ internal class ByoeGuidanceRepositoryImplTest {
     }
 
     @Test
+    fun `when resetting the onboarding steps, then the SDK forgets every step`() = runTest {
+        // Given
+        coEvery { screenVisibilityStore.setValue(any(), false) } just runs
+
+        // When
+        val result = repository.debugResetOnboardingSteps(userId)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        listOf(
+            "onboarding_page_upsell",
+            "onboarding_page_welcome",
+            "onboarding_page_offline",
+            "onboarding_page_byoe",
+            "onboarding_page_notifications",
+            "onboarding_shown"
+        ).forEach { key -> coVerify(exactly = 1) { screenVisibilityStore.setValue(key, false) } }
+    }
+
+    @Test
     fun `given a deep link start, when reporting it, then it is sent with the deep link surface and unknown import`() =
         runTest {
             // Given

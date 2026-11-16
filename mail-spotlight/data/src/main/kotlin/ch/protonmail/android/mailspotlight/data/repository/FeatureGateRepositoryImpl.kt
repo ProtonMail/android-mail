@@ -82,6 +82,11 @@ class FeatureGateRepositoryImpl @Inject constructor(
         withFeatureGate(userId) { gate -> gate.markByoeDeepLinkOpened() }
             .onRight { refreshEntryPoints(userId) }
 
+    // An unseen BYOE spotlight locks the BYOE entry points again, so they are asked again.
+    override suspend fun debugResetAnnouncements(userId: UserId): Either<DataError, Unit> =
+        withFeatureGate(userId) { gate -> gate.debugResetAnnouncements() }
+            .onRight { refreshEntryPoints(userId) }
+
     // A failed read hides the entry point, as the SDK does when it cannot decide.
     private suspend fun fetch(key: EntryPointKey) {
         val isEnabled = isEntryPointEnabled(key.userId, key.entryPoint).getOrNull() ?: false

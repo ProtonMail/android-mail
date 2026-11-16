@@ -106,6 +106,13 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun debugResetOnboardingSteps(userId: UserId): Either<DataError, Unit> =
+        executeWithUserSession(userId) { session ->
+            session.getRustUserSession().screenVisibilityStore().use { store ->
+                OnboardingStepKeys.forEach { key -> store.setValue(key, false) }
+            }
+        }
+
     override suspend fun report(userId: UserId, event: ByoeTelemetryEvent): Either<DataError, Unit> =
         withByoeGuidance(userId) { guidance -> guidance.report(event) }
 
@@ -116,6 +123,16 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
         session.getRustUserSession().byoeGuidance().use { action(it) }
     }
 }
+
+// The names the SDK records its onboarding steps under. It has no call to forget a step, only to forget a name.
+private val OnboardingStepKeys = listOf(
+    "onboarding_page_upsell",
+    "onboarding_page_welcome",
+    "onboarding_page_offline",
+    "onboarding_page_byoe",
+    "onboarding_page_notifications",
+    "onboarding_shown"
+)
 
 private suspend fun ByoeGuidance.report(event: ByoeTelemetryEvent) = when (event) {
     ByoeTelemetryEvent.SidebarBannerShown -> reportSidebarBannerShown()
