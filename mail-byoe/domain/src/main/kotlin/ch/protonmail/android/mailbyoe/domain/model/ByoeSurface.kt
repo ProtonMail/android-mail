@@ -30,6 +30,6 @@ enum class ByoeSurface {
     SidebarBanner,
     Settings,
 
-    /** The `protonmail://connect-gmail/start` link. */
+    /** A link from outside the app: `protonmail://connect-gmail/start`, or an account settings web page. */
     DeepLink
 }

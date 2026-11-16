@@ -333,6 +333,21 @@
                     android:path="/start"
                     android:scheme="protonmail" />
             </intent-filter>
+            <!-- The account settings pages that list the connected addresses, which open the Gmail connection too.
+                 Verified against account.proton.me/.well-known/assetlinks.json. Keep in sync with ConnectGmailDeepLink. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="account.proton.me" />
+                <data android:path="/mail/easy-switch" />
+                <data android:pathPrefix="/mail/easy-switch/" />
+                <data android:path="/mail/identity-addresses" />
+                <data android:pathPrefix="/mail/identity-addresses/" />
+            </intent-filter>
         </activity>
 
         <activity-alias
@@ -387,6 +402,21 @@
                     android:host="connect-gmail"
                     android:path="/start"
                     android:scheme="protonmail" />
+            </intent-filter>
+            <!-- The account settings pages that list the connected addresses, which open the Gmail connection too.
+                 Verified against account.proton.me/.well-known/assetlinks.json. Keep in sync with ConnectGmailDeepLink. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="account.proton.me" />
+                <data android:path="/mail/easy-switch" />
+                <data android:pathPrefix="/mail/easy-switch/" />
+                <data android:path="/mail/identity-addresses" />
+                <data android:pathPrefix="/mail/identity-addresses/" />
             </intent-filter>
         </activity-alias>
 
@@ -443,6 +473,21 @@
                     android:path="/start"
                     android:scheme="protonmail" />
             </intent-filter>
+            <!-- The account settings pages that list the connected addresses, which open the Gmail connection too.
+                 Verified against account.proton.me/.well-known/assetlinks.json. Keep in sync with ConnectGmailDeepLink. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="account.proton.me" />
+                <data android:path="/mail/easy-switch" />
+                <data android:pathPrefix="/mail/easy-switch/" />
+                <data android:path="/mail/identity-addresses" />
+                <data android:pathPrefix="/mail/identity-addresses/" />
+            </intent-filter>
         </activity-alias>
 
         <activity-alias
@@ -498,6 +543,21 @@
                     android:path="/start"
                     android:scheme="protonmail" />
             </intent-filter>
+            <!-- The account settings pages that list the connected addresses, which open the Gmail connection too.
+                 Verified against account.proton.me/.well-known/assetlinks.json. Keep in sync with ConnectGmailDeepLink. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="account.proton.me" />
+                <data android:path="/mail/easy-switch" />
+                <data android:pathPrefix="/mail/easy-switch/" />
+                <data android:path="/mail/identity-addresses" />
+                <data android:pathPrefix="/mail/identity-addresses/" />
+            </intent-filter>
         </activity-alias>
 
         <activity-alias
@@ -552,6 +612,21 @@
                     android:host="connect-gmail"
                     android:path="/start"
                     android:scheme="protonmail" />
+            </intent-filter>
+            <!-- The account settings pages that list the connected addresses, which open the Gmail connection too.
+                 Verified against account.proton.me/.well-known/assetlinks.json. Keep in sync with ConnectGmailDeepLink. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="account.proton.me" />
+                <data android:path="/mail/easy-switch" />
+                <data android:pathPrefix="/mail/easy-switch/" />
+                <data android:path="/mail/identity-addresses" />
+                <data android:pathPrefix="/mail/identity-addresses/" />
             </intent-filter>
         </activity-alias>
 

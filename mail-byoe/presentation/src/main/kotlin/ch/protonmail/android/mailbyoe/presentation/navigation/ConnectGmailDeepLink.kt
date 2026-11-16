@@ -18,9 +18,15 @@
 
 package ch.protonmail.android.mailbyoe.presentation.navigation
 
+import java.net.URI
+import java.net.URISyntaxException
+
 /**
- * The link that opens the Gmail connection from outside the app, e.g. from a web page or an email. It opens the Gmail
+ * The links that open the Gmail connection from outside the app, e.g. from a web page or an email. They open the Gmail
  * connection settings on the web, like Settings does.
+ *
+ * There are two kinds: the app's own [LINK], and the web pages of the account settings that list the connected
+ * addresses, which the app is verified to open instead of the browser.
  *
  * The `connect-gmail` host is shared with the redirect that completes the connection, `/complete`, which the
  * connection screen reads instead.
@@ -29,6 +35,26 @@ object ConnectGmailDeepLink {
 
     const val LINK = "protonmail://connect-gmail/start"
 
-    /** Only the exact link: a different case, path, query or fragment is not it. */
-    fun matches(link: String?): Boolean = link == LINK
+    private const val WEB_SCHEME = "https"
+    private const val WEB_HOST = "account.proton.me"
+
+    // The same pages the iOS app opens. The manifest lists them too: keep both in sync.
+    private val WebPaths = listOf("/mail/easy-switch", "/mail/identity-addresses")
+
+    /**
+     * Only the exact [LINK]: a different case, path, query or fragment is not it. A web page matches with anything
+     * below it and with any query or fragment, since links to it carry campaign parameters.
+     */
+    fun matches(link: String?): Boolean = link == LINK || isWebPage(link)
+
+    private fun isWebPage(link: String?): Boolean {
+        val uri = try {
+            URI(link ?: return false)
+        } catch (_: URISyntaxException) {
+            return false
+        }
+        val isAccountSite = uri.scheme == WEB_SCHEME && uri.host == WEB_HOST && uri.userInfo == null && uri.port == -1
+        val path = uri.rawPath.orEmpty()
+        return isAccountSite && WebPaths.any { page -> path == page || path.startsWith("$page/") }
+    }
 }

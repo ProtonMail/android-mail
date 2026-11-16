@@ -48,4 +48,38 @@ internal class ConnectGmailDeepLinkTest {
             assertFalse(ConnectGmailDeepLink.matches(link), "$link should not match")
         }
     }
+
+    @Test
+    fun `given a web page that lists the connected addresses, when matching, then it matches`() {
+        listOf(
+            "https://account.proton.me/mail/easy-switch",
+            "https://account.proton.me/mail/easy-switch/",
+            "https://account.proton.me/mail/easy-switch/gmail",
+            "https://account.proton.me/mail/easy-switch?utm_source=newsletter&utm_campaign=byoe",
+            "https://account.proton.me/mail/easy-switch#connect",
+            "https://account.proton.me/mail/identity-addresses",
+            "https://account.proton.me/mail/identity-addresses/add?source=email"
+        ).forEach { link ->
+            assertTrue(ConnectGmailDeepLink.matches(link), "$link should match")
+        }
+    }
+
+    @Test
+    fun `given another web page, when matching, then it does not match`() {
+        listOf(
+            "http://account.proton.me/mail/easy-switch",
+            "https://proton.me/mail/easy-switch",
+            "https://account.proton.me.example.com/mail/easy-switch",
+            "https://user@account.proton.me/mail/easy-switch",
+            "https://account.proton.me:8443/mail/easy-switch",
+            "https://account.proton.me/mail/easy-switcher",
+            "https://account.proton.me/mail/Easy-Switch",
+            "https://account.proton.me/u/0/mail/easy-switch",
+            "https://account.proton.me/mail",
+            "https://account.proton.me/lite?action=byoe-mobile",
+            "https://account.proton.me/mail/easy switch"
+        ).forEach { link ->
+            assertFalse(ConnectGmailDeepLink.matches(link), "$link should not match")
+        }
+    }
 }

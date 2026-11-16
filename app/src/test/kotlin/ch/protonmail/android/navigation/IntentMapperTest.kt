@@ -157,6 +157,22 @@ class IntentMapperTest {
     }
 
     @Test
+    fun `map the account settings web page as the connect gmail deep link`() {
+        // Given
+        val intent = mockIntent(
+            action = Intent.ACTION_VIEW,
+            dataString = "https://account.proton.me/mail/easy-switch?utm_source=newsletter",
+            scheme = "https"
+        )
+
+        // When
+        val result = mapper.map(intent)
+
+        // Then
+        assertIs<HomeNavigationEvent.ConnectGmailDeepLinkReceived>(result)
+    }
+
+    @Test
     fun `map another protonmail link as a share intent, not the connect gmail deep link`() {
         // Given
         val intent = mockIntent(
