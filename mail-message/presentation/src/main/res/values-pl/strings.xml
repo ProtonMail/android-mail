@@ -73,7 +73,7 @@
   <string name="contact_actions_add_contact_description">Zapisz odbiorcę w kontaktach</string>
   <string name="contact_actions_block_contact">Zablokuj kontakt</string>
   <string name="contact_actions_block_contact_description">Zablokuj kontakt</string>
-  <string name="contact_actions_block_contact_dialog_text">Wiadomości e-mail od <xliff:g id="email">%1$s</xliff:g> nie będą już dostarczane i zostaną trwale usunięte. Możesz zarządzać zablokowanymi adresami e-mail w ustawieniach.</string>
+  <string name="contact_actions_block_contact_dialog_text">Wiadomości od <xliff:g id="email">%1$s</xliff:g> nie będą już dostarczane i zostaną trwale usunięte. Możesz zarządzać zablokowanymi adresami w ustawieniach.</string>
   <string name="contact_actions_block_contact_dialog_button_block">Zablokuj</string>
   <string name="contact_actions_block_contact_dialog_button_cancel">Anuluj</string>
   <string name="contact_actions_unblock_contact">Odblokuj kontakt</string>

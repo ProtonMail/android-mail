@@ -53,8 +53,8 @@
   <string name="composer_too_many_attachments_error">Limit maksymalnej liczby załączników (100) został osiągnięty.</string>
   <string name="composer_delete_attachment_error">Wystąpił nieoczekiwany błąd podczas usuwania załącznika.</string>
   <string name="composer_unexpected_attachments_error">Wystąpił nieoczekiwany błąd z załącznikami.</string>
-  <string name="composer_error_converting_inline_to_standard_attachment">Nie udało się zapisać załącznika. Sprawdź swoją przestrzeń dyskową i spróbuj ponownie.</string>
-  <string name="composer_storage_quota_exceeded_error">Twoje miejsce na dane zostało zapełnione. Zwolnij miejsce lub ulepsz konto, aby dodać więcej.</string>
+  <string name="composer_error_converting_inline_to_standard_attachment">Nie udało się zapisać załącznika. Sprawdź przestrzeń dyskową i spróbuj ponownie.</string>
+  <string name="composer_storage_quota_exceeded_error">Przestrzeń dyskowa jest pełna. Zwolnij miejsce lub ulepsz konto.</string>
   <string name="composer_attach_capture_from_camera_error">Przechwytywanie załącznika z aparatu nie jest obecnie możliwe</string>
   <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>
   <string name="composer_button_add_password">Dodaj hasło</string>
@@ -130,7 +130,7 @@
   <string name="composer_external_encryption_unexpected_error">Wystąpił nieoczekiwany błąd %s. Spróbuj ponownie.</string>
   <string name="composer_sender_changed_original_address_cannot_send">Adres nie może zostać użyty do wysłania wiadomość. Wiadomość zostanie wysłana z Twojego domyślnego adresu.</string>
   <string name="composer_expiration_time_bottom_sheet_description">Ustaw, kiedy wiadomość ma zostać usunięta ze skrzynki odbiorczej odbiorcy i Twojego folderu Wysłane. Aby wyznaczyć czas wygaśnięcia wiadomości dla użytkowników spoza Proton, dodaj hasło.</string>
-  <string name="expiration_time_set_time_and_date">Ustaw godzinę i datę</string>
+  <string name="expiration_time_set_time_and_date">Wybierz datę i godzinę</string>
   <string name="composer_expiration_set_expiration">Ustaw wygaśnięcie</string>
   <string name="composer_expiration_pick_time_title">Ustaw czas</string>
   <string name="composer_expiration_time_custom_time_on">W: %1$s</string>
@@ -146,9 +146,9 @@
   <string name="composer_error_send_draft_schedule_send_error">Zaplanowany czas wysłania już minął. Przejdź do folderu Szkice, aby wysłać wiadomość lub zmienić jej termin.</string>
   <string name="composer_error_send_draft_expiration_time_too_soon">Czas wygaśnięcia wiadomości jest zbyt bliski.</string>
   <string name="composer_error_send_draft_package_error">Problem z wysłaniem wiadomości. Spróbuj ponownie.</string>
-  <string name="composer_error_send_draft_attachment_too_large">Nie można wysłać szkicu — załączniki przekraczają limit rozmiaru</string>
-  <string name="composer_error_send_draft_too_many_attachments">Nie można wysłać szkicu — osiągnięto limit załączników</string>
-  <string name="composer_error_send_draft_attachments_crypto_error">Nie można wysłać szkicu — szyfrowanie załącznika nie powiodło się.</string>
+  <string name="composer_error_send_draft_attachment_too_large">Nie można wysłać szkicu. Przekroczono maksymalny rozmiar załączników</string>
+  <string name="composer_error_send_draft_too_many_attachments">Nie można wysłać szkicu. Przekroczono limit załączników</string>
+  <string name="composer_error_send_draft_attachments_crypto_error">Nie można wysłać szkicu. Szyfrowanie załączników nie powiodło się.</string>
   <string name="composer_expiration_time_learn_more">Dowiedz się więcej</string>
   <string name="composer_enter_recipient_content_description">Wpisz odbiorcę</string>
   <string name="composer_sender_address_description">Wybierz adres nadawcy</string>

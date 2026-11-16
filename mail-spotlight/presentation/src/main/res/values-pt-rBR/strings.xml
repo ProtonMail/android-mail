@@ -56,7 +56,7 @@
   <string name="spotlight_screen_content_search_message_content_title">Cada palavra agora pesquisável</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Encontre e-mais por conteúdo de mensagem, não apenas por assunto ou remetente.</string>
   <string name="spotlight_screen_content_search_encryption_title">Ainda com criptografia ponta a ponta</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">A indexação ocorre no seu dispositivo, com criptografia usando sua chave. Nada é enviado à Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Continue de onde parou</string>
   <string name="spotlight_screen_content_search_recent_searches_subtitle">Revisite rapidamente as pesquisas recentes e resultados. Armazenadas no seu dispositivo para preservar a criptografia de ponta a ponta.</string>
   <string name="spotlight_screen_whats_new_pill">Novidades</string>
@@ -70,5 +70,5 @@
   <string name="spotlight_screen_content_search_how_it_works_index_title">Um índice privado é criado no próprio dispositivo</string>
   <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Um índice de pesquisa leve é criado localmente no seu dispositivo. Pense nele como um mapa para encontrar as mensagens que procura.</string>
   <string name="spotlight_screen_content_search_how_it_works_search_now_title">Indexando em segundo plano</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">A indexação dos seus e-mails levará algum tempo, mas você pode continuar usando o Mail normalmente enquanto trabalhamos em segundo plano.</string>
 </resources>

@@ -29,7 +29,7 @@
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Очистить данные</string>
   <string name="content_search_bottomsheet_title">Mobile data usage</string>
-  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
+  <string name="content_search_bottomsheet_description">Ваши электронные письма будут скачаны для обеспечения конфиденциального поиска.</string>
   <string name="content_search_bottomsheet_start_indexing">Start indexing</string>
   <string name="content_search_bottomsheet_mobile_data_title">Use mobile data</string>
   <!-- Content search screen -->
@@ -51,7 +51,7 @@
   <string name="content_search_placeholder_text">Search</string>
   <string name="content_search_clear_query_content_description">Clear search query</string>
   <string name="content_search_close_content_description">Close search</string>
-  <string name="content_search_first_run_description">Type anything to search privately…</string>
+  <string name="content_search_first_run_description">Введите текст для конфиденциального поиска…</string>
   <string name="content_search_results_searching">Searching…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d результат</item>

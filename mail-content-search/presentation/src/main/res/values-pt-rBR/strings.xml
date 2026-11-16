@@ -9,7 +9,7 @@
   <string name="mail_settings_content_search_syncing_status">Preparando %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Preparando…</string>
   <string name="mail_settings_content_search_waiting_for_wifi_status">Aguardando por Wi-Fi…</string>
-  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
+  <string name="mail_settings_content_search_failed_status">Algo deu errado ao preparar a busca no conteúdo dos e-mails.</string>
   <string name="mail_settings_content_search_failed_retry">Tentar novamente</string>
   <string name="mail_settings_content_search_update_error">Ocorreu um erro. Tente novamente.</string>
   <string name="mail_settings_content_search_retry_error">Não foi possível preparar de pesquisa de conteúdo de e-mail</string>
@@ -20,44 +20,44 @@
   <string name="mail_settings_content_search_indexing_paused">Pausado</string>
   <string name="mail_settings_content_search_indexing_pause">Pausar</string>
   <string name="mail_settings_content_search_indexing_resume">Retomar</string>
-  <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
+  <string name="mail_settings_content_search_indexing_description">Os e-mails recentes são indexados primeiro. Todas as mensagens já indexadas podem ser pesquisadas enquanto a indexação continua.</string>
   <string name="mail_settings_content_search_on_this_device_section">Neste aparelho</string>
   <string name="mail_settings_content_search_index_size">Tamanho do índice</string>
   <string name="mail_settings_content_search_clear_data_button">Limpar índice de pesquisa locais?</string>
   <string name="mail_settings_content_search_clear_data_description">Limpar os dados de pesquisa local vai desativar a pesquisa pelo conteúdo das mensagens. Você pode ativar essa opção novamente a qualquer momento.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Limpar índice de pesquisa locais?</string>
-  <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
+  <string name="mail_settings_content_search_clear_data_dialog_message">Os dados de busca deste dispositivo serão removidos. Você precisará baixá-los novamente para pesquisar no conteúdo dos e-mails.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Limpar dados</string>
   <string name="content_search_bottomsheet_title">Uso de dados móveis</string>
-  <string name="content_search_bottomsheet_description">Your emails will be downloaded to enable private search.</string>
+  <string name="content_search_bottomsheet_description">Seus e-mails serão baixados para permitir a busca privada.</string>
   <string name="content_search_bottomsheet_start_indexing">Iniciar indexagem</string>
   <string name="content_search_bottomsheet_mobile_data_title">Usar dados móveis</string>
   <!-- Content search screen -->
   <string name="content_search_no_results_title_for_query">Nenhum resultado para \"%1$s\"</string>
   <string name="content_search_no_results_description">Tente usar palavras-chave diferentes ou verifique a ortografia.</string>
-  <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
+  <string name="content_search_no_results_set_up_description">Pesquisamos apenas assuntos e remetentes. Ative a busca no conteúdo para pesquisar também dentro dos e-mails.</string>
   <string name="content_search_no_results_learn_more">Saiba mais…</string>
   <string name="content_search_no_results_set_up_action">Configurar em conteúdo de e-mail</string>
   <string name="content_search_failed_title">Erro de pesquisa</string>
   <string name="content_search_failed_description">Ocorreu um erro. Tente novamente.</string>
   <string name="content_search_failed_retry">Tentar novamente</string>
   <string name="content_search_set_up_banner_title">Pesquise dentro de e-mails também</string>
-  <string name="content_search_set_up_banner_description">Search the full text of your emails, not just senders and subjects.</string>
+  <string name="content_search_set_up_banner_description">Pesquise no texto completo dos seus e-mails, além dos remetentes e assuntos.</string>
   <string name="content_search_set_up_banner_turn_on">Configurar agora</string>
   <string name="content_search_set_up_banner_not_now">Agora não</string>
   <string name="content_search_indexing_complete_banner_title">Tudo pronto!</string>
-  <string name="content_search_indexing_complete_banner_description">Content search is now on, for every email — past and future.</string>
+  <string name="content_search_indexing_complete_banner_description">A busca no conteúdo agora está ativada para todos os e-mails, antigos e futuros.</string>
   <string name="content_search_indexing_complete_banner_got_it">Entendi</string>
   <string name="content_search_placeholder_text">Pesquisar</string>
   <string name="content_search_clear_query_content_description">Limpar consulta de pesquisa</string>
   <string name="content_search_close_content_description">Fechar pesquisa</string>
-  <string name="content_search_first_run_description">Type anything to search privately…</string>
+  <string name="content_search_first_run_description">Digite algo para pesquisar com privacidade…</string>
   <string name="content_search_results_searching">Pesquisando…</string>
   <plurals name="content_search_results_title_with_count">
     <item quantity="one">%1$d Resultado</item>
     <item quantity="other">%1$d Resultados</item>
   </plurals>
-  <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
+  <string name="content_search_min_query_length_notice">Digite 3 ou mais caracteres para ver todos os resultados.</string>
   <!-- Search history -->
   <string name="content_search_recent_searches_title">Pesquisas de e-mais recentes</string>
   <string name="content_search_clear_recent_searches">Limpar tudo</string>
@@ -70,7 +70,7 @@
   <string name="content_search_indexing_interrupted_content_description">Indexação interrompida, %1$d%%</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Excluir permanentemente?</string>
-  <string name="content_search_delete_dialog_message">These messages will be permanently deleted. This action cannot be undone.</string>
+  <string name="content_search_delete_dialog_message">Estas mensagens serão excluídas permanentemente. Esta ação não pode ser desfeita.</string>
   <string name="content_search_delete_dialog_confirm">Excluir</string>
   <string name="content_search_delete_dialog_cancel">Cancelar</string>
 </resources>

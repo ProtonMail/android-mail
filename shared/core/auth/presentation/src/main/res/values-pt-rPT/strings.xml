@@ -133,7 +133,7 @@
   <string name="settings_save_main_password">Guardar a nova palavra-passe principal</string>
   <string name="settings_password_management_tab_main_password">Palavra-passe principal</string>
   <string name="settings_password_management_tab_second_password">Segunda palavra-passe</string>
-  <string name="settings_password_management_change_password_note">Para alterar qualquer uma das suas palavras-passe, terá de saber a sua palavra-passe principal. </string>
+  <string name="settings_password_management_change_password_note">Para alterar qualquer uma das suas palavras-passe, terá de saber a sua palavra-passe principal.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Esqueceu-se da sua palavra-passe principal?</string>
   <string name="settings_main_password_hint_current">Palavra passe principal atual</string>
   <string name="settings_main_password_hint_new">Nova palavra-passe principal</string>
