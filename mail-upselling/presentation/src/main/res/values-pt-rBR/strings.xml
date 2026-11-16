@@ -49,7 +49,7 @@
   <string name="upselling_monthly_to_yearly_currently">Atualmente</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">Plano de 12 meses</string>
   <string name="upselling_monthly_to_yearly_cta">Altere e economize %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Manter o plano mensal</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Leve sua privacidade online a um novo patamar com a Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Proteja sua conta contra ameaças com o Proton Sentinel</string>
@@ -120,7 +120,7 @@
   <string name="upselling_comparison_table_threat_protection">Proteção avançada contra ameaças</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Pastas, filtros e marcadores ilimitados</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Escolha uma assinatura</string>
+  <string name="upselling_select_plan">Escolher assinatura</string>
   <string name="upselling_select_plan_year">12 meses</string>
   <string name="upselling_select_plan_month">1 mês</string>
   <!-- Onboarding upsell -->

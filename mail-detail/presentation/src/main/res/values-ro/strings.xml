@@ -118,8 +118,8 @@
   <string name="recipient_me">eu</string>
   <string name="message_details_header_from">De la</string>
   <string name="message_details_header_to">Către</string>
-  <string name="message_details_header_cc">C</string>
-  <string name="message_details_header_bcc">Ca</string>
+  <string name="message_details_header_cc">CC</string>
+  <string name="message_details_header_bcc">BCC</string>
   <string name="schedule_message_sent_at_banner_title">Acest mesaj va fi trimis</string>
   <string name="schedule_message_edit_message_button">Editare mesaj</string>
   <string name="schedule_send_tomorrow">mâine la %1$s</string>

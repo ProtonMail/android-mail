@@ -33,7 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s przez pierwszy miesiąc, a potem %s miesięcznie</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Przejdź na Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Nie pokazuj tej oferty ponownie</string>
+  <string name="upselling_do_not_show_again">Nie pokazuj oferty ponownie</string>
   <string name="upselling_stay_on_mail_plus">Pozostań w planie Mail Plus</string>
   <string name="upselling_black_friday_do_not_show_again">Nie pokazuj ponownie</string>
   <string name="upselling_pu_choose_plan">Wybierz plan</string>
@@ -53,9 +53,9 @@
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Rozszerz swoją prywatność online dzięki planowi Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Chroń swoje konto przed zagrożeniami dzięki funkcji Proton Sentinel</string>
-  <string name="upselling_pu_aliases_title">Uzyskaj nieograniczoną liczbę aliasów, aby chronić swoją tożsamość</string>
+  <string name="upselling_pu_aliases_title">Uzyskaj nieograniczoną liczbę aliasów chroniących tożsamość</string>
   <string name="upselling_pu_drive_title">Uzyskaj 500 GB na bezpieczne przechowywanie plików i zdjęć</string>
-  <string name="upselling_pu_vpn_browse_title">Uzyskaj dostęp do ultraszybkiego VPN z serwerami w ponad 110 krajach</string>
+  <string name="upselling_pu_vpn_browse_title">Uzyskaj dostęp do ultraszybkich serwerów VPN w ponad 110 krajach</string>
   <string name="upselling_pu_vpn_streaming_title">Uzyskaj dostęp do streamingu na całym świecie</string>
   <string name="upselling_pu_pass_title">Przechowuj hasła bezpiecznie i uporządkowane w sejfach</string>
   <string name="upselling_pu_subtitle">Uzyskaj to, co najlepsze w Protonie, dzięki planowi Unlimited</string>
@@ -139,7 +139,7 @@
   <string name="upselling_onboarding_free_entitlement_storage">1 GB przestrzeni dyskowej</string>
   <string name="upselling_onboarding_free_entitlement_mail">1 adres e-mail</string>
   <!-- Other UI Items -->
-  <string name="upselling_unlimited_description_override">Aby odblokować więcej przestrzeni dyskowej i funkcje premium.</string>
+  <string name="upselling_unlimited_description_override">Odblokuj więcej przestrzeni dyskowej i funkcje premium.</string>
   <string name="upselling_auto_renew_text">Automatyczne odnowienie w tej samej cenie i na tych samych warunkach, chyba że zostanie anulowane</string>
   <string name="upselling_auto_renew_text_promo">Oferta powitalna. Automatyczne odnowienie za %s%s, chyba że zostanie anulowane</string>
   <string name="upselling_auto_renew_text_bfriday">Zniżki są obliczane na podstawie standardowych cen miesięcznych. Automatycznie odnawia się w cenie %s%s do anulowania.</string>

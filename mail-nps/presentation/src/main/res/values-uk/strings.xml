@@ -17,12 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="nps_title">How likely are you to recommend Proton Mail to a friend or colleague?</string>
-  <string name="nps_subtext_low">0 = very unlikely</string>
-  <string name="nps_subtext_high">10 = very likely</string>
-  <string name="nps_comment_placeholder">Please let us know why you gave this rating.</string>
-  <string name="nps_share_button">Share anonymously</string>
-  <string name="nps_privacy_note">We never send your name, email, or message contents.</string>
-  <string name="nps_thank_you">Thanks for sharing. Your feedback helps us improve Proton Mail.</string>
+  <string name="nps_title">Наскільки ймовірно, що ви порекомендуєте Proton Mail своєму другові чи колезі?</string>
+  <string name="nps_subtext_low">0 = дуже малоймовірно</string>
+  <string name="nps_subtext_high">10 = дуже ймовірно</string>
+  <string name="nps_comment_placeholder">Будь ласка, повідомте нам, чому ви поставили таку оцінку.</string>
+  <string name="nps_share_button">Поділитися анонімно</string>
+  <string name="nps_privacy_note">Ми ніколи не надсилаємо ваше ім’я, адресу електронної пошти чи зміст повідомлень.</string>
+  <string name="nps_thank_you">Дякуємо за відгук. Ваші відгуки допомагають нам вдосконалювати Proton Mail.</string>
   <string name="nps_score_content_description">Оцінка %1$d</string>
 </resources>
