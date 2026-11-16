@@ -144,7 +144,7 @@
   <string name="settings_app_icon_name_default">Padrão</string>
   <string name="settings_app_icon_name_discreet">Discreto</string>
   <string name="settings_app_icon_title_default">Ícone do aplicativo - padrão</string>
-  <string name="settings_app_icon_title_discreet">Icona de l\'aplicació - discreto</string>
+  <string name="settings_app_icon_title_discreet">Ícone do aplicativo -discreto</string>
   <string name="settings_app_icon_description">Mantenha o ícone padrão do Proton Mail ou disfarce-o com um mais discreto para privacidade extra.\nAs notificações sempre mostrarão o nome e o ícone do Proton Mail.</string>
   <string name="settings_app_icon_learn_more">Saiba mais…</string>
   <string name="settings_app_icon_discreet_toggle">Ícone discreto do aplicativo</string>

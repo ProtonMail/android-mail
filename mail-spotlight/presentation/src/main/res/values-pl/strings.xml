@@ -26,7 +26,7 @@
   <string name="spotlight_feature_item_encryption_locks_description">Używaj ikon kłódek, aby zidentyfikować i zweryfikować typ szyfrowania chroniącego Twoje wiadomości.</string>
   <string name="spotlight_feature_item_headers_html_title">Podgląd nagłówków i HTML</string>
   <string name="spotlight_feature_item_headers_html_description">Sprawdzaj podejrzane wiadomości, aby potwierdzić ich autentyczność i wykryć wszelkie ukryte elementy śledzące.</string>
-  <string name="spotlight_screen_got_it">Rozumiem</string>
+  <string name="spotlight_screen_got_it">Ok</string>
   <!-- Category View Spotlight -->
   <string name="spotlight_screen_category_view_title">Co nowego w Proton Mail</string>
   <string name="spotlight_screen_category_view_title_b2b">Odkryj, co nowego\nw Proton Mail</string>
@@ -43,7 +43,7 @@
   <string name="spotlight_screen_category_view_main_b2b_title">Bądź na bieżąco z nowymi i\nnieprzeczytanymi wiadomościami</string>
   <string name="spotlight_screen_category_view_main_b2b_subtitle">Filtr nieprzeczytanych jest teraz lepiej widoczny i łatwo dostępny, co pozwala szybko przeglądać i zarządzać nieprzeczytanymi wiadomościami.</string>
   <string name="spotlight_screen_category_view_secondary_b2c_title">Twoja skrzynka odbiorcza,\nautomatycznie uporządkowana</string>
-  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Twoja skrzynka odbiorcza jest teraz podzielona na kategorie, takie jak Główny, Społeczności, Promocje i inne, co ułatwia zachowanie porządku i skupienie się na najważniejszych wiadomościach.</string>
+  <string name="spotlight_screen_category_view_secondary_b2c_subtitle">Skrzynka odbiorcza jest podzielona na kategorie, takie jak Główne, Społeczności, Oferty i inne, co ułatwia zachowanie porządku i skupienie się na najważniejszych wiadomościach.</string>
   <string name="spotlight_screen_category_view_privacy_by_design">Prywatność w standardzie. Dowiedz się więcej</string>
   <string name="spotlight_screen_category_view_secondary_b2b_title">Witajcie kategorie.\nŻegnajcie rozpraszacze.</string>
   <string name="spotlight_screen_category_view_secondary_b2b_subtitle">Przestań rozpraszać się newsletterami, powiadomieniami i mniej pilnymi wiadomościami. Dzięki nowym kategoriom wiadomości tylko ważne wiadomości trafią do Twojej głównej skrzynki odbiorczej.</string>

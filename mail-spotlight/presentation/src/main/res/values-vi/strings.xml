@@ -53,22 +53,22 @@
   <!-- Content Search Spotlight -->
   <string name="spotlight_screen_content_search_title">Tìm kiếm vừa được cải thiện.</string>
   <string name="spotlight_screen_content_search_subtitle">Tìm thấy nội dung quan trọng mà vẫn đảm bảo quyền riêng tư.</string>
-  <string name="spotlight_screen_content_search_message_content_title">Every word, now searchable</string>
+  <string name="spotlight_screen_content_search_message_content_title">Hiện có thể tìm kiếm từng từ</string>
   <string name="spotlight_screen_content_search_message_content_subtitle">Tìm email theo nội dung thư, không chỉ theo chủ đề hoặc người gửi.</string>
-  <string name="spotlight_screen_content_search_encryption_title">Still end-to-end encrypted</string>
-  <string name="spotlight_screen_content_search_encryption_subtitle">Indexing happens on your device, encrypted with your key. Nothing is sent to Proton.</string>
+  <string name="spotlight_screen_content_search_encryption_title">Vẫn được mã hóa đầu cuối</string>
+  <string name="spotlight_screen_content_search_encryption_subtitle">Quá trình lập chỉ mục diễn ra trên thiết bị của bạn và được mã hóa bằng khóa của bạn. Sẽ không gửi dữ liệu nào đến Proton.</string>
   <string name="spotlight_screen_content_search_recent_searches_title">Tiếp tục từ nơi dừng lại</string>
-  <string name="spotlight_screen_content_search_recent_searches_subtitle">Quickly revisit recent searches and results. Stored on your device to preserve end-to-end encryption.</string>
-  <string name="spotlight_screen_whats_new_pill">What’s new</string>
-  <string name="spotlight_screen_content_search_button_continue">Continue</string>
-  <string name="spotlight_screen_content_search_button_turn_on">Turn on</string>
-  <string name="spotlight_screen_content_search_button_not_now">Not now</string>
+  <string name="spotlight_screen_content_search_recent_searches_subtitle">Nhanh chóng xem lại những mục tìm kiếm gần đây. Được lưu trữ trên thiết bị của bạn để bảo toàn mã hóa đầu cuối.</string>
+  <string name="spotlight_screen_whats_new_pill">Có gì mới</string>
+  <string name="spotlight_screen_content_search_button_continue">Tiếp tục</string>
+  <string name="spotlight_screen_content_search_button_turn_on">Bật</string>
+  <string name="spotlight_screen_content_search_button_not_now">Để sau</string>
   <!-- How email content search works -->
-  <string name="spotlight_screen_content_search_how_it_works_title">How content search works</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_title">Your emails download to this phone</string>
-  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">To search your email content, Proton Mail securely downloads a copy to this device.</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_title">A private index is built on-device</string>
-  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">A lightweight search index is created locally on your device. Think of it as a map to find the messages you’re looking for.</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_title">We\'ll index in the background</string>
-  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Indexing your emails will take some time, but you can keep using mail as usual while we work in the background.</string>
+  <string name="spotlight_screen_content_search_how_it_works_title">Tìm kiếm nội dung hoạt động như thế nào</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_title">Email của bạn được tải xuống thiết bị này</string>
+  <string name="spotlight_screen_content_search_how_it_works_download_subtitle">Để tìm kiếm nội dung email của bạn, Proton Mail sẽ tải xuống một bản sao vào thiết bị này.</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_title">Sẽ xây dựng chỉ mục riêng tư trên thiết bị</string>
+  <string name="spotlight_screen_content_search_how_it_works_index_subtitle">Một chỉ mục tìm kiếm nhẹ sẽ được tạo trên thiết bị của bạn. Hãy coi nó như một bản đồ để tìm các thư bạn cần.</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_title">Chúng tôi sẽ lập chỉ mục trong nền</string>
+  <string name="spotlight_screen_content_search_how_it_works_search_now_subtitle">Việc lập chỉ mục email sẽ mất một chút thời gian, tuy nhiên bạn có thể tiếp tục sử dụng email như bình thường.</string>
 </resources>

@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="category_title_primary">Główna</string>
+  <string name="category_title_primary">Główne</string>
   <string name="category_title_social">Społeczności</string>
   <string name="category_title_promotions">Oferty</string>
   <string name="category_title_updates">Powiadomienia</string>

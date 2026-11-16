@@ -88,9 +88,9 @@
   <string name="mailbox_action_spam_message">Повідомлення переміщено до спаму</string>
   <plurals name="mailbox_action_move_conversation">
     <item quantity="one">Розмову переміщено до %s</item>
-    <item quantity="few">Розмови переміщено до %s</item>
-    <item quantity="many">Conversations moved to %s</item>
-    <item quantity="other">Conversations moved to %s</item>
+    <item quantity="few">Розмов переміщено до %s</item>
+    <item quantity="many">Розмов переміщено до %s</item>
+    <item quantity="other">Розмови переміщено до %s</item>
   </plurals>
   <plurals name="mailbox_action_move_message">
     <item quantity="one">Повідомлення переміщено до %s</item>

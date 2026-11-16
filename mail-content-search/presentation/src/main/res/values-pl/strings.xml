@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="mail_settings_content_search_header_title">Wyszukiwanie zawartości</string>
-  <string name="mail_settings_content_search_description">Aby umożliwić Ci wyszukiwanie po treści wiadomości, zostaną one pobrane na to urządzenie.</string>
+  <string name="mail_settings_content_search_description">Wiadomości zostaną pobrane na urządzenie, aby umożliwić wyszukiwanie treści.</string>
   <string name="mail_settings_content_search_learn_more">Dowiedz się więcej…</string>
   <string name="mail_settings_content_search_toggle_title">Wyszukiwanie zawartości</string>
   <string name="mail_settings_content_search_mobile_data_title">Pobierz przez dane mobilne</string>
@@ -21,10 +21,10 @@
   <string name="mail_settings_content_search_indexing_pause">Wstrzymaj</string>
   <string name="mail_settings_content_search_indexing_resume">Wznów</string>
   <string name="mail_settings_content_search_indexing_description">Recent emails are indexed first. All indexed messages are searchable while indexing is ongoing.</string>
-  <string name="mail_settings_content_search_on_this_device_section">On this device</string>
+  <string name="mail_settings_content_search_on_this_device_section">Na urządzeniu</string>
   <string name="mail_settings_content_search_index_size">Rozmiar indeksu</string>
   <string name="mail_settings_content_search_clear_data_button">Wyczyść lokalny indeks</string>
-  <string name="mail_settings_content_search_clear_data_description">Wyczyszczenie lokalnych danych wyszukiwania wyłączy wyszukiwanie zawartości wiadomości. Możesz je włączyć ponownie w dowolnym momencie.</string>
+  <string name="mail_settings_content_search_clear_data_description">Usunięcie lokalnych danych wyszukiwania wyłączy wyszukiwanie treści wiadomości.</string>
   <string name="mail_settings_content_search_clear_data_dialog_title">Wyczyść lokalny indeks</string>
   <string name="mail_settings_content_search_clear_data_dialog_message">The search data on this device will be removed. You will need to download it again to search email content.</string>
   <string name="mail_settings_content_search_clear_data_dialog_confirm">Wyczyść dane</string>
@@ -38,8 +38,8 @@
   <string name="content_search_no_results_set_up_description">We only searched subjects and senders. Enable content search to search inside emails too.</string>
   <string name="content_search_no_results_learn_more">Dowiedz się więcej…</string>
   <string name="content_search_no_results_set_up_action">Set up content search</string>
-  <string name="content_search_failed_title">Search failed</string>
-  <string name="content_search_failed_description">Something went wrong. Please try again.</string>
+  <string name="content_search_failed_title">Wyszukiwanie nie powiodło się</string>
+  <string name="content_search_failed_description">Coś poszło nie tak. Spróbuj ponownie.</string>
   <string name="content_search_failed_retry">Spróbuj ponownie</string>
   <string name="content_search_set_up_banner_title">Search inside emails too</string>
   <string name="content_search_set_up_banner_description">Search the full text of your emails, not just senders and subjects.</string>
@@ -61,14 +61,14 @@
   </plurals>
   <string name="content_search_min_query_length_notice">Type 3 or more characters to see all results.</string>
   <!-- Search history -->
-  <string name="content_search_recent_searches_title">Recent mail searches</string>
+  <string name="content_search_recent_searches_title">Ostatnie wyszukiwania</string>
   <string name="content_search_clear_recent_searches">Wyczyść wszystko</string>
   <string name="content_search_previously_found_title">Previously found</string>
   <string name="content_search_dismiss_recent_search_content_description">Usuń „%1$s” z ostatnich wyszukiwań</string>
   <!-- Indexing progress -->
-  <string name="content_search_indexing_progress">Indeksowanie poczty • %1$d%%</string>
+  <string name="content_search_indexing_progress">Indeksowanie wiadomości • %1$d%%</string>
   <string name="content_search_indexing_interrupted">Indeksowanie przerwane • %1$d%%</string>
-  <string name="content_search_indexing_progress_content_description">Indeksowanie poczty, %1$d%%</string>
+  <string name="content_search_indexing_progress_content_description">Indeksowanie wiadomości, %1$d%%</string>
   <string name="content_search_indexing_interrupted_content_description">Indeksowanie przerwane, %1$d%%</string>
   <!-- Selection mode -->
   <string name="content_search_delete_dialog_title">Usunąć trwale?</string>
