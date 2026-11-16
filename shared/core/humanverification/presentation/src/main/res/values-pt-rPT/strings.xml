@@ -17,7 +17,7 @@
   -->
 <resources>
   <string name="human_verification_help_title">Precisa de ajuda com a verificação humana?</string>
-  <string name="human_verification_title">Verificação humana</string>
+  <string name="human_verification_title">Verificação Humana</string>
   <string name="human_verification_request_invite_title">Solicitar um convite</string>
   <string name="human_verification_request_invite_description">Se tiver problemas para criar a conta, solicite um convite e responderemos dentro de 1 dia útil.</string>
   <string name="human_verification_visit_help_center_title">Visite o nosso centro de ajuda.</string>

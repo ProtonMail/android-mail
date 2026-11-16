@@ -17,12 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="nps_title">How likely are you to recommend Proton Mail to a friend or colleague?</string>
-  <string name="nps_subtext_low">0 = very unlikely</string>
-  <string name="nps_subtext_high">10 = very likely</string>
-  <string name="nps_comment_placeholder">Please let us know why you gave this rating.</string>
-  <string name="nps_share_button">Share anonymously</string>
-  <string name="nps_privacy_note">We never send your name, email, or message contents.</string>
-  <string name="nps_thank_you">Thanks for sharing. Your feedback helps us improve Proton Mail.</string>
+  <string name="nps_title">Khả năng giới thiệu Proton Mail cho bạn bè hoặc đồng nghiệp là bao nhiêu?</string>
+  <string name="nps_subtext_low">0 = hầu như không</string>
+  <string name="nps_subtext_high">10 = chắc chắn có</string>
+  <string name="nps_comment_placeholder">Hãy cho chúng tôi biết lý do bạn đưa ra đánh giá đó.</string>
+  <string name="nps_share_button">Chia sẻ ẩn danh</string>
+  <string name="nps_privacy_note">Chúng tôi không bao giờ gửi tên, email hoặc nội dung tin nhắn của bạn.</string>
+  <string name="nps_thank_you">Cảm ơn đã chia sẻ. Phản hồi của bạn giúp chúng tôi cải thiện Proton Mail.</string>
   <string name="nps_score_content_description">Điểm đánh giá %1$d</string>
 </resources>

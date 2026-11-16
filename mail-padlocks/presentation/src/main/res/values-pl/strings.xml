@@ -102,6 +102,6 @@
   <string name="padlocks_zero_access_addendum">Ta wiadomość jest przechowywana na serwerach Proton z %s. Ani Proton, ani nikt inny nie może jej odczytać.</string>
   <string name="padlocks_zero_access_addendum_link_text">szyfrowaniem po stronie klienta</string>
   <string name="padlocks_show_details">Pokaż szczegóły</string>
-  <string name="padlocks_close_button_text">Rozumiem</string>
+  <string name="padlocks_close_button_text">Ok</string>
   <!-- Links -->
 </resources>

@@ -41,15 +41,15 @@
   <string name="upselling_pu_cta">Отримати Proton Unlimited</string>
   <!-- Upselling: Monthly to Yearly -->
   <string name="upselling_monthly_to_yearly_row_title">Сплачуйте щорічно і заощадьте %s</string>
-  <string name="upselling_monthly_to_yearly_row_subtitle">Change your billing cycle</string>
+  <string name="upselling_monthly_to_yearly_row_subtitle">Змінити цикл виставлення рахунків</string>
   <string name="upselling_monthly_to_yearly_sidebar_title">Заощадьте %s</string>
-  <string name="upselling_monthly_to_yearly_title">Save big with annual billing</string>
+  <string name="upselling_monthly_to_yearly_title">Економте значні кошти завдяки щорічній оплаті</string>
   <string name="upselling_monthly_to_yearly_subtitle">Зафіксуйте знижку на %s</string>
-  <string name="upselling_monthly_to_yearly_one_year">1 year</string>
-  <string name="upselling_monthly_to_yearly_currently">Currently</string>
-  <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
+  <string name="upselling_monthly_to_yearly_one_year">1 рік</string>
+  <string name="upselling_monthly_to_yearly_currently">Наразі</string>
+  <string name="upselling_monthly_to_yearly_yearly_plan">12-місячний план</string>
   <string name="upselling_monthly_to_yearly_cta">Змініть і заощадьте %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
+  <string name="upselling_monthly_to_yearly_stay_on_monthly">Залишайтеся на щомісячному плані</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Захистіть свою приватність в інтернеті ще краще з Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Захистіть свій обліковий запис від загроз за допомогою Proton Sentinel</string>
