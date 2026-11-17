@@ -32,14 +32,15 @@ import javax.inject.Inject
 
 /**
  * Whether the BYOE deep link opens the Gmail connection. It does not depend on the spotlight having been seen: opening
- * the link counts as seen. A control group user, or one behind the connection killswitch, stays on the mailbox.
+ * the link counts as seen. For a control group user, or one behind the connection killswitch, it does not open: the
+ * caller then passes a web link on to the browser, and the app's own link leaves the user on the mailbox.
  *
  * The link is recorded first, before anything slow: it needs no flags, and from then on the SDK no longer offers the
  * spotlight. On a cold start the flags may not be loaded yet, so the check waits for them, within the usual timeout.
  *
  * No announcement shows while this runs, so the connection never lands on top of one. That hold has to start before
- * anything suspends, so the account is taken as a flow and read inside it, once: with no primary account the link is
- * dropped, rather than opening the connection whenever an account appears.
+ * anything suspends, so the account is taken as a flow and read inside it, once: with no primary account the answer
+ * is no, rather than opening the connection whenever an account appears.
  */
 class ShouldOpenConnectGmailDeepLink @Inject constructor(
     private val refreshFeatureFlags: RefreshFeatureFlags,
@@ -52,7 +53,7 @@ class ShouldOpenConnectGmailDeepLink @Inject constructor(
     suspend operator fun invoke(primaryUserId: Flow<UserId?>): Boolean = announcementHold.hold {
         val userId = primaryUserId.first()
         if (userId == null) {
-            Timber.d("byoe: no primary account, ignoring the connect Gmail deep link")
+            Timber.d("byoe: no primary account, not opening the connect Gmail deep link")
             return@hold false
         }
         check(userId)
@@ -65,7 +66,7 @@ class ShouldOpenConnectGmailDeepLink @Inject constructor(
         val isSettingsEnabled = isFeatureEntryPointEnabled(userId, FeatureEntryPoint.Byoe(ByoeEntryPoint.Settings))
         val shouldOpen = isSettingsEnabled &&
             getGmailConnectionSettingsAccess(userId) == GmailConnectionSettingsAccess.Full
-        if (!shouldOpen) Timber.d("byoe: BYOE is not available, ignoring the connect Gmail deep link")
+        if (!shouldOpen) Timber.d("byoe: BYOE is not available, not opening the connect Gmail deep link")
         return shouldOpen
     }
 }

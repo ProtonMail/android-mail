@@ -510,9 +510,45 @@ class HomeViewModelTest {
             }
         }
 
-    private fun connectGmailIntent(): Intent = mockk {
+    @Test
+    fun `given BYOE is not available, when the connect Gmail web link is received, then it opens in the browser`() =
+        runTest {
+            // Given
+            val webLink = "https://account.proton.me/mail/easy-switch?utm_source=newsletter"
+            coEvery { shouldOpenConnectGmailDeepLink(any()) } returns false
+            every { newIntentObserver() } returns flowOf(connectGmailIntent(webLink))
+
+            // When
+            homeViewModel.state.test {
+                // Then
+                assertEquals(HomeState.Initial.copy(openInBrowserEffect = Effect.of(webLink)), awaitItem())
+            }
+        }
+
+    @Test
+    fun `given BYOE is available, when the connect Gmail web link is received, then the Gmail connection opens`() =
+        runTest {
+            // Given
+            coEvery { shouldOpenConnectGmailDeepLink(any()) } returns true
+            every { newIntentObserver() } returns
+                flowOf(connectGmailIntent("https://account.proton.me/mail/identity-addresses"))
+
+            // When
+            homeViewModel.state.test {
+                val actual = awaitItem()
+
+                // Then
+                val expected = NavigationEffect.NavigateTo(
+                    Destination.Screen.GmailConnection(importEmails = true, surface = ByoeSurface.DeepLink)
+                )
+                assertEquals(Effect.of<NavigationEffect>(expected), actual.navigateToEffect)
+                assertEquals(Effect.empty(), actual.openInBrowserEffect)
+            }
+        }
+
+    private fun connectGmailIntent(link: String = ConnectGmailDeepLink.LINK): Intent = mockk {
         every { action } returns Intent.ACTION_VIEW
-        every { dataString } returns ConnectGmailDeepLink.LINK
+        every { dataString } returns link
         every { categories } returns emptySet()
     }
 

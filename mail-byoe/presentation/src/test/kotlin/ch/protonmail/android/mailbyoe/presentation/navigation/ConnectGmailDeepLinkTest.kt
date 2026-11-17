@@ -65,6 +65,12 @@ internal class ConnectGmailDeepLinkTest {
     }
 
     @Test
+    fun `given the app's own link, when asking for a web page, then it is not one`() {
+        assertFalse(ConnectGmailDeepLink.isWebPage(ConnectGmailDeepLink.LINK))
+        assertTrue(ConnectGmailDeepLink.isWebPage("https://account.proton.me/mail/easy-switch"))
+    }
+
+    @Test
     fun `given another web page, when matching, then it does not match`() {
         listOf(
             "http://account.proton.me/mail/easy-switch",

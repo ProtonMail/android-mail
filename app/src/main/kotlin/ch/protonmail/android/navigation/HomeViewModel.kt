@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import ch.protonmail.android.mailcommon.domain.model.UndoSendError
+import ch.protonmail.android.mailbyoe.presentation.navigation.ConnectGmailDeepLink
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatFullDate
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
@@ -257,6 +258,8 @@ class HomeViewModel @Inject constructor(
             viewModelScope.launch {
                 if (shouldOpenConnectGmailDeepLink(currentPrimaryUserId)) {
                     mutableState.update { current -> navigationEventsReducer.reduce(current, navIntent) }
+                } else {
+                    openInBrowserIfWebPage(intent.dataString)
                 }
             }
             return
@@ -265,6 +268,14 @@ class HomeViewModel @Inject constructor(
         mutableState.update { current ->
             navigationEventsReducer.reduce(current, navIntent)
         }
+    }
+
+    // The user tapped a link to get somewhere. A web page still works in the browser, so it is not swallowed. The
+    // app's own link has nowhere else to go.
+    private fun openInBrowserIfWebPage(link: String?) {
+        if (link == null || !ConnectGmailDeepLink.isWebPage(link)) return
+        Timber.tag("intent-navigation").d("Passing the connect Gmail web link on to the browser")
+        mutableState.update { current -> current.copy(openInBrowserEffect = Effect.of(link)) }
     }
 
     private companion object {

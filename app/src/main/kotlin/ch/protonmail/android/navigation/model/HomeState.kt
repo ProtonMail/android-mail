@@ -25,7 +25,9 @@ data class HomeState(
     val messageSendingStatusEffect: Effect<MessageSendingStatus>,
     val navigateToEffect: Effect<out NavigationEffect>,
     val contentIndexingErrorEffect: Effect<Unit>,
-    val startedFromLauncher: Boolean
+    val startedFromLauncher: Boolean,
+    // A web link the app was opened with and does not act on, to hand over to the browser.
+    val openInBrowserEffect: Effect<String> = Effect.empty()
 ) {
 
     companion object {

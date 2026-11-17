@@ -242,6 +242,11 @@ fun Home(
         viewModel.navigateTo(navController, it)
     }
 
+    val browserContext = LocalContext.current
+    ConsumableLaunchedEffect(state.openInBrowserEffect) { link ->
+        browserContext.openInBrowser(link)
+    }
+
     val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
     val npsThankYouMessage = stringResource(id = NpsR.string.nps_thank_you)
     val gmailImportInProgressMessage = stringResource(id = ByoeR.string.byoe_gmail_import_in_progress)

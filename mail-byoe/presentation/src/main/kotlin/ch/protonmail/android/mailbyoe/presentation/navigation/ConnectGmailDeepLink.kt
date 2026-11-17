@@ -47,7 +47,11 @@ object ConnectGmailDeepLink {
      */
     fun matches(link: String?): Boolean = link == LINK || isWebPage(link)
 
-    private fun isWebPage(link: String?): Boolean {
+    /**
+     * Whether the link is one of the web pages. Unlike [LINK], such a link also works in a browser, so one the app
+     * does not act on is passed on to it.
+     */
+    fun isWebPage(link: String?): Boolean {
         val uri = try {
             URI(link ?: return false)
         } catch (_: URISyntaxException) {
