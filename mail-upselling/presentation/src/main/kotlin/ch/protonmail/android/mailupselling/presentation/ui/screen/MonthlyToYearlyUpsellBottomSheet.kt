@@ -22,6 +22,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +57,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
+import ch.protonmail.android.design.compose.component.ProtonSnackbarHostState
+import ch.protonmail.android.design.compose.component.ProtonSnackbarType
 import ch.protonmail.android.design.compose.theme.ProtonDimens
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.design.compose.theme.bodyLargeNorm
@@ -79,6 +83,7 @@ import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.MailPur
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.MailPurchaseButtonVariant
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingSecondaryButton
 import ch.protonmail.android.mailupselling.presentation.viewmodel.MonthlyToYearlyUpsellSheetViewModel
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
@@ -121,6 +126,7 @@ fun MonthlyToYearlyUpsellBottomSheet(
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
     val scope = rememberCoroutineScope()
     fun close(then: () -> Unit) {
         scope.launch { sheetState.hide() }.invokeOnCompletion { then() }
@@ -137,15 +143,28 @@ fun MonthlyToYearlyUpsellBottomSheet(
         dragHandle = null,
         contentWindowInsets = { WindowInsets.safeDrawing.only(WindowInsetsSides.Top) }
     ) {
-        if (offer == null) {
-            MonthlyToYearlyUpsellBottomSheetLoading()
-        } else {
-            MonthlyToYearlyUpsellBottomSheetContent(
-                offer = offer,
-                actions = actions.copy(
-                    onSwitched = { close(actions.onSwitched) },
-                    onDoNotShowAgain = { close(actions.onDoNotShowAgain) }
+        Box {
+            if (offer == null) {
+                MonthlyToYearlyUpsellBottomSheetLoading()
+            } else {
+                MonthlyToYearlyUpsellBottomSheetContent(
+                    offer = offer,
+                    actions = actions.copy(
+                        onSwitched = { close(actions.onSwitched) },
+                        onDoNotShowAgain = { close(actions.onDoNotShowAgain) }
+                    ),
+                    onError = { message ->
+                        scope.launch {
+                            snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.ERROR)
+                        }
+                    }
                 )
+            }
+            DismissableSnackbarHost(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .navigationBarsPadding(),
+                protonSnackbarHostState = snackbarHostState
             )
         }
     }
@@ -170,7 +189,8 @@ private fun MonthlyToYearlyUpsellBottomSheetLoading() {
 @Composable
 private fun MonthlyToYearlyUpsellBottomSheetContent(
     offer: MonthlyToYearlyOffer,
-    actions: MonthlyToYearlyUpsellBottomSheet.Actions
+    actions: MonthlyToYearlyUpsellBottomSheet.Actions,
+    onError: (String) -> Unit
 ) {
     val context = LocalContext.current
     val monthlyPrice = offer.monthly.renew
@@ -269,7 +289,10 @@ private fun MonthlyToYearlyUpsellBottomSheetContent(
                     variant = MailPurchaseButtonVariant.Default,
                     onPurchaseClicked = actions.onUpgradeAttempt,
                     onSuccess = { actions.onSwitched() },
-                    onErrorMessage = { actions.onUpgradeErrored() }
+                    onErrorMessage = {
+                        actions.onUpgradeErrored()
+                        onError(it)
+                    }
                 )
                 UpsellingSecondaryButton(
                     text = stringResource(R.string.upselling_monthly_to_yearly_stay_on_monthly),
@@ -404,7 +427,8 @@ private fun MonthlyToYearlyUpsellSheetPreview(
     ProtonTheme {
         MonthlyToYearlyUpsellBottomSheetContent(
             offer = offer,
-            actions = MonthlyToYearlyUpsellBottomSheet.Actions.Empty
+            actions = MonthlyToYearlyUpsellBottomSheet.Actions.Empty,
+            onError = {}
         )
     }
 }

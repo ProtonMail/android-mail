@@ -23,10 +23,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -68,11 +66,12 @@ fun MailPurchaseButton(
     viewModel: PurchaseButtonViewModel? = hiltViewModelOrNull<PurchaseButtonViewModel>(product.productId)
 ) {
     val state = viewModel?.state?.collectAsStateWithLifecycle()?.value
+    val errorReportedBeforeEntry = remember(viewModel) { viewModel?.state?.value as? PurchaseButtonState.Error }
 
     LaunchedEffect(state) {
         when (state) {
             is Success -> onSuccess(state.product)
-            is PurchaseButtonState.Error -> onErrorMessage(state.message)
+            is PurchaseButtonState.Error -> if (state !== errorReportedBeforeEntry) onErrorMessage(state.message)
             else -> Unit
         }
     }
@@ -125,23 +124,12 @@ private fun MailPurchaseButton(
             MailPurchaseButtonVariant.Inverted -> ProtonTheme.colors.textInverted
         }
 
-        Column {
-            Text(
-                text = text,
-                style = ProtonTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = textColor
-            )
-            (state as? PurchaseButtonState.Error)?.message?.let {
-                Text(
-                    text = it,
-                    style = ProtonTheme.typography.labelSmall,
-                    maxLines = 3,
-                    color = textColor,
-                    modifier = Modifier.padding(top = ProtonDimens.Spacing.MediumLight)
-                )
-            }
-        }
+        Text(
+            text = text,
+            style = ProtonTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = textColor
+        )
     }
 }
 
