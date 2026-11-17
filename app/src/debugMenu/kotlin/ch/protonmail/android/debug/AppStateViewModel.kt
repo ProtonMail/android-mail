@@ -23,7 +23,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchPromptRepositoryImpl
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentSearchPrompt
@@ -43,6 +45,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -59,7 +62,7 @@ internal class AppStateViewModel @Inject constructor(
     private val contentSearchDataStoreProvider: ContentSearchDataStoreProvider,
     private val featureGateRepository: FeatureGateRepository,
     private val byoeGuidanceRepository: ByoeGuidanceRepository,
-    userSessionRepository: UserSessionRepository
+    private val userSessionRepository: UserSessionRepository
 ) : ViewModel() {
 
     private val mutableResets = MutableSharedFlow<Reset>(
@@ -86,11 +89,10 @@ internal class AppStateViewModel @Inject constructor(
     fun resetOnboarding() {
         viewModelScope.launch {
             onboardingDataStoreProvider.onboardingDataStore.edit { it.clear() }
-            accounts.value.forEach { account ->
-                byoeGuidanceRepository.debugResetOnboardingSteps(account.userId)
-                featureGateRepository.refreshEntryPoints(account.userId)
+            resetInSdk(ResetTarget.Onboarding) { userId ->
+                byoeGuidanceRepository.debugResetOnboardingSteps(userId)
+                    .onRight { featureGateRepository.refreshEntryPoints(userId) }
             }
-            mutableResets.emit(Reset(ResetTarget.Onboarding))
         }
     }
 
@@ -102,9 +104,21 @@ internal class AppStateViewModel @Inject constructor(
     fun resetFeatureSpotlight() {
         viewModelScope.launch {
             featureSpotlightDataStoreProvider.featureSpotlightDataStore.edit { it.clear() }
-            accounts.value.forEach { account -> featureGateRepository.debugResetAnnouncements(account.userId) }
-            mutableResets.emit(Reset(ResetTarget.FeatureSpotlight))
+            resetInSdk(ResetTarget.FeatureSpotlight) { userId -> featureGateRepository.debugResetAnnouncements(userId) }
         }
+    }
+
+    /**
+     * Runs [reset] for every signed-in account, and confirms the [target] only when all of them succeeded: a reset
+     * the SDK did not take would otherwise look done while the screen still does not come back.
+     *
+     * The accounts are read from the SDK at the tap, not from [accounts], which is empty until its first value.
+     */
+    private suspend fun resetInSdk(target: ResetTarget, reset: suspend (UserId) -> Either<DataError, Unit>) {
+        val failures = userSessionRepository.getReadyUserIds().mapNotNull { userId ->
+            reset(userId).leftOrNull()?.also { Timber.w("debug-menu: SDK reset of $target failed for $userId: $it") }
+        }
+        if (failures.isEmpty()) mutableResets.emit(Reset(target))
     }
 
     fun resetNotificationPrompt() = clear(
