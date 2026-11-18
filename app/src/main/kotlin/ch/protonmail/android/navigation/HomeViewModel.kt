@@ -23,8 +23,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailbyoe.presentation.navigation.ConnectGmailDeepLink
+import ch.protonmail.android.mailcommon.domain.model.UndoSendError
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatFullDate
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
