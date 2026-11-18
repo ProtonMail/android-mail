@@ -24,6 +24,8 @@ import androidx.lifecycle.LifecycleOwner
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle.DismissalOrigin
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
 import ch.protonmail.android.mailcontentsearch.domain.usecase.ObserveContentIndexingActivity
@@ -59,6 +61,7 @@ class ContentIndexingLifecycleObserver @Inject constructor(
     private val observeContentIndexingActivity: ObserveContentIndexingActivity,
     private val workScheduler: ContentIndexingWorkScheduler,
     private val deviceArchitectureProvider: DeviceArchitectureProvider,
+    private val notificationHandle: ContentIndexingNotificationHandle,
     @AppScope private val appScope: CoroutineScope
 ) : DefaultLifecycleObserver {
 
@@ -82,6 +85,10 @@ class ContentIndexingLifecycleObserver @Inject constructor(
 
     override fun onStart(owner: LifecycleOwner) {
         if (!deviceArchitectureProvider.is64Bit()) return
+
+        // The notification is never wanted on screen, and a live worker hands its service back on its
+        // own. What is left is one that a dead process or a lost service left behind.
+        notificationHandle.remove(DismissalOrigin.AppForeground)
 
         isForegrounded = true
         // App-scoped rather than lifecycle-scoped: start() is an actor round-trip and enqueuing the

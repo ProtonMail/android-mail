@@ -23,6 +23,8 @@ import android.content.Context
 import android.content.Intent
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle.DismissalOrigin
 import ch.protonmail.android.mailcontentsearch.domain.usecase.StopContentIndexing
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +49,9 @@ class ContentIndexingCancelReceiver : BroadcastReceiver() {
     lateinit var workScheduler: ContentIndexingWorkScheduler
 
     @Inject
+    lateinit var notificationHandle: ContentIndexingNotificationHandle
+
+    @Inject
     @AppScope
     lateinit var appScope: CoroutineScope
 
@@ -54,6 +59,9 @@ class ContentIndexingCancelReceiver : BroadcastReceiver() {
         if (intent.action != ActionCancel) return
 
         Timber.d("content-search: pausing indexing from the notification")
+        // The tap can start a new process after the old one died and left its notification behind.
+        // No worker in this process owns that notification, so it is removed here.
+        notificationHandle.remove(DismissalOrigin.PauseTap)
 
         appScope.launch {
             stopContentIndexing().onLeft { Timber.w("content-search: could not pause indexing: $it") }

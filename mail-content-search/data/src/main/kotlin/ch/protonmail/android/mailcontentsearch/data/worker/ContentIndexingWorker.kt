@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
 import ch.protonmail.android.mailcontentsearch.data.util.formatPercentage
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle.DismissalOrigin
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.backfillPercentage
@@ -88,7 +89,8 @@ class ContentIndexingWorker @AssistedInject constructor(
     private val getContentIndexingOrchestratorStatus: GetContentIndexingOrchestratorStatus,
     private val appInBackgroundState: AppInBackgroundState,
     private val workScheduler: ContentIndexingWorkScheduler,
-    private val deviceArchitectureProvider: DeviceArchitectureProvider
+    private val deviceArchitectureProvider: DeviceArchitectureProvider,
+    private val notificationHandle: ContentIndexingNotificationHandle
 ) : CoroutineWorker(context, workerParameters) {
 
     /**
@@ -180,6 +182,10 @@ class ContentIndexingWorker @AssistedInject constructor(
             Timber.d("content-search: indexing worker stopped, ${stopReasonLabel()} ($cancellation)")
         }
         throw cancellation
+    } finally {
+        // WorkManager removes the notification only while it still holds the service. If Android took
+        // the service away, the notification would outlive the worker. A held one ignores this.
+        notificationHandle.remove(DismissalOrigin.WorkerExit)
     }
 
     // Why the platform took the worker away. The only thing separating an FGS timeout, an exhausted
