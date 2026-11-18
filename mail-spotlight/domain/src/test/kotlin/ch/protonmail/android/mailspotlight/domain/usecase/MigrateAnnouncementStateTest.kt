@@ -29,7 +29,9 @@ import ch.protonmail.android.mailspotlight.domain.repository.FeatureSpotlightRep
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.unmockkAll
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -47,6 +49,7 @@ internal class MigrateAnnouncementStateTest {
     }
     private val featureGateRepository = mockk<FeatureGateRepository> {
         coEvery { migrateClientState(any(), any()) } returns Unit.right()
+        coEvery { refreshEntryPoints(any()) } just runs
     }
 
     private val migrate = MigrateAnnouncementState(
@@ -91,6 +94,31 @@ internal class MigrateAnnouncementStateTest {
             syncOnboardingFinishedToSdk(userId)
             featureGateRepository.migrateClientState(userId, any())
         }
+    }
+
+    @Test
+    fun `when the migration succeeds, then the entry points are refreshed after it`() = runTest {
+        // When
+        migrate(userId)
+
+        // Then
+        coVerifyOrder {
+            featureGateRepository.migrateClientState(userId, any())
+            featureGateRepository.refreshEntryPoints(userId)
+        }
+    }
+
+    @Test
+    fun `given a failed migration, when migrating, then the entry points are not refreshed`() = runTest {
+        // Given
+        coEvery { featureGateRepository.migrateClientState(userId, any()) } returns
+            DataError.Local.NoUserSession.left()
+
+        // When
+        migrate(userId)
+
+        // Then
+        coVerify(exactly = 0) { featureGateRepository.refreshEntryPoints(any()) }
     }
 
     @Test

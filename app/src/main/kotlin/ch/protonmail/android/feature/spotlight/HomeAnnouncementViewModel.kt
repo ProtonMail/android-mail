@@ -88,6 +88,8 @@ class HomeAnnouncementViewModel @Inject constructor(
             }
             .onEach { userId ->
                 reduce(HomeAnnouncementEvent.AskDue(userId))
+                // Settings and the sidebar read the SDK before Home is ready to ask, so the migration runs first.
+                migrateAnnouncementState(userId)
                 refreshFeatureEntryPoints(userId)
             }
             .launchIn(viewModelScope)

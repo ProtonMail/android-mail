@@ -64,6 +64,10 @@ class MigrateAnnouncementState @Inject constructor(
 
         featureGateRepository.migrateClientState(userId, seen)
             .onLeft { Timber.e("feature-gate: unable to migrate the client state, retrying on the next ask: $it") }
-            .onRight { migratedUserIds += userId }
+            .onRight {
+                migratedUserIds += userId
+                // The entry points were read before the SDK had what the migration hands over.
+                featureGateRepository.refreshEntryPoints(userId)
+            }
     }
 }

@@ -301,6 +301,22 @@ internal class HomeAnnouncementViewModelTest {
     }
 
     @Test
+    fun `given Home is not ready, when the app comes to the foreground, then it migrates before the refresh`() =
+        runTest {
+            // When
+            viewModel().state.test {
+                awaitItem()
+
+                // Then
+                coVerify(exactly = 0) { getNextAnnouncement(any()) }
+                coVerifyOrder {
+                    migrateAnnouncementState(userId)
+                    refreshFeatureEntryPoints(userId)
+                }
+            }
+        }
+
+    @Test
     fun `when the app comes to the foreground, then the entry points are refreshed`() = runTest {
         // When
         viewModel().state.test {

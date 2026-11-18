@@ -53,9 +53,10 @@ class HomeAnnouncementReducer @Inject constructor() {
         return copy(pending = null, shown = ShownAnnouncement(userId, action.announcement))
     }
 
-    // Another account's announcement must not show for this one.
+    // Another account's announcement must not show for this one. On the mailbox, a pending announcement never
+    // appeared, so it no longer blocks the ask; while its screen is open, it stays pending so the showing is recorded.
     private fun HomeAnnouncementState.onAskDue(event: AskDue) = if (event.userId == userId) {
-        copy(isAskDue = true)
+        copy(isAskDue = true, pending = pending.takeUnless { isHomeReady })
     } else {
         copy(userId = event.userId, isAskDue = true, isAsking = false, pending = null)
     }

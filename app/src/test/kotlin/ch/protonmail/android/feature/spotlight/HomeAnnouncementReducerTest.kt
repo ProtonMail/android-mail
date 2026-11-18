@@ -180,6 +180,38 @@ internal class HomeAnnouncementReducerTest {
     }
 
     @Test
+    fun `given a pending announcement that never appeared, when the same account comes back, then it is asked again`() {
+        // Given
+        val loaded = reducer.newStateFrom(
+            askingState(isHomeReady = true),
+            HomeAnnouncementEvent.AnnouncementLoaded(userId, spotlight)
+        )
+
+        // When
+        val state = reducer.newStateFrom(loaded, HomeAnnouncementEvent.AskDue(userId))
+
+        // Then
+        assertNull(state.pending)
+        assertTrue(state.shouldAsk)
+    }
+
+    @Test
+    fun `given a pending announcement on screen, when the same account comes back, then it stays pending`() {
+        // Given
+        val loaded = reducer.newStateFrom(
+            askingState(isHomeReady = true),
+            HomeAnnouncementEvent.AnnouncementLoaded(userId, spotlight)
+        )
+        val onScreen = reducer.newStateFrom(loaded, HomeAnnouncementAction.HomeReadinessChanged(isReady = false))
+
+        // When
+        val state = reducer.newStateFrom(onScreen, HomeAnnouncementEvent.AskDue(userId))
+
+        // Then
+        assertEquals(spotlight, state.pending)
+    }
+
+    @Test
     fun `given the account changed during the ask, when the old answer arrives, then it is ignored`() {
         // Given
         val switched = reducer.newStateFrom(
