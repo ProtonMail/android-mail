@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle.DismissalOrigin
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingOrchestratorStatus
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
@@ -109,6 +110,7 @@ internal class ContentIndexingWorkerTest {
     private val deviceArchitectureProvider = mockk<DeviceArchitectureProvider> {
         every { is64Bit() } returns true
     }
+    private val notificationHandle = mockk<ContentIndexingNotificationHandle>(relaxUnitFun = true)
 
     // Whether the platform grants the foreground service. Left to a relaxed mock the promotion always
     // fails - there is no real notification to build outside Robolectric - and the worker would then
@@ -167,7 +169,8 @@ internal class ContentIndexingWorkerTest {
         getContentIndexingOrchestratorStatus = getContentIndexingOrchestratorStatus,
         appInBackgroundState = appInBackgroundState,
         workScheduler = workScheduler,
-        deviceArchitectureProvider = deviceArchitectureProvider
+        deviceArchitectureProvider = deviceArchitectureProvider,
+        notificationHandle = notificationHandle
     )
 
     @Test
@@ -186,6 +189,35 @@ internal class ContentIndexingWorkerTest {
 
         // Then
         assertEquals(ListenableWorker.Result.success(), result)
+    }
+
+    @Test
+    fun `removes its notification when it ends`() = runTest {
+        // Given - Android may have taken the service away, which leaves WorkManager unable to remove it.
+        appInBackground.value = true
+        givenActivity(flowOf(progress(), ContentIndexingActivity.Stopped))
+
+        // When
+        worker().doWork()
+
+        // Then
+        verify { notificationHandle.remove(DismissalOrigin.WorkerExit) }
+    }
+
+    @Test
+    fun `removes its notification when it is cancelled`() = runTest {
+        // Given
+        appInBackground.value = true
+        givenActivity(flow { emit(progress()); awaitCancellation() })
+        val run = async { worker().doWork() }
+        runCurrent()
+
+        // When
+        run.cancel()
+        runCurrent()
+
+        // Then
+        verify { notificationHandle.remove(DismissalOrigin.WorkerExit) }
     }
 
     @Test

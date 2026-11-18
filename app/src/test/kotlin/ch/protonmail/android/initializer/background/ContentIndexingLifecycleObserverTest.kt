@@ -25,6 +25,8 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.system.DeviceArchitectureProvider
 import ch.protonmail.android.mailcontentsearch.data.background.ContentIndexingWorkScheduler
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle
+import ch.protonmail.android.mailcontentsearch.data.worker.ContentIndexingNotificationHandle.DismissalOrigin
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingActivity
 import ch.protonmail.android.mailcontentsearch.domain.model.ContentIndexingStartSummary
 import ch.protonmail.android.mailcontentsearch.domain.usecase.IsContentSearchFeatureEnabled
@@ -76,6 +78,7 @@ internal class ContentIndexingLifecycleObserverTest {
     private val deviceArchitectureProvider = mockk<DeviceArchitectureProvider> {
         every { is64Bit() } returns true
     }
+    private val notificationHandle = mockk<ContentIndexingNotificationHandle>(relaxUnitFun = true)
 
     @Test
     fun `starts the orchestrator and enqueues the worker when there is work pending`() = runTest {
@@ -361,6 +364,7 @@ internal class ContentIndexingLifecycleObserverTest {
         observeContentIndexingActivity = observeContentIndexingActivity,
         workScheduler = workScheduler,
         deviceArchitectureProvider = deviceArchitectureProvider,
+        notificationHandle = notificationHandle,
         appScope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher(testScheduler))
     )
 
@@ -380,6 +384,20 @@ internal class ContentIndexingLifecycleObserverTest {
         coVerify(exactly = 0) { startContentIndexing() }
         coVerify(exactly = 0) { workScheduler.ensureWorkerRunning() }
         verify(exactly = 0) { observeContentIndexingActivity() }
+        verify(exactly = 0) { notificationHandle.remove(any()) }
+    }
+
+    @Test
+    fun `removes a leftover indexing notification when the app comes to the foreground`() = runTest {
+        // Given
+        givenStartSummary(summary(pending = 3))
+
+        // When
+        observer().onStart(lifecycleOwner())
+        advanceUntilIdle()
+
+        // Then
+        verify(exactly = 1) { notificationHandle.remove(DismissalOrigin.AppForeground) }
     }
 
     private fun lifecycleOwner() = TestLifecycleOwner(Lifecycle.State.CREATED, dispatcher)
