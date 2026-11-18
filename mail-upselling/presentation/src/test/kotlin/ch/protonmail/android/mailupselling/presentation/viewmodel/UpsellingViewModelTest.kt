@@ -19,12 +19,18 @@
 package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import arrow.core.Either
+import arrow.core.right
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
+import ch.protonmail.android.mailsession.domain.model.User
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PurchaseFlow
@@ -52,6 +58,7 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanU
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen.UpsellingEntryPointKey
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -63,6 +70,7 @@ import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -89,6 +97,10 @@ internal class UpsellingViewModelTest {
     private val eventLoopRepository = mockk<EventLoopRepository>(relaxed = true)
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         coEvery { this@mockk() } returns flowOf(UserIdTestData.userId)
+    }
+    private val userFlow = MutableStateFlow<Either<DataError, User>>(UserTestData.freeUser.right())
+    private val observeUser = mockk<ObserveUser> {
+        every { this@mockk(UserIdTestData.userId) } returns userFlow
     }
     private val resetUpgradeCache = mockk<ResetPlanUpgradesCache>()
     private val appEventBroadcaster = mockk<AppEventBroadcaster>()
@@ -624,12 +636,96 @@ internal class UpsellingViewModelTest {
         }
     }
 
+    @Test
+    fun `should close the screen when the subscription changes while it is open`() = runTest {
+        // Given
+        coEvery { observePlanUpgrades(any()) } returns flowOf(emptyList())
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns mockk<UpsellingScreenContentState.Error>()
+        val vm = viewModel()
+        assertEquals(Effect.empty(), vm.closeAfterUpgradedElsewhere.value)
+
+        // When
+        userFlow.value = UserTestData.paidUser.right()
+
+        // Then
+        assertEquals(Effect.of(Unit), vm.closeAfterUpgradedElsewhere.value)
+    }
+
+    @Test
+    fun `should not close the screen while the subscription stays the same`() = runTest {
+        // Given
+        coEvery { observePlanUpgrades(any()) } returns flowOf(emptyList())
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns mockk<UpsellingScreenContentState.Error>()
+        val vm = viewModel()
+
+        // When
+        userFlow.value = UserTestData.freeUser.copy(displayName = "renamed").right()
+
+        // Then
+        assertEquals(Effect.empty(), vm.closeAfterUpgradedElsewhere.value)
+    }
+
+    @Test
+    fun `should not close the screen when the subscription changes after the user tapped buy`() = runTest {
+        // Given
+        coEvery { observePlanUpgrades(any()) } returns flowOf(emptyList())
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns mockk<UpsellingScreenContentState.Error>()
+        val vm = viewModel()
+        vm.onPurchaseClicked()
+
+        // When
+        userFlow.value = UserTestData.paidUser.right()
+
+        // Then
+        assertEquals(Effect.empty(), vm.closeAfterUpgradedElsewhere.value)
+    }
+
+    @Test
+    fun `should close the screen when the subscription changes after a failed purchase`() = runTest {
+        // Given
+        coEvery { observePlanUpgrades(any()) } returns flowOf(emptyList())
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns mockk<UpsellingScreenContentState.Error>()
+        val vm = viewModel()
+        vm.onPurchaseClicked()
+        vm.recordUpgradeError(
+            UpsellingTelemetryPayload(
+                selectedPlan = "Mail Plus",
+                selectedCycle = "Monthly",
+                upsellIsPromotional = false,
+                modalVariant = UpsellModalVariant.COMPARISON_PLUS,
+                isIntroOffer = false
+            )
+        )
+
+        // When
+        userFlow.value = UserTestData.paidUser.right()
+
+        // Then
+        assertEquals(Effect.of(Unit), vm.closeAfterUpgradedElsewhere.value)
+    }
+
+    @Test
+    fun `should not close the screen when the plan ends while it is open`() = runTest {
+        // Given
+        userFlow.value = UserTestData.paidUser.right()
+        coEvery { observePlanUpgrades(any()) } returns flowOf(emptyList())
+        coEvery { upsellingContentReducer.newStateFrom(any()) } returns mockk<UpsellingScreenContentState.Error>()
+        val vm = viewModel()
+
+        // When
+        userFlow.value = UserTestData.freeUser.right()
+
+        // Then
+        assertEquals(Effect.empty(), vm.closeAfterUpgradedElsewhere.value)
+    }
+
     private fun viewModel() = UpsellingViewModel(
         savedStateHandle,
         observePlanUpgrades,
         upsellingContentReducer,
         eventLoopRepository,
         observePrimaryUserId,
+        observeUser,
         appScope,
         resetUpgradeCache,
         appEventBroadcaster,
