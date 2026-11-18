@@ -24,7 +24,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import arrow.core.flatMap
 import ch.protonmail.android.mailbyoe.domain.repository.ByoeGuidanceRepository
+import ch.protonmail.android.mailbyoe.domain.usecase.SyncOnboardingFinishedToSdk
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontentsearch.data.local.ContentSearchDataStoreProvider
 import ch.protonmail.android.mailcontentsearch.data.repository.ContentSearchPromptRepositoryImpl
@@ -62,6 +64,7 @@ internal class AppStateViewModel @Inject constructor(
     private val contentSearchDataStoreProvider: ContentSearchDataStoreProvider,
     private val featureGateRepository: FeatureGateRepository,
     private val byoeGuidanceRepository: ByoeGuidanceRepository,
+    private val syncOnboardingFinishedToSdk: SyncOnboardingFinishedToSdk,
     private val userSessionRepository: UserSessionRepository
 ) : ViewModel() {
 
@@ -99,12 +102,20 @@ internal class AppStateViewModel @Inject constructor(
     /**
      * Makes the content search What's New and the BYOE spotlight show again when due, for every signed-in account.
      *
-     * The SDK decides which announcement shows, so its records are reset along with the app's own.
+     * The SDK decides which announcement shows, so its records are reset along with the app's own. As on iOS, the
+     * SDK also forgets everything else it recorded as shown, the onboarding steps included: an account that went
+     * through the onboarding then counts as an existing user, the only kind that gets announcements. The finished
+     * onboarding is recorded again at once, as the app does at every start.
      */
     fun resetFeatureSpotlight() {
         viewModelScope.launch {
             featureSpotlightDataStoreProvider.featureSpotlightDataStore.edit { it.clear() }
-            resetInSdk(ResetTarget.FeatureSpotlight) { userId -> featureGateRepository.debugResetAnnouncements(userId) }
+            resetInSdk(ResetTarget.FeatureSpotlight) { userId ->
+                featureGateRepository.debugResetAnnouncements(userId)
+                    .flatMap { byoeGuidanceRepository.debugClearScreenVisibility(userId) }
+                    .flatMap { syncOnboardingFinishedToSdk(userId) }
+                    .onRight { featureGateRepository.refreshEntryPoints(userId) }
+            }
         }
     }
 

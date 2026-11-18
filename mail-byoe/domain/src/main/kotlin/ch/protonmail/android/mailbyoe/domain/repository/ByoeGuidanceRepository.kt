@@ -61,5 +61,13 @@ interface ByoeGuidanceRepository {
      */
     suspend fun debugResetOnboardingSteps(userId: UserId): Either<DataError, Unit>
 
+    /**
+     * Makes the SDK forget everything it recorded as shown for [userId]: the onboarding steps, the BYOE guidance and
+     * the announcements. An account that went through the onboarding no longer counts as a new user afterwards.
+     *
+     * For the debug menu only: a release build must never call it.
+     */
+    suspend fun debugClearScreenVisibility(userId: UserId): Either<DataError, Unit>
+
     suspend fun report(userId: UserId, event: ByoeTelemetryEvent): Either<DataError, Unit>
 }

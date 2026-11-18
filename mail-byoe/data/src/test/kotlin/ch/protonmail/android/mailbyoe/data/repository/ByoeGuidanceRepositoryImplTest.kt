@@ -270,6 +270,19 @@ internal class ByoeGuidanceRepositoryImplTest {
     }
 
     @Test
+    fun `when clearing the screen visibility, then the SDK forgets everything it recorded`() = runTest {
+        // Given
+        coEvery { screenVisibilityStore.clear() } just runs
+
+        // When
+        val result = repository.debugClearScreenVisibility(userId)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify(exactly = 1) { screenVisibilityStore.clear() }
+    }
+
+    @Test
     fun `given a deep link start, when reporting it, then it is sent with the deep link surface and unknown import`() =
         runTest {
             // Given

@@ -113,6 +113,11 @@ class ByoeGuidanceRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun debugClearScreenVisibility(userId: UserId): Either<DataError, Unit> =
+        executeWithUserSession(userId) { session ->
+            session.getRustUserSession().screenVisibilityStore().use { store -> store.clear() }
+        }
+
     override suspend fun report(userId: UserId, event: ByoeTelemetryEvent): Either<DataError, Unit> =
         withByoeGuidance(userId) { guidance -> guidance.report(event) }
 
