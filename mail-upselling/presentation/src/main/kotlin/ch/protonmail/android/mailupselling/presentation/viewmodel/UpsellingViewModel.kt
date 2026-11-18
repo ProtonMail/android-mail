@@ -22,14 +22,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailevents.domain.AppEventBroadcaster
 import ch.protonmail.android.mailevents.domain.model.AppEvent
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsSdkUpgradesPurchaseEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
 import ch.protonmail.android.mailfeatureflags.domain.model.PlusToUnlimitedUpsellExperiment
 import ch.protonmail.android.mailfeatureflags.domain.model.UpsellPlanExperiment
+import ch.protonmail.android.mailsession.domain.model.gainedSubscriptionSince
 import ch.protonmail.android.mailsession.domain.repository.EventLoopRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
 import ch.protonmail.android.mailtelemetry.domain.model.GeneralDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PlanSpecificDimensions
 import ch.protonmail.android.mailtelemetry.domain.model.PurchaseFlow
@@ -61,9 +64,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -81,6 +93,7 @@ internal class UpsellingViewModel @Inject constructor(
     private val upsellingContentReducer: UpsellingContentReducer,
     private val forceEventLoopRepository: EventLoopRepository,
     private val observePrimaryUserId: ObservePrimaryUserId,
+    private val observeUser: ObserveUser,
     @AppScope private val appScope: CoroutineScope,
     private val resetPlanUpgradesCache: ResetPlanUpgradesCache,
     private val appEventBroadcaster: AppEventBroadcaster,
@@ -102,6 +115,17 @@ internal class UpsellingViewModel @Inject constructor(
     val state = mutableState.asStateFlow()
 
     private var activeTheme: UpsellContentTheme? = null
+    private var purchaseStarted = false
+
+    val closeAfterUpgradedElsewhere: StateFlow<Effect<Unit>> = primaryUserId
+        .flatMapLatest { userId -> observeUser(userId) }
+        .mapNotNull { it.getOrNull() }
+        .distinctUntilChanged { old, new -> !new.gainedSubscriptionSince(old) }
+        .drop(1)
+        .filter { !purchaseStarted }
+        .map { Effect.of(Unit) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, Effect.empty())
+
     private val planBeforeUpgrade = viewModelScope.async { resolvePlanBeforeUpgrade() }
 
     private val currentOfferId: String?
@@ -150,6 +174,7 @@ internal class UpsellingViewModel @Inject constructor(
     }
 
     fun onPurchaseClicked() {
+        purchaseStarted = true
         val offerId = currentOfferId ?: return
         viewModelScope.launch { appEventBroadcaster.emit(AppEvent.OfferClicked(offerId)) }
     }
@@ -185,11 +210,15 @@ internal class UpsellingViewModel @Inject constructor(
     fun recordUpgradeAttempt(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeAttempt::invoke)
 
-    fun recordUpgradeCancelledByUser(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
+    fun recordUpgradeCancelledByUser(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
+        purchaseStarted = false
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeCancelledByUser::invoke)
+    }
 
-    fun recordUpgradeError(upsellingTelemetryPayload: UpsellingTelemetryPayload) =
+    fun recordUpgradeError(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
+        purchaseStarted = false
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeError::invoke)
+    }
 
     fun recordUpgradeSuccess(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeSuccess::invoke)

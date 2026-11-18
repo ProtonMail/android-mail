@@ -54,6 +54,11 @@ fun User.hasSubscriptionForMail(): Boolean = hasSubscriptionFor(USER_SERVICE_MAS
 fun User.hasSubscriptionForVpn(): Boolean = hasSubscriptionFor(USER_SERVICE_MASK_VPN)
 fun User.hasSubscriptionForDrive(): Boolean = hasSubscriptionFor(USER_SERVICE_MASK_DRIVE)
 
+fun User.gainedSubscriptionSince(previous: User): Boolean =
+    hasSubscriptionForMail() && !previous.hasSubscriptionForMail() ||
+        hasSubscriptionForDrive() && !previous.hasSubscriptionForDrive() ||
+        hasSubscriptionForVpn() && !previous.hasSubscriptionForVpn()
+
 private const val USER_SERVICE_MASK_MAIL = 1 // 0001
 private const val USER_SERVICE_MASK_DRIVE = 2 // 0010
 private const val USER_SERVICE_MASK_VPN = 4 // 0100

@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.design.compose.component.ProtonCenteredProgress
 import ch.protonmail.android.design.compose.theme.ProtonTheme
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingActions
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingTelemetryPayload
@@ -35,6 +36,9 @@ import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingViewM
 @Composable
 fun UpsellingScreen(upsellingActions: UpsellingScreen.Actions, modifier: Modifier = Modifier) {
     val viewModel = hiltViewModel<UpsellingViewModel>()
+    val closeAfterUpgradedElsewhere = viewModel.closeAfterUpgradedElsewhere.collectAsStateWithLifecycle().value
+
+    ConsumableLaunchedEffect(closeAfterUpgradedElsewhere) { upsellingActions.onDismiss() }
 
     val actions = upsellingActions.copy(
         onUpgradeAttempt = { upsellingTelemetryPayload ->
