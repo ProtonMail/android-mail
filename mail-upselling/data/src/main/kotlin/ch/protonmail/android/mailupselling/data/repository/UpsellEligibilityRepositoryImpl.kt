@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.flatten
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
+import ch.protonmail.android.mailupselling.domain.model.OnboardingUpsellVariant
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.repository.UpsellEligibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
@@ -29,6 +30,7 @@ import me.proton.core.domain.entity.UserId
 import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellType
+import uniffi.mail_uniffi.onboardingUpsellExperimentFlag
 import uniffi.mail_uniffi.plusToUnlimitedExperimentFlag
 import uniffi.mail_uniffi.upsellExperimentFlagForAndroid
 import javax.inject.Inject
@@ -58,6 +60,19 @@ class UpsellEligibilityRepositoryImpl @Inject constructor(
         executeWithUserSession(userId) { session ->
             session.monthlyToYearlyEligibility()
         }.flatten()
+
+    override suspend fun getOnboardingUpsellVariant(userId: UserId): Either<DataError, OnboardingUpsellVariant> =
+        executeWithUserSession(userId) { session ->
+            session.onboardingUpsellVariant(onboardingUpsellExperimentFlag())
+                .map { it.toOnboardingUpsellVariant() }
+        }.flatten()
+}
+
+private fun uniffi.mail_uniffi.OnboardingUpsellVariant.toOnboardingUpsellVariant() = when (this) {
+    uniffi.mail_uniffi.OnboardingUpsellVariant.CONTROL -> OnboardingUpsellVariant.Control
+    uniffi.mail_uniffi.OnboardingUpsellVariant.SINGLE_OFFER -> OnboardingUpsellVariant.SingleOffer
+    uniffi.mail_uniffi.OnboardingUpsellVariant.FREE_VISIBLE -> OnboardingUpsellVariant.FreeVisible
+    uniffi.mail_uniffi.OnboardingUpsellVariant.FREE_VISIBLE_INTRO -> OnboardingUpsellVariant.FreeVisibleIntro
 }
 
 private fun PlusToUnlimitedEligibility.toPlusToUnlimitedOffer() = when (this) {

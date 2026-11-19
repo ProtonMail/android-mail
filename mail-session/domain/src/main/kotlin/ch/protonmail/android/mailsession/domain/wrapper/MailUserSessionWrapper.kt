@@ -37,6 +37,7 @@ import uniffi.mail_uniffi.MailUserSessionForkResult
 import uniffi.mail_uniffi.MailUserSessionImageForSenderResult
 import uniffi.mail_uniffi.MailUserSessionIsBusinessResult
 import uniffi.mail_uniffi.MailUserSessionMonthlyToYearlyEligibilityResult
+import uniffi.mail_uniffi.MailUserSessionOnboardingUpsellVariantResult
 import uniffi.mail_uniffi.MailUserSessionOverrideUserFeatureFlagResult
 import uniffi.mail_uniffi.MailUserSessionPlusToUnlimitedEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionRefreshMailSettingsResult
@@ -44,6 +45,7 @@ import uniffi.mail_uniffi.MailUserSessionUpsellEligibilityResult
 import uniffi.mail_uniffi.MailUserSessionUserResult
 import uniffi.mail_uniffi.MeasurementEventType
 import uniffi.mail_uniffi.MeasurementValue
+import uniffi.mail_uniffi.OnboardingUpsellVariant
 import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.SenderImageSize
 import uniffi.mail_uniffi.UpdateCategoryViewResult
@@ -143,6 +145,15 @@ class MailUserSessionWrapper(private val userSession: MailUserSession) {
             is MailUserSessionMonthlyToYearlyEligibilityResult.Ok -> result.v1.right()
             is MailUserSessionMonthlyToYearlyEligibilityResult.Error -> {
                 Timber.e("MailUserSession monthly to yearly eligibility:: ${result.v1}")
+                result.v1.toDataError().left()
+            }
+        }
+
+    suspend fun onboardingUpsellVariant(flag: UpsellExperimentFlag): Either<DataError, OnboardingUpsellVariant> =
+        when (val result = userSession.onboardingUpsellVariant(flag)) {
+            is MailUserSessionOnboardingUpsellVariantResult.Ok -> result.v1.right()
+            is MailUserSessionOnboardingUpsellVariantResult.Error -> {
+                Timber.e("MailUserSession onboarding upsell variant:: ${result.v1}")
                 result.v1.toDataError().left()
             }
         }

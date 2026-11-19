@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsession.data.usecase.ExecuteWithUserSession
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.wrapper.MailUserSessionWrapper
+import ch.protonmail.android.mailupselling.domain.model.OnboardingUpsellVariant
 import ch.protonmail.android.mailupselling.domain.model.PlusToUnlimitedOffer
 import ch.protonmail.android.mailupselling.domain.usecase.UpsellVariantPlan
 import io.mockk.coEvery
@@ -38,6 +39,7 @@ import uniffi.mail_uniffi.PlusToUnlimitedEligibility
 import uniffi.mail_uniffi.UpsellEligibility
 import uniffi.mail_uniffi.UpsellExperimentFlag
 import uniffi.mail_uniffi.UpsellType
+import uniffi.mail_uniffi.onboardingUpsellExperimentFlag
 import uniffi.mail_uniffi.plusToUnlimitedExperimentFlag
 import uniffi.mail_uniffi.upsellExperimentFlagForAndroid
 import kotlin.test.AfterTest
@@ -63,6 +65,7 @@ internal class UpsellEligibilityRepositoryImplTest {
         mockkStatic("uniffi.mail_uniffi.Mail_uniffiKt")
         every { upsellExperimentFlagForAndroid() } returns UpsellExperimentFlag("MailAndroidV7UpsellPlanExperiment")
         every { plusToUnlimitedExperimentFlag() } returns UpsellExperimentFlag("MailAndroidV7PlusToUnlimitedUpsell")
+        every { onboardingUpsellExperimentFlag() } returns UpsellExperimentFlag("MailMobileOnboardingUpsellExperiment")
     }
 
     @AfterTest
@@ -124,6 +127,38 @@ internal class UpsellEligibilityRepositoryImplTest {
         coEvery { wrapper.plusToUnlimitedEligibility(any()) } returns PlusToUnlimitedEligibility.BLACK_FRIDAY.right()
 
         assertEquals(PlusToUnlimitedOffer.BlackFriday.right(), repository.getPlusToUnlimitedEligibility(userId))
+    }
+
+    @Test
+    fun `maps CONTROL to the control onboarding variant`() = runTest {
+        val rustVariant = uniffi.mail_uniffi.OnboardingUpsellVariant.CONTROL
+        coEvery { wrapper.onboardingUpsellVariant(any()) } returns rustVariant.right()
+
+        assertEquals(OnboardingUpsellVariant.Control.right(), repository.getOnboardingUpsellVariant(userId))
+    }
+
+    @Test
+    fun `maps SINGLE_OFFER to the single offer onboarding variant`() = runTest {
+        val rustVariant = uniffi.mail_uniffi.OnboardingUpsellVariant.SINGLE_OFFER
+        coEvery { wrapper.onboardingUpsellVariant(any()) } returns rustVariant.right()
+
+        assertEquals(OnboardingUpsellVariant.SingleOffer.right(), repository.getOnboardingUpsellVariant(userId))
+    }
+
+    @Test
+    fun `maps FREE_VISIBLE to the free visible onboarding variant`() = runTest {
+        val rustVariant = uniffi.mail_uniffi.OnboardingUpsellVariant.FREE_VISIBLE
+        coEvery { wrapper.onboardingUpsellVariant(any()) } returns rustVariant.right()
+
+        assertEquals(OnboardingUpsellVariant.FreeVisible.right(), repository.getOnboardingUpsellVariant(userId))
+    }
+
+    @Test
+    fun `maps FREE_VISIBLE_INTRO to the free visible intro onboarding variant`() = runTest {
+        val rustVariant = uniffi.mail_uniffi.OnboardingUpsellVariant.FREE_VISIBLE_INTRO
+        coEvery { wrapper.onboardingUpsellVariant(any()) } returns rustVariant.right()
+
+        assertEquals(OnboardingUpsellVariant.FreeVisibleIntro.right(), repository.getOnboardingUpsellVariant(userId))
     }
 
     @Test
