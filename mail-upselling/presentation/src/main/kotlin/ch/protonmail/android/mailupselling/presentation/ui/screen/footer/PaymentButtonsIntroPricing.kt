@@ -85,7 +85,8 @@ internal fun PaymentButtonsIntroPricing(
                 onErrorMessage = {
                     actions.onUpgradeErrored(upsellingTelemetryPayload)
                     actions.onError(it)
-                }
+                },
+                onCanceled = { actions.onUpgradeCancelled(upsellingTelemetryPayload) }
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Standard))

@@ -103,7 +103,8 @@ internal fun PaymentButtonsHorizontalLayout(
                 onErrorMessage = {
                     actions.onUpgradeErrored(upsellingTelemetryPayload)
                     actions.onError(it)
-                }
+                },
+                onCanceled = { actions.onUpgradeCancelled(upsellingTelemetryPayload) }
             )
         }
 

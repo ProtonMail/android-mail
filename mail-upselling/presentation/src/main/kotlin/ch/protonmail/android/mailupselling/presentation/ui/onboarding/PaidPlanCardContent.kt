@@ -109,7 +109,8 @@ internal fun PaidPlanCardContent(
                 onErrorMessage = { errorMessage ->
                     onError(errorMessage)
                     onDismiss()
-                }
+                },
+                onCanceled = {}
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.ExtraTiny))

@@ -25,5 +25,6 @@ sealed interface PurchaseButtonState {
     data object Loading : PurchaseButtonState
     data class Pending(val product: ProductOfferDetail) : PurchaseButtonState
     data class Success(val product: Product) : PurchaseButtonState
+    data object Canceled : PurchaseButtonState
     data class Error(val message: String, val enabled: Boolean = true) : PurchaseButtonState
 }

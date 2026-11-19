@@ -76,10 +76,6 @@ import ch.protonmail.android.design.compose.theme.isNightMode
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.extension.isIntroOffer
-import ch.protonmail.android.mailupselling.presentation.extension.isPromotional
-import ch.protonmail.android.mailupselling.presentation.extension.toTelemetryPayload
-import ch.protonmail.android.mailupselling.presentation.extension.toUpsellModalVariant
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeEntitlementsListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradeInstanceListUiModel
@@ -250,17 +246,7 @@ internal fun UpsellingScreenContentSpringPromo(
                         )
                         .align(alignment = Alignment.TopEnd)
                         .zIndex(1f),
-                    onClick = {
-                        if (state.plans.list is PlanUpgradeInstanceListUiModel.Data) {
-                            val upsellingTelemetryPayload = state.plans.list.longerCycle.toTelemetryPayload(
-                                modalVariant = state.plans.list.variant.toUpsellModalVariant(),
-                                upsellIsPromotional = state.plans.list.variant.isPromotional(),
-                                isIntroOffer = state.plans.list.variant.isIntroOffer()
-                            )
-                            actions.onUpgradeCancelled(upsellingTelemetryPayload)
-                        }
-                        actions.onDismiss()
-                    }
+                    onClick = actions.onDismiss
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,

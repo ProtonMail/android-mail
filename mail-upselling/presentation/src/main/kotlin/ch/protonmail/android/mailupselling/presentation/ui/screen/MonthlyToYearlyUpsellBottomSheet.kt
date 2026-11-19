@@ -100,6 +100,7 @@ fun MonthlyToYearlyUpsellBottomSheet(
         actions = MonthlyToYearlyUpsellBottomSheet.Actions(
             onUpgradeAttempt = viewModel::recordUpgradeAttempt,
             onUpgradeErrored = viewModel::recordUpgradeError,
+            onUpgradeCancelled = viewModel::recordUpgradeCancelledByUser,
             onSwitched = {
                 viewModel.recordUpgradeSuccess()
                 viewModel.onSwitchedToYearly()
@@ -109,10 +110,7 @@ fun MonthlyToYearlyUpsellBottomSheet(
                 viewModel.recordDoNotShowAgain()
                 onDismiss()
             },
-            onDismiss = {
-                viewModel.recordUpgradeCancelledByUser()
-                onDismiss()
-            }
+            onDismiss = onDismiss
         ),
         modifier = modifier
     )
@@ -292,7 +290,8 @@ private fun MonthlyToYearlyUpsellBottomSheetContent(
                     onErrorMessage = {
                         actions.onUpgradeErrored()
                         onError(it)
-                    }
+                    },
+                    onCanceled = actions.onUpgradeCancelled
                 )
                 UpsellingSecondaryButton(
                     text = stringResource(R.string.upselling_monthly_to_yearly_stay_on_monthly),
@@ -387,6 +386,7 @@ object MonthlyToYearlyUpsellBottomSheet {
     data class Actions(
         val onUpgradeAttempt: () -> Unit,
         val onUpgradeErrored: () -> Unit,
+        val onUpgradeCancelled: () -> Unit,
         val onSwitched: () -> Unit,
         val onDoNotShowAgain: () -> Unit,
         val onDismiss: () -> Unit
@@ -397,6 +397,7 @@ object MonthlyToYearlyUpsellBottomSheet {
             val Empty = Actions(
                 onUpgradeAttempt = {},
                 onUpgradeErrored = {},
+                onUpgradeCancelled = {},
                 onSwitched = {},
                 onDoNotShowAgain = {},
                 onDismiss = {}

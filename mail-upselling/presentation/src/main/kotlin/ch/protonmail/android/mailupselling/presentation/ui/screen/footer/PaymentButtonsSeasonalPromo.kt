@@ -84,7 +84,8 @@ internal fun PaymentButtonsSeasonalPromo(
                 onErrorMessage = {
                     actions.onUpgradeErrored(upsellingTelemetryPayload)
                     actions.onError(it)
-                }
+                },
+                onCanceled = { actions.onUpgradeCancelled(upsellingTelemetryPayload) }
             )
         }
 

@@ -107,7 +107,8 @@ internal fun PaymentButtonsPlusToUnlimited(
             onErrorMessage = {
                 actions.onUpgradeErrored(telemetryPayload)
                 actions.onError(it)
-            }
+            },
+            onCanceled = { actions.onUpgradeCancelled(telemetryPayload) }
         )
 
         Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))

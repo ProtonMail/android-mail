@@ -338,7 +338,7 @@ internal class SdkBackedPurchaseButtonProcessorTest {
     }
 
     @Test
-    fun `Payment SDK - a user cancellation resets the button to Idle without broadcasting`() = runTest {
+    fun `Payment SDK - a session going back to Idle resets the button to Idle without broadcasting`() = runTest {
         coEvery { flag.get() } returns true
         every { observeSessionState.invoke() } returns flowOf(
             SessionState.Purchasing.Terminal.AwaitingReceipt,
@@ -351,6 +351,34 @@ internal class SdkBackedPurchaseButtonProcessorTest {
 
         assertEquals(listOf(PurchaseButtonState.Loading, PurchaseButtonState.Idle), states)
         coVerify(exactly = 0) { accountEventBroadcaster.emit(any()) }
+    }
+
+    @Test
+    fun `Payment SDK - a cancelled store sheet emits Loading then Canceled without broadcasting`() = runTest {
+        coEvery { flag.get() } returns true
+        every { observeSessionState.invoke() } returns MutableSharedFlow()
+        coEvery { purchaseProduct.invoke(any(), any()) } returns
+            Result.success(SessionState.Purchasing.Terminal.Canceled)
+
+        val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
+
+        assertEquals(listOf(PurchaseButtonState.Loading, PurchaseButtonState.Canceled), states)
+        coVerify(exactly = 0) { accountEventBroadcaster.emit(any()) }
+    }
+
+    @Test
+    fun `Payment SDK - a cancel on the session stream emits Loading then Canceled`() = runTest {
+        coEvery { flag.get() } returns true
+        every { observeSessionState.invoke() } returns flowOf(
+            SessionState.Purchasing.Terminal.AwaitingReceipt,
+            SessionState.Purchasing.Terminal.Canceled
+        )
+        coEvery { purchaseProduct.invoke(any(), any()) } returns
+            Result.success(SessionState.Purchasing.Terminal.AwaitingReceipt)
+
+        val states = subject.onAction(PurchaseButtonAction.Purchase(product)).toList()
+
+        assertEquals(listOf(PurchaseButtonState.Loading, PurchaseButtonState.Canceled), states)
     }
 
     @Test

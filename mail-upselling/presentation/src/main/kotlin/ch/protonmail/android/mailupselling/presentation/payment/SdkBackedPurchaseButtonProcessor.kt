@@ -129,6 +129,10 @@ class SdkBackedPurchaseButtonProcessor @Inject constructor(
                 outcome.cancel()
                 PurchaseButtonState.Idle
             }
+            SessionState.Purchasing.Terminal.Canceled -> {
+                outcome.cancel()
+                PurchaseButtonState.Canceled
+            }
             SessionState.Purchasing.Terminal.AwaitingReceipt,
             SessionState.Purchasing.Terminal.ReadyToReconcile -> outcome.await()
         }
@@ -150,6 +154,7 @@ class SdkBackedPurchaseButtonProcessor @Inject constructor(
             else -> null
         }
         is SessionState.Reconciling.Terminal.Failure -> errorState()
+        SessionState.Purchasing.Terminal.Canceled -> PurchaseButtonState.Canceled
         is SessionState.Purchasing.Terminal.Failure,
         SessionState.Idle -> PurchaseButtonState.Idle
         else -> null

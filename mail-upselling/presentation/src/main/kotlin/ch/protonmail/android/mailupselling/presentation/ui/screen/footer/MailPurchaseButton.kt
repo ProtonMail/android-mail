@@ -63,6 +63,7 @@ fun MailPurchaseButton(
     onPurchaseClicked: () -> Unit = {},
     onSuccess: (Product) -> Unit = {},
     onErrorMessage: (String) -> Unit = {},
+    onCanceled: () -> Unit,
     viewModel: PurchaseButtonViewModel? = hiltViewModelOrNull<PurchaseButtonViewModel>(product.productId)
 ) {
     val state = viewModel?.state?.collectAsStateWithLifecycle()?.value
@@ -72,6 +73,10 @@ fun MailPurchaseButton(
         when (state) {
             is Success -> onSuccess(state.product)
             is PurchaseButtonState.Error -> if (state !== errorReportedBeforeEntry) onErrorMessage(state.message)
+            PurchaseButtonState.Canceled -> {
+                onCanceled()
+                viewModel?.perform(PurchaseButtonAction.Init)
+            }
             else -> Unit
         }
     }
