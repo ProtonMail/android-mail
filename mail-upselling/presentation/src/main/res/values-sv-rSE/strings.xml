@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s för den första månaden, sedan %s per månad</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Uppgradera till Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Visa inte detta erbjudande igen</string>
-  <string name="upselling_stay_on_mail_plus">Stanna på Mail Plus</string>
-  <string name="upselling_black_friday_do_not_show_again">Visa inte igen</string>
+  <string name="upselling_do_not_show_again">Visa inte igen</string>
   <string name="upselling_pu_choose_plan">Välj ditt paket</string>
   <string name="upselling_pu_whats_included">Vad som är inkluderat</string>
   <string name="upselling_pu_cta">Skaffa Proton Unlimited</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">Nuvarande</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
   <string name="upselling_monthly_to_yearly_cta">Ändra och spara %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Ta din integritet online ett steg längre med Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Skydda ditt konto från hot med Proton Sentinel</string>

@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">最初の1ヶ月間%s、その後は月額%s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimitedへアップグレード</string>
-  <string name="upselling_do_not_show_again">このオファーを今後表示しない</string>
-  <string name="upselling_stay_on_mail_plus">Mail Plus を使い続ける</string>
-  <string name="upselling_black_friday_do_not_show_again">今後表示しない</string>
+  <string name="upselling_do_not_show_again">今後表示しない</string>
   <string name="upselling_pu_choose_plan">プランを選択</string>
   <string name="upselling_pu_whats_included">含まれるもの</string>
   <string name="upselling_pu_cta">Proton Unlimitedを入手</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">現在のご契約</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12か月プラン</string>
   <string name="upselling_monthly_to_yearly_cta">変更して%s節約</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">月払いを継続</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimitedでオンラインプライバシーをさらに強化</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinelでアカウントを脅威から保護する</string>

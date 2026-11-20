@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">Az 1. hónapban %s, utána havonta %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Váltson Proton Unlimited csomagra</string>
-  <string name="upselling_do_not_show_again">Ne jelenjen meg többet ez az ajánlat</string>
-  <string name="upselling_stay_on_mail_plus">Maradjon a Mail Plus csomagnál</string>
-  <string name="upselling_black_friday_do_not_show_again">Ne jelenjen meg újra</string>
+  <string name="upselling_do_not_show_again">Ne jelenjen meg újra</string>
   <string name="upselling_pu_choose_plan">Csomag kiválasztása</string>
   <string name="upselling_pu_whats_included">Mit tartalmaz?</string>
   <string name="upselling_pu_cta">Szerezze meg a Proton Unlimitedet</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-month plan</string>
   <string name="upselling_monthly_to_yearly_cta">Váltson, és takarítson meg %s-t</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Bővítse tovább online adatvédelmét a Proton Unlimiteddel</string>
   <string name="upselling_pu_threat_protection_title">Védje fiókját a fenyegetésektől a Proton Sentinel segítségével</string>

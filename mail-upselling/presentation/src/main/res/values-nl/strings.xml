@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s voor de eerste maand, daarna %s per maand</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Upgrade naar Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Toon deze aanbieding niet opnieuw</string>
-  <string name="upselling_stay_on_mail_plus">Blijf bij Mail Plus</string>
-  <string name="upselling_black_friday_do_not_show_again">Niet meer weergeven</string>
+  <string name="upselling_do_not_show_again">Niet meer weergeven</string>
   <string name="upselling_pu_choose_plan">Kies uw abonnement</string>
   <string name="upselling_pu_whats_included">Wat is inbegrepen</string>
   <string name="upselling_pu_cta">Kies Proton Unlimited</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">Momenteel</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">Abonnement van 12 maanden</string>
   <string name="upselling_monthly_to_yearly_cta">Wijzig en sla op %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Behoud maandelijks</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Verbeter uw online privacy verder met Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Bescherm uw account tegen bedreigingen met Proton Sentinel</string>

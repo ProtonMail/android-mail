@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s za prvi mesec, nato %s na mesec</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Nadgradite na Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Te ponudbe ne prikazuj več</string>
-  <string name="upselling_stay_on_mail_plus">Ostanite na Mail Plus</string>
-  <string name="upselling_black_friday_do_not_show_again">Ne prikaži več</string>
+  <string name="upselling_do_not_show_again">Ne prikaži več</string>
   <string name="upselling_pu_choose_plan">Izberite svoj paket</string>
   <string name="upselling_pu_whats_included">Kaj je vključeno</string>
   <string name="upselling_pu_cta">Pridobite Proton Unlimited</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">Trenutno</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12-mesečna naročnina</string>
   <string name="upselling_monthly_to_yearly_cta">Spremenite paket in prihranite %s.</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Obdrži mesečno</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Nadgradite svojo spletno zasebnost s Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Zaščitite svoj račun pred grožnjami s Proton Sentinel</string>

@@ -294,7 +294,7 @@ private fun MonthlyToYearlyUpsellBottomSheetContent(
                     onCanceled = actions.onUpgradeCancelled
                 )
                 UpsellingSecondaryButton(
-                    text = stringResource(R.string.upselling_monthly_to_yearly_stay_on_monthly),
+                    text = stringResource(R.string.upselling_do_not_show_again),
                     textColor = UpsellingLayoutValues.PaymentButtons.planNameColor,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = actions.onDoNotShowAgain

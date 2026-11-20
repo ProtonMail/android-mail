@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">İlk ay için %s, sonraki aylar için %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Proton Unlimited tarifesine yükseltin</string>
-  <string name="upselling_do_not_show_again">Bu teklif bir daha görüntülenmesin</string>
-  <string name="upselling_stay_on_mail_plus">Mail Plus tarifesinde kalın</string>
-  <string name="upselling_black_friday_do_not_show_again">Bir daha görüntülenmesin</string>
+  <string name="upselling_do_not_show_again">Bir daha görüntülenmesin</string>
   <string name="upselling_pu_choose_plan">Tarifenizi seçin</string>
   <string name="upselling_pu_whats_included">Neler bulunuyor</string>
   <string name="upselling_pu_cta">Proton Unlimited edinin</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">Şu anda</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12 aylık tarife</string>
   <string name="upselling_monthly_to_yearly_cta">Değiştir ve %s kazan</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Aylık tarifede kal</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Proton Unlimited ile çevrim içi gizliliğinizi bir adım öteye taşıyın</string>
   <string name="upselling_pu_threat_protection_title">Proton Sentinel ile hesabınızı tehditlere karşı koruyun</string>

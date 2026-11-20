@@ -93,7 +93,7 @@ internal fun PaymentButtonsSeasonalPromo(
             Spacer(modifier = Modifier.height(ProtonDimens.Spacing.Medium))
 
             UpsellingSecondaryButton(
-                text = stringResource(R.string.upselling_black_friday_do_not_show_again),
+                text = stringResource(R.string.upselling_do_not_show_again),
                 textColor = colors?.cycleCardTextColor ?: UpsellingLayoutValues.PaymentButtons.planNameColor,
                 modifier = Modifier
                     .fillMaxWidth()

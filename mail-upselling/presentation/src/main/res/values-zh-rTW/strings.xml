@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">首月 %s，之後每月 %s</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">升級至 Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">不再顯示此優惠</string>
-  <string name="upselling_stay_on_mail_plus">繼續使用 Mail Plus</string>
-  <string name="upselling_black_friday_do_not_show_again">不要再顯示</string>
+  <string name="upselling_do_not_show_again">不要再顯示</string>
   <string name="upselling_pu_choose_plan">選擇您的方案</string>
   <string name="upselling_pu_whats_included">包含內容</string>
   <string name="upselling_pu_cta">取得 Proton Unlimited</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">現在</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12個月的方案</string>
   <string name="upselling_monthly_to_yearly_cta">變更並節省 %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">使用 Proton Unlimited 讓您的線上隱私更上一層樓</string>
   <string name="upselling_pu_threat_protection_title">使用 Proton Sentinel 保護您的帳號免受威脅</string>

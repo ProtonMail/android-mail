@@ -33,9 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s ensimmäisen kuukauden ajan, sitten %s kuukaudessa</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Päivitä Proton Unlimited -tilaukseen</string>
-  <string name="upselling_do_not_show_again">Älä näytä tätä tarjousta uudelleen</string>
-  <string name="upselling_stay_on_mail_plus">Jatka Mail Plussan käyttöä</string>
-  <string name="upselling_black_friday_do_not_show_again">Älä näytä uudelleen</string>
+  <string name="upselling_do_not_show_again">Älä näytä uudelleen</string>
   <string name="upselling_pu_choose_plan">Valitse tilauksesi</string>
   <string name="upselling_pu_whats_included">Sisältää</string>
   <string name="upselling_pu_cta">Hanki Proton Unlimited</string>
@@ -49,7 +47,6 @@
   <string name="upselling_monthly_to_yearly_currently">Currently</string>
   <string name="upselling_monthly_to_yearly_yearly_plan">12 kuukauden tilaus</string>
   <string name="upselling_monthly_to_yearly_cta">Vaihda ja säästä %s</string>
-  <string name="upselling_monthly_to_yearly_stay_on_monthly">Stay on monthly</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Vie verkkoyksityisyyttäsi pidemmälle Proton Unlimitedilla</string>
   <string name="upselling_pu_threat_protection_title">Suojaa tilisi uhilta Proton Sentinelillä</string>
