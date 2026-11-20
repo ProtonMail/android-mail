@@ -900,9 +900,46 @@ internal class UpsellingViewModelTest {
     }
 
     @Test
-    fun `given the connection limit upsell, when a plan is bought, then only the wall is reported`() = runTest {
+    fun `given the connection limit upsell, when the default plan is bought, then a primary CTA click is reported`() =
+        runTest {
+            // Given
+            givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+            val viewModel = viewModel()
+
+            viewModel.state.test {
+                awaitItem()
+
+                // When
+                viewModel.recordUpgradeAttempt(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+
+                // Then
+                verify(exactly = 1) {
+                    reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellCtaClicked(ByoeUpsellCta.Primary))
+                }
+            }
+        }
+
+    @Test
+    fun `given the connection limit upsell, when the purchase succeeds or fails, then the outcome is reported`() =
+        runTest {
+            // Given
+            givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+            val viewModel = viewModel()
+
+            // When
+            viewModel.recordUpgradeSuccess(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+            viewModel.recordUpgradeError(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+            viewModel.recordUpgradeCancelledByUser(byoePayload(cycle = PlanUpgradeCycle.Yearly))
+
+            // Then
+            verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellSucceeded) }
+            verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellFailed("upgrade_error")) }
+        }
+
+    @Test
+    fun `given another upsell, when a plan is bought, then no BYOE upsell outcome is reported`() = runTest {
         // Given
-        givenPlansLoadedFor(UpsellingEntryPoint.Feature.ByoeConnectionLimit)
+        givenPlansLoadedFor(UpsellingEntryPoint.Feature.Navbar)
         val viewModel = viewModel()
 
         // When
@@ -911,9 +948,7 @@ internal class UpsellingViewModelTest {
         viewModel.recordUpgradeError(byoePayload(cycle = PlanUpgradeCycle.Yearly))
 
         // Then
-        verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.UpsellCtaClicked>()) }
-        verify(exactly = 0) { reportByoeTelemetryEvent(ByoeTelemetryEvent.UpsellSucceeded) }
-        verify(exactly = 0) { reportByoeTelemetryEvent(ofType<ByoeTelemetryEvent.UpsellFailed>()) }
+        verify(exactly = 0) { reportByoeTelemetryEvent(any()) }
     }
 
     private fun givenPlansLoadedFor(

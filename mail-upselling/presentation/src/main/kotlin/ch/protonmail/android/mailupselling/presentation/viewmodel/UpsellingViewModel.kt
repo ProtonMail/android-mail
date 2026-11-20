@@ -218,7 +218,7 @@ internal class UpsellingViewModel @Inject constructor(
 
     fun recordUpgradeAttempt(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeAttempt::invoke)
-        reportByoeStorageUpsell { ByoeTelemetryEvent.UpsellCtaClicked(upsellCta(upsellingTelemetryPayload)) }
+        reportByoeUpsell { ByoeTelemetryEvent.UpsellCtaClicked(upsellCta(upsellingTelemetryPayload)) }
     }
 
     // A cancelled purchase is not a failure, so it reports no BYOE telemetry.
@@ -230,12 +230,12 @@ internal class UpsellingViewModel @Inject constructor(
     fun recordUpgradeError(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         purchaseStarted = false
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeError::invoke)
-        reportByoeStorageUpsell { ByoeTelemetryEvent.UpsellFailed(BYOE_UPGRADE_ERROR_REASON) }
+        reportByoeUpsell { ByoeTelemetryEvent.UpsellFailed(BYOE_UPGRADE_ERROR_REASON) }
     }
 
     fun recordUpgradeSuccess(upsellingTelemetryPayload: UpsellingTelemetryPayload) {
         recordUpgradeEvent(upsellingTelemetryPayload, recordUpgradeSuccess::invoke)
-        reportByoeStorageUpsell { ByoeTelemetryEvent.UpsellSucceeded }
+        reportByoeUpsell { ByoeTelemetryEvent.UpsellSucceeded }
         // Fire-and-forget, scope-independent: the screen-scoped viewModelScope may be cancelled by
         // the navigateBack() that runs on success, so the emit must not rely on it.
         upsellRatingTriggerRepository.emitUpsellSuccess()
@@ -281,9 +281,13 @@ internal class UpsellingViewModel @Inject constructor(
         }
     }
 
-    /** The CTA, success and failure events belong to the storage upsell funnel only, not to the connection limit. */
-    private fun reportByoeStorageUpsell(event: () -> ByoeTelemetryEvent) {
-        if (entryPoint == UpsellingEntryPoint.Feature.ByoeStorage) reportByoeTelemetryEvent(event())
+    /** The CTA, success and failure events follow both BYOE upsells: the storage one and the connection limit. */
+    private fun reportByoeUpsell(event: () -> ByoeTelemetryEvent) {
+        when (entryPoint) {
+            UpsellingEntryPoint.Feature.ByoeStorage,
+            UpsellingEntryPoint.Feature.ByoeConnectionLimit -> reportByoeTelemetryEvent(event())
+            else -> Unit
+        }
     }
 
     /**
