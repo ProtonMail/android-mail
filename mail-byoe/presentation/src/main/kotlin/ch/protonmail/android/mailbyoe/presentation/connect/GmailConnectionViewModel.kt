@@ -80,9 +80,9 @@ class GmailConnectionViewModel @Inject constructor(
     // Settings and the deep link open the page directly, so the user still has to choose there.
     private val autoConnect = surface != ByoeSurface.Settings && surface != ByoeSurface.DeepLink
 
-    // From Settings the web page runs the whole connection and reports it: opening and closing the page is not a
-    // connection attempt.
-    private val reportsConnection = surface != ByoeSurface.Settings
+    // From Settings and the deep link the web page runs the whole connection and reports it: opening and closing the
+    // page is not a connection attempt.
+    private val reportsConnection = surface != ByoeSurface.Settings && surface != ByoeSurface.DeepLink
 
     // A started connection without an outcome yet, so leaving the screen then reports it as abandoned.
     private var isAttemptOpen = false
@@ -120,7 +120,7 @@ class GmailConnectionViewModel @Inject constructor(
         }
 
         // Each page open is an attempt, so a retry starts a new one.
-        report { ByoeTelemetryEvent.ConnectStarted(it, importMode()) }
+        report { ByoeTelemetryEvent.ConnectStarted(it, ByoeImportMode.of(importEmails)) }
         isAttemptOpen = true
         val userId = observePrimaryUserId().first()
         if (userId == null) {
@@ -149,10 +149,6 @@ class GmailConnectionViewModel @Inject constructor(
             }
         )
     }
-
-    // The deep link carries no import choice: the user makes it on the web page.
-    private fun importMode() =
-        if (surface == ByoeSurface.DeepLink) ByoeImportMode.Unknown else ByoeImportMode.of(importEmails)
 
     private suspend fun canOpenGmailConnectionSettings(): Boolean {
         val userId = observePrimaryUserId().first() ?: return false

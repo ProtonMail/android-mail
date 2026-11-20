@@ -180,11 +180,6 @@ internal class GmailConnectionViewModelTest {
                 assertTrue(url.startsWith("https://account.proton.me/lite?action=byoe-mobile"))
                 assertFalse(url.contains("autoconnect"))
             }
-            verify {
-                reportByoeTelemetryEvent(
-                    ByoeTelemetryEvent.ConnectStarted(ByoeSurface.DeepLink, ByoeImportMode.Unknown)
-                )
-            }
         }
 
     @Test
@@ -446,6 +441,35 @@ internal class GmailConnectionViewModelTest {
             )
         }
     }
+
+    @Test
+    fun `given the deep link, when the page is opened and closed, then no connection event is reported`() = runTest {
+        // Given
+        val viewModel = viewModel(surface = ByoeSurface.DeepLink)
+
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
+        viewModel.reportAbandonedAttempt()
+
+        // Then
+        verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+    }
+
+    @Test
+    fun `given the deep link, when the page returns connected or failed, then no connection event is reported`() =
+        runTest {
+            listOf(GmailConnectionResult.Connected(email = EMAIL), GmailConnectionResult.Failed(code = null))
+                .forEach { result ->
+                    // Given
+                    val viewModel = viewModel(surface = ByoeSurface.DeepLink)
+
+                    // When
+                    viewModel.submit(GmailConnectionAction.PageClosed(result))
+                }
+
+            // Then
+            verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+        }
 
     @Test
     fun `given Settings, when the page is opened and closed, then no connection event is reported`() = runTest {
