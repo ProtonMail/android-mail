@@ -437,14 +437,42 @@ internal class GmailConnectionViewModelTest {
     @Test
     fun `given the import is off, when the page opens, then a connection start without import is reported`() = runTest {
         // When
-        viewModel(importEmails = "false", surface = ByoeSurface.Settings)
+        viewModel(importEmails = "false", surface = ByoeSurface.Spotlight)
 
         // Then
         verify(exactly = 1) {
             reportByoeTelemetryEvent(
-                ByoeTelemetryEvent.ConnectStarted(ByoeSurface.Settings, ByoeImportMode.Disabled)
+                ByoeTelemetryEvent.ConnectStarted(ByoeSurface.Spotlight, ByoeImportMode.Disabled)
             )
         }
+    }
+
+    @Test
+    fun `given Settings, when the page is opened and closed, then no connection event is reported`() = runTest {
+        // Given
+        val viewModel = viewModel(surface = ByoeSurface.Settings)
+
+        // When
+        viewModel.submit(GmailConnectionAction.PageClosed(GmailConnectionResult.Cancelled))
+        viewModel.reportAbandonedAttempt()
+
+        // Then
+        verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+    }
+
+    @Test
+    fun `given Settings, when the page returns connected or failed, then no connection event is reported`() = runTest {
+        listOf(GmailConnectionResult.Connected(email = EMAIL), GmailConnectionResult.Failed(code = null))
+            .forEach { result ->
+                // Given
+                val viewModel = viewModel(surface = ByoeSurface.Settings)
+
+                // When
+                viewModel.submit(GmailConnectionAction.PageClosed(result))
+            }
+
+        // Then
+        verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
     }
 
     @Test

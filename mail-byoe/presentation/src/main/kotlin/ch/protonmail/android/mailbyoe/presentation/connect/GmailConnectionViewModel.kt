@@ -80,6 +80,10 @@ class GmailConnectionViewModel @Inject constructor(
     // Settings and the deep link open the page directly, so the user still has to choose there.
     private val autoConnect = surface != ByoeSurface.Settings && surface != ByoeSurface.DeepLink
 
+    // From Settings the web page runs the whole connection and reports it: opening and closing the page is not a
+    // connection attempt.
+    private val reportsConnection = surface != ByoeSurface.Settings
+
     // A started connection without an outcome yet, so leaving the screen then reports it as abandoned.
     private var isAttemptOpen = false
 
@@ -216,6 +220,7 @@ class GmailConnectionViewModel @Inject constructor(
     }
 
     private fun report(event: (ByoeSurface) -> ByoeTelemetryEvent) {
+        if (!reportsConnection) return
         if (surface == null) {
             Timber.w("byoe: no surface for the Gmail connection, not reporting it")
             return

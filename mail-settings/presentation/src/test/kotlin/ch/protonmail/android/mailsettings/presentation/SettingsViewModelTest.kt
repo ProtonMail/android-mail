@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
 import arrow.core.Either
 import ch.protonmail.android.design.compose.model.VisibilityUiModel
-import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
@@ -292,7 +291,25 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `given Connect your Gmail is shown, when the user taps it, then an explore click in settings is reported`() =
+    fun `given Connect your Gmail is shown, when the user taps it, then nothing is reported`() = runTest {
+        // Given
+        coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Full
+
+        viewModel.state.test {
+            skipItems(1)
+            accountFlow.emit(account)
+            awaitItem()
+
+            // When
+            viewModel.onConnectGmailClicked()
+
+            // Then
+            verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+        }
+    }
+
+    @Test
+    fun `given the user left for the Gmail connection, when the screen shows again, then only later views report`() =
         runTest {
             // Given
             coEvery { getGmailConnectionSettingsAccess(account.userId) } returns GmailConnectionSettingsAccess.Full
@@ -301,14 +318,20 @@ class SettingsViewModelTest {
                 skipItems(1)
                 accountFlow.emit(account)
                 awaitItem()
-
-                // When
                 viewModel.onConnectGmailClicked()
 
+                // When
+                viewModel.onConnectGmailShown()
+
                 // Then
-                verify(exactly = 1) {
-                    reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.Settings), account.userId)
-                }
+                verify(exactly = 0) { reportByoeTelemetryEvent(any(), any()) }
+
+                // When
+                viewModel.onConnectGmailShown()
+
+                // Then
+                verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsShown, account.userId) }
+                verify(exactly = 1) { reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsView, account.userId) }
             }
         }
 

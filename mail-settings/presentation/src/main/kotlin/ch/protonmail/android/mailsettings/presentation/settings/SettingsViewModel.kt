@@ -21,7 +21,6 @@ package ch.protonmail.android.mailsettings.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
-import ch.protonmail.android.mailbyoe.domain.model.ByoeSurface
 import ch.protonmail.android.mailbyoe.domain.model.ByoeTelemetryEvent
 import ch.protonmail.android.mailbyoe.domain.model.GmailConnectionSettingsAccess
 import ch.protonmail.android.mailbyoe.domain.usecase.GetGmailConnectionSettingsAccess
@@ -70,6 +69,9 @@ class SettingsViewModel @Inject constructor(
         Loading
     )
 
+    // Coming back from the Gmail connection page resumes the screen, but is not a new settings view (as on iOS).
+    private var isReturningFromGmailConnection = false
+
     private fun observeIsByoeSettingsEnabled(account: Account?) = account
         ?.let { observeFeatureEntryPointEnabled(it.userId, FeatureEntryPoint.Byoe(ByoeEntryPoint.Settings)) }
         ?: flowOf(false)
@@ -97,13 +99,20 @@ class SettingsViewModel @Inject constructor(
      * Android counterpart of the SDK's BYOE settings page with Connect.
      */
     fun onConnectGmailShown() {
+        if (isReturningFromGmailConnection) {
+            isReturningFromGmailConnection = false
+            return
+        }
         val userId = (state.value as? Data)?.takeIf { it.isConnectGmailVisible }?.userId ?: return
         reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsShown, userId)
         reportByoeTelemetryEvent(ByoeTelemetryEvent.SettingsView, userId)
     }
 
+    /**
+     * Not reported: from Settings the web page runs the connection and reports it, and iOS sends no explore click
+     * for this row either.
+     */
     fun onConnectGmailClicked() {
-        val userId = (state.value as? Data)?.userId ?: return
-        reportByoeTelemetryEvent(ByoeTelemetryEvent.ExploreClicked(ByoeSurface.Settings), userId)
+        isReturningFromGmailConnection = true
     }
 }
