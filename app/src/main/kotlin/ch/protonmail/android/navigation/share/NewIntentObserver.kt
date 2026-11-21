@@ -44,6 +44,11 @@ class NewIntentObserver @Inject constructor() {
         _intentFlow.value = intent
     }
 
+    /** Drops [intent] once handled, so a screen that starts observing later does not handle it again. */
+    fun consume(intent: Intent) {
+        _intentFlow.compareAndSet(intent, null)
+    }
+
     private fun StateFlow<Intent?>.filterIntentValues() = this.filterNotNull().filter { intent ->
         val availableIntentActions = buildSet {
             // Standard intents (launch, notifications)

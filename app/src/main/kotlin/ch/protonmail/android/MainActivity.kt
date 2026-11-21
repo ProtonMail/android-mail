@@ -113,6 +113,8 @@ class MainActivity : AppCompatActivity() {
                                 launcherViewModel.submit(LauncherViewModel.Action.OpenSubscription)
                             },
                             finishActivity = { finishAndRemoveTask() },
+                            // Only the app's own task goes: a link can open the app in the task it came from.
+                            closeAfterOpeningLink = { if (isTaskRoot) finishAndRemoveTask() else finish() },
                             openPasswordManagement = {
                                 launcherViewModel.submit(LauncherViewModel.Action.OpenPasswordManagement(it))
                             },
@@ -245,6 +247,7 @@ class MainActivity : AppCompatActivity() {
         val openSecurityKeys: () -> Unit,
         val openPasswordManagement: (userId: UserId?) -> Unit,
         val openSubscription: () -> Unit,
-        val finishActivity: () -> Unit
+        val finishActivity: () -> Unit,
+        val closeAfterOpeningLink: () -> Unit
     )
 }

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,7 @@ import ch.protonmail.android.legacymigration.domain.usecase.MigrateLegacyApplica
 import ch.protonmail.android.legacymigration.domain.usecase.ObserveLegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.SetLegacyMigrationStatus
 import ch.protonmail.android.legacymigration.domain.usecase.ShouldMigrateLegacyAccount
+import ch.protonmail.android.mailbyoe.presentation.navigation.ConnectGmailDeepLink
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailfeatureflags.domain.annotation.IsUpsellEnabled
 import ch.protonmail.android.mailfeatureflags.domain.model.FeatureFlag
@@ -43,19 +45,23 @@ import ch.protonmail.android.navigation.model.LauncherState.PrimaryExist
 import ch.protonmail.android.navigation.model.LauncherState.Processing
 import ch.protonmail.android.navigation.model.LauncherState.ProcessingAfterMigration
 import ch.protonmail.android.navigation.model.LauncherState.StepNeeded
+import ch.protonmail.android.navigation.share.NewIntentObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
 import me.proton.android.core.payment.presentation.onUpgradeResult
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 @SuppressWarnings("NotImplementedDeclaration", "UnusedPrivateMember")
@@ -69,7 +75,8 @@ class LauncherViewModel @Inject constructor(
     private val migrateLegacyApplication: MigrateLegacyApplication,
     private val shouldMigrateLegacyAccount: ShouldMigrateLegacyAccount,
     private val refreshFeatureFlags: RefreshFeatureFlags,
-    @IsUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>
+    @IsUpsellEnabled private val isUpsellEnabled: FeatureFlag<Boolean>,
+    private val newIntentObserver: NewIntentObserver
 ) : ViewModel() {
 
     private val _duplicateDialogErrorEffect = MutableStateFlow<Effect<Unit>>(Effect.empty())
@@ -78,11 +85,21 @@ class LauncherViewModel @Inject constructor(
     private val mutableState = MutableStateFlow(Processing)
     val state: StateFlow<LauncherState> = mutableState.asStateFlow()
 
+    private val mutableOpenInBrowserEffect = MutableStateFlow<Effect<OpenInBrowser>>(Effect.empty())
+    val openInBrowserEffect = mutableOpenInBrowserEffect.asStateFlow()
+
+    // While a connect Gmail web link that started the app is checked, the launcher stays on the splash: the welcome
+    // screen would start the sign-in on top of the browser. The state it would have shown is kept for the release.
+    private var isHeldForConnectGmailLink = false
+    private var heldState: LauncherState? = null
+
     init {
+        passSignedOutConnectGmailLinksToBrowser()
+
         viewModelScope.launch {
             when (observeLegacyMigrationStatus().first()) {
                 LegacyMigrationStatus.NotDone -> {
-                    mutableState.value = MigrationInProgress
+                    setState(MigrationInProgress)
 
                     migrateLegacyApplication()
 
@@ -120,7 +137,7 @@ class LauncherViewModel @Inject constructor(
                 if (previousState == PrimaryExist && state != PrimaryExist) waitForFeatureFlags = true
                 previousState = state
                 if (state == PrimaryExist && waitForFeatureFlags) {
-                    mutableState.value = if (afterMigration) ProcessingAfterMigration else Processing
+                    setState(if (afterMigration) ProcessingAfterMigration else Processing)
                     // The account that just became ready is the one signing in. An added account becomes the
                     // primary one only seconds later, so the primary account is only the fallback.
                     (signedInUserId ?: userSessionRepository.observePrimaryUserId().first())
@@ -129,7 +146,60 @@ class LauncherViewModel @Inject constructor(
                 }
                 state
             }
-            .collect { mutableState.value = it }
+            .collect { setState(it) }
+    }
+
+    private fun setState(state: LauncherState) {
+        if (isHeldForConnectGmailLink) heldState = state else mutableState.value = state
+    }
+
+    private fun releaseHold() {
+        isHeldForConnectGmailLink = false
+        heldState?.let { mutableState.value = it }
+        heldState = null
+    }
+
+    /**
+     * A connect Gmail web page opens the Gmail connection only once signed in, from Home. Signed out there is no
+     * Home, so the link goes to the browser, where the page asks to sign in. Anything else is left as it was: other
+     * intents, and any web link while an account is signed in or the accounts cannot be read.
+     *
+     * A link that started the app holds the splash until it is checked. Signed out, the app then closes instead of
+     * showing the welcome screen; otherwise the launcher carries on with the state it would have shown. A newer intent
+     * cancels the check.
+     */
+    private fun passSignedOutConnectGmailLinksToBrowser() {
+        viewModelScope.launch {
+            newIntentObserver().collectLatest { intent ->
+                if (intent.action != Intent.ACTION_VIEW || !ConnectGmailDeepLink.isWebPage(intent.dataString)) {
+                    return@collectLatest
+                }
+                val link = intent.dataString ?: return@collectLatest
+                val startedTheApp = mutableState.value in StartingStates
+                if (startedTheApp) isHeldForConnectGmailLink = true
+                var isClosing = false
+                try {
+                    if (!isSignedOut()) return@collectLatest
+                    Timber.d("byoe: signed out, passing the connect Gmail web link on to the browser")
+                    // The browser has the link now, so a later sign-in does not open the connection too.
+                    newIntentObserver.consume(intent)
+                    mutableOpenInBrowserEffect.value = Effect.of(OpenInBrowser(link, closeApp = startedTheApp))
+                    isClosing = startedTheApp
+                } finally {
+                    if (!isClosing) releaseHold()
+                }
+            }
+        }
+    }
+
+    // Unknown counts as signed in: the link is then left to Home, as before.
+    private suspend fun isSignedOut(): Boolean = withTimeoutOrNull(SignedOutCheckTimeout) {
+        observeLegacyMigrationStatus().first { it == LegacyMigrationStatus.Done }
+        userSessionRepository.isSignedOut()
+    } ?: false
+
+    private fun onBrowserUnavailable() {
+        if (isHeldForConnectGmailLink) releaseHold()
     }
 
     private fun List<Account>.toLauncherState(afterMigration: Boolean): LauncherState = when {
@@ -193,6 +263,7 @@ class LauncherViewModel @Inject constructor(
                 is Action.SignIn -> onSignIn(action.userId)
                 is Action.SignUp -> onSignUp()
                 is Action.SwitchToAccount -> onSwitchToAccount(action.userId)
+                is Action.BrowserUnavailable -> onBrowserUnavailable()
             }
         }
     }
@@ -242,6 +313,8 @@ class LauncherViewModel @Inject constructor(
         notificationsPermissionOrchestrator.requestPermissionIfRequired()
     }
 
+    data class OpenInBrowser(val link: String, val closeApp: Boolean)
+
     sealed interface Action {
 
         data object AddAccount : Action
@@ -254,5 +327,16 @@ class LauncherViewModel @Inject constructor(
         data class SignIn(val userId: UserId?) : Action
         data object SignUp : Action
         data class SwitchToAccount(val userId: UserId) : Action
+
+        /** The connect Gmail web link could not be opened in a browser, so the app stays open. */
+        data object BrowserUnavailable : Action
+    }
+
+    private companion object {
+
+        val StartingStates = setOf(Processing, MigrationInProgress, ProcessingAfterMigration)
+
+        // The launcher reads the same store before it shows anything, so this is only a safety net.
+        val SignedOutCheckTimeout = 5.seconds
     }
 }

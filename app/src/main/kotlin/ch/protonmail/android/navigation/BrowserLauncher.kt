@@ -27,21 +27,23 @@ import ch.protonmail.android.R
 import timber.log.Timber
 
 /**
- * Opens [link] in the browser, for a link the app is verified to open itself.
+ * Opens [link] in the browser, for a link the app is verified to open itself. Returns whether a browser opened it.
  *
  * A plain view intent would come straight back to the app, so the intent is aimed at the browser: the selector
  * picks the app, and the browser then gets the link.
  */
-internal fun Context.openInBrowser(link: String) {
+internal fun Context.openInBrowser(link: String): Boolean {
     val intent = Intent(Intent.ACTION_VIEW, link.toUri()).apply {
         selector = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_BROWSER)
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
-    try {
+    return try {
         startActivity(intent)
+        true
     } catch (e: ActivityNotFoundException) {
         Timber.d(e, "Failed to open a browser app")
         Toast.makeText(this, R.string.intent_failure_no_app_found_to_handle_this_action, Toast.LENGTH_LONG).show()
+        false
     }
 }

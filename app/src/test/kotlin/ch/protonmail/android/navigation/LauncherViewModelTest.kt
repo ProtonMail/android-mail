@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import android.content.Intent
 import app.cash.turbine.test
 import ch.protonmail.android.api.AccountApiProvider
 import ch.protonmail.android.legacymigration.domain.model.LegacyMigrationStatus
@@ -33,6 +34,7 @@ import ch.protonmail.android.mailsession.domain.model.AccountState
 import ch.protonmail.android.mailsession.domain.repository.UserSessionRepository
 import ch.protonmail.android.mailsession.domain.usecase.RefreshFeatureFlags
 import ch.protonmail.android.navigation.model.LauncherState
+import ch.protonmail.android.navigation.share.NewIntentObserver
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -48,10 +50,12 @@ import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import me.proton.android.core.payment.presentation.PaymentOrchestrator
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
+import kotlin.test.assertNull
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -95,6 +99,8 @@ class LauncherViewModelTest {
         primaryAddress = "added-address"
     )
 
+    private val newIntentObserver = NewIntentObserver()
+
     private fun viewModel() = LauncherViewModel(
         accountApiProvider,
         paymentOrchestrator,
@@ -105,8 +111,14 @@ class LauncherViewModelTest {
         migrateLegacyApplication,
         shouldMigrateLegacyAccount,
         refreshFeatureFlags,
-        isUpsellEnabled
+        isUpsellEnabled,
+        newIntentObserver
     )
+
+    private fun linkIntent(link: String) = mockk<Intent> {
+        every { action } returns Intent.ACTION_VIEW
+        every { dataString } returns link
+    }
 
     @AfterTest
     fun teardown() {
@@ -373,5 +385,210 @@ class LauncherViewModelTest {
         // Then
         coVerify(exactly = 1) { paymentOrchestrator.startSubscriptionWorkflow(true) }
         confirmVerified(paymentOrchestrator)
+    }
+
+    @Test
+    fun `closes the app after opening a connect Gmail web link that started it signed out`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            coEvery { userSessionRepository.isSignedOut() } returns true
+            val viewModel = viewModel()
+
+            // When
+            newIntentObserver.onNewIntent(linkIntent(WebLink))
+            advanceUntilIdle()
+            accounts.emit(emptyList())
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(
+                LauncherViewModel.OpenInBrowser(WebLink, closeApp = true),
+                viewModel.openInBrowserEffect.value.consume()
+            )
+            // The welcome screen would start the sign-in on top of the browser.
+            assertEquals(LauncherState.Processing, viewModel.state.value)
+        }
+
+    @Test
+    fun `leaves a connect Gmail web link that started the app to Home when signed in`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            coEvery { userSessionRepository.isSignedOut() } returns false
+            val viewModel = viewModel()
+            val intent = linkIntent(WebLink)
+
+            // When
+            newIntentObserver.onNewIntent(intent)
+            advanceUntilIdle()
+            // The accounts flow can start with an empty list while the stored accounts load.
+            accounts.emit(emptyList())
+            accounts.emit(listOf(readyAccount))
+            advanceUntilIdle()
+
+            // Then
+            assertNull(viewModel.openInBrowserEffect.value.consume())
+            assertEquals(LauncherState.PrimaryExist, viewModel.state.value)
+            newIntentObserver().test { assertEquals(intent, awaitItem()) }
+        }
+
+    @Test
+    fun `shows the launcher once the connect Gmail web link that started the app is left to Home`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            val isSignedOut = CompletableDeferred<Boolean>()
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            coEvery { userSessionRepository.isSignedOut() } coAnswers { isSignedOut.await() }
+            val viewModel = viewModel()
+            newIntentObserver.onNewIntent(linkIntent(WebLink))
+            runCurrent()
+            accounts.emit(listOf(readyAccount))
+            runCurrent()
+            assertEquals(LauncherState.Processing, viewModel.state.value)
+
+            // When
+            isSignedOut.complete(false)
+            runCurrent()
+
+            // Then
+            assertEquals(LauncherState.PrimaryExist, viewModel.state.value)
+        }
+
+    @Test
+    fun `opens a connect Gmail web link in the browser over the welcome screen`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns flowOf(emptyList())
+            coEvery { userSessionRepository.isSignedOut() } returns true
+            val viewModel = viewModel()
+            advanceUntilIdle()
+
+            // When
+            newIntentObserver.onNewIntent(linkIntent(WebLink))
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(
+                LauncherViewModel.OpenInBrowser(WebLink, closeApp = false),
+                viewModel.openInBrowserEffect.value.consume()
+            )
+            assertEquals(LauncherState.AccountNeeded, viewModel.state.value)
+        }
+
+    @Test
+    fun `drops the connect Gmail web link it opened in the browser, so a sign-in does not open it again`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns flowOf(emptyList())
+            coEvery { userSessionRepository.isSignedOut() } returns true
+            viewModel()
+            advanceUntilIdle()
+
+            // When
+            newIntentObserver.onNewIntent(linkIntent(WebLink))
+            advanceUntilIdle()
+
+            // Then
+            newIntentObserver().test { expectNoEvents() }
+        }
+
+    @Test
+    fun `shows the welcome screen when no browser can open the link that started the app`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            coEvery { userSessionRepository.isSignedOut() } returns true
+            val viewModel = viewModel()
+            newIntentObserver.onNewIntent(linkIntent(WebLink))
+            advanceUntilIdle()
+            accounts.emit(emptyList())
+            advanceUntilIdle()
+            assertEquals(LauncherState.Processing, viewModel.state.value)
+
+            // When
+            viewModel.submit(LauncherViewModel.Action.BrowserUnavailable)
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(LauncherState.AccountNeeded, viewModel.state.value)
+        }
+
+    @Test
+    fun `a newer intent cancels the check of a connect Gmail web link`() = runTest(mainDispatcherRule.testDispatcher) {
+        // Given
+        val accounts = MutableSharedFlow<List<Account>>()
+        every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+        every { userSessionRepository.observeAccounts() } returns accounts
+        coEvery { userSessionRepository.isSignedOut() } coAnswers { awaitCancellation() }
+        val viewModel = viewModel()
+        newIntentObserver.onNewIntent(linkIntent(WebLink))
+        runCurrent()
+        accounts.emit(emptyList())
+        runCurrent()
+        assertEquals(LauncherState.Processing, viewModel.state.value)
+
+        // When
+        newIntentObserver.onNewIntent(mockk { every { action } returns Intent.ACTION_SEND })
+        runCurrent()
+
+        // Then
+        assertNull(viewModel.openInBrowserEffect.value.consume())
+        assertEquals(LauncherState.AccountNeeded, viewModel.state.value)
+    }
+
+    @Test
+    fun `leaves the connect Gmail web link to Home when the accounts cannot be checked in time`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            val accounts = MutableSharedFlow<List<Account>>()
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns accounts
+            coEvery { userSessionRepository.isSignedOut() } coAnswers { awaitCancellation() }
+            val viewModel = viewModel()
+            newIntentObserver.onNewIntent(linkIntent(WebLink))
+            advanceUntilIdle()
+
+            // When
+            accounts.emit(emptyList())
+            advanceUntilIdle()
+
+            // Then
+            assertNull(viewModel.openInBrowserEffect.value.consume())
+            assertEquals(LauncherState.AccountNeeded, viewModel.state.value)
+        }
+
+    @Test
+    fun `does not check the accounts for a launch without a connect Gmail web link`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            // Given
+            every { observeLegacyMigrationStatus() } returns flowOf(LegacyMigrationStatus.Done)
+            every { userSessionRepository.observeAccounts() } returns flowOf(listOf(readyAccount))
+            val viewModel = viewModel()
+
+            // When
+            newIntentObserver.onNewIntent(mockk { every { action } returns Intent.ACTION_MAIN })
+            newIntentObserver.onNewIntent(linkIntent("protonmail://connect-gmail/start"))
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(LauncherState.PrimaryExist, viewModel.state.value)
+            assertNull(viewModel.openInBrowserEffect.value.consume())
+            coVerify(exactly = 0) { userSessionRepository.isSignedOut() }
+        }
+
+    private companion object {
+
+        const val WebLink = "https://account.proton.me/mail/easy-switch"
     }
 }

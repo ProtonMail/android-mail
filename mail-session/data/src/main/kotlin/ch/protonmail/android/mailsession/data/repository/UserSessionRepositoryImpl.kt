@@ -82,6 +82,14 @@ class UserSessionRepositoryImpl @Inject constructor(
         .map { UserId(it.userId()) }
         .toSet()
 
+    override suspend fun isSignedOut(): Boolean = mailSession.getAccounts().fold(
+        ifLeft = {
+            Timber.w("user-session: unable to read the stored accounts, error=$it")
+            false
+        },
+        ifRight = { accounts -> accounts.none { it.state() is StoredAccountState.LoggedIn } }
+    )
+
     override fun observePrimaryUserId(): Flow<UserId?> = observeAccounts()
         .map { list ->
             val primaryUserId = mailSession.getPrimaryAccount().getOrNull()?.userId()

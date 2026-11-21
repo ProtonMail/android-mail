@@ -55,6 +55,12 @@ interface UserSessionRepository {
      */
     suspend fun getReadyUserIds(): Set<UserId>
 
+    /**
+     * Whether the store was read and holds no signed-in account. When the store cannot be read this is false, so a
+     * caller that acts on it never treats a signed-in user as signed out.
+     */
+    suspend fun isSignedOut(): Boolean
+
     fun observePrimaryUserId(): Flow<UserId?>
 
     fun observeUser(userId: UserId): Flow<Either<DataError, User>>

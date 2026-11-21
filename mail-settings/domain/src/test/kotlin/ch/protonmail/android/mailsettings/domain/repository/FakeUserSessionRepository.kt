@@ -56,6 +56,10 @@ internal class FakeUserSessionRepository(
         TODO("Not yet implemented")
     }
 
+    override suspend fun isSignedOut(): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun observePrimaryUserId(): Flow<UserId?> = flowOf(primaryUserId)
 
     override fun observeUser(userId: UserId): Flow<Either<DataError, User>> = flowOf(

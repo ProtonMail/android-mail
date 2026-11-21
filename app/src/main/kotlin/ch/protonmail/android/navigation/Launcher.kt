@@ -52,6 +52,15 @@ fun Launcher(
             Toast.LENGTH_LONG
         ).show()
     }
+    ConsumableLaunchedEffect(viewModel.openInBrowserEffect.collectAsStateWithLifecycle().value) {
+        val isOpened = context.openInBrowser(it.link)
+        if (!it.closeApp) return@ConsumableLaunchedEffect
+        if (isOpened) {
+            activityActions.closeAfterOpeningLink()
+        } else {
+            viewModel.submit(LauncherViewModel.Action.BrowserUnavailable)
+        }
+    }
 
     val signedInContent: @Composable (() -> Unit) = {
         LauncherRouter(

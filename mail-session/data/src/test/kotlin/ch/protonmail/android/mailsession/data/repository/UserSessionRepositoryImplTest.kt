@@ -33,7 +33,9 @@ import uniffi.mail_uniffi.StoredAccountState
 import uniffi.mail_uniffi.StoredSession
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 import uniffi.mail_uniffi.Fork as RustFork
 import uniffi.mail_uniffi.ForkWithKeyPayload as RustForkWithKeyPayload
@@ -380,6 +382,52 @@ class UserSessionRepositoryImplTest {
 
         // Then
         assertEquals(emptySet(), result)
+    }
+
+    @Test
+    fun `isSignedOut is true when no stored account is logged in`() = runTest {
+        // Given
+        val disabled = mockk<StoredAccount> { every { state() } returns StoredAccountState.LoggedOut }
+        val notReady = mockk<StoredAccount> { every { state() } returns StoredAccountState.NotReady }
+        coEvery { mailSessionRepository.getMailSession() } returns mockk {
+            coEvery { getAccounts() } returns listOf(disabled, notReady).right()
+        }
+
+        // When
+        val result = userSessionRepository.isSignedOut()
+
+        // Then
+        assertTrue(result)
+    }
+
+    @Test
+    fun `isSignedOut is false when a stored account is logged in`() = runTest {
+        // Given
+        val disabled = mockk<StoredAccount> { every { state() } returns StoredAccountState.LoggedOut }
+        val loggedIn = mockk<StoredAccount> { every { state() } returns mockk<StoredAccountState.LoggedIn>() }
+        coEvery { mailSessionRepository.getMailSession() } returns mockk {
+            coEvery { getAccounts() } returns listOf(disabled, loggedIn).right()
+        }
+
+        // When
+        val result = userSessionRepository.isSignedOut()
+
+        // Then
+        assertFalse(result)
+    }
+
+    @Test
+    fun `isSignedOut is false when the stored accounts cannot be read`() = runTest {
+        // Given
+        coEvery { mailSessionRepository.getMailSession() } returns mockk {
+            coEvery { getAccounts() } returns DataError.Local.NoDataCached.left()
+        }
+
+        // When
+        val result = userSessionRepository.isSignedOut()
+
+        // Then
+        assertFalse(result)
     }
 
     private fun mailSessionWithNoStoredAccount() = mockk<MailSessionWrapper> {
