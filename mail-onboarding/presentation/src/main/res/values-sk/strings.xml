@@ -25,7 +25,12 @@
   <string name="onboarding_rebuilt_description">Venujte menej času triedeniu a viac času práci. Vaša doručená pošta je navrhnutá tak, aby sa v nej ľahšie orientovalo, takže sa môžete rýchlejšie dostať k tomu, čo je dôležité.</string>
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Zostaňte v kontakte, aj keď ste offline</string>
-  <string name="onboarding_feedback_description">Čítajte, píšte a spravujte emaily kdekoľvek sa nachádzate. Všetko sa automaticky synchronizuje v momente, keď sa opäť pripojíte k internetu.</string>
+  <string name="onboarding_feedback_description">Čítajte, píšte a spravujte emaily, nech ste kdekoľvek. Všetko sa automaticky synchronizuje v momente, keď sa opäť pripojíte k internetu.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Prechádzate z Gmailu?</string>
+  <string name="onboarding_gmail_description">Používajte svoju adresu Gmail aj naďalej, priamo v Proton Mail. Odosielajte a prijímajte emaily bez reklám a sledovania.</string>
+  <string name="onboarding_gmail_help_me_move">Áno, pomôžte mi s prechodom</string>
+  <string name="onboarding_gmail_no_thanks">Nie, ďakujem</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Ďalej</string>
   <string name="onboarding_get_started">Začať</string>

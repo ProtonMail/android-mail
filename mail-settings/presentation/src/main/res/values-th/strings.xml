@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">การตั้งค่าส่วนตัว</string>
   <string name="mail_settings_app">การปรับแต่งแอป</string>
   <string name="mail_settings_content_search">ค้นหาเนื้อหาในอีเมล</string>
+  <string name="mail_settings_connect_gmail">เชื่อมต่อ Gmail</string>
   <string name="mail_settings_mailbox">การตั้งค่าส่วนตัวกล่องจดหมาย</string>
   <string name="mail_settings_new_badge">ใหม่</string>
   <string name="mail_settings_folders_labels">โฟลเดอร์และป้ายกำกับ</string>

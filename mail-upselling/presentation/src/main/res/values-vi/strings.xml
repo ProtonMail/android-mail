@@ -33,7 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s cho tháng đầu tiên, sau đó là %s mỗi tháng</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Nâng cấp lên Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Không hiển thị lại</string>
+  <string name="upselling_do_not_show_again">Do not show again</string>
   <string name="upselling_pu_choose_plan">Chọn gói</string>
   <string name="upselling_pu_whats_included">Bao gồm những gì</string>
   <string name="upselling_pu_cta">Mua Proton Unlimited</string>
@@ -92,6 +92,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Tạm ẩn và gửi sau. Trải nghiệm tính năng này và nhiều hơn thế với Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Gửi email này lúc này chưa phù hợp?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Nâng cấp gói để tiếp tục nhập mà không lo hết dung lượng</string>
+  <string name="upselling_byoe_storage_title">Đừng để quá trình nhập bị gián đoạn</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Nâng cấp và chuyển toàn bộ Gmail vào một hộp thư đến riêng tư</string>
+  <string name="upselling_byoe_connection_limit_title">Kết nối tối đa 3 địa chỉ Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Nâng cấp để có sự linh hoạt tối đa</string>
   <string name="upselling_upgrade_plan_generic">Bạn cần có gói đăng ký Proton Mail trả phí để truy cập vào tính năng này</string>
@@ -116,6 +123,7 @@
   <string name="upselling_comparison_table_password_manager">Trình quản lý mật khẩu mã hóa</string>
   <string name="upselling_comparison_table_threat_protection">Bảo vệ chống mối đe dọa nâng cao</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Không giới hạn thư mục, bộ lọc và nhãn</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Chọn gói đăng ký</string>
   <string name="upselling_select_plan_year">12 tháng</string>

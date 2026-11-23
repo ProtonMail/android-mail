@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Падключыце свой Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Не ўдалося падключыць ваш уліковы запіс Gmail. Паўтарыце спробу.</string>
+  <string name="byoe_gmail_connection_retry">Паўтарыце спробу</string>
+  <string name="byoe_gmail_connection_cancel">Скасаваць</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail падключаны</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Сачыце за сваім уліковым запісам Gmail тут</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Атрымлівайце, чытайце і адпраўляйце без пераключэння праграм</string>
+  <string name="byoe_gmail_connected_notifications_title">Выключэнне апавяшчэнняў у праграме Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Такім чынам, вы атрымаеце апавяшчэнне толькі адзін раз</string>
+  <string name="byoe_gmail_connected_import_title">Імпартаванне вашых лістоў</string>
+  <string name="byoe_gmail_connected_import_body">Працэс выконваецца ў фонавым рэжыме, таму вы можаце працягваць карыстацца праграмай. Вам будзе адпраўлена апавяшчэнне пасля таго, як ён будзе завершаны.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Даведайцеся, што імпартуецца.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Старэйшыя лісты застануцца ў Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Хочаце бачыць іх тут таксама? Выканайце імпарт у любы час у Наладах.</string>
+  <string name="byoe_gmail_connected_open_inbox">Перавесці мяне ў паштовую скрыню</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Што імпартуецца</string>
+  <string name="byoe_import_info_subtitle">Ваш уліковы запіс Gmail застаецца без змяненняў. У ім нічога не рэдагуецца і не выдаляецца.</string>
+  <string name="byoe_import_info_label_lead">Усе вашы лісты Gmail у адной метцы.</string>
+  <string name="byoe_import_info_label_body">Імпартаваным лістам прысвойваецца метка %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Імпартаваным лістам будзе прысвоена метка, якая адпавядае вашаму адрасу Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Вашы меткі і папкі.</string>
+  <string name="byoe_import_info_folders_body">Яны пераносяцца такімі, якімі вы іх наладзілі ў Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Фільтры і правілы не пераносяцца.</string>
+  <string name="byoe_import_info_filters_body">Вы можаце наладзіць новыя ў Наладах.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Выконваецца імпартаванне…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Дасягнута абмежаванне па памеры сховішча</string>
+  <string name="byoe_storage_banner_body">Імпартаванне прыпынена па прычыне таго, што дасягнута абмежаванне па памеры сховішча. Палепшыце свой тарыфны план, каб атрымаць большы аб\'ём сховішча і завяршыць імпартаванне.</string>
+  <string name="byoe_storage_banner_upgrade">Палепшыць</string>
+  <string name="byoe_storage_banner_not_now">Не цяпер</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Што новага</string>
+  <string name="byoe_spotlight_title">Выкарыстоўваць Gmail у Proton</string>
+  <string name="byoe_spotlight_subtitle">Імпартаваць існуючыя лісты і сінхранізаваць будучыя з Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Чытайце, адказвайце і заставайцеся ў курсе падзей Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Без рэкламы і праграм сачэння</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google не зможа сачыць за тым, што вы робіце ў Proton</string>
+  <string name="byoe_spotlight_import_title">Імпартуйце свае лісты</string>
+  <string name="byoe_spotlight_import_body">Пачніце з самых новых лістоў</string>
+  <string name="byoe_spotlight_connect_and_import">Падключыць і імпартаваць</string>
+  <string name="byoe_spotlight_connect">Падключыць</string>
+  <string name="byoe_spotlight_later">Не цяпер</string>
+  <string name="byoe_spotlight_permissions_note">Наступны крок: дайце ўсе дазволы. Proton ніколі не будзе прасіць дазвол на змяненне або выдаленне чаго-небудзь у вашым уліковым запісе Gmail.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Падключыце свой Gmail, а ўсё астатняе будзе зроблена сістэмай.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Атрымлівайце і пішыце лісты з дапамогай свайго адраса Gmail. Усё гэта можна рабіць непасрэдна ў Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Вашы лісты не будуць рэдагавацца і выдаляцца ў Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Адключыць можна ў любы час. У скрыні Gmail нічога зменена не будзе.</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Наступны крок: Google папросіць вас ухваліць усе дазволы. Ухваліце кожны з іх, каб адбылося падключэнне.</string>
+</resources>

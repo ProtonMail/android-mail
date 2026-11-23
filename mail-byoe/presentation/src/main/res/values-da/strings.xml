@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Forbind din Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Det var ikke muligt at oprette forbindelse til din Gmail-konto. Prøv igen.</string>
+  <string name="byoe_gmail_connection_retry">Prøv igen</string>
+  <string name="byoe_gmail_connection_cancel">Annullér</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail forbundet</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Hold styr på din Gmail her</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Modtag, læs og send uden at skifte mellem apps</string>
+  <string name="byoe_gmail_connected_notifications_title">Deaktiver notifikationer i Gmail-appen</string>
+  <string name="byoe_gmail_connected_notifications_body">Så du kun bliver underrettet én gang</string>
+  <string name="byoe_gmail_connected_import_title">Import af dine e-mails</string>
+  <string name="byoe_gmail_connected_import_body">Den kører i baggrunden, så du kan roligt bruge appen. Vi giver dig besked, når den er færdig.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Find ud af, hvad der importeres.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Ældre e-mails forbliver i Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Vil du også have dem her? Du kan importere dem når som helst under Indstillinger.</string>
+  <string name="byoe_gmail_connected_open_inbox">Gå til indbakken</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Hvad der importeres</string>
+  <string name="byoe_import_info_subtitle">Din Gmail-konto forbliver, som den er. Der ændres eller slettes intet.</string>
+  <string name="byoe_import_info_label_lead">Alle dine Gmail-mails i én etiket.</string>
+  <string name="byoe_import_info_label_body">De importerede e-mails findes under etiketten %s.</string>
+  <string name="byoe_import_info_label_body_no_address">De importerede e-mails findes under den etiket, der er opkaldt efter din Gmail-adresse.</string>
+  <string name="byoe_import_info_folders_lead">Dine etiketter og mapper.</string>
+  <string name="byoe_import_info_folders_body">De kommer over, præcis som du har konfigureret dem i Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filtre og regler importeres ikke.</string>
+  <string name="byoe_import_info_filters_body">Du kan oprette nye under Indstillinger.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Import i gang…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Lagergrænse nået</string>
+  <string name="byoe_storage_banner_body">Importen er sat på pause på grund af lagerbegrænsningen. Opgrader og få mere lagerplads for at fuldføre importen.</string>
+  <string name="byoe_storage_banner_upgrade">Opgradér</string>
+  <string name="byoe_storage_banner_not_now">Ikke nu</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Nyheder</string>
+  <string name="byoe_spotlight_title">Brug Gmail i Proton</string>
+  <string name="byoe_spotlight_subtitle">Importer eksisterende e-mails og synkroniser fremtidige e-mails fra Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Læs, svar og hold styr på Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Ingen reklamer, ingen trackere</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google kan ikke spore, hvad du laver i Proton</string>
+  <string name="byoe_spotlight_import_title">Importér dine e-mails</string>
+  <string name="byoe_spotlight_import_body">Start med de seneste</string>
+  <string name="byoe_spotlight_connect_and_import">Forbind og importer</string>
+  <string name="byoe_spotlight_connect">Forbind</string>
+  <string name="byoe_spotlight_later">Ikke nu</string>
+  <string name="byoe_spotlight_permissions_note">Næste: Godkend alle tilladelser. Proton beder aldrig om tilladelse til at redigere eller slette noget i din Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Forbind din Gmail-konto, så tager vi os af resten.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Modtag og send e-mails via din Gmail-adresse. Alt sammen direkte fra Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Vi redigerer eller sletter ikke din Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Afbryd forbindelsen når som helst, der går intet i stykker</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Næste: Google vil bede dig om at godkende alle tilladelser. Godkend dem alle, så forbindelsen fungerer.</string>
+</resources>

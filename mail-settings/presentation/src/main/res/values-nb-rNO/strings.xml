@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">Preferanser</string>
   <string name="mail_settings_app">Tilpasninger av app</string>
   <string name="mail_settings_content_search">Søk etter e-postinnhold</string>
+  <string name="mail_settings_connect_gmail">Koble til Gmail</string>
   <string name="mail_settings_mailbox">Preferanser for postboks</string>
   <string name="mail_settings_new_badge">Ny</string>
   <string name="mail_settings_folders_labels">Mapper og etiketter</string>

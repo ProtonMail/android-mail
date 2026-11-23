@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Névjegyek</string>
+  <string name="drawer_byoe_title">Gmail használata a Proton Mailben</string>
+  <string name="drawer_byoe_subtitle">Olvassa és küldje Gmail-üzeneteit itt, nyomkövetés nélkül.</string>
+  <string name="drawer_byoe_get_started">Kezdés</string>
+  <string name="drawer_byoe_dismiss">Elvetés</string>
   <string name="drawer_title_bug_report">Probléma jelentése</string>
   <string name="drawer_item_create_label">Címke létrehozása</string>
   <string name="drawer_item_create_folder">Mappa létrehozása</string>

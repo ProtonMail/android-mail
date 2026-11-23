@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Yhteystiedot</string>
+  <string name="drawer_byoe_title">Käytä Gmailia Proton Mailissa</string>
+  <string name="drawer_byoe_subtitle">Lue ja lähetä Gmail-viestejä täällä ilman seurantaa.</string>
+  <string name="drawer_byoe_get_started">Aloita</string>
+  <string name="drawer_byoe_dismiss">Hylkää</string>
   <string name="drawer_title_bug_report">Ilmoita ongelmasta</string>
   <string name="drawer_item_create_label">Luo tunniste</string>
   <string name="drawer_item_create_folder">Luo kansio</string>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">เชื่อมต่อ Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">ไม่สามารถเชื่อมต่อบัญชี Gmail ได้ โปรดลองอีกครั้ง</string>
+  <string name="byoe_gmail_connection_retry">ลองอีกครั้ง</string>
+  <string name="byoe_gmail_connection_cancel">ยกเลิก</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">เชื่อมต่อ Gmail แล้ว</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">จัดการ Gmail ได้ครบที่นี่</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">รับ อ่าน และส่งอีเมลได้โดยไม่ต้องสลับแอป</string>
+  <string name="byoe_gmail_connected_notifications_title">ปิดการแจ้งเตือนในแอป Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">เพื่อให้ได้รับการแจ้งเตือนเพียงครั้งเดียว</string>
+  <string name="byoe_gmail_connected_import_title">กำลังนำเข้าอีเมล</string>
+  <string name="byoe_gmail_connected_import_body">การนำเข้าจะทำงานอยู่เบื้องหลัง จึงใช้งานแอปต่อได้เลย และจะแจ้งให้ทราบเมื่อเสร็จสิ้น</string>
+  <string name="byoe_gmail_connected_import_learn_more">ดูว่ามีอะไรบ้างที่จะถูกนำเข้า</string>
+  <string name="byoe_gmail_connected_older_emails_title">อีเมลเก่าจะยังอยู่ใน Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">ต้องการให้อีเมลเหล่านั้นอยู่ที่นี่ด้วยไหม นำเข้าได้ทุกเมื่อในการตั้งค่า</string>
+  <string name="byoe_gmail_connected_open_inbox">ไปที่กล่องขาเข้า</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">สิ่งที่จะถูกนำเข้า</string>
+  <string name="byoe_import_info_subtitle">บัญชี Gmail จะยังคงเหมือนเดิม ไม่มีสิ่งใดถูกแก้ไขหรือลบ</string>
+  <string name="byoe_import_info_label_lead">อีเมลทั้งหมดจาก Gmail อยู่ในป้ายกำกับเดียว</string>
+  <string name="byoe_import_info_label_body">อีเมลที่นำเข้าจะอยู่ภายใต้ป้ายกำกับ %s</string>
+  <string name="byoe_import_info_label_body_no_address">อีเมลที่นำเข้าจะอยู่ภายใต้ป้ายกำกับที่ตั้งชื่อตามที่อยู่ Gmail</string>
+  <string name="byoe_import_info_folders_lead">ป้ายกำกับและโฟลเดอร์</string>
+  <string name="byoe_import_info_folders_body">จะถูกย้ายมาตามที่ตั้งค่าไว้ใน Gmail ทุกประการ</string>
+  <string name="byoe_import_info_filters_lead">ตัวกรองและกฎจะไม่ถูกนำเข้า</string>
+  <string name="byoe_import_info_filters_body">สามารถตั้งค่าใหม่ได้ในการตั้งค่า</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">กำลังนำเข้า…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">พื้นที่จัดเก็บเต็มแล้ว</string>
+  <string name="byoe_storage_banner_body">การนำเข้าหยุดชั่วคราวเนื่องจากพื้นที่จัดเก็บเต็ม อัปเกรดเพื่อรับพื้นที่จัดเก็บเพิ่มและนำเข้าให้เสร็จสิ้น</string>
+  <string name="byoe_storage_banner_upgrade">อัปเกรด</string>
+  <string name="byoe_storage_banner_not_now">ไม่ใช่ตอนนี้</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">มีอะไรใหม่</string>
+  <string name="byoe_spotlight_title">ใช้ Gmail ใน Proton</string>
+  <string name="byoe_spotlight_subtitle">นำเข้าอีเมลที่มีอยู่และซิงค์อีเมลใหม่จาก Gmail</string>
+  <string name="byoe_spotlight_benefit_read">อ่าน ตอบกลับ และจัดการ Gmail ได้ครบ</string>
+  <string name="byoe_spotlight_benefit_no_ads">ไม่มีโฆษณา ไม่มีตัวติดตาม</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google ไม่สามารถติดตามสิ่งที่ทำใน Proton ได้</string>
+  <string name="byoe_spotlight_import_title">นำเข้าอีเมล</string>
+  <string name="byoe_spotlight_import_body">เริ่มจากอีเมลล่าสุด</string>
+  <string name="byoe_spotlight_connect_and_import">เชื่อมต่อและนำเข้า</string>
+  <string name="byoe_spotlight_connect">เชื่อมต่อ</string>
+  <string name="byoe_spotlight_later">ไม่ใช่ตอนนี้</string>
+  <string name="byoe_spotlight_permissions_note">ขั้นตอนถัดไป: อนุมัติสิทธิ์ทั้งหมด Proton ไม่เคยขอสิทธิ์ในการแก้ไขหรือลบสิ่งใดใน Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">เชื่อมต่อ Gmail แล้วที่เหลือปล่อยให้เป็นหน้าที่ของ Proton</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">รับและเขียนอีเมลด้วยที่อยู่ Gmail ได้ทั้งหมดจากภายใน Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">จะไม่มีการแก้ไขหรือลบสิ่งใดใน Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">ยกเลิกการเชื่อมต่อได้ทุกเมื่อโดยไม่มีอะไรเสียหาย</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">ขั้นตอนถัดไป: Google จะขอให้อนุมัติสิทธิ์ทั้งหมด โปรดอนุมัติทุกสิทธิ์เพื่อให้การเชื่อมต่อทำงานได้</string>
+</resources>

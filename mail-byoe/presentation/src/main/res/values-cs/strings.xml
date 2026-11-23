@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Připojte Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Účet Gmail se nepodařilo připojit. Zkuste to znovu.</string>
+  <string name="byoe_gmail_connection_retry">Zkusit znovu</string>
+  <string name="byoe_gmail_connection_cancel">Zrušit</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail je připojen</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Mějte Gmail pod kontrolou přímo zde</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Přijímejte, čtěte a odesílejte bez přepínání mezi aplikacemi</string>
+  <string name="byoe_gmail_connected_notifications_title">Vypněte oznámení v aplikaci Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Oznámení tak dostanete jen jednou</string>
+  <string name="byoe_gmail_connected_import_title">Probíhá import e-mailů</string>
+  <string name="byoe_gmail_connected_import_body">Import probíhá na pozadí, takže můžete aplikaci klidně používat. Po jeho dokončení vám pošleme oznámení.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Zjistěte, co se importuje.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Starší e-maily zůstanou v Gmailu</string>
+  <string name="byoe_gmail_connected_older_emails_body">Chcete je mít i zde? Importovat je můžete kdykoli v nastavení.</string>
+  <string name="byoe_gmail_connected_open_inbox">Přejít do Doručené pošty</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Co se importuje</string>
+  <string name="byoe_import_info_subtitle">Účet Gmail zůstane beze změny. Nic v něm nebude upraveno ani smazáno.</string>
+  <string name="byoe_import_info_label_lead">Celý váš Gmail pod jedním štítkem.</string>
+  <string name="byoe_import_info_label_body">Importované e-maily najdete pod štítkem %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Importované e-maily najdete pod štítkem pojmenovaným podle vaší adresy Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Vaše štítky a složky.</string>
+  <string name="byoe_import_info_folders_body">Přenesou se přesně tak, jak je máte nastavené v Gmailu.</string>
+  <string name="byoe_import_info_filters_lead">Filtry a pravidla se nepřenesou.</string>
+  <string name="byoe_import_info_filters_body">Nové můžete vytvořit v nastavení.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Probíhá import…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Bylo dosaženo limitu úložiště</string>
+  <string name="byoe_storage_banner_body">Import byl pozastaven, protože bylo dosaženo limitu úložiště. Pro dokončení importu navyšte tarif a získejte více úložiště.</string>
+  <string name="byoe_storage_banner_upgrade">Navýšit</string>
+  <string name="byoe_storage_banner_not_now">Nyní ne</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Co je nového</string>
+  <string name="byoe_spotlight_title">Používejte Gmail v Protonu</string>
+  <string name="byoe_spotlight_subtitle">Importujte stávající e-maily a synchronizujte budoucí z Gmailu.</string>
+  <string name="byoe_spotlight_benefit_read">Čtěte, odpovídejte a mějte Gmail pod kontrolou</string>
+  <string name="byoe_spotlight_benefit_no_ads">Žádné reklamy ani sledovací prvky</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google nemůže sledovat, co v Protonu děláte</string>
+  <string name="byoe_spotlight_import_title">Importujte e-maily</string>
+  <string name="byoe_spotlight_import_body">Začněte těmi nejnovějšími</string>
+  <string name="byoe_spotlight_connect_and_import">Připojit a importovat</string>
+  <string name="byoe_spotlight_connect">Připojit</string>
+  <string name="byoe_spotlight_later">Nyní ne</string>
+  <string name="byoe_spotlight_permissions_note">Dále: schvalte všechna oprávnění. Proton nikdy nežádá o oprávnění cokoli ve vašem Gmailu upravovat nebo mazat.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Připojte Gmail a o zbytek se postaráme.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Přijímejte a pište e-maily ze své adresy Gmail. Vše přímo v Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Ve vašem Gmailu nic neupravíme ani nesmažeme</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Odpojit se můžete kdykoli a nic se nepokazí</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Dále: Google vás požádá o schválení všech oprávnění. Schvalte je všechna, aby připojení fungovalo.</string>
+</resources>

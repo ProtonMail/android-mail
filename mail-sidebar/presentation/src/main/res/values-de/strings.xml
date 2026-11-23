@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Kontakte</string>
+  <string name="drawer_byoe_title">Gmail in Proton Mail nutzen</string>
+  <string name="drawer_byoe_subtitle">Hier kannst du Gmail lesen und E-Mails versenden – ganz ohne Tracking.</string>
+  <string name="drawer_byoe_get_started">Erste Schritte</string>
+  <string name="drawer_byoe_dismiss">Verwerfen</string>
   <string name="drawer_title_bug_report">Ein Problem melden</string>
   <string name="drawer_item_create_label">Kategorie erstellen</string>
   <string name="drawer_item_create_folder">Ordner erstellen</string>

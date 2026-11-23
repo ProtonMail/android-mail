@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">联系人</string>
+  <string name="drawer_byoe_title">在 Proton Mail 中使用 Gmail</string>
+  <string name="drawer_byoe_subtitle">在这里阅读和发送 Gmail 邮件，告别跟踪。</string>
+  <string name="drawer_byoe_get_started">立即体验</string>
+  <string name="drawer_byoe_dismiss">忽略</string>
   <string name="drawer_title_bug_report">报告问题</string>
   <string name="drawer_item_create_label">创建标签</string>
   <string name="drawer_item_create_folder">新建文件夹</string>

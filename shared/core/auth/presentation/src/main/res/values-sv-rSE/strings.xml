@@ -133,7 +133,7 @@
   <string name="settings_save_main_password">Spara nytt huvudlösenord</string>
   <string name="settings_password_management_tab_main_password">Huvudlösenord</string>
   <string name="settings_password_management_tab_second_password">Andra lösenord</string>
-  <string name="settings_password_management_change_password_note">För att ändra något av dina lösenord måste du kunna ditt huvudlösenord. </string>
+  <string name="settings_password_management_change_password_note">För att ändra något av dina lösenord måste du kunna ditt huvudlösenord.\u0020</string>
   <string name="settings_password_management_forgot_main_password">Glömt ditt huvudlösenord?</string>
   <string name="settings_main_password_hint_current">Nuvarande huvudlösenord</string>
   <string name="settings_main_password_hint_new">Nytt huvudlösenord</string>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Conectați-vă contul Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Contul Gmail nu vi s-a putut conecta. Reîncercați.</string>
+  <string name="byoe_gmail_connection_retry">Reîncercare</string>
+  <string name="byoe_gmail_connection_cancel">Anulare</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail conectat</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Gestionați-vă contul Gmail aici</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Primiți, citiți și trimiteți mesaje fără a schimba aplicațiile</string>
+  <string name="byoe_gmail_connected_notifications_title">Dezactivați notificările în aplicația Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Pentru a primi notificări doar o dată</string>
+  <string name="byoe_gmail_connected_import_title">Vi se importă mesajele</string>
+  <string name="byoe_gmail_connected_import_body">Rulează în fundal, așa că puteți folosi aplicația în continuare. Veți primi o notificare când procesul este finalizat.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Aflați ce este importat.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Mesajele vechi stau în Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Le doriți și aici? Importați-le oricând din Setări.</string>
+  <string name="byoe_gmail_connected_open_inbox">Accesare Primite</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Ce va fi importat</string>
+  <string name="byoe_import_info_subtitle">Contul Gmail vă rămâne așa cum este. Nimic din el nu este modificat sau șters.</string>
+  <string name="byoe_import_info_label_lead">Toate mesajele Gmail cu o etichetă unică.</string>
+  <string name="byoe_import_info_label_body">Mesajele importate apar cu eticheta %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Mesajele importate se află sub eticheta care poartă numele adresei de Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Etichetele și folderele personale.</string>
+  <string name="byoe_import_info_folders_body">Apar exact așa cum le-ați configurat în Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filtrele și regulile nu sunt importate.</string>
+  <string name="byoe_import_info_filters_body">Puteți configura altele noi în Setări.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Importarea este în derulare…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Limită de stocare atinsă</string>
+  <string name="byoe_storage_banner_body">Importarea este întreruptă din cauza limitei de stocare. Treceți la un plan superior și obțineți mai mult spațiu de stocare pentru a o finaliza.</string>
+  <string name="byoe_storage_banner_upgrade">Modificare</string>
+  <string name="byoe_storage_banner_not_now">Nu acum</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Ce este nou</string>
+  <string name="byoe_spotlight_title">Folosiți Gmail în Proton</string>
+  <string name="byoe_spotlight_subtitle">Importați mesajele existente și sincronizați-le pe cele viitoare din Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Citiți, răspundeți și gestionați-vă eficient contul Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Fără reclame, fără monitorizare</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google nu vă poate urmări ce faceți în Proton</string>
+  <string name="byoe_spotlight_import_title">Importați-vă mesajele</string>
+  <string name="byoe_spotlight_import_body">Începeți cu cele mai recente</string>
+  <string name="byoe_spotlight_connect_and_import">Conectare și importare</string>
+  <string name="byoe_spotlight_connect">Conectare</string>
+  <string name="byoe_spotlight_later">Nu acum</string>
+  <string name="byoe_spotlight_permissions_note">În continuare: acordați toate permisiunile. Proton nu vă solicită niciodată permisiunea de a modifica sau șterge ceva din contul Gmail.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Conectați-vă contul Gmail și ne vom ocupa de restul.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Primiți și scrieți mesaje pe adresa Gmail proprie. Totul, direct din Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Nu vă vom edita sau șterge contul Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Deconectați-l oricând, nimic nu e afectat</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">În continuare: Google vă va cere să aprobați toate permisiunile. Aprobați-le pe toate pentru a face conexiunea să funcționeze.</string>
+</resources>

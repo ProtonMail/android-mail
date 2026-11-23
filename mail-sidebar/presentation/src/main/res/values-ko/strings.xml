@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">연락처</string>
+  <string name="drawer_byoe_title">Proton Mail에서 Gmail 사용하기</string>
+  <string name="drawer_byoe_subtitle">추적 걱정 없이 여기에서 Gmail을 읽고 보내세요.</string>
+  <string name="drawer_byoe_get_started">시작하기</string>
+  <string name="drawer_byoe_dismiss">무시</string>
   <string name="drawer_title_bug_report">문제 보고</string>
   <string name="drawer_item_create_label">라벨 생성</string>
   <string name="drawer_item_create_folder">폴더 생성</string>

@@ -33,7 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s за 1-й месяц, затем %s в месяц</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Перейти на Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">Больше не показывать</string>
+  <string name="upselling_do_not_show_again">Do not show again</string>
   <string name="upselling_pu_choose_plan">Выберите свой тариф</string>
   <string name="upselling_pu_whats_included">Что включено</string>
   <string name="upselling_pu_cta">Подключить Proton Unlimited</string>
@@ -92,6 +92,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Отложите его — и оно будет доставлено позже. Эта и другие возможности доступны в Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Неподходящее время для письма?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Улучшите тариф, чтобы продолжить импорт без нехватки места</string>
+  <string name="upselling_byoe_storage_title">Не дайте импорту остановиться</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Улучшите тариф и перенесите всю почту Gmail в один конфиденциальный почтовый ящик</string>
+  <string name="upselling_byoe_connection_limit_title">Подключите до 3 адресов Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Улучшите тариф для полной гибкости</string>
   <string name="upselling_upgrade_plan_generic">Вам нужна платная подписка Proton Mail, чтобы получить доступ к этой функции</string>
@@ -116,6 +123,7 @@
   <string name="upselling_comparison_table_password_manager">Зашифрованный менеджер паролей</string>
   <string name="upselling_comparison_table_threat_protection">Расширенная защита от угроз</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Неограниченные папки, фильтры, ярлыки</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Выбрать подписку</string>
   <string name="upselling_select_plan_year">12 месяцев</string>

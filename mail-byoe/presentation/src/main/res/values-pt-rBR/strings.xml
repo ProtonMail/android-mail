@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Conecte seu Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Não foi possível conectar sua conta do Gmail. Tente novamente.</string>
+  <string name="byoe_gmail_connection_retry">Tentar novamente</string>
+  <string name="byoe_gmail_connection_cancel">Cancelar</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail conectado</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Acompanhe seu Gmail aqui</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Receba, leia e envie sem trocar de aplicativo</string>
+  <string name="byoe_gmail_connected_notifications_title">Desative as notificações no aplicativo do Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Assim, a notificação chega só uma vez</string>
+  <string name="byoe_gmail_connected_import_title">Importando seus e-mails</string>
+  <string name="byoe_gmail_connected_import_body">A importação ocorre em segundo plano, então fique à vontade para usar o aplicativo. Uma notificação será enviada quando ela terminar.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Saiba o que é importado.</string>
+  <string name="byoe_gmail_connected_older_emails_title">E-mails mais antigos ficam no Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Quer tê-los aqui também? Importe quando quiser nas Configurações.</string>
+  <string name="byoe_gmail_connected_open_inbox">Ir para a Caixa de entrada</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">O que é importado</string>
+  <string name="byoe_import_info_subtitle">Sua conta do Gmail permanece como está. Nada nela é editado ou excluído.</string>
+  <string name="byoe_import_info_label_lead">Todo o seu Gmail em um só marcador.</string>
+  <string name="byoe_import_info_label_body">Os e-mails importados ficam no marcador %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Os e-mails importados ficam no marcador com o nome do seu endereço do Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Seus marcadores e pastas.</string>
+  <string name="byoe_import_info_folders_body">Vêm exatamente como estão configurados no Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filtros e regras não são importados.</string>
+  <string name="byoe_import_info_filters_body">É possível configurar novos nas Configurações.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Importação em progresso…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Limite de armazenamento atingido</string>
+  <string name="byoe_storage_banner_body">A importação foi pausada devido ao limite de armazenamento. Faça upgrade e obtenha mais armazenamento para concluir a importação.</string>
+  <string name="byoe_storage_banner_upgrade">Fazer upgrade</string>
+  <string name="byoe_storage_banner_not_now">Agora não</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Novidades</string>
+  <string name="byoe_spotlight_title">Use Gmail no Proton</string>
+  <string name="byoe_spotlight_subtitle">Importe os e-mails existentes e sincronize os futuros do Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Leia, responda e acompanhe seu Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Sem anúncios, sem rastreadores</string>
+  <string name="byoe_spotlight_benefit_no_tracking">O Google não consegue rastrear o que você faz no Proton</string>
+  <string name="byoe_spotlight_import_title">Importe seus e-mails</string>
+  <string name="byoe_spotlight_import_body">Comece pelos mais recentes</string>
+  <string name="byoe_spotlight_connect_and_import">Conectar e importar</string>
+  <string name="byoe_spotlight_connect">Conectar</string>
+  <string name="byoe_spotlight_later">Agora não</string>
+  <string name="byoe_spotlight_permissions_note">Em seguida: aprove todas as permissões. A Proton nunca pede permissão para editar ou excluir nada no seu Gmail.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Conecte seu Gmail e cuidaremos do resto.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Receba e escreva e-mails com seu endereço do Gmail. Tudo direto do Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Não editaremos nem excluiremos nada no seu Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Desconecte quando quiser, sem problemas</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Em seguida: o Google pedirá que você aprove todas as permissões. Aprove todas para que a conexão funcione.</string>
+</resources>

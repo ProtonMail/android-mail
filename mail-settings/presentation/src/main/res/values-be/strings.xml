@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">Параметры</string>
   <string name="mail_settings_app">Налады праграмы</string>
   <string name="mail_settings_content_search">Шукаць па змесціве ў лісце</string>
+  <string name="mail_settings_connect_gmail">Падключыце свой Gmail</string>
   <string name="mail_settings_mailbox">Параметры паштовай скрыні</string>
   <string name="mail_settings_new_badge">Новы</string>
   <string name="mail_settings_folders_labels">Папкі і меткі</string>

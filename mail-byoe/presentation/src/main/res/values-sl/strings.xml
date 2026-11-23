@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Povežite svoj Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Računa Gmail ni bilo mogoče povezati. Poskusite znova.</string>
+  <string name="byoe_gmail_connection_retry">Poskusi znova</string>
+  <string name="byoe_gmail_connection_cancel">Prekliči</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail je povezan</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Imejte pregled nad Gmailom kar tukaj</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Prejemajte, berite in pošiljajte brez preklapljanja med aplikacijami</string>
+  <string name="byoe_gmail_connected_notifications_title">Izklopite obvestila v aplikaciji Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Tako boste obvestilo prejeli samo enkrat</string>
+  <string name="byoe_gmail_connected_import_title">Uvažanje vaših e-poštnih sporočil</string>
+  <string name="byoe_gmail_connected_import_body">Uvoz poteka v ozadju, zato lahko aplikacijo mirno uporabljate. Ko bo končan, vas bomo obvestili.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Preberite, kaj se uvozi.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Starejša e-poštna sporočila ostanejo v Gmailu</string>
+  <string name="byoe_gmail_connected_older_emails_body">Bi jih želeli imeti tudi tukaj? Uvozite jih lahko kadar koli v nastavitvah.</string>
+  <string name="byoe_gmail_connected_open_inbox">Odpri Prejeto</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Kaj se uvozi</string>
+  <string name="byoe_import_info_subtitle">Vaš račun Gmail ostane nespremenjen. V njem se nič ne uredi ali izbriše.</string>
+  <string name="byoe_import_info_label_lead">Vsa pošta iz Gmaila pod eno oznako.</string>
+  <string name="byoe_import_info_label_body">Uvožena e-poštna sporočila so pod oznako %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Uvožena e-poštna sporočila so pod oznako, poimenovano po vašem naslovu Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Vaše oznake in mape.</string>
+  <string name="byoe_import_info_folders_body">Prenesejo se tako, kot ste jih nastavili v Gmailu.</string>
+  <string name="byoe_import_info_filters_lead">Filtri in pravila se ne prenesejo.</string>
+  <string name="byoe_import_info_filters_body">Nove lahko nastavite v nastavitvah.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Uvoz v teku…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Dosežena omejitev shrambe</string>
+  <string name="byoe_storage_banner_body">Uvoz je začasno ustavljen zaradi omejitve shrambe. Nadgradite paket in pridobite več shrambe, da dokončate uvoz.</string>
+  <string name="byoe_storage_banner_upgrade">Nadgradi</string>
+  <string name="byoe_storage_banner_not_now">Ne zdaj</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Kaj je novega</string>
+  <string name="byoe_spotlight_title">Uporabljajte Gmail v Protonu</string>
+  <string name="byoe_spotlight_subtitle">Uvozite obstoječa e-poštna sporočila in sinhronizirajte prihodnja iz Gmaila.</string>
+  <string name="byoe_spotlight_benefit_read">Berite, odgovarjajte in imejte pregled nad Gmailom</string>
+  <string name="byoe_spotlight_benefit_no_ads">Brez oglasov in sledilnikov</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google ne more slediti temu, kar počnete v Protonu</string>
+  <string name="byoe_spotlight_import_title">Uvozite svoja e-poštna sporočila</string>
+  <string name="byoe_spotlight_import_body">Začnite z najnovejšimi</string>
+  <string name="byoe_spotlight_connect_and_import">Poveži in uvozi</string>
+  <string name="byoe_spotlight_connect">Poveži</string>
+  <string name="byoe_spotlight_later">Ne zdaj</string>
+  <string name="byoe_spotlight_permissions_note">Naslednji korak: odobrite vsa dovoljenja. Proton nikoli ne zahteva dovoljenja za urejanje ali brisanje česar koli v vašem Gmailu.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Povežite svoj Gmail, za ostalo bomo poskrbeli mi.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Prejemajte in pišite s svojim naslovom Gmail. Vse kar v aplikaciji Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">V vašem Gmailu ničesar ne bomo urejali ali brisali</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Povezavo lahko kadar koli prekinete, nič se ne pokvari</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Naslednji korak: Google vas bo prosil, da odobrite vsa dovoljenja. Odobrite jih vse, da bo povezava delovala.</string>
+</resources>

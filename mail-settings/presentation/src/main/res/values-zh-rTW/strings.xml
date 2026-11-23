@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">偏好設定</string>
   <string name="mail_settings_app">應用程式自訂</string>
   <string name="mail_settings_content_search">Email content search</string>
+  <string name="mail_settings_connect_gmail">連線您的 Gmail</string>
   <string name="mail_settings_mailbox">電郵信箱偏好設定</string>
   <string name="mail_settings_new_badge">New</string>
   <string name="mail_settings_folders_labels">資料與標籤</string>

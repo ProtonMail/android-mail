@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Restez connecté même hors ligne</string>
   <string name="onboarding_feedback_description">Lisez, écrivez et gérez des messages où que vous soyez. Tout se synchronise automatiquement dès que vous êtes de nouveau en ligne.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Vous migrez depuis Gmail ?</string>
+  <string name="onboarding_gmail_description">Continuez à utiliser votre adresse Gmail directement dans Proton Mail. Envoyez et recevez vos e-mails sans aucune publicité ni aucun suivi.</string>
+  <string name="onboarding_gmail_help_me_move">Oui, aidez-moi à migrer</string>
+  <string name="onboarding_gmail_no_thanks">Non merci</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Suivant</string>
   <string name="onboarding_get_started">Commencer</string>

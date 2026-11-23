@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">连接您的 Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">无法连接您的 Gmail 账户，请重试。</string>
+  <string name="byoe_gmail_connection_retry">请重试</string>
+  <string name="byoe_gmail_connection_cancel">取消</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail 已连接</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">在这里随时掌握 Gmail 动态</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">无需切换应用，即可收信、读信和发信</string>
+  <string name="byoe_gmail_connected_notifications_title">关闭 Gmail 应用中的通知</string>
+  <string name="byoe_gmail_connected_notifications_body">这样您只会收到一次通知</string>
+  <string name="byoe_gmail_connected_import_title">正在导入您的电子邮件</string>
+  <string name="byoe_gmail_connected_import_body">导入在后台进行，您可以继续使用应用。完成后我们会通知您。</string>
+  <string name="byoe_gmail_connected_import_learn_more">了解导入哪些内容。</string>
+  <string name="byoe_gmail_connected_older_emails_title">较早的电子邮件保留在 Gmail 中</string>
+  <string name="byoe_gmail_connected_older_emails_body">也想在这里查看？随时可在“设置”中导入。</string>
+  <string name="byoe_gmail_connected_open_inbox">前往收件箱</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">导入哪些内容</string>
+  <string name="byoe_import_info_subtitle">您的 Gmail 账户保持原样，其中的任何内容都不会被编辑或删除。</string>
+  <string name="byoe_import_info_label_lead">所有 Gmail 邮件集中在一个标签中。</string>
+  <string name="byoe_import_info_label_body">导入的电子邮件位于 %s 标签下。</string>
+  <string name="byoe_import_info_label_body_no_address">导入的电子邮件位于以您的 Gmail 地址命名的标签下。</string>
+  <string name="byoe_import_info_folders_lead">您的标签和文件夹。</string>
+  <string name="byoe_import_info_folders_body">它们将按照您在 Gmail 中的设置原样迁移过来。</string>
+  <string name="byoe_import_info_filters_lead">过滤器和规则不会迁移。</string>
+  <string name="byoe_import_info_filters_body">您可以在“设置”中创建新的过滤器和规则。</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">正在导入…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">存储空间已达上限</string>
+  <string name="byoe_storage_banner_body">由于存储空间已达上限，导入已暂停。升级以获取更多存储空间并完成导入。</string>
+  <string name="byoe_storage_banner_upgrade">升级</string>
+  <string name="byoe_storage_banner_not_now">以后再说</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">更新内容</string>
+  <string name="byoe_spotlight_title">在 Proton 中使用 Gmail</string>
+  <string name="byoe_spotlight_subtitle">从 Gmail 导入现有电子邮件，并同步今后的新邮件。</string>
+  <string name="byoe_spotlight_benefit_read">阅读、回复 Gmail 邮件，随时掌握动态</string>
+  <string name="byoe_spotlight_benefit_no_ads">无广告，无跟踪器</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google 无法跟踪您在 Proton 中的操作</string>
+  <string name="byoe_spotlight_import_title">导入您的电子邮件</string>
+  <string name="byoe_spotlight_import_body">从最近的邮件开始</string>
+  <string name="byoe_spotlight_connect_and_import">连接并导入</string>
+  <string name="byoe_spotlight_connect">连接</string>
+  <string name="byoe_spotlight_later">以后再说</string>
+  <string name="byoe_spotlight_permissions_note">下一步：批准所有权限。Proton 绝不会请求编辑或删除您 Gmail 中任何内容的权限</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">连接您的 Gmail，其余的交给我们。</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">使用 Gmail 地址收发邮件，一切尽在 Proton Mail 中完成</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">我们不会编辑或删除您的 Gmail 内容</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">随时断开连接，不影响任何内容</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">下一步：Google 会要求您批准所有权限。请全部批准，以确保连接正常工作。</string>
+</resources>

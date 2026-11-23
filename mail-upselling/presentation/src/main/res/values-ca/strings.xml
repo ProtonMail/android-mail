@@ -33,7 +33,7 @@
   <string name="upselling_mailbox_plus_promo_renewal">%s per al primer mes, després %s al mes</string>
   <!-- Upselling: Unlimited -->
   <string name="upselling_unlimited_title">Milloreu a Proton Unlimited</string>
-  <string name="upselling_do_not_show_again">No ho tornis a mostrar</string>
+  <string name="upselling_do_not_show_again">No ho torneu a mostrar</string>
   <string name="upselling_pu_choose_plan">Trieu un pla</string>
   <string name="upselling_pu_whats_included">Què s\'hi inclou</string>
   <string name="upselling_pu_cta">Aconseguiu el Proton Unlimited</string>
@@ -92,6 +92,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Ajorneu-lo i entregueu-lo més tard. Gaudiu d\'això i més amb el Mail Plus.</string>
   <string name="upselling_snooze_plus_title">És un mal moment per aquest correu electrònic?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Milloreu el pla per continuar important sense quedar-vos sense espai</string>
+  <string name="upselling_byoe_storage_title">No permeteu que la importació s\'aturi</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Milloreu el pla i moveu tot el vostre Gmail a una sola safata d\'entrada privada</string>
+  <string name="upselling_byoe_connection_limit_title">Connecteu fins a 3 adreces de Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Milloreu de pla per a una flexibilitat total</string>
   <string name="upselling_upgrade_plan_generic">Necessiteu una subscripció de pagament del Proton Mail per a accedir a aquesta característica.</string>
@@ -116,6 +123,7 @@
   <string name="upselling_comparison_table_password_manager">Gestor de contrasenyes xifrat</string>
   <string name="upselling_comparison_table_threat_protection">Protecció avançada contra amenaces</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Carpetes, filtres i etiquetes il·limitats</string>
+  <string name="upselling_comparison_table_gmail_connections">Connexions de Gmail</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Trieu una subscripció</string>
   <string name="upselling_select_plan_year">12 mesos</string>

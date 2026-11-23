@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Connetti il tuo account Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Impossibile connettere il tuo account Gmail. Riprova.</string>
+  <string name="byoe_gmail_connection_retry">Riprova</string>
+  <string name="byoe_gmail_connection_cancel">Annulla</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail connesso</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Tieni sotto controllo il tuo account Gmail qui</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Ricevi, leggi e invia senza cambiare app</string>
+  <string name="byoe_gmail_connected_notifications_title">Disattiva le notifiche nell\'app di Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">In questo modo riceverai la notifica una sola volta</string>
+  <string name="byoe_gmail_connected_import_title">Importazione delle tue email in corso</string>
+  <string name="byoe_gmail_connected_import_body">L\'operazione viene eseguita in background e puoi tranquillamente utilizzare l\'app. Riceverai un avviso quando l\'operazione sarà terminata.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Scopri cosa viene importato.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Le email più vecchie rimangono su Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Vuoi che siano presenti anche qui? Effettua l\'importazione in qualsiasi momento nelle impostazioni.</string>
+  <string name="byoe_gmail_connected_open_inbox">Portami alla Posta in arrivo</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Cosa viene importato</string>
+  <string name="byoe_import_info_subtitle">Il tuo account Gmail rimane invariato. Nulla verrà modificato o eliminato.</string>
+  <string name="byoe_import_info_label_lead">Tutte le tue email di Gmail in un\'unica etichetta.</string>
+  <string name="byoe_import_info_label_body">Le email importate sono contrassegnate dall\'etichetta %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Le email importate sono contrassegnate dall\'etichetta corrispondente al tuo indirizzo Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Le tue etichette e cartelle.</string>
+  <string name="byoe_import_info_folders_body">Vengono visualizzati esattamente come li hai impostati in Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filtri e regole non vengono importati.</string>
+  <string name="byoe_import_info_filters_body">Puoi configurarne di nuovi nelle impostazioni.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Importazione in corso…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Limite di spazio di archiviazione raggiunto</string>
+  <string name="byoe_storage_banner_body">L\'importazione è in pausa a causa del limite di spazio di archiviazione. Esegui l\'upgrade e ottieni più spazio di archiviazione per completare l\'importazione.</string>
+  <string name="byoe_storage_banner_upgrade">Effettua l\'upgrade</string>
+  <string name="byoe_storage_banner_not_now">Non adesso</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Cosa c\'è di nuovo</string>
+  <string name="byoe_spotlight_title">Usa Gmail su Proton</string>
+  <string name="byoe_spotlight_subtitle">Importa le email esistenti e sincronizza quelle future da Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Leggi, rispondi e tieni sotto controllo il tuo account Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Nessuna pubblicità e nessun tracker</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google non sarà in grado di tracciare le tue attività su Proton</string>
+  <string name="byoe_spotlight_import_title">Importa le tue email</string>
+  <string name="byoe_spotlight_import_body">Inizia dalle più recenti</string>
+  <string name="byoe_spotlight_connect_and_import">Connetti e importa</string>
+  <string name="byoe_spotlight_connect">Connetti</string>
+  <string name="byoe_spotlight_later">Non adesso</string>
+  <string name="byoe_spotlight_permissions_note">Prossimo passaggio: concedi tutte le autorizzazioni. Proton non chiederà mai il permesso di modificare o eliminare nulla nel tuo account di Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Connetti il tuo account Gmail e al resto penseremo noi.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Ricevi e scrivi nel tuo indirizzo Gmail. Tutto direttamente da Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Il tuo account Gmail non verrà modificato né eliminato.</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Disconnettiti in qualsiasi momento in tutta sicurezza</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Prossimo passaggio: Google ti chiederà di concedere tutte le autorizzazioni. Concedile tutte per permettere che la connessione funzioni.</string>
+</resources>

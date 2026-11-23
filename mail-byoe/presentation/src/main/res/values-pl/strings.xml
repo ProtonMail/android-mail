@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Połącz konto Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Nie można połączyć konta Gmail. Spróbuj ponownie.</string>
+  <string name="byoe_gmail_connection_retry">Spróbuj ponownie</string>
+  <string name="byoe_gmail_connection_cancel">Anuluj</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Konto Gmail połączone</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Miej kontrolę nad pocztą Gmail w jednym miejscu</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Odbieraj, czytaj i wysyłaj wiadomości bez przełączania aplikacji</string>
+  <string name="byoe_gmail_connected_notifications_title">Wyłącz powiadomienia w aplikacji Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Dzięki temu otrzymasz powiadomienie tylko raz</string>
+  <string name="byoe_gmail_connected_import_title">Importowanie wiadomości</string>
+  <string name="byoe_gmail_connected_import_body">Import odbywa się w tle, więc możesz swobodnie korzystać z aplikacji. Powiadomimy cię, gdy się zakończy.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Dowiedz się, co zostanie zaimportowane.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Starsze wiadomości pozostają w Gmailu</string>
+  <string name="byoe_gmail_connected_older_emails_body">Chcesz mieć je również tutaj? Możesz je zaimportować w dowolnym momencie w ustawieniach.</string>
+  <string name="byoe_gmail_connected_open_inbox">Przejdź do odebranych</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Co zostanie zaimportowane</string>
+  <string name="byoe_import_info_subtitle">Konto Gmail pozostaje bez zmian. Nic nie zostanie w nim edytowane ani usunięte.</string>
+  <string name="byoe_import_info_label_lead">Cała poczta Gmail pod jedną etykietą.</string>
+  <string name="byoe_import_info_label_body">Zaimportowane wiadomości znajdziesz pod etykietą %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Zaimportowane wiadomości znajdziesz pod etykietą o nazwie odpowiadającej adresowi Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Etykiety i foldery.</string>
+  <string name="byoe_import_info_folders_body">Zostaną przeniesione dokładnie tak, jak skonfigurowano je w Gmailu.</string>
+  <string name="byoe_import_info_filters_lead">Filtry i reguły nie są przenoszone.</string>
+  <string name="byoe_import_info_filters_body">Nowe możesz skonfigurować w ustawieniach.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Importowanie w toku…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Osiągnięto limit przestrzeni dyskowej</string>
+  <string name="byoe_storage_banner_body">Import został wstrzymany z powodu limitu przestrzeni dyskowej. Ulepsz plan i zyskaj więcej przestrzeni, aby dokończyć import.</string>
+  <string name="byoe_storage_banner_upgrade">Ulepsz</string>
+  <string name="byoe_storage_banner_not_now">Nie teraz</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Co nowego</string>
+  <string name="byoe_spotlight_title">Korzystaj z Gmaila w Proton</string>
+  <string name="byoe_spotlight_subtitle">Importuj istniejące wiadomości i synchronizuj nowe z Gmaila.</string>
+  <string name="byoe_spotlight_benefit_read">Czytaj, odpowiadaj i miej kontrolę nad pocztą Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Bez reklam i elementów śledzących</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google nie może śledzić aktywności w Proton</string>
+  <string name="byoe_spotlight_import_title">Importuj wiadomości</string>
+  <string name="byoe_spotlight_import_body">Zacznij od najnowszych</string>
+  <string name="byoe_spotlight_connect_and_import">Połącz i importuj</string>
+  <string name="byoe_spotlight_connect">Połącz</string>
+  <string name="byoe_spotlight_later">Nie teraz</string>
+  <string name="byoe_spotlight_permissions_note">Następny krok: zatwierdź wszystkie uprawnienia. Proton nigdy nie prosi o uprawnienia do edytowania ani usuwania czegokolwiek w Gmailu.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Połącz konto Gmail, a zajmiemy się resztą.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Odbieraj i wysyłaj wiadomości z adresu Gmail. Wszystko w Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Nie edytujemy ani nie usuwamy niczego w Gmailu</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Rozłącz w dowolnym momencie – nic się nie zepsuje</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Następny krok: Google poprosi o zatwierdzenie wszystkich uprawnień. Zatwierdź je wszystkie, aby połączenie działało.</string>
+</resources>

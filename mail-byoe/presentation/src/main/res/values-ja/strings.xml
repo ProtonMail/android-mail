@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Gmail を接続する</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Gmail アカウントを接続できませんでした。もう一度やり直してください。</string>
+  <string name="byoe_gmail_connection_retry">もう一度試す</string>
+  <string name="byoe_gmail_connection_cancel">キャンセル</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail が接続されました</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Gmail をここでまとめて管理</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">アプリを切り替えずに受信、閲覧、送信</string>
+  <string name="byoe_gmail_connected_notifications_title">Gmail アプリの通知をオフにする</string>
+  <string name="byoe_gmail_connected_notifications_body">通知が重複しないようにするため</string>
+  <string name="byoe_gmail_connected_import_title">メールをインポート中</string>
+  <string name="byoe_gmail_connected_import_body">インポートはバックグラウンドで実行されるため、そのままアプリをご利用いただけます。完了したらお知らせします。</string>
+  <string name="byoe_gmail_connected_import_learn_more">インポートされる内容を確認する</string>
+  <string name="byoe_gmail_connected_older_emails_title">古いメールは Gmail に残ります</string>
+  <string name="byoe_gmail_connected_older_emails_body">ここにも表示したい場合は、設定からいつでもインポートできます。</string>
+  <string name="byoe_gmail_connected_open_inbox">受信トレイへ</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">インポートされる内容</string>
+  <string name="byoe_import_info_subtitle">Gmail アカウントはそのまま残ります。編集や削除は一切行われません。</string>
+  <string name="byoe_import_info_label_lead">すべての Gmail を 1 つのラベルに。</string>
+  <string name="byoe_import_info_label_body">インポートされたメールは \"%s\" ラベルに保存されます。</string>
+  <string name="byoe_import_info_label_body_no_address">インポートされたメールは、Gmail アドレスと同じ名前のラベルに保存されます。</string>
+  <string name="byoe_import_info_folders_lead">ラベルとフォルダー。</string>
+  <string name="byoe_import_info_folders_body">Gmail で設定したとおりに引き継がれます。</string>
+  <string name="byoe_import_info_filters_lead">フィルターとルールは引き継がれません。</string>
+  <string name="byoe_import_info_filters_body">設定で新しくセットアップできます。</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">インポート中…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">ストレージの上限に達しました</string>
+  <string name="byoe_storage_banner_body">ストレージの上限に達したため、インポートが一時停止しています。インポートを完了するには、アップグレードしてストレージを増やしてください。</string>
+  <string name="byoe_storage_banner_upgrade">アップグレード</string>
+  <string name="byoe_storage_banner_not_now">今はしない</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">新機能</string>
+  <string name="byoe_spotlight_title">Proton で Gmail を使う</string>
+  <string name="byoe_spotlight_subtitle">Gmail の既存のメールをインポートし、今後のメールも同期します。</string>
+  <string name="byoe_spotlight_benefit_read">Gmail の閲覧、返信、管理がここで完結</string>
+  <string name="byoe_spotlight_benefit_no_ads">広告もトラッカーもなし</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Proton での操作を Google に追跡されることはありません</string>
+  <string name="byoe_spotlight_import_title">メールをインポートする</string>
+  <string name="byoe_spotlight_import_body">最新のメールから開始</string>
+  <string name="byoe_spotlight_connect_and_import">接続してインポート</string>
+  <string name="byoe_spotlight_connect">接続</string>
+  <string name="byoe_spotlight_later">今はしない</string>
+  <string name="byoe_spotlight_permissions_note">次のステップ：すべての権限を許可してください。Proton が Gmail 内のデータを編集または削除する権限を求めることはありません。</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Gmail を接続するだけで、あとはお任せください。</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Gmail アドレスでの受信とメール作成を、すべて Proton Mail 内で</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Gmail を編集または削除することはありません</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">いつでも接続解除でき、問題は起きません</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">次のステップ：Google からすべての権限の許可を求められます。接続を正しく機能させるため、すべて許可してください。</string>
+</resources>

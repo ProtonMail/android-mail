@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Bleib verbunden, auch offline</string>
   <string name="onboarding_feedback_description">E-Mails lesen, schreiben und verwalten, wo immer du bist. Alles synchronisiert sich automatisch, sobald du wieder online bist.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Umziehen von Gmail?</string>
+  <string name="onboarding_gmail_description">Nutze deine Gmail-Adresse weiterhin direkt in Proton Mail. Versende und empfange E-Mails ohne Werbung und ohne Tracking.</string>
+  <string name="onboarding_gmail_help_me_move">Ja, hilf mir beim Umziehen</string>
+  <string name="onboarding_gmail_no_thanks">Nein danke</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Weiter</string>
   <string name="onboarding_get_started">Los geht\'s</string>

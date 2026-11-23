@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Maradjon kapcsolatban, még offline is</string>
   <string name="onboarding_feedback_description">E-maileket olvashat, írhat és kezelhet, bárhol is legyen. Minden automatikusan szinkronizálódik abban a pillanatban, ahogy újra online lesz.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Gmailről vált?</string>
+  <string name="onboarding_gmail_description">Használja tovább Gmail-címét közvetlenül a Proton Mailben. Küldjön és fogadjon e-maileket hirdetések és nyomkövetés nélkül.</string>
+  <string name="onboarding_gmail_help_me_move">Igen, segítsenek a váltásban</string>
+  <string name="onboarding_gmail_no_thanks">Nem, köszönöm</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Tovább</string>
   <string name="onboarding_get_started">Kezdés</string>

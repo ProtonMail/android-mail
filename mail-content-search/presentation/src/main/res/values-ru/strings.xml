@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="mail_settings_content_search_header_title">Email content search</string>
-  <string name="mail_settings_content_search_description">Чтобы вы могли искать по содержимому сообщений, сообщения будут скачаны на это устройство.</string>
-  <string name="mail_settings_content_search_learn_more">Learn more…</string>
-  <string name="mail_settings_content_search_toggle_title">Email content search</string>
-  <string name="mail_settings_content_search_mobile_data_title">Allow download via mobile data</string>
-  <string name="mail_settings_content_search_mobile_data_hint">Download continues over mobile data if Wi-Fi is lost.</string>
+  <string name="mail_settings_content_search_header_title">Поиск по содержимому писем</string>
+  <string name="mail_settings_content_search_description">Чтобы можно было искать по содержимому сообщений, сообщения будут скачаны на это устройство.</string>
+  <string name="mail_settings_content_search_learn_more">Подробнее…</string>
+  <string name="mail_settings_content_search_toggle_title">Поиск по содержимому писем</string>
+  <string name="mail_settings_content_search_mobile_data_title">Разрешить скачивание через сотовую связь</string>
+  <string name="mail_settings_content_search_mobile_data_hint">Скачивание продолжится через сотовую связь, если соединение по Wi-Fi станет недоступным.</string>
   <string name="mail_settings_content_search_syncing_status">Подготовка %1$d%%…</string>
   <string name="mail_settings_content_search_preparing_status">Подготовка…</string>
-  <string name="mail_settings_content_search_waiting_for_wifi_status">Waiting for Wi-Fi…</string>
-  <string name="mail_settings_content_search_failed_status">Something went wrong while preparing email content search.</string>
-  <string name="mail_settings_content_search_failed_retry">Try again</string>
-  <string name="mail_settings_content_search_update_error">Something went wrong. Please try again.</string>
+  <string name="mail_settings_content_search_waiting_for_wifi_status">Ожидание Wi-Fi…</string>
+  <string name="mail_settings_content_search_failed_status">Что-то пошло не так при подготовке поиска по содержимому почты.</string>
+  <string name="mail_settings_content_search_failed_retry">Попробовать ещё раз</string>
+  <string name="mail_settings_content_search_update_error">Что-то пошло не так. Пожалуйста, попробуйте ещё раз.</string>
   <string name="mail_settings_content_search_retry_error">Unable to prepare email content search.</string>
   <string name="mail_settings_content_search_indexing_section">Indexing</string>
   <string name="mail_settings_content_search_indexing_percentage">%1$s%%</string>

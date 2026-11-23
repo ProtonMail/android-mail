@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">Tùy chọn</string>
   <string name="mail_settings_app">Tùy chỉnh ứng dụng</string>
   <string name="mail_settings_content_search">Tìm kiếm nội dung email</string>
+  <string name="mail_settings_connect_gmail">Kết nối Gmail</string>
   <string name="mail_settings_mailbox">Tùy chọn hộp thư</string>
   <string name="mail_settings_new_badge">Mới</string>
   <string name="mail_settings_folders_labels">Thư mục và nhãn</string>

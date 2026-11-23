@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Συνδέστε το Gmail σας</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Δεν ήταν δυνατή η σύνδεση του λογαριασμού σας στο Gmail. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="byoe_gmail_connection_retry">Προσπαθήστε ξανά</string>
+  <string name="byoe_gmail_connection_cancel">Ακύρωση</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Το Gmail συνδέθηκε</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Διαχειριστείτε το Gmail σας εδώ</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Λάβετε, διαβάστε και στείλτε χωρίς να αλλάζετε εφαρμογές</string>
+  <string name="byoe_gmail_connected_notifications_title">Απενεργοποιήστε τις ειδοποιήσεις στην εφαρμογή Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Έτσι, λαμβάνετε ειδοποίηση μόνο μία φορά</string>
+  <string name="byoe_gmail_connected_import_title">Γίνεται εισαγωγή των ηλεκτρονικών μηνυμάτων σας</string>
+  <string name="byoe_gmail_connected_import_body">Λειτουργεί στο παρασκήνιο, οπότε μπορείτε να συνεχίσετε να χρησιμοποιείτε την εφαρμογή. Θα σας ειδοποιήσουμε μόλις ολοκληρωθεί η διαδικασία.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Μάθετε τι εισάγεται.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Τα παλαιότερα ηλεκτρονικά μηνύματα παραμένουν στο Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Τα θέλετε και εδώ; Εισαγάγετέ τα ανά πάσα στιγμή από τις Ρυθμίσεις.</string>
+  <string name="byoe_gmail_connected_open_inbox">Μετάφερέ με στα Εισερχόμενα</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Τι εισάγεται</string>
+  <string name="byoe_import_info_subtitle">Ο λογαριασμός σας στο Gmail παραμένει ως έχει. Τίποτα σε αυτόν δεν τροποποιείται ούτε διαγράφεται.</string>
+  <string name="byoe_import_info_label_lead">Όλο το Gmail σας σε μία ετικέτα.</string>
+  <string name="byoe_import_info_label_body">Τα εισαγόμενα μηνύματα ηλεκτρονικού ταχυδρομείου βρίσκονται κάτω από την ετικέτα %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Τα εισαγμένα μηνύματα ηλεκτρονικού ταχυδρομείου βρίσκονται κάτω από την ετικέτα που φέρει το όνομα της διεύθυνσης Gmail σας.</string>
+  <string name="byoe_import_info_folders_lead">Οι ετικέτες και οι φάκελοί σας.</string>
+  <string name="byoe_import_info_folders_body">Μεταφέρονται ακριβώς όπως τα έχετε ρυθμίσει στο Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Τα φίλτρα και οι κανόνες μένουν πίσω.</string>
+  <string name="byoe_import_info_filters_body">Μπορείτε να δημιουργήσετε νέα στις Ρυθμίσεις.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Εισαγωγή σε εξέλιξη…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Εξάντληση ορίου αποθηκευτικού χώρου</string>
+  <string name="byoe_storage_banner_body">Η εισαγωγή έχει τεθεί σε παύση λόγω ορίου αποθηκευτικού χώρου. Κάντε αναβάθμιση και αποκτήστε περισσότερο αποθηκευτικό χώρο για να ολοκληρώσετε την εισαγωγή σας.</string>
+  <string name="byoe_storage_banner_upgrade">Αναβάθμιση</string>
+  <string name="byoe_storage_banner_not_now">Όχι τώρα</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Τι νέο υπάρχει</string>
+  <string name="byoe_spotlight_title">Χρησιμοποιήστε το Gmail στο Proton</string>
+  <string name="byoe_spotlight_subtitle">Εισαγάγετε υπάρχοντα ηλεκτρονικά μηνύματα και συγχρονίστε τα μελλοντικά από το Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Διαβάστε, απαντήστε και διατηρήστε τον έλεγχο στο Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Χωρίς διαφημίσεις, χωρίς ιχνηλάτες</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Η Google δεν μπορεί να παρακολουθήσει τι κάνετε στο Proton</string>
+  <string name="byoe_spotlight_import_title">Εισαγάγετε τα ηλεκτρονικά μηνύματά σας</string>
+  <string name="byoe_spotlight_import_body">Ξεκινήστε με τα πιο πρόσφατα</string>
+  <string name="byoe_spotlight_connect_and_import">Σύνδεση και εισαγωγή</string>
+  <string name="byoe_spotlight_connect">Σύνδεση</string>
+  <string name="byoe_spotlight_later">Όχι τώρα</string>
+  <string name="byoe_spotlight_permissions_note">Στη συνέχεια: αποδεχτείτε όλα τα δικαιώματα. Το Proton δε ζητά ποτέ άδεια για την επεξεργασία ή τη διαγραφή οποιουδήποτε στοιχείου στο Gmail σας.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Συνδέστε το Gmail σας και εμείς θα αναλάβουμε τα υπόλοιπα.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Λάβετε και συντάξτε μηνύματα στη διεύθυνση Gmail σας. Όλα αυτά μέσα από το Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Δεν θα επεξεργαστούμε ούτε θα διαγράψουμε το Gmail σας</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Αποσυνδεθείτε όποτε θέλετε, δεν χαλάει τίποτα</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Στη συνέχεια: Η Google θα σας ζητήσει να εγκρίνετε όλα τα δικαιώματα. Εγκρίνετέ τα όλα, ώστε να λειτουργήσει η σύνδεση.</string>
+</resources>
