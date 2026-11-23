@@ -30,15 +30,6 @@
     <item quantity="one">Fizetés %d hónapra</item>
     <item quantity="other">Fizetés %d hónapra</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">A kedvezmények a normál havi árakon alapulnak. A szolgáltatás automatikusan megújul havonta %1$s áron.</string>
-  <string name="payment_bf_renew_annually">A kedvezmények a normál havi árakon alapulnak. A szolgáltatás automatikusan megújul évente %1$s áron.</string>
-  <string name="payment_welcome_offer_renew_monthly">Üdvözlő ajánlat. Automatikusan megújul %1$s/hónap áron.</string>
-  <string name="payment_welcome_offer_renew_annually">Üdvözlő ajánlat. Automatikusan megújul %1$s/év áron</string>
-  <string name="payment_welcome_offer_renew_biennially">Üdvözlő ajánlat. Automatikusan megújul %1$s / 2 év áron</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Üdvözlő ajánlat. Automatikusan megújul %1$s/hónap áron.</item>
-    <item quantity="other">Üdvözlő ajánlat. Automatikusan megújul %1$s áron minden %2$s hónapban</item>
-  </plurals>
   <string name="payment_subscription_title">Előfizetés</string>
   <string name="payment_subscription_upgrade_your_plan">Fejlessze a csomagját</string>
   <string name="payment_subscription_renew_auto_renew_on">A csomagja automatikusan megújul ekkor: %1$s.</string>

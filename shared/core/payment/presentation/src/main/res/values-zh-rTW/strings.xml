@@ -29,14 +29,6 @@
   <plurals name="payment_pay_other">
     <item quantity="other">%d月繳</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">折扣以標準月費為準。將以每月 %1$s 自動續訂</string>
-  <string name="payment_bf_renew_annually">折扣以標準月費為準。將以每年 %1$s 自動續訂</string>
-  <string name="payment_welcome_offer_renew_monthly">迎新優惠。以 %1$s/月自動續期</string>
-  <string name="payment_welcome_offer_renew_annually">迎新優惠。以 %1$s/年自動續期</string>
-  <string name="payment_welcome_offer_renew_biennially">歡迎優惠。自動續約為每兩年 %1$s</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="other">歡迎優惠。自動續約為每%2$s個月 %1$s</item>
-  </plurals>
   <string name="payment_subscription_title">訂閱</string>
   <string name="payment_subscription_upgrade_your_plan">升級您的方案</string>
   <string name="payment_subscription_renew_auto_renew_on">您的方案將於%1$s自動續約。</string>

@@ -26,7 +26,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,13 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import ch.protonmail.android.design.compose.component.ExpandableHeader
 import ch.protonmail.android.design.compose.theme.ProtonDimens.BorderSize
 import ch.protonmail.android.design.compose.theme.ProtonDimens.Spacing
 import ch.protonmail.android.design.compose.theme.ProtonTheme
-import ch.protonmail.android.design.compose.theme.bodySmallHint
 import me.proton.android.core.payment.presentation.model.Product
 import me.proton.core.presentation.R
 
@@ -98,21 +95,9 @@ fun ProductCard(
 }
 
 @Composable
-fun ProductCardContent(
-    product: Product,
-    modifier: Modifier = Modifier,
-    button: @Composable ColumnScope.() -> Unit
-) {
+fun ProductCardContent(modifier: Modifier = Modifier, button: @Composable ColumnScope.() -> Unit) {
     Column(modifier = modifier.fillMaxWidth()) {
         button()
-        if (product.renewalText != null) {
-            Text(
-                modifier = Modifier.fillMaxWidth().padding(top = Spacing.Medium),
-                text = product.renewalText,
-                style = ProtonTheme.typography.bodySmallHint,
-                textAlign = TextAlign.Center
-            )
-        }
     }
 }
 
@@ -126,7 +111,7 @@ internal fun ProductCardPreview() {
             expandable = true,
             expandedInitially = false
         ) {
-            ProductCardContent(Product.test) {
+            ProductCardContent {
                 PurchaseButton(
                     product = Product.test,
                     modifier = Modifier.padding(top = Spacing.Medium).fillMaxWidth()
@@ -146,7 +131,7 @@ internal fun PurchaseCardExpandedPreview() {
             expandable = false,
             expandedInitially = true
         ) {
-            ProductCardContent(Product.test) {
+            ProductCardContent {
                 PurchaseButton(
                     product = Product.test,
                     modifier = Modifier.padding(top = Spacing.Medium).fillMaxWidth()
@@ -166,7 +151,7 @@ internal fun PurchaseCardDarkPreview() {
             expandable = true,
             expandedInitially = false
         ) {
-            ProductCardContent(Product.test) {
+            ProductCardContent {
                 PurchaseButton(
                     product = Product.test,
                     modifier = Modifier.padding(top = Spacing.Medium).fillMaxWidth()
@@ -186,7 +171,7 @@ internal fun PurchaseCardExpandedDarkPreview() {
             expandable = false,
             expandedInitially = true
         ) {
-            ProductCardContent(Product.test) {
+            ProductCardContent {
                 PurchaseButton(
                     product = Product.test,
                     modifier = Modifier.padding(top = Spacing.Medium).fillMaxWidth()
@@ -200,7 +185,7 @@ internal fun PurchaseCardExpandedDarkPreview() {
 @PreviewLightDark
 internal fun PurchaseCardContentPreview() {
     ProtonTheme {
-        ProductCardContent(Product.test) {
+        ProductCardContent {
             PurchaseButton(
                 product = Product.test,
                 modifier = Modifier.padding(Spacing.Medium).fillMaxWidth()

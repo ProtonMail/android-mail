@@ -30,15 +30,6 @@
     <item quantity="one">Facturación por %d mes</item>
     <item quantity="other">Facturación por %d meses</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$s/mes</string>
-  <string name="payment_bf_renew_annually">Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$s/año</string>
-  <string name="payment_welcome_offer_renew_monthly">Oferta de bienvenida. Renovación automática por %1$s/mes</string>
-  <string name="payment_welcome_offer_renew_annually">Oferta de bienvenida. Renovación automática por %1$s/año</string>
-  <string name="payment_welcome_offer_renew_biennially">Oferta de bienvenida. Renovación automática por %1$s cada 2 años</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Oferta de bienvenida. Renovación automática por %1$s/mes</item>
-    <item quantity="other">Oferta de bienvenida. Se renueva automáticamente por %1$s cada %2$s meses</item>
-  </plurals>
   <string name="payment_subscription_title">Suscripción</string>
   <string name="payment_subscription_upgrade_your_plan">Actualice su plan</string>
   <string name="payment_subscription_renew_auto_renew_on">Su plan se renovará automáticamente el %1$s.</string>

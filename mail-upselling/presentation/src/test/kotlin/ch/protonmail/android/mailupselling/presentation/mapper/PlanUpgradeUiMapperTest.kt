@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailupselling.presentation.mapper
 
-import android.content.Context
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -90,7 +89,6 @@ internal class PlanUpgradeUiMapperTest {
     )
 
     private lateinit var planUpgradeUiMapper: PlanUpgradeUiMapper
-    private lateinit var context: Context
 
     @BeforeTest
     fun setup() {
@@ -102,8 +100,6 @@ internal class PlanUpgradeUiMapperTest {
             planInstanceUiMapper = instanceUiMapper,
             entitlementsUiMapper = entitlementsUiMapper
         )
-
-        context = mockk(relaxed = true)
     }
 
     @AfterTest
@@ -157,7 +153,7 @@ internal class PlanUpgradeUiMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
-            product = shorterInstance.toProduct(context),
+            product = shorterInstance.toProduct(),
             yearlySaving = null
         )
 
@@ -167,7 +163,7 @@ internal class PlanUpgradeUiMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Yearly,
-            product = longerInstance.toProduct(context),
+            product = longerInstance.toProduct(),
             yearlySaving = null
         )
 
@@ -240,7 +236,7 @@ internal class PlanUpgradeUiMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
-            product = shorterInstance.toProduct(context),
+            product = shorterInstance.toProduct(),
             yearlySaving = null
         )
 
@@ -250,7 +246,7 @@ internal class PlanUpgradeUiMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal(12), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Yearly,
-            product = longerInstance.toProduct(context),
+            product = longerInstance.toProduct(),
             yearlySaving = null
         )
 

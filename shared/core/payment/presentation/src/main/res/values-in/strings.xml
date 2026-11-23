@@ -29,14 +29,6 @@
   <plurals name="payment_pay_other">
     <item quantity="other">Bayar untuk %d bulan</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Diskon didasarkan pada harga bulanan standar. Diperbarui secara otomatis pada harga %1$s/bulan.</string>
-  <string name="payment_bf_renew_annually">Diskon didasarkan pada harga bulanan standar. Diperbarui secara otomatis pada harga %1$s/tahun.</string>
-  <string name="payment_welcome_offer_renew_monthly">Penawaran selamat datang. Diperbarui secara otomatis pada harga %1$s/bulan</string>
-  <string name="payment_welcome_offer_renew_annually">Penawaran selamat datang. Diperbarui secara otomatis pada harga %1$s/tahun</string>
-  <string name="payment_welcome_offer_renew_biennially">Penawaran selamat datang. Diperbarui secara otomatis pada %1$s setiap 2 tahun</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="other">Penawaran selamat datang. Diperbarui secara otomatis pada harga %1$s setiap %2$s bulan</item>
-  </plurals>
   <string name="payment_subscription_title">Langganan</string>
   <string name="payment_subscription_upgrade_your_plan">Tingkatkan paket Anda</string>
   <string name="payment_subscription_renew_auto_renew_on">Paket Anda akan diperbarui secara otomatis pada %1$s.</string>

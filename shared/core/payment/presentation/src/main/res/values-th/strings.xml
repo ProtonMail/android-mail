@@ -29,14 +29,6 @@
   <plurals name="payment_pay_other">
     <item quantity="other">ชำระสำหรับ %d เดือน</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">ส่วนลดคำนวณจากราคามาตรฐานรายเดือน ต่ออายุอัตโนมัติที่ %1$s/เดือน</string>
-  <string name="payment_bf_renew_annually">ส่วนลดคำนวณจากราคามาตรฐานรายเดือน ต่ออายุอัตโนมัติที่ %1$s/ปี</string>
-  <string name="payment_welcome_offer_renew_monthly">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s/เดือน</string>
-  <string name="payment_welcome_offer_renew_annually">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s/ปี</string>
-  <string name="payment_welcome_offer_renew_biennially">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s ทุก 2 ปี</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="other">ข้อเสนอต้อนรับ ต่ออายุอัตโนมัติที่ %1$s ทุก %2$s เดือน</item>
-  </plurals>
   <string name="payment_subscription_title">การสมัครสมาชิก</string>
   <string name="payment_subscription_upgrade_your_plan">อัปเกรดแผน</string>
   <string name="payment_subscription_renew_auto_renew_on">แผนจะต่ออายุอัตโนมัติเมื่อ %1$s</string>

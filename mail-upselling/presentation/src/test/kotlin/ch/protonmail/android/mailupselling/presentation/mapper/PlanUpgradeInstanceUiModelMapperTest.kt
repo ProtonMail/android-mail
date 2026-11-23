@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import java.math.BigDecimal
-import android.content.Context
 import ch.protonmail.android.mailupselling.domain.model.PlanUpgradeCycle
 import ch.protonmail.android.mailupselling.domain.model.YearlySaving
 import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
@@ -28,7 +27,6 @@ import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanU
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PlanUpgradePriceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.planupgrades.PromoKind
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
-import io.mockk.mockk
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -38,12 +36,10 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
     private val getDiscountRate = GetDiscountRate()
     private val getYearlySaving = GetYearlySaving()
     private lateinit var mapper: PlanUpgradeInstanceUiModelMapper
-    private lateinit var context: Context
 
     @BeforeTest
     fun setup() {
-        context = mockk(relaxed = true)
-        mapper = PlanUpgradeInstanceUiModelMapper(context, getDiscountRate, getYearlySaving)
+        mapper = PlanUpgradeInstanceUiModelMapper(getDiscountRate, getYearlySaving)
     }
 
     @Test
@@ -58,7 +54,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
-            product = monthlyPlan.toProduct(context),
+            product = monthlyPlan.toProduct(),
             yearlySaving = null
         )
 
@@ -68,7 +64,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("108.00"), currencyCode = "EUR"),
             discountRate = 25,
             cycle = PlanUpgradeCycle.Yearly,
-            product = yearlyPlan.toProduct(context),
+            product = yearlyPlan.toProduct(),
             yearlySaving = YearlySaving("EUR", BigDecimal("36.00"))
         )
 
@@ -95,7 +91,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
             renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
             discountRate = 25,
             cycle = PlanUpgradeCycle.Monthly,
-            product = monthlyPlan.toProduct(context),
+            product = monthlyPlan.toProduct(),
             yearlySaving = null
         )
 
@@ -108,7 +104,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("108.00"), currencyCode = "EUR"),
             discountRate = 25,
             cycle = PlanUpgradeCycle.Yearly,
-            product = yearlyPlan.toProduct(context),
+            product = yearlyPlan.toProduct(),
             yearlySaving = YearlySaving("EUR", BigDecimal("36.00"))
         )
 
@@ -134,7 +130,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
             totalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("12.00"), currencyCode = "EUR"),
             discountRate = null,
             cycle = PlanUpgradeCycle.Monthly,
-            product = monthlyPlan.toProduct(context),
+            product = monthlyPlan.toProduct(),
             yearlySaving = null
         )
 
@@ -145,7 +141,7 @@ internal class PlanUpgradeInstanceUiModelMapperTest {
             renewalPrice = PlanUpgradePriceUiModel(rawAmount = BigDecimal("108.00"), currencyCode = "EUR"),
             discountRate = 50,
             cycle = PlanUpgradeCycle.Yearly,
-            product = yearlyPlan.toProduct(context),
+            product = yearlyPlan.toProduct(),
             yearlySaving = YearlySaving("EUR", BigDecimal("90.00"))
         )
 

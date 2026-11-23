@@ -30,15 +30,6 @@
     <item quantity="one">Betal for %d måned</item>
     <item quantity="other">Betal for %d måneder</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Rabatter er basert på standard månedspris. Fornyes automatisk til %1$s/måned</string>
-  <string name="payment_bf_renew_annually">Rabatter er basert på standard månedspris. Fornyes automatisk til %1$s/år</string>
-  <string name="payment_welcome_offer_renew_monthly">Velkomsttilbud. Fornyes automatisk til %1$s/måned</string>
-  <string name="payment_welcome_offer_renew_annually">Velkomsttilbud. Fornyes automatisk til %1$s/år</string>
-  <string name="payment_welcome_offer_renew_biennially">Velkomsttilbud. Fornyes automatisk til %1$s hvert 2. år</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Velkomsttilbud. Fornyes automatisk til %1$s/måned</item>
-    <item quantity="other">Velkomsttilbud. Fornyes automatisk til %1$s hver %2$s måned</item>
-  </plurals>
   <string name="payment_subscription_title">Abonnement</string>
   <string name="payment_subscription_upgrade_your_plan">Oppgrader planen din</string>
   <string name="payment_subscription_renew_auto_renew_on">Planen din fornyes automatisk den %1$s.</string>

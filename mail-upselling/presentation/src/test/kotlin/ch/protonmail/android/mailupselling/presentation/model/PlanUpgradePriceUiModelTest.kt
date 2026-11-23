@@ -44,6 +44,12 @@ class PlanUpgradePriceUiModelTest {
     }
 
     @Test
+    fun `getShorthandFormat keeps a dollar symbol that has a prefix`() {
+        val model = PlanUpgradePriceUiModel(BigDecimal("54.99"), "NZD")
+        assertEquals("NZ$54.99", model.getShorthandFormat())
+    }
+
+    @Test
     fun `getShorthandFormat with unknown currency code falls back to code format`() {
         val model = PlanUpgradePriceUiModel(BigDecimal(42.0), "XYZ")
         assertEquals("XYZ 42", model.getShorthandFormat())

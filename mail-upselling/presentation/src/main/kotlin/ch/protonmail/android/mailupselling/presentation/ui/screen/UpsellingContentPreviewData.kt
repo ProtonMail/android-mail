@@ -67,7 +67,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null,
             amount = 4_990_000L,
             currency = "EUR"
         )
@@ -89,7 +88,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null,
             amount = 4_990_000L,
             currency = "EUR"
         )
@@ -115,7 +113,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null,
             amount = 4_990_000L,
             currency = "EUR"
         )
@@ -137,7 +134,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null,
             amount = 4_990_000L,
             currency = "EUR"
         )
@@ -163,7 +159,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null,
             amount = 4_990_000L,
             currency = "EUR"
         )
@@ -183,7 +178,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Title", "Description", "EUR 12.99", "Cycle text", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = null,
             amount = 4_990_000L,
             currency = "EUR"
         )
@@ -259,7 +253,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Mail Plus", "12 months", "USD 35.88", "/year", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = "Auto-renews at \$155.76/year",
             amount = 35_880_000L,
             currency = "USD"
         )
@@ -292,7 +285,6 @@ internal object UpsellingContentPreviewData {
             header = ProductDetailHeader("Proton Unlimited", "12 months", "USD 77.88", "/year", false),
             offerToken = ProductOfferToken(""),
             entitlements = emptyList(),
-            renewalText = "Auto-renews at \$155.76/year",
             amount = 77_880_000L,
             currency = "USD"
         )
@@ -527,7 +519,6 @@ internal object UpsellingContentPreviewData {
                 header = ProductDetailHeader(name, "12 months", "USD $promotionalPrice", "/year", false),
                 offerToken = ProductOfferToken(""),
                 entitlements = emptyList(),
-                renewalText = "Auto-renews at \$$renewalPrice/year",
                 amount = 0L,
                 currency = "USD"
             )

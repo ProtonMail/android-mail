@@ -22,6 +22,7 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
+import me.proton.android.core.payment.domain.model.replaceBareDollarSign
 
 data class PlanUpgradePriceUiModel(
     val rawAmount: BigDecimal,
@@ -37,7 +38,7 @@ data class PlanUpgradePriceUiModel(
         return if (symbol == null || isOriginal) {
             "$currencyCode $formattedAmount" // Space for codes: "XYZ 54" or "XYZ 54.99"
         } else {
-            "$symbol$formattedAmount" // No space for symbols: "$54" or "$54.99"
+            replaceBareDollarSign("$symbol$formattedAmount", currencyCode) // No space for symbols: "$54" or "$54.99"
         }
     }
 

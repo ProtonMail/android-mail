@@ -30,15 +30,6 @@
     <item quantity="one">%d aylık ödeme</item>
     <item quantity="other">%d aylık ödeme</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">İndirimler standart aylık ücretlere göre belirlenir. %1$s/ay ile otomatik olarak yenilenir</string>
-  <string name="payment_bf_renew_annually">İndirimler standart aylık ücretlere göre belirlenir. %1$s/yıl ile otomatik olarak yenilenir</string>
-  <string name="payment_welcome_offer_renew_monthly">Karşılama teklifi. %1$s/ay tutar ile otomatik olarak yenilenir</string>
-  <string name="payment_welcome_offer_renew_annually">Karşılama teklifi. %1$s/yıl tutar ile otomatik olarak yenilenir</string>
-  <string name="payment_welcome_offer_renew_biennially">Karşılama teklifi. Her iki yılda bir %1$s tutar ile otomatik olarak yenilenir.</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Karşılama teklifi. %1$s/ay tutar ile otomatik olarak yenilenir</item>
-    <item quantity="other">Karşılama teklifi. Her %2$s ayda bir %1$s tutar ile otomatik olarak yenilenir.</item>
-  </plurals>
   <string name="payment_subscription_title">Abonelik</string>
   <string name="payment_subscription_upgrade_your_plan">Tarifenizi yükseltin</string>
   <string name="payment_subscription_renew_auto_renew_on">Tarifeniz %1$s tarihinde otomatik olarak yenilenecek.</string>

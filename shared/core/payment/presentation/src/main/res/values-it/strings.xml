@@ -30,15 +30,6 @@
     <item quantity="one">Paga per %d mese</item>
     <item quantity="other">Paga per %d mesi</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Gli sconti si basano sui prezzi mensili standard. Si rinnova automaticamente a %1$s/mese</string>
-  <string name="payment_bf_renew_annually">Gli sconti si basano sui prezzi mensili standard. Si rinnova automaticamente a %1$s/anno</string>
-  <string name="payment_welcome_offer_renew_monthly">Offerta di benvenuto. Si rinnova automaticamente a %1$s/mese</string>
-  <string name="payment_welcome_offer_renew_annually">Offerta di benvenuto. Si rinnova automaticamente a %1$s/anno</string>
-  <string name="payment_welcome_offer_renew_biennially">Offerta di benvenuto. Si rinnova automaticamente a %1$s ogni 2 anni</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Offerta di benvenuto. Si rinnova automaticamente a %1$s/mese</item>
-    <item quantity="other">Offerta di benvenuto. Si rinnova automaticamente a %1$s ogni %2$s mesi</item>
-  </plurals>
   <string name="payment_subscription_title">Abbonamento</string>
   <string name="payment_subscription_upgrade_your_plan">Effettua l\'upgrade</string>
   <string name="payment_subscription_renew_auto_renew_on">L\'abbonamento si rinnoverà automaticamente il %1$s</string>

@@ -30,15 +30,6 @@
     <item quantity="one">Betaal voor %d maand</item>
     <item quantity="other">Betaal voor %d maanden</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$s/maand</string>
-  <string name="payment_bf_renew_annually">Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$s/jaar</string>
-  <string name="payment_welcome_offer_renew_monthly">Welkomstaanbod. Verlengt automatisch voor %1$s per maand</string>
-  <string name="payment_welcome_offer_renew_annually">Welkomstaanbod. Verlengt automatisch voor %1$s per jaar</string>
-  <string name="payment_welcome_offer_renew_biennially">Welkomstaanbieding. Wordt automatisch om de 2 jaar verlengd voor %1$s</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Welkomstaanbod. Verlengt automatisch voor %1$s per maand</item>
-    <item quantity="other">Welkomstaanbieding. Wordt automatisch verlengd voor %1$s elke %2$s maanden</item>
-  </plurals>
   <string name="payment_subscription_title">Abonnement</string>
   <string name="payment_subscription_upgrade_your_plan">Upgrade uw abonnement</string>
   <string name="payment_subscription_renew_auto_renew_on">Uw abonnement wordt automatisch verlengd op %1$s.</string>

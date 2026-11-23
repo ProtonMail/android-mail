@@ -32,17 +32,6 @@
     <item quantity="few">Plačajte za %d mesece</item>
     <item quantity="other">Plačajte za %d mesecev</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Popusti temeljijo na standardni mesečni ceni. Samodejno se podaljša po ceni %1$s/mesec.</string>
-  <string name="payment_bf_renew_annually">Popusti temeljijo na standardni mesečni ceni. Samodejno se podaljša po ceni %1$s/leto.</string>
-  <string name="payment_welcome_offer_renew_monthly">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s/mesec</string>
-  <string name="payment_welcome_offer_renew_annually">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s/leto</string>
-  <string name="payment_welcome_offer_renew_biennially">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s vsaki 2 leti</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s/mesec</item>
-    <item quantity="two">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s vsaka %2$s meseca</item>
-    <item quantity="few">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s vsake %2$s mesece</item>
-    <item quantity="other">Ponudba dobrodošlice. Samodejno se obnovi po ceni %1$s vsakih %2$s mesecev</item>
-  </plurals>
   <string name="payment_subscription_title">Naročnina</string>
   <string name="payment_subscription_upgrade_your_plan">Nadgradite trenutni paket</string>
   <string name="payment_subscription_renew_auto_renew_on">Vaš paket bo samodejno podaljšan %1$s.</string>

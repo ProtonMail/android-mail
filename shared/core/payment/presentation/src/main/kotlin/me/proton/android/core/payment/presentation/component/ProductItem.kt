@@ -41,7 +41,7 @@ fun ProductItem(
         expandable = expandable,
         expandedInitially = expandedInitially
     ) {
-        ProductCardContent(product) {
+        ProductCardContent {
             PurchaseButton(
                 product = product,
                 modifier = Modifier.padding(top = Spacing.Medium).fillMaxWidth(),

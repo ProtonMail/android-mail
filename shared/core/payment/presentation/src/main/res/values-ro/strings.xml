@@ -31,16 +31,6 @@
     <item quantity="few">Plată pentru %d luni</item>
     <item quantity="other">Plată pentru %d de luni</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Reduceri se bazează pe prețurile lunare standard. Se reînnoiește automat cu %1$s/lună.</string>
-  <string name="payment_bf_renew_annually">Reducerile se bazează pe prețurile lunare standard. Se reînnoiește automat cu %1$s/an.</string>
-  <string name="payment_welcome_offer_renew_monthly">Ofertă de bun venit. Autoreînnoire cu %1$s/lună.</string>
-  <string name="payment_welcome_offer_renew_annually">Ofertă de bun venit. Autoreînnoire cu %1$s/an.</string>
-  <string name="payment_welcome_offer_renew_biennially">Ofertă de bun venit. Autoreînnoire cu %1$s la doi ani.</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Ofertă de bun venit. Autoreînnoire cu %1$s/lună.</item>
-    <item quantity="few">Ofertă de bun venit. Autoreînnoire cu %1$s la fiecare %2$s luni.</item>
-    <item quantity="other">Ofertă de bun venit. Autoreînnoire cu %1$s la fiecare %2$s de luni.</item>
-  </plurals>
   <string name="payment_subscription_title">Abonament</string>
   <string name="payment_subscription_upgrade_your_plan">Modificați-vă planul</string>
   <string name="payment_subscription_renew_auto_renew_on">Abonamentul se va reînnoi automat la data de %1$s.</string>

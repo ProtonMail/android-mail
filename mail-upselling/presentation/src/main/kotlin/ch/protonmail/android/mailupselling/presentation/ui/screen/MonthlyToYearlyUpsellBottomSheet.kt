@@ -47,7 +47,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -190,7 +189,6 @@ private fun MonthlyToYearlyUpsellBottomSheetContent(
     actions: MonthlyToYearlyUpsellBottomSheet.Actions,
     onError: (String) -> Unit
 ) {
-    val context = LocalContext.current
     val monthlyPrice = offer.monthly.renew
     val yearlyPrice = offer.yearly.offer.current
     val perMonth = monthlyPrice
@@ -278,7 +276,7 @@ private fun MonthlyToYearlyUpsellBottomSheetContent(
                 verticalArrangement = Arrangement.spacedBy(ProtonDimens.Spacing.MediumLight)
             ) {
                 MailPurchaseButton(
-                    product = offer.yearly.toProduct(context),
+                    product = offer.yearly.toProduct(),
                     modifier = Modifier.fillMaxWidth(),
                     ctaText = stringResource(
                         R.string.upselling_monthly_to_yearly_cta,

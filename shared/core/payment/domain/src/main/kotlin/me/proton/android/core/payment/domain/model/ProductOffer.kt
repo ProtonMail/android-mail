@@ -61,7 +61,7 @@ fun ProductOfferList.getBaseOffer(): ProductOfferDetail? {
     val header = ProductDetailHeader(
         title = header.title,
         description = header.description,
-        priceText = offer.current.formatted,
+        priceText = offer.current.priceText(),
         cycleText = header.cycleText,
         starred = header.starred
     )
@@ -73,9 +73,11 @@ internal fun ProductOfferList.getProductForOffer(forOffer: ProductOffer): Produc
     val header = ProductDetailHeader(
         title = header.title,
         description = header.description,
-        priceText = offer.current.formatted,
+        priceText = offer.current.priceText(),
         cycleText = header.cycleText,
         starred = header.starred
     )
     return ProductOfferDetail(metadata, header, offer)
 }
+
+private fun ProductOfferPrice.priceText() = replaceBareDollarSign(formatted, currency)

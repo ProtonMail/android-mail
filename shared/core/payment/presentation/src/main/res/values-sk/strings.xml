@@ -32,17 +32,6 @@
     <item quantity="many">Platba za %d mesiacov</item>
     <item quantity="other">Platba za %d mesiacov</item>
   </plurals>
-  <string name="payment_bf_renew_monthly">Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %1$s/mesiac</string>
-  <string name="payment_bf_renew_annually">Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %1$s/ročne</string>
-  <string name="payment_welcome_offer_renew_monthly">Uvítacia ponuka. Automatické obnovenie za %1$s/mesiac</string>
-  <string name="payment_welcome_offer_renew_annually">Uvítacia ponuka. Automatické obnovenie za %1$s/rok</string>
-  <string name="payment_welcome_offer_renew_biennially">Uvítacia ponuka. Automatické obnovenie za %1$s/každé 2 roky</string>
-  <plurals name="payment_welcome_offer_renew_other">
-    <item quantity="one">Uvítacia ponuka. Automatické obnovenie za %1$s/mesiac</item>
-    <item quantity="few">Uvítacia ponuka. Automatické obnovenie za %1$s každé %2$s mesiace</item>
-    <item quantity="many">Uvítacia ponuka. Automatické obnovenie za %1$s každých %2$s mesiacov</item>
-    <item quantity="other">Uvítacia ponuka. Automatické obnovenie za %1$s každých %2$s mesiacov</item>
-  </plurals>
   <string name="payment_subscription_title">Predplatné</string>
   <string name="payment_subscription_upgrade_your_plan">Vylepšite si svoj plán</string>
   <string name="payment_subscription_renew_auto_renew_on">Plán vášho predplatného sa automaticky obnoví dňa %1$s.</string>
