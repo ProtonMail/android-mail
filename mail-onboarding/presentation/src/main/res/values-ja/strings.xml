@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">オフラインでもつながる</string>
   <string name="onboarding_feedback_description">どこにいてもメールの既読、作成、管理が可能です。オンラインに戻るとすぐに、すべてが自動的に同期されます。</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Gmail から乗り換えますか?</string>
+  <string name="onboarding_gmail_description">Gmail アドレスを Proton Mail でそのまま使い続けられます。広告やトラッキングなしでメールを送受信できます。</string>
+  <string name="onboarding_gmail_help_me_move">はい、移行を手伝ってください</string>
+  <string name="onboarding_gmail_no_thanks">いいえ結構です</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">次へ</string>
   <string name="onboarding_get_started">はじめましょう</string>

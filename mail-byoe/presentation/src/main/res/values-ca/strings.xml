@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Connecteu el vostre Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">No s\'ha pogut connectar el vostre compte de Gmail. Torneu-ho a provar.</string>
+  <string name="byoe_gmail_connection_retry">Torneu-ho a provar</string>
+  <string name="byoe_gmail_connection_cancel">Cancel·la</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">S\'ha connectat Gmail</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Mantingueu-vos al dia del vostre Gmail aquí</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Rebeu, llegiu i envieu sense canviar d\'aplicació</string>
+  <string name="byoe_gmail_connected_notifications_title">Desactiveu les notificacions a l\'aplicació de Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Així només rebreu una notificació</string>
+  <string name="byoe_gmail_connected_import_title">S\'estan important els vostres correus electrònics</string>
+  <string name="byoe_gmail_connected_import_body">S\'executa en segon pla, així que endavant, feu servir l\'aplicació. Us avisarem quan hagi acabat.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Descobriu què s\'importa.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Els correus electrònics més antics es mantenen a Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">També els voleu aquí? Importeu-los quan vulgueu a les preferències.</string>
+  <string name="byoe_gmail_connected_open_inbox">Porteu-me a la safata d\'entrada</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Què s\'importa</string>
+  <string name="byoe_import_info_subtitle">El vostre compte de Gmail es manté tal com és. No s\'edita ni s\'elimina res d\'allà.</string>
+  <string name="byoe_import_info_label_lead">Tot el vostre Gmail en una sola etiqueta.</string>
+  <string name="byoe_import_info_label_body">Els correus electrònics importats són sota l\'etiqueta %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Els correus electrònics importats són sota l\'etiqueta anomenada com la vostra adreça de Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Les vostres etiquetes i carpetes.</string>
+  <string name="byoe_import_info_folders_body">Venen tal com les heu configurat al Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Els filtres i les regles no s\'importen.</string>
+  <string name="byoe_import_info_filters_body">Podeu configurar-ne de nous a les preferències.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">S\'està important…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">S\'ha assolit el límit d\'emmagatzematge</string>
+  <string name="byoe_storage_banner_body">La importació s\'ha posat en pausa a causa del límit d\'emmagatzematge. Milloreu i obteniu més emmagatzematge per completar la importació.</string>
+  <string name="byoe_storage_banner_upgrade">Millora</string>
+  <string name="byoe_storage_banner_not_now">Ara no</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Novetats</string>
+  <string name="byoe_spotlight_title">Utilitzeu Gmail a Proton</string>
+  <string name="byoe_spotlight_subtitle">Importeu els correus electrònics existents i sincronitzeu els futurs des de Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Llegiu, responeu i manteniu-vos al dia de Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Sense anuncis ni elements de seguiment</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google no pot fer el seguiment de què feu a Proton</string>
+  <string name="byoe_spotlight_import_title">Importeu els vostres correus electrònics</string>
+  <string name="byoe_spotlight_import_body">Comenceu pel més recent</string>
+  <string name="byoe_spotlight_connect_and_import">Connecteu i importeu</string>
+  <string name="byoe_spotlight_connect">Connecta</string>
+  <string name="byoe_spotlight_later">Ara no</string>
+  <string name="byoe_spotlight_permissions_note">A continuació: aproveu tots els permisos. Proton no demana mai permís per editar ni eliminar res del vostre Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Connecteu el vostre Gmail i nosaltres ens encarregarem de la resta.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Rebeu i escriviu a la vostra adreça de Gmail. Tot des de Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">No editarem ni eliminarem el vostre Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Desconnecteu-vos en qualsevol moment, no es trenca res</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">A continuació: Google us demanarà que aproveu tots els permisos. Aproveu-los tots perquè la connexió funcioni.</string>
+</resources>

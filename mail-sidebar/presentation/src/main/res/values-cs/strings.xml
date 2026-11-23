@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Kontakty</string>
+  <string name="drawer_byoe_title">Používejte Gmail v Proton Mailu</string>
+  <string name="drawer_byoe_subtitle">Čtěte a odesílejte e-maily z Gmailu přímo tady, bez sledování.</string>
+  <string name="drawer_byoe_get_started">Začít</string>
+  <string name="drawer_byoe_dismiss">Zavřít</string>
   <string name="drawer_title_bug_report">Nahlásit problém</string>
   <string name="drawer_item_create_label">Vytvořit štítek</string>
   <string name="drawer_item_create_folder">Vytvořit složku</string>

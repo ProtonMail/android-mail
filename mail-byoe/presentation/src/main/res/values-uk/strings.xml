@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Під\'єднайте Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Не вдалося під\'єднати обліковий запис Gmail. Спробуйте ще раз.</string>
+  <string name="byoe_gmail_connection_retry">Повторити спробу</string>
+  <string name="byoe_gmail_connection_cancel">Скасувати</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail під\'єднано</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Керуйте поштою Gmail тут</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Отримуйте, читайте й надсилайте листи без перемикання між програмами</string>
+  <string name="byoe_gmail_connected_notifications_title">Вимкніть сповіщення в програмі Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Щоб отримувати сповіщення лише один раз</string>
+  <string name="byoe_gmail_connected_import_title">Триває імпортування листів</string>
+  <string name="byoe_gmail_connected_import_body">Імпортування виконується у фоновому режимі, тож можете користуватися програмою. Повідомимо, щойно все буде готово.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Дізнайтеся, що буде імпортовано.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Старіші листи залишаться в Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Хочете бачити їх і тут? Імпортуйте їх будь-коли в налаштуваннях.</string>
+  <string name="byoe_gmail_connected_open_inbox">Перейти до вхідних</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Що імпортується</string>
+  <string name="byoe_import_info_subtitle">Обліковий запис Gmail залишиться без змін. Там нічого не буде змінено чи видалено.</string>
+  <string name="byoe_import_info_label_lead">Уся пошта Gmail під однією міткою.</string>
+  <string name="byoe_import_info_label_body">Імпортовані листи позначено міткою %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Імпортовані листи позначено міткою з назвою адреси Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Мітки й папки.</string>
+  <string name="byoe_import_info_folders_body">Їх буде перенесено саме так, як їх налаштовано в Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Фільтри й правила не переносяться.</string>
+  <string name="byoe_import_info_filters_body">Нові можна налаштувати в налаштуваннях.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Виконується імпортування…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Досягнуто ліміту сховища</string>
+  <string name="byoe_storage_banner_body">Імпортування призупинено через ліміт сховища. Покращте план і отримайте більше місця в сховищі, щоб завершити імпортування.</string>
+  <string name="byoe_storage_banner_upgrade">Покращити</string>
+  <string name="byoe_storage_banner_not_now">Не зараз</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Що нового</string>
+  <string name="byoe_spotlight_title">Користуйтеся Gmail у Proton</string>
+  <string name="byoe_spotlight_subtitle">Імпортуйте наявні листи й синхронізуйте майбутні з Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Читайте, відповідайте й керуйте поштою Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Без реклами й вистежувачів</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google не може відстежувати ваші дії в Proton</string>
+  <string name="byoe_spotlight_import_title">Імпортуйте листи</string>
+  <string name="byoe_spotlight_import_body">Почніть із найновіших</string>
+  <string name="byoe_spotlight_connect_and_import">Під\'єднати й імпортувати</string>
+  <string name="byoe_spotlight_connect">Під\'єднатися</string>
+  <string name="byoe_spotlight_later">Не зараз</string>
+  <string name="byoe_spotlight_permissions_note">Далі надайте всі дозволи. Proton ніколи не запитує дозволу змінювати чи видаляти будь-що в Gmail.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Під\'єднайте Gmail, а про решту подбаємо ми.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Отримуйте й пишіть листи з адреси Gmail просто в Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Не змінюватимемо й не видалятимемо нічого в Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Від\'єднуйте будь-коли — нічого не зламається</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Далі Google попросить надати всі дозволи. Надайте їх усі, щоб з\'єднання працювало.</string>
+</resources>

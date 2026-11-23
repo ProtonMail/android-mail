@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Yhdistä Gmail-tilisi</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Gmail-tiliä ei voitu yhdistää. Yritä uudelleen.</string>
+  <string name="byoe_gmail_connection_retry">Yritä uudelleen</string>
+  <string name="byoe_gmail_connection_cancel">Peruuta</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail yhdistetty</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Pysy Gmailin tasalla täällä</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Vastaanota, lue ja lähetä vaihtamatta sovellusta</string>
+  <string name="byoe_gmail_connected_notifications_title">Poista ilmoitukset käytöstä Gmail-sovelluksessa</string>
+  <string name="byoe_gmail_connected_notifications_body">Näin saat ilmoituksen vain kerran</string>
+  <string name="byoe_gmail_connected_import_title">Sähköpostejasi tuodaan</string>
+  <string name="byoe_gmail_connected_import_body">Tuonti tapahtuu taustalla, joten voit jatkaa sovelluksen käyttöä. Saat ilmoituksen, kun se on valmis.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Lue, mitä tuodaan.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Vanhemmat sähköpostit jäävät Gmailiin</string>
+  <string name="byoe_gmail_connected_older_emails_body">Haluatko ne myös tänne? Voit tuoda ne milloin tahansa asetuksista.</string>
+  <string name="byoe_gmail_connected_open_inbox">Siirry saapuneisiin</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Mitä tuodaan</string>
+  <string name="byoe_import_info_subtitle">Gmail-tilisi pysyy ennallaan. Siellä ei muokata tai poisteta mitään.</string>
+  <string name="byoe_import_info_label_lead">Kaikki Gmail-viestisi yhden tunnisteen alla.</string>
+  <string name="byoe_import_info_label_body">Tuodut sähköpostit löytyvät tunnisteen %s alta.</string>
+  <string name="byoe_import_info_label_body_no_address">Tuodut sähköpostit löytyvät Gmail-osoitteesi mukaan nimetyn tunnisteen alta.</string>
+  <string name="byoe_import_info_folders_lead">Tunnisteesi ja kansiosi.</string>
+  <string name="byoe_import_info_folders_body">Ne siirtyvät juuri sellaisina kuin olet määrittänyt ne Gmailissa.</string>
+  <string name="byoe_import_info_filters_lead">Suodattimia ja sääntöjä ei siirretä.</string>
+  <string name="byoe_import_info_filters_body">Voit määrittää uusia asetuksissa.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Tuonti on käynnissä…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Tallennustilan raja saavutettu</string>
+  <string name="byoe_storage_banner_body">Tuonti on pysäytetty tallennustilan rajan vuoksi. Päivitä tilaus ja hanki lisää tallennustilaa, jotta tuonti voidaan suorittaa loppuun.</string>
+  <string name="byoe_storage_banner_upgrade">Päivitä tilaus</string>
+  <string name="byoe_storage_banner_not_now">Ei nyt</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Mitä uutta</string>
+  <string name="byoe_spotlight_title">Käytä Gmailia Protonissa</string>
+  <string name="byoe_spotlight_subtitle">Tuo nykyiset sähköpostit ja synkronoi tulevat Gmailista.</string>
+  <string name="byoe_spotlight_benefit_read">Lue, vastaa ja pysy Gmailin tasalla</string>
+  <string name="byoe_spotlight_benefit_no_ads">Ei mainoksia, ei seurantaa</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google ei voi seurata, mitä teet Protonissa</string>
+  <string name="byoe_spotlight_import_title">Tuo sähköpostisi</string>
+  <string name="byoe_spotlight_import_body">Aloita uusimmista</string>
+  <string name="byoe_spotlight_connect_and_import">Yhdistä ja tuo</string>
+  <string name="byoe_spotlight_connect">Yhdistä</string>
+  <string name="byoe_spotlight_later">Ei nyt</string>
+  <string name="byoe_spotlight_permissions_note">Seuraavaksi hyväksy kaikki käyttöoikeudet. Proton ei koskaan pyydä oikeutta muokata tai poistaa mitään Gmailistasi.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Yhdistä Gmail-tilisi, niin hoidamme loput.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Vastaanota ja kirjoita viestejä Gmail-osoitteellasi. Kaikki suoraan Proton Mailissa.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Emme muokkaa tai poista mitään Gmailistasi</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Katkaise yhteys milloin tahansa, mikään ei hajoa</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Seuraavaksi Google pyytää hyväksymään kaikki käyttöoikeudet. Hyväksy ne kaikki, jotta yhteys toimii.</string>
+</resources>

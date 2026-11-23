@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Verbind uw Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Uw Gmail-account kan niet worden verbonden. Probeer het opnieuw.</string>
+  <string name="byoe_gmail_connection_retry">Probeer opnieuw</string>
+  <string name="byoe_gmail_connection_cancel">Annuleren</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail verbonden</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Blijf hier op de hoogte van uw Gmail</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Ontvangen, lezen en verzenden zonder van app te wisselen</string>
+  <string name="byoe_gmail_connected_notifications_title">Zet meldingen in de Gmail app uit</string>
+  <string name="byoe_gmail_connected_notifications_body">U krijgt dus maar één keer een melding</string>
+  <string name="byoe_gmail_connected_import_title">Uw e-mails importeren</string>
+  <string name="byoe_gmail_connected_import_body">Het importeren gebeurt op de achtergrond, dus u kunt de app gewoon gebruiken. We laten het u weten zodra het klaar is.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Ontdek wat er wordt geïmporteerd.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Oudere e-mails blijven in Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Wilt u ze hier ook? U kunt ze altijd importeren via Instellingen.</string>
+  <string name="byoe_gmail_connected_open_inbox">Open de Inbox</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Wat wordt geïmporteerd</string>
+  <string name="byoe_import_info_subtitle">Uw Gmail-account blijft zoals het is. Daar wordt niets bewerkt of verwijderd.</string>
+  <string name="byoe_import_info_label_lead">Al uw Gmail in één label.</string>
+  <string name="byoe_import_info_label_body">Geïmporteerde e-mails staan onder het label %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Geïmporteerde e-mails staan onder het label met de naam van uw Gmail-adres.</string>
+  <string name="byoe_import_info_folders_lead">Labels en mappen.</string>
+  <string name="byoe_import_info_folders_body">Ze worden overgenomen zoals u ze in Gmail hebt ingesteld.</string>
+  <string name="byoe_import_info_filters_lead">Filters en regels worden niet overgenomen.</string>
+  <string name="byoe_import_info_filters_body">Stel nieuwe in via Instellingen.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Bezig met importeren…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Opslaglimiet bereikt</string>
+  <string name="byoe_storage_banner_body">Het importeren is onderbroken vanwege de opslaglimiet. Upgrade en krijg meer opslag om het importeren te voltooien.</string>
+  <string name="byoe_storage_banner_upgrade">Upgraden</string>
+  <string name="byoe_storage_banner_not_now">Niet nu</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Wat is er nieuw</string>
+  <string name="byoe_spotlight_title">Gebruik Gmail in Proton</string>
+  <string name="byoe_spotlight_subtitle">Importeer bestaande e-mails en synchroniseer toekomstige e-mails vanuit Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Lees en beantwoord uw Gmail en houd alles bij</string>
+  <string name="byoe_spotlight_benefit_no_ads">Geen advertenties, geen trackers</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google kan niet volgen wat u in Proton doet</string>
+  <string name="byoe_spotlight_import_title">Uw e-mails importeren</string>
+  <string name="byoe_spotlight_import_body">Begin met de meest recente</string>
+  <string name="byoe_spotlight_connect_and_import">Verbinden en importeren</string>
+  <string name="byoe_spotlight_connect">Verbind</string>
+  <string name="byoe_spotlight_later">Niet nu</string>
+  <string name="byoe_spotlight_permissions_note">Volgende stap: keur alle machtigingen goed. Proton vraagt nooit toestemming om iets in uw Gmail te bewerken of te verwijderen.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Verbind uw Gmail en de rest wordt voor u geregeld.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Ontvang en schrijf e-mails met uw Gmail-adres. Alles vanuit Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Niets in uw Gmail wordt bewerkt of verwijderd</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Altijd loskoppelen, zonder dat er iets misgaat</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Volgende stap: Google vraagt u alle machtigingen goed te keuren. Keur ze allemaal goed zodat de verbinding werkt.</string>
+</resources>

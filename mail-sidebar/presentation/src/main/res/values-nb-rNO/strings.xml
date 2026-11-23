@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Kontakter</string>
+  <string name="drawer_byoe_title">Bruk Gmail i Proton Mail</string>
+  <string name="drawer_byoe_subtitle">Les og send Gmail-e-post her – uten sporing.</string>
+  <string name="drawer_byoe_get_started">Kom i gang</string>
+  <string name="drawer_byoe_dismiss">Avvis</string>
   <string name="drawer_title_bug_report">Rapporter et problem</string>
   <string name="drawer_item_create_label">Opprett etikett</string>
   <string name="drawer_item_create_folder">Opprett mappe</string>

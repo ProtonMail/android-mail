@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Posticipa e fattela consegnare più tardi. Approfitta di questo e altro ancora con Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Brutto momento per questa email?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Effettua l\'upgrade del tuo piano per continuare l\'importazione senza esaurire lo spazio di archiviazione</string>
+  <string name="upselling_byoe_storage_title">Non lasciare che l\'importazione si blocchi</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Effettua l\'upgrade e sposta tutte le tue email di Gmail in un\'unica casella di posta privata</string>
+  <string name="upselling_byoe_connection_limit_title">Connetti fino a 3 indirizzi Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Passa a un piano a pagamento per la massima flessibilità</string>
   <string name="upselling_upgrade_plan_generic">Passa a un piano Proton Mail a pagamento per abilitare questa funzionalità</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Gestore di password crittografato</string>
   <string name="upselling_comparison_table_threat_protection">Protezione avanzata dalle minacce</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Cartelle, filtri ed etichette illimitati</string>
+  <string name="upselling_comparison_table_gmail_connections">Connessioni a Gmail</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Scegli l\'abbonamento</string>
   <string name="upselling_select_plan_year">12 mesi</string>

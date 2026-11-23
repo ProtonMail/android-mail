@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">Preferencias</string>
   <string name="mail_settings_app">Personalizaciones de la aplicación</string>
   <string name="mail_settings_content_search">Búsqueda en el contenido de los correos</string>
+  <string name="mail_settings_connect_gmail">Conecta tu Gmail</string>
   <string name="mail_settings_mailbox">Preferencias de buzón</string>
   <string name="mail_settings_new_badge">Nuevo</string>
   <string name="mail_settings_folders_labels">Carpetas y etiquetas</string>

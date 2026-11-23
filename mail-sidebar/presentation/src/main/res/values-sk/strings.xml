@@ -18,11 +18,15 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Kontakty</string>
+  <string name="drawer_byoe_title">Používajte Gmail v Proton Mail</string>
+  <string name="drawer_byoe_subtitle">Čítajte a odosielajte emaily z Gmailu priamo tu, bez sledovania.</string>
+  <string name="drawer_byoe_get_started">Začať</string>
+  <string name="drawer_byoe_dismiss">Zavrieť</string>
   <string name="drawer_title_bug_report">Nahlásiť problém</string>
   <string name="drawer_item_create_label">Vytvoriť štítok</string>
   <string name="drawer_item_create_folder">Vytvoriť priečinok</string>
-  <string name="drawer_upgrade_plus">Upgradovať na Mail Plus</string>
-  <string name="drawer_upgrade_unlimited">Navýšiť na Unlimited</string>
+  <string name="drawer_upgrade_plus">Zvýšiť úroveň na Mail Plus</string>
+  <string name="drawer_upgrade_unlimited">Zvýšiť úroveň na Unlimited</string>
   <string name="drawer_upgrade_plus_black_friday">Black Friday</string>
   <string name="drawer_upgrade_plus_spring_sale">Jarný výpredaj</string>
   <string name="drawer_upgrade_plus_summer_sale">Letný výpredaj</string>

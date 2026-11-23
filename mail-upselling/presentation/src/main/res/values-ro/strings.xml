@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Amânați-l — și livrați-l mai târziu. Bucurați-vă de acest lucru și de mai multe cu Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Moment nepotrivit pentru acest e-mail?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Treceți la un abonament superior pentru a continua importările fără a rămâne fără spațiu.</string>
+  <string name="upselling_byoe_storage_title">Nu lăsați importarea să se blocheze</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Treceți la un plan superior și mutați tot conținutul din Gmail într-o singură căsuță de e-mail privată</string>
+  <string name="upselling_byoe_connection_limit_title">Conectați până la 3 adrese Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Modificați planul pentru flexibilitate completă</string>
   <string name="upselling_upgrade_plan_generic">Aveți nevoie de un abonament cu plată Proton Mail pentru a accesa această funcție.</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Manager criptat de parole</string>
   <string name="upselling_comparison_table_threat_protection">Protecție avansată împotriva amenințărilor</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Foldere, filtre și etichete nelimitate</string>
+  <string name="upselling_comparison_table_gmail_connections">Conexiuni Gmail</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Alegere abonament</string>
   <string name="upselling_select_plan_year">12 luni</string>

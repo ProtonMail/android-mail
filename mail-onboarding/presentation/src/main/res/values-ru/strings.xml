@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Оставайтесь на связи даже офлайн</string>
   <string name="onboarding_feedback_description">Читайте, пишите и управляйте электронными письмами, где бы вы ни находились. Все синхронизируется автоматически, как только вы снова будете онлайн.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Переходите с Gmail?</string>
+  <string name="onboarding_gmail_description">Продолжайте пользоваться адресом Gmail прямо в Proton Mail. Отправляйте и получайте письма без рекламы и отслеживания.</string>
+  <string name="onboarding_gmail_help_me_move">Да, помогите с переходом</string>
+  <string name="onboarding_gmail_no_thanks">Нет, спасибо</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Далее</string>
   <string name="onboarding_get_started">Приступить к работе</string>

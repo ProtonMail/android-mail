@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">設定</string>
   <string name="mail_settings_app">アプリのカスタマイズ</string>
   <string name="mail_settings_content_search">メール本文検索</string>
+  <string name="mail_settings_connect_gmail">Gmail を接続する</string>
   <string name="mail_settings_mailbox">メールボックスの設定</string>
   <string name="mail_settings_new_badge">新着</string>
   <string name="mail_settings_folders_labels">フォルダとラベル</string>

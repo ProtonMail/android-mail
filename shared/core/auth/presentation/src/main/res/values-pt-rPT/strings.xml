@@ -36,7 +36,7 @@
   <string name="auth_email">E-mail</string>
   <string name="auth_password">Palavra-passe</string>
   <string name="auth_login_assistive_text">Introduza o seu e-mail ou nome de utilizador Proton.</string>
-  <string name="auth_account_details">Introduza os detalhes da sua conta da Proton.</string>
+  <string name="auth_account_details">Introduza os detalhes da sua Conta Proton.</string>
   <string name="auth_login_error_invalid_action_cannot_unlock_keys">Erro ao iniciar a sua sessão. Tente de novo.</string>
   <string name="auth_login_error_invalid_action_invalid_credentials">As credenciais de início de sessão estão incorretas. Tente novamente.</string>
   <string name="auth_login_general_error">Ocorreu um erro.</string>
@@ -51,7 +51,7 @@
   <string name="auth_second_factor_recovery_label">Código de recuperação</string>
   <string name="auth_second_factor_switch_to_recovery">Utilizar o código de recuperação</string>
   <string name="auth_second_factor_switch_to_totp">Utilizar o código de autenticação de dois fatores</string>
-  <string name="auth_second_factor_insert_security_key">Insira a sua chave de segurança (security key) vinculada à sua conta Proton. </string>
+  <string name="auth_second_factor_insert_security_key">Insira a sua chave de segurança associada à sua Conta Proton. </string>
   <string name="auth_second_factor_insert_security_key_link">Mais informação</string>
   <string name="auth_second_factor_incorrect_code">Palavra-passe incorreta. Tente novamente.</string>
   <string name="auth_two_pass_title">Desbloqueie a sua caixa de correio</string>
@@ -59,7 +59,7 @@
   <string name="auth_two_pass_unlock">Desbloquear</string>
   <string name="auth_two_pass_forgot_password">Esqueci-me da palavra-passe</string>
   <string name="auth_two_pass_input_empty">A palavra-passe não pode estar vazia.</string>
-  <string name="auth_signup_title">Criar a sua conta da Proton</string>
+  <string name="auth_signup_title">Crie a sua Conta Proton</string>
   <string name="auth_signup_subtitle">Uma conta para todos os serviços Proton</string>
   <string name="auth_signup_next">Seguinte</string>
   <string name="auth_signup_username">Nome de utilizador</string>
@@ -84,7 +84,7 @@
   <string name="auth_signup_set_recovery">Definir um método de recuperação</string>
   <string name="auth_signup_your_account_is_being_setup">A sua conta está a ser criada…</string>
   <string name="auth_signup_please_wait">Normalmente, não demora mais do que um minuto.</string>
-  <string name="auth_signup_congratulations_subtitle">A sua conta Proton foi criada.\nDesfrute do mundo da privacidade.</string>
+  <string name="auth_signup_congratulations_subtitle">A sua conta Proton foi criada com sucesso.\nDesfrute do mundo da privacidade.</string>
   <string name="auth_signup_congratulations_title">Parabéns!</string>
   <string name="auth_signup_start_using_proton">Comece a utilizar o Proton</string>
   <string name="auth_signup_validation_password">A palavra-passe não pode ser vazia.</string>

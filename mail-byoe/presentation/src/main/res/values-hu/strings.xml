@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Gmail-fiók csatlakoztatása</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Nem sikerült csatlakoztatni a Gmail-fiókot. Próbálja újra.</string>
+  <string name="byoe_gmail_connection_retry">Próbálja újra</string>
+  <string name="byoe_gmail_connection_cancel">Mégsem</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail csatlakoztatva</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Kezelje itt a Gmail-fiókját</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Fogadjon, olvasson és küldjön e-maileket alkalmazásváltás nélkül</string>
+  <string name="byoe_gmail_connected_notifications_title">Kapcsolja ki az értesítéseket a Gmail-alkalmazásban</string>
+  <string name="byoe_gmail_connected_notifications_body">Így csak egyszer kap értesítést</string>
+  <string name="byoe_gmail_connected_import_title">Az e-mailek importálása</string>
+  <string name="byoe_gmail_connected_import_body">A folyamat a háttérben fut, így nyugodtan használhatja az alkalmazást. Értesítjük, amint befejeződött.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Tudja meg, mit importálunk.</string>
+  <string name="byoe_gmail_connected_older_emails_title">A régebbi e-mailek a Gmailben maradnak</string>
+  <string name="byoe_gmail_connected_older_emails_body">Itt is szeretné látni őket? Bármikor importálhatja a beállításokban.</string>
+  <string name="byoe_gmail_connected_open_inbox">Ugrás a beérkezett üzenetekhez</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Mit importálunk?</string>
+  <string name="byoe_import_info_subtitle">A Gmail-fiókja változatlan marad. Semmit sem szerkesztünk vagy törlünk benne.</string>
+  <string name="byoe_import_info_label_lead">Minden Gmail-üzenete egy címkében.</string>
+  <string name="byoe_import_info_label_body">Az importált e-mailek a(z) %s címke alatt találhatók.</string>
+  <string name="byoe_import_info_label_body_no_address">Az importált e-mailek a Gmail-címéről elnevezett címke alatt találhatók.</string>
+  <string name="byoe_import_info_folders_lead">Címkék és mappák.</string>
+  <string name="byoe_import_info_folders_body">Pontosan úgy kerülnek át, ahogy a Gmailben beállította őket.</string>
+  <string name="byoe_import_info_filters_lead">A szűrők és szabályok nem kerülnek át.</string>
+  <string name="byoe_import_info_filters_body">Újakat a beállításokban hozhat létre.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Importálás folyamatban…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Elérte a tárhelykorlátot</string>
+  <string name="byoe_storage_banner_body">Az importálás szünetel, mert elérte a tárhelykorlátot. Váltson nagyobb csomagra, és szerezzen több tárhelyet az importálás befejezéséhez.</string>
+  <string name="byoe_storage_banner_upgrade">Váltás nagyobb csomagra</string>
+  <string name="byoe_storage_banner_not_now">Most nem</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Újdonságok</string>
+  <string name="byoe_spotlight_title">Használja a Gmailt a Protonban</string>
+  <string name="byoe_spotlight_subtitle">Importálja meglévő e-mailjeit, és szinkronizálja a jövőbeli üzeneteket a Gmailből.</string>
+  <string name="byoe_spotlight_benefit_read">Olvasson, válaszoljon, és tartsa kézben a Gmailt</string>
+  <string name="byoe_spotlight_benefit_no_ads">Nincsenek reklámok és követők</string>
+  <string name="byoe_spotlight_benefit_no_tracking">A Google nem követheti, mit csinál a Protonban</string>
+  <string name="byoe_spotlight_import_title">Importálja e-mailjeit</string>
+  <string name="byoe_spotlight_import_body">Kezdje a legújabbakkal</string>
+  <string name="byoe_spotlight_connect_and_import">Csatlakoztatás és importálás</string>
+  <string name="byoe_spotlight_connect">Csatlakoztatás</string>
+  <string name="byoe_spotlight_later">Most nem</string>
+  <string name="byoe_spotlight_permissions_note">Következő lépés: hagyja jóvá az összes engedélyt. A Proton soha nem kér engedélyt arra, hogy bármit szerkesszen vagy töröljön a Gmail-fiókjában.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Csatlakoztassa a Gmail-fiókját, a többit mi elintézzük.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Fogadjon és írjon e-maileket a Gmail-címéről, mindezt a Proton Mailen belül.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Semmit sem szerkesztünk vagy törlünk a Gmail-fiókjában</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Bármikor leválaszthatja, semmi sem romlik el</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Következő lépés: a Google arra kéri, hogy hagyja jóvá az összes engedélyt. Hagyja jóvá mindegyiket, hogy a kapcsolat működjön.</string>
+</resources>

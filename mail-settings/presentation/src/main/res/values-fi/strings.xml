@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">Asetukset</string>
   <string name="mail_settings_app">Sovelluksen mukauttaminen</string>
   <string name="mail_settings_content_search">Email content search</string>
+  <string name="mail_settings_connect_gmail">Yhdistä Gmail-tilisi</string>
   <string name="mail_settings_mailbox">Postilaatikon asetukset</string>
   <string name="mail_settings_new_badge">Uusi</string>
   <string name="mail_settings_folders_labels">Kansiot ja tunnisteet</string>

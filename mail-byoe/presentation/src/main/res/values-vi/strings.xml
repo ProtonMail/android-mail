@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Kết nối Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Không thể kết nối tài khoản Gmail. Vui lòng thử lại.</string>
+  <string name="byoe_gmail_connection_retry">Thử lại</string>
+  <string name="byoe_gmail_connection_cancel">Hủy</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Đã kết nối Gmail</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Theo dõi Gmail ngay tại đây</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Nhận, đọc và gửi thư mà không cần chuyển ứng dụng</string>
+  <string name="byoe_gmail_connected_notifications_title">Tắt thông báo trong ứng dụng Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Để chỉ nhận thông báo một lần</string>
+  <string name="byoe_gmail_connected_import_title">Đang nhập email</string>
+  <string name="byoe_gmail_connected_import_body">Quá trình này chạy ở chế độ nền, cứ tiếp tục sử dụng ứng dụng. Sẽ có thông báo khi hoàn tất.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Tìm hiểu những gì được nhập</string>
+  <string name="byoe_gmail_connected_older_emails_title">Email cũ hơn vẫn ở lại Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Muốn có chúng ở đây? Có thể nhập bất cứ lúc nào trong Cài đặt.</string>
+  <string name="byoe_gmail_connected_open_inbox">Đi đến Hộp thư đến</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Những gì được nhập</string>
+  <string name="byoe_import_info_subtitle">Tài khoản Gmail vẫn giữ nguyên. Không có gì bị chỉnh sửa hoặc xóa.</string>
+  <string name="byoe_import_info_label_lead">Toàn bộ Gmail trong một nhãn.</string>
+  <string name="byoe_import_info_label_body">Email đã nhập nằm trong nhãn %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Email đã nhập nằm trong nhãn được đặt theo tên địa chỉ Gmail.</string>
+  <string name="byoe_import_info_folders_lead">Nhãn và thư mục.</string>
+  <string name="byoe_import_info_folders_body">Được chuyển sang giống hệt như đã thiết lập trong Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Bộ lọc và quy tắc không được chuyển sang.</string>
+  <string name="byoe_import_info_filters_body">Có thể thiết lập bộ lọc và quy tắc mới trong Cài đặt.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Đang nhập…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Đã đạt giới hạn lưu trữ</string>
+  <string name="byoe_storage_banner_body">Quá trình nhập đã tạm dừng do giới hạn lưu trữ. Hãy nâng cấp để có thêm dung lượng lưu trữ và hoàn tất quá trình nhập.</string>
+  <string name="byoe_storage_banner_upgrade">Nâng cấp</string>
+  <string name="byoe_storage_banner_not_now">Để sau</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Có gì mới</string>
+  <string name="byoe_spotlight_title">Dùng Gmail trong Proton</string>
+  <string name="byoe_spotlight_subtitle">Nhập email hiện có và đồng bộ email mới từ Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Đọc, trả lời và theo dõi Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Không quảng cáo, không trình theo dõi</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google không thể theo dõi những gì bạn làm trong Proton</string>
+  <string name="byoe_spotlight_import_title">Nhập email</string>
+  <string name="byoe_spotlight_import_body">Bắt đầu với những email gần đây nhất</string>
+  <string name="byoe_spotlight_connect_and_import">Kết nối và nhập</string>
+  <string name="byoe_spotlight_connect">Kết nối</string>
+  <string name="byoe_spotlight_later">Để sau</string>
+  <string name="byoe_spotlight_permissions_note">Tiếp theo: chấp thuận tất cả quyền. Proton không bao giờ yêu cầu quyền chỉnh sửa hoặc xóa bất cứ thứ gì trong Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Kết nối Gmail, phần còn lại cứ để chúng tôi lo.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Nhận và soạn thư bằng địa chỉ Gmail, tất cả ngay trong Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Gmail sẽ không bị chỉnh sửa hoặc xóa</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Ngắt kết nối bất cứ lúc nào mà không ảnh hưởng gì</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Tiếp theo: Google sẽ yêu cầu chấp thuận tất cả quyền. Hãy chấp thuận toàn bộ để kết nối hoạt động.</string>
+</resources>

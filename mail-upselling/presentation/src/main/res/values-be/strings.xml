@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Адкладзіце ліст — і ён будзе дастаўлены пазней. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Не падыходзячы час для гэтага ліста?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Палепшыце свой тарыфны план, каб выканаць імпартаванне без перарывання на сканчэнне месца ў дыскавай прасторы.</string>
+  <string name="upselling_byoe_storage_title">Не дазваляйце імпарту спыніцца</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Палепшыце і перанясіце ўсе свае лісты Gmail у адну прыватную паштовую скрыню.</string>
+  <string name="upselling_byoe_connection_limit_title">Падключыце да 3 адрасоў Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Палепшыць для поўнай гнуткасці</string>
   <string name="upselling_upgrade_plan_generic">Неабходна платная падпіска Proton Mail, каб атрымаць доступ да гэтай функцыі</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Зашыфраваны менеджар пароляў</string>
   <string name="upselling_comparison_table_threat_protection">Пашыраная абарона ад пагроз</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Неабмежаваная колькасць папак, фільтраў і метак</string>
+  <string name="upselling_comparison_table_gmail_connections">Падключэнні Gmail</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Выберыце падпіску</string>
   <string name="upselling_select_plan_year">12 месяцаў</string>

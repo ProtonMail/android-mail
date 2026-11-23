@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Contacten</string>
+  <string name="drawer_byoe_title">Gebruik Gmail in Proton Mail</string>
+  <string name="drawer_byoe_subtitle">Lees en verstuur Gmail hier, zonder tracking.</string>
+  <string name="drawer_byoe_get_started">Aan de slag</string>
+  <string name="drawer_byoe_dismiss">Negeren</string>
   <string name="drawer_title_bug_report">Meld een probleem</string>
   <string name="drawer_item_create_label">Label aanmaken</string>
   <string name="drawer_item_create_folder">Map aanmaken</string>

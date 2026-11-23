@@ -53,12 +53,12 @@
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Zvýšte úroveň svojho súkromia na internete s Proton Unlimited</string>
   <string name="upselling_pu_threat_protection_title">Chráňte svoj účet pred hrozbami s Proton Sentinel</string>
-  <string name="upselling_pu_aliases_title">Získajte neobmedzený počet aliasov na ochranu vašej identity</string>
+  <string name="upselling_pu_aliases_title">Získajte neobmedzený počet aliasov na ochranu svojej identity</string>
   <string name="upselling_pu_drive_title">Získajte 500 GB na bezpečné ukladanie súborov a fotografií</string>
-  <string name="upselling_pu_vpn_browse_title">Získajte prístup k ultra rýchlej VPN so servermi vo viac než 110 krajinách</string>
+  <string name="upselling_pu_vpn_browse_title">Získajte prístup k ultrarýchlej VPN so servermi vo viac než 110 krajinách</string>
   <string name="upselling_pu_vpn_streaming_title">Pristupujte k obsahu streamovacích služieb na celom svete</string>
   <string name="upselling_pu_pass_title">Udržujte si svoje heslá v bezpečí a usporiadané v trezoroch</string>
-  <string name="upselling_pu_subtitle">Využite Proton na maximum s balíkom Unlimited</string>
+  <string name="upselling_pu_subtitle">Využite Proton na maximum s plánom Unlimited</string>
   <!-- Upselling: Plus to Unlimited entry point rows (title + subtitle per theme) -->
   <string name="upselling_pu_row_generic_title">Zvýšte úroveň svojho súkromia</string>
   <string name="upselling_pu_row_generic_subtitle">Získajte viac úložiska</string>
@@ -75,7 +75,7 @@
   <string name="upselling_pu_row_pass_title">Uchovávajte heslá v bezpečí</string>
   <string name="upselling_pu_row_pass_subtitle">Proton Pass</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Posielajte skupinové emails s ľahkosťou. Vychutnajte si toto a ešte viac s Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_description_override">Jednoducho posielajte skupinové emaily. Užite si to a ešte viac s Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Zoskupujte svoje kontakty</string>
   <!-- Upselling: Labels -->
   <string name="upselling_labels_plus_description_override">Vytvorte všetko, čo potrebujete, aby ste mali všetko pod kontrolou. Získajte toto a ešte viac s Mail Plus. </string>
@@ -87,14 +87,21 @@
   <string name="upselling_mobile_signature_plus_description_override">Vytvorte si vlastný mobilný podpis. Vychutnajte si toto a ešte viac s Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Prispôsobte si svoj podpis</string>
   <!-- Upselling: Auto Delete -->
-  <string name="upselling_auto_delete_plus_description_override">Po 30 dňoch maže spam a kôš. To a ešte viac získate s aplikáciou Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Automatizované vyprázdňovanie koša</string>
+  <string name="upselling_auto_delete_plus_description_override">Po 30 dňoch vymazáva spam a kôš. To a ešte viac získate s plánom Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Automatické vyprázdňovanie koša</string>
   <!-- Upselling: Schedule Send -->
-  <string name="upselling_schedule_send_plus_description_override">Prispôsobte si, kedy bude email odoslaný. To a oveľa viac si môžete užiť s aplikáciou Mail Plus.</string>
+  <string name="upselling_schedule_send_plus_description_override">Prispôsobte si, kedy bude email odoslaný. To a oveľa viac si môžete užiť s plánom Mail Plus.</string>
   <string name="upselling_schedule_send_plus_title">Naplánujte teraz, odošlite neskôr</string>
   <!-- Upselling: Snooze -->
-  <string name="upselling_snooze_plus_description_override">Odložte to — a nechajte si to doručiť neskôr. Vychutnajte si túto a ďalšie funkcie s balíkom Mail Plus.</string>
+  <string name="upselling_snooze_plus_description_override">Odložte to — a nechajte si to doručiť neskôr. Vychutnajte si túto a ďalšie funkcie s plánom Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Nevhodný čas na tento email?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Zvýšte úroveň plánu a pokračujte v importe bez obáv z nedostatku miesta</string>
+  <string name="upselling_byoe_storage_title">Nedovoľte, aby sa import zastavil</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Zvýšte úroveň a presuňte celý Gmail do jednej súkromnej doručenej pošty</string>
+  <string name="upselling_byoe_connection_limit_title">Pripojte až 3 adresy Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Navýšte úroveň pre úplnú flexibilitu</string>
   <string name="upselling_upgrade_plan_generic">Pre prístup k tejto funkcii potrebujete platené predplatné Proton Mail.</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Šifrovaný správca hesiel</string>
   <string name="upselling_comparison_table_threat_protection">Pokročilá ochrana pred hrozbami</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neobmedzené priečinky, filtre, štítky</string>
+  <string name="upselling_comparison_table_gmail_connections">Pripojenia Gmail</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Vyberte predplatné</string>
   <string name="upselling_select_plan_year">12 mesiacov</string>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Gmail 연결</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Gmail 계정을 연결할 수 없습니다. 다시 시도해 주세요.</string>
+  <string name="byoe_gmail_connection_retry">다시 시도</string>
+  <string name="byoe_gmail_connection_cancel">취소</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail 연결됨</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">여기에서 Gmail을 바로 확인하세요</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">앱을 전환하지 않고 이메일을 받고, 읽고, 보내세요.</string>
+  <string name="byoe_gmail_connected_notifications_title">Gmail 앱에서 알림 끄기</string>
+  <string name="byoe_gmail_connected_notifications_body">알림이 중복되지 않도록 하세요.</string>
+  <string name="byoe_gmail_connected_import_title">이메일을 불러오는 중</string>
+  <string name="byoe_gmail_connected_import_body">백그라운드에서 진행되므로 앱을 계속 사용하셔도 됩니다. 완료되면 알려 드리겠습니다.</string>
+  <string name="byoe_gmail_connected_import_learn_more">불러오는 항목 알아보기</string>
+  <string name="byoe_gmail_connected_older_emails_title">이전 이메일은 Gmail에 남아 있습니다</string>
+  <string name="byoe_gmail_connected_older_emails_body">여기에서도 보고 싶으신가요? 설정에서 언제든지 불러올 수 있습니다.</string>
+  <string name="byoe_gmail_connected_open_inbox">받은 편지함으로 이동</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">불러오는 항목</string>
+  <string name="byoe_import_info_subtitle">Gmail 계정은 그대로 유지됩니다. 어떤 항목도 편집되거나 삭제되지 않습니다.</string>
+  <string name="byoe_import_info_label_lead">모든 Gmail이 하나의 라벨에.</string>
+  <string name="byoe_import_info_label_body">불러온 이메일은 %s 라벨에 있습니다.</string>
+  <string name="byoe_import_info_label_body_no_address">불러온 이메일은 Gmail 주소와 같은 이름의 라벨에 있습니다.</string>
+  <string name="byoe_import_info_folders_lead">라벨과 폴더.</string>
+  <string name="byoe_import_info_folders_body">Gmail에서 설정한 그대로 옮겨집니다.</string>
+  <string name="byoe_import_info_filters_lead">필터와 규칙은 옮겨지지 않습니다.</string>
+  <string name="byoe_import_info_filters_body">설정에서 새로 설정할 수 있습니다.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">불러오는 중…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">저장공간 한도 도달</string>
+  <string name="byoe_storage_banner_body">저장공간 한도로 인해 불러오기가 일시정지되었습니다. 업그레이드하여 저장공간을 늘리고 불러오기를 완료하세요.</string>
+  <string name="byoe_storage_banner_upgrade">업그레이드</string>
+  <string name="byoe_storage_banner_not_now">나중에</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">새로운 소식</string>
+  <string name="byoe_spotlight_title">Proton에서 Gmail 사용하기</string>
+  <string name="byoe_spotlight_subtitle">Gmail에서 기존 이메일을 불러오고 앞으로 받을 이메일을 동기화하세요.</string>
+  <string name="byoe_spotlight_benefit_read">Gmail을 읽고, 답장하고, 바로 확인하세요.</string>
+  <string name="byoe_spotlight_benefit_no_ads">광고 없음, 트래커 없음</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google은 Proton에서의 활동을 추적할 수 없습니다.</string>
+  <string name="byoe_spotlight_import_title">이메일 불러오기</string>
+  <string name="byoe_spotlight_import_body">가장 최근 이메일부터 시작하세요.</string>
+  <string name="byoe_spotlight_connect_and_import">연결 및 불러오기</string>
+  <string name="byoe_spotlight_connect">연결</string>
+  <string name="byoe_spotlight_later">나중에</string>
+  <string name="byoe_spotlight_permissions_note">다음 단계: 모든 권한을 승인하세요. Proton은 Gmail의 어떤 항목도 편집하거나 삭제할 권한을 요청하지 않습니다.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Gmail을 연결하면 나머지는 알아서 처리해 드립니다.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Gmail 주소로 이메일을 받고 작성하세요. 모두 Proton Mail 안에서 가능합니다.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Gmail을 편집하거나 삭제하지 않습니다.</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">언제든지 연결 해제 가능, 아무 문제도 생기지 않습니다.</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">다음 단계: Google에서 모든 권한을 승인하도록 요청합니다. 연결이 제대로 작동하도록 모든 권한을 승인하세요.</string>
+</resources>

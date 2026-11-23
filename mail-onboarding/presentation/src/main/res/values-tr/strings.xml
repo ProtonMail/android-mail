@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Çevrim dışıyken bile bağlı kalın</string>
   <string name="onboarding_feedback_description">Nerede olursanız olun e-postaları okuyun, yazın ve yönetin. Çevrim içi olduğunuz anda her şey otomatik olarak eşitlenir.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Gmail\'den mi taşınıyorsunuz?</string>
+  <string name="onboarding_gmail_description">Gmail adresinizi Proton Mail içinde kullanmayı sürdürün. E-postaları reklam ve izleme olmadan gönderin ve alın.</string>
+  <string name="onboarding_gmail_help_me_move">Evet, taşımama yardımcı ol</string>
+  <string name="onboarding_gmail_no_thanks">Hayır, teşekkürler</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Sonraki</string>
   <string name="onboarding_get_started">Başlayalım</string>

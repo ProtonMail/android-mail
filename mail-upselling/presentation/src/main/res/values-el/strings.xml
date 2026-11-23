@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Αναβάλετέ το — για να παραδοθεί αργότερα. Απολαύστε αυτό και πολλά άλλα με το Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Κακή στιγμή για αυτό το μήνυμα;</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Αναβαθμίστε το πλάνο σας για να συνεχίσετε τις εισαγωγές χωρίς να εξαντλήσετε τον διαθέσιμο χώρο</string>
+  <string name="upselling_byoe_storage_title">Μην αφήσετε τις εισαγωγές σας να σταματήσουν</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Αναβαθμίστε και μεταφέρετε όλο το Gmail σας σε ένα ιδιωτικό γραμματοκιβώτιο</string>
+  <string name="upselling_byoe_connection_limit_title">Συνδέστε έως και 3 διευθύνσεις Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Αναβάθμιση για πλήρη ευελιξία</string>
   <string name="upselling_upgrade_plan_generic">Χρειάζεστε μια συνδρομή Proton Mail επί πληρωμή για να αποκτήσετε πρόσβαση σε αυτήν τη δυνατότητα</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Κρυπτογραφημένος διαχειριστής κωδικών πρόσβασης</string>
   <string name="upselling_comparison_table_threat_protection">Προηγμένη προστασία απειλών</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Απεριόριστοι φάκελοι, φίλτρα, ετικέτες</string>
+  <string name="upselling_comparison_table_gmail_connections">Συνδέσεις Gmail</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Επιλογή συνδρομής</string>
   <string name="upselling_select_plan_year">12 μήνες</string>

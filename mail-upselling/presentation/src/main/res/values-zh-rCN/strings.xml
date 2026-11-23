@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">延后寄送，稍后再送达。Mail Plus 让您尽享更多便利。</string>
   <string name="upselling_snooze_plus_title">这封邮件不适合发在什么时间？</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">升级您的套餐，继续导入，不再担心空间不足</string>
+  <string name="upselling_byoe_storage_title">别让导入中途停滞</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">立即升级，将所有 Gmail 邮件移至一个私有收件箱</string>
+  <string name="upselling_byoe_connection_limit_title">最多可连接 3 个 Gmail 地址</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">升级以获取更多选项</string>
   <string name="upselling_upgrade_plan_generic">您需要付费订阅 Proton Mail 才能使用此功能</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">加密的密码管理器</string>
   <string name="upselling_comparison_table_threat_protection">高级威胁保护</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">选择套餐</string>
   <string name="upselling_select_plan_year">12 个月</string>

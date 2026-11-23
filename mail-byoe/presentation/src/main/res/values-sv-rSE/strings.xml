@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Anslut din Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Ditt Gmail-konto kunde inte anslutas. Försök igen.</string>
+  <string name="byoe_gmail_connection_retry">Försök igen</string>
+  <string name="byoe_gmail_connection_cancel">Avbryt</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail ansluten</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Håll koll på din Gmail här</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Ta emot, läs och skicka utan att byta appar</string>
+  <string name="byoe_gmail_connected_notifications_title">Slå av aviseringar i Gmail-appen</string>
+  <string name="byoe_gmail_connected_notifications_body">Så du blir bara aviserad en gång</string>
+  <string name="byoe_gmail_connected_import_title">Importerar din e-post</string>
+  <string name="byoe_gmail_connected_import_body">Den körs i bakgrunden, så fortsätt gärna använda appen. Vi meddelar dig när den är klar.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Lär dig vad som blir importerat</string>
+  <string name="byoe_gmail_connected_older_emails_title">Äldre e-post stannar i Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Vill du ha dem här också? Importera när som helst i Inställningar.</string>
+  <string name="byoe_gmail_connected_open_inbox">Ta mig till Inkorgen</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Vad som blir importerat</string>
+  <string name="byoe_import_info_subtitle">Ditt Gmail-konto förblir som det är. Inget redigeras eller tas bort.</string>
+  <string name="byoe_import_info_label_lead">All din Gmail under en etikett.</string>
+  <string name="byoe_import_info_label_body">Importerad e-post finns under etiketten %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Importerad e-post är under etiketten döpt efter din Gmail-adress.</string>
+  <string name="byoe_import_info_folders_lead">Dina etiketter och mappar.</string>
+  <string name="byoe_import_info_folders_body">De förs över precis som du ställde in dem i Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filter och regler lämnas kvar.</string>
+  <string name="byoe_import_info_filters_body">Du kan ställa in nya i Inställningar</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Import pågår…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Lagringsgränsen har nåtts</string>
+  <string name="byoe_storage_banner_body">Import är pausad på grund av lagringsgräns. Uppgradera och få mer lagring för att avsluta din import.</string>
+  <string name="byoe_storage_banner_upgrade">Uppgradera</string>
+  <string name="byoe_storage_banner_not_now">Inte nu</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Vad som är nytt</string>
+  <string name="byoe_spotlight_title">Använd Gmail i Proton</string>
+  <string name="byoe_spotlight_subtitle">Importera befintlig e-post och synkronisera kommande från Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Läs, svara och håll koll på Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Inga annonser, inga spårare</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google kan inte spåra vad du gör i Proton</string>
+  <string name="byoe_spotlight_import_title">Importera din e-post</string>
+  <string name="byoe_spotlight_import_body">Börja med det senaste</string>
+  <string name="byoe_spotlight_connect_and_import">Anslut och importera</string>
+  <string name="byoe_spotlight_connect">Anslut</string>
+  <string name="byoe_spotlight_later">Inte nu</string>
+  <string name="byoe_spotlight_permissions_note">Nästa: Godkänn alla behörigheter. Proton ber aldrig om behörighet att redigera eller ta bort något i din Gmail</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Anslut din Gmail och vi hanterar resten.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Ta emot och skriv e-post med din Gmail-adress. Allt direkt i Proton Mail</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Vi kommer inte redigera eller ta bort din Gmail</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Koppla från när som helst, ingenting går sönder</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Nästa: Google kommer att be dig att godkänna alla behörigheter. Godkänn alla så anslutningen fungerar.</string>
+</resources>

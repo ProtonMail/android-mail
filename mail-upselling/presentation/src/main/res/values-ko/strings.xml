@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">나중에 다시 알림을 설정하세요 - 그리고 나중에 전달되도록 하세요. Mail Plus로 이 기능을 비롯한 다양한 혜택을 즐겨보세요.</string>
   <string name="upselling_snooze_plus_title">이 이메일에 부적절한 시간인가요?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">요금제를 업그레이드하고 저장 공간 걱정 없이 계속 불러오세요.</string>
+  <string name="upselling_byoe_storage_title">불러오기가 멈추지 않도록 하세요</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">업그레이드하고 모든 Gmail을 하나의 개인 받은 편지함으로 옮기세요.</string>
+  <string name="upselling_byoe_connection_limit_title">Gmail 주소를 최대 3개까지 연결</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">완전한 유연성을 위한 업그레이드</string>
   <string name="upselling_upgrade_plan_generic">이 기능을 사용하려면 유료 Proton Mail 구독이 필요합니다.</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">암호화된 비밀번호 관리자</string>
   <string name="upselling_comparison_table_threat_protection">향상된 위협 보호 기능</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">무제한 폴더 및 라벨</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">요금제를 선택하세요</string>
   <string name="upselling_select_plan_year">12개월</string>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Hubungkan Gmail</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Akun Gmail tidak dapat dihubungkan. Silakan coba lagi.</string>
+  <string name="byoe_gmail_connection_retry">Coba lagi</string>
+  <string name="byoe_gmail_connection_cancel">Batal</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail terhubung</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Pantau Gmail di sini</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Terima, baca, dan kirim email tanpa berpindah aplikasi</string>
+  <string name="byoe_gmail_connected_notifications_title">Nonaktifkan notifikasi di aplikasi Gmail</string>
+  <string name="byoe_gmail_connected_notifications_body">Agar hanya menerima satu notifikasi</string>
+  <string name="byoe_gmail_connected_import_title">Email sedang diimpor</string>
+  <string name="byoe_gmail_connected_import_body">Proses ini berjalan di latar belakang, jadi Anda tetap dapat menggunakan aplikasi. Kami akan memberi tahu Anda setelah selesai.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Pelajari apa saja yang diimpor.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Email lama tetap berada di Gmail</string>
+  <string name="byoe_gmail_connected_older_emails_body">Ingin email lama juga ada di sini? Impor kapan saja di Pengaturan.</string>
+  <string name="byoe_gmail_connected_open_inbox">Buka Kotak masuk</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Apa saja yang diimpor</string>
+  <string name="byoe_import_info_subtitle">Akun Gmail tetap seperti semula. Tidak ada yang diedit atau dihapus di sana.</string>
+  <string name="byoe_import_info_label_lead">Seluruh Gmail Anda dalam satu label.</string>
+  <string name="byoe_import_info_label_body">Email yang diimpor berada di bawah label %s.</string>
+  <string name="byoe_import_info_label_body_no_address">Email yang diimpor berada di bawah label yang dinamai sesuai alamat Gmail Anda.</string>
+  <string name="byoe_import_info_folders_lead">Label dan folder.</string>
+  <string name="byoe_import_info_folders_body">Semuanya dipindahkan persis seperti yang Anda atur di Gmail.</string>
+  <string name="byoe_import_info_filters_lead">Filter dan aturan tidak ikut dipindahkan.</string>
+  <string name="byoe_import_info_filters_body">Anda dapat menyiapkan yang baru di Pengaturan.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">Impor sedang berlangsung…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Batas penyimpanan tercapai</string>
+  <string name="byoe_storage_banner_body">Impor dijeda karena batas penyimpanan telah tercapai. Tingkatkan paket untuk mendapatkan lebih banyak penyimpanan dan menyelesaikan impor.</string>
+  <string name="byoe_storage_banner_upgrade">Tingkatkan</string>
+  <string name="byoe_storage_banner_not_now">Tidak sekarang</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Apa yang baru</string>
+  <string name="byoe_spotlight_title">Gunakan Gmail di Proton</string>
+  <string name="byoe_spotlight_subtitle">Impor email yang ada dan sinkronkan email berikutnya dari Gmail.</string>
+  <string name="byoe_spotlight_benefit_read">Baca, balas, dan pantau Gmail</string>
+  <string name="byoe_spotlight_benefit_no_ads">Tanpa iklan, tanpa pelacak</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google tidak dapat melacak aktivitas Anda di Proton</string>
+  <string name="byoe_spotlight_import_title">Impor email</string>
+  <string name="byoe_spotlight_import_body">Mulai dari email terbaru</string>
+  <string name="byoe_spotlight_connect_and_import">Hubungkan dan impor</string>
+  <string name="byoe_spotlight_connect">Hubungkan</string>
+  <string name="byoe_spotlight_later">Tidak sekarang</string>
+  <string name="byoe_spotlight_permissions_note">Berikutnya: setujui semua izin. Proton tidak pernah meminta izin untuk mengedit atau menghapus apa pun di Gmail Anda.</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Hubungkan Gmail dan kami akan mengurus sisanya.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Terima dan tulis email dengan alamat Gmail Anda, semuanya langsung dari Proton Mail.</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Kami tidak akan mengedit atau menghapus Gmail Anda</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">Putuskan koneksi kapan saja tanpa masalah</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Berikutnya: Google akan meminta Anda menyetujui semua izin. Setujui semuanya agar koneksi dapat berfungsi.</string>
+</resources>

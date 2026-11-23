@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Prestavite v dremež – in prejmite ga kasneje. Uživajte v tem in še več z Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Ni pravi trenutek za to sporočilo?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Nadgradite paket in nadaljujte uvoz brez skrbi, da vam bo zmanjkalo prostora.</string>
+  <string name="upselling_byoe_storage_title">Ne dovolite, da se uvoz ustavi</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Nadgradite paket in prenesite vso pošto Gmail v en zaseben nabiralnik.</string>
+  <string name="upselling_byoe_connection_limit_title">Povežite do 3 naslovov Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Nadgradnja za polno prilagodljivost</string>
   <string name="upselling_upgrade_plan_generic">Za dostop do te funkcije potrebujete plačljivo naročnino na Proton Mail.</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Šifriran upravitelj gesel</string>
   <string name="upselling_comparison_table_threat_protection">Napredna zaščita pred grožnjami</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Neomejeno število map, filtrov in oznak</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Izberite naročnino</string>
   <string name="upselling_select_plan_year">12 mesecev</string>

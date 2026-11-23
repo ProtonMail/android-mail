@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="byoe_gmail_connection_title">Gmail hesabınızı bağlayın</string>
+  <!-- Dialog shown when the Gmail connection page can't be opened or the connection failed, e.g. without network -->
+  <string name="byoe_gmail_connection_error">Gmail hesabınız bağlanamadı. Lütfen yeniden deneyin.</string>
+  <string name="byoe_gmail_connection_retry">Yeniden dene</string>
+  <string name="byoe_gmail_connection_cancel">İptal</string>
+  <!-- Shown when the Gmail connection succeeded -->
+  <string name="byoe_gmail_connected_title">Gmail bağlandı</string>
+  <string name="byoe_gmail_connected_stay_on_top_title">Gmail e-postanızı buradan izleyin</string>
+  <string name="byoe_gmail_connected_stay_on_top_body">Uygulamalar arasında dolaşmadan alın, okuyun ve gönderin</string>
+  <string name="byoe_gmail_connected_notifications_title">Gmail uygulamasında bildirimleri kapatın</string>
+  <string name="byoe_gmail_connected_notifications_body">Böylece yalnızca bir kez bildirim alırsınız</string>
+  <string name="byoe_gmail_connected_import_title">E-postalarınız içe aktarılıyor</string>
+  <string name="byoe_gmail_connected_import_body">İçe aktarma arka planda yapılır, bu nedenle uygulamayı kullanmaya devam edebilirsiniz. Bittiğinde sizi bilgilendireceğiz.</string>
+  <string name="byoe_gmail_connected_import_learn_more">Neyin içe aktarılacağını öğrenin.</string>
+  <string name="byoe_gmail_connected_older_emails_title">Daha eski e-postalar Gmail üzerinde kalır</string>
+  <string name="byoe_gmail_connected_older_emails_body">Onların da buraya taşınmasını ister misiniz? Ayarlar bölümünden istediğiniz zaman içe aktarın.</string>
+  <string name="byoe_gmail_connected_open_inbox">Beni Gelen Kutusuna götür</string>
+  <!-- What gets imported, opened from "Learn what gets imported" on the Gmail connected page -->
+  <string name="byoe_import_info_title">Neler içe aktarılır</string>
+  <string name="byoe_import_info_subtitle">Gmail hesabınız olduğu gibi kalır. Orada hiçbir şey düzenlenmez veya silinmez.</string>
+  <string name="byoe_import_info_label_lead">Tüm Gmail e-postalarınız tek bir etikette.</string>
+  <string name="byoe_import_info_label_body">İçe aktarılan e-postalar %s etiketi altındadır.</string>
+  <string name="byoe_import_info_label_body_no_address">İçe aktarılan e-postalar, Gmail adresinizin adını taşıyan etiket altındadır.</string>
+  <string name="byoe_import_info_folders_lead">Etiketleriniz ve klasörleriniz.</string>
+  <string name="byoe_import_info_folders_body">Gmail üzerinde ayarladığınız gibi gelirler.</string>
+  <string name="byoe_import_info_filters_lead">Süzgeçler ve kurallar geride kalır.</string>
+  <string name="byoe_import_info_filters_body">Ayarlar bölümünden yenilerini ayarlayabilirsiniz.</string>
+  <!-- Snackbar in the mailbox once the user is back from the success page -->
+  <string name="byoe_gmail_import_in_progress">İçe aktarılıyor…</string>
+  <!-- Mailbox banner while a Gmail import is paused because storage is full -->
+  <string name="byoe_storage_banner_title">Depolama alanı sınırına ulaşıldı</string>
+  <string name="byoe_storage_banner_body">İçe aktarma, depolama alanı sınırı nedeniyle duraklatıldı. Tarifenizi yükseltin ve içe aktarmanızı tamamlamak için daha fazla depolama alanı elde edin.</string>
+  <string name="byoe_storage_banner_upgrade">Yükselt</string>
+  <string name="byoe_storage_banner_not_now">Şimdi değil</string>
+  <!-- BYOE spotlight for existing users -->
+  <string name="byoe_spotlight_badge">Yenilikler</string>
+  <string name="byoe_spotlight_title">Proton ile Gmail hesabınızı kullanın</string>
+  <string name="byoe_spotlight_subtitle">Var olan e-postaları içe aktarın ve gelecekteki Gmail e-postalarını eşitleyin.</string>
+  <string name="byoe_spotlight_benefit_read">Gmail e-postalarını okuyun, yanıtlayın ve güncel kalın</string>
+  <string name="byoe_spotlight_benefit_no_ads">Reklam ve izleme yok</string>
+  <string name="byoe_spotlight_benefit_no_tracking">Google, Proton üzerinde ne yaptığınızı izleyemez</string>
+  <string name="byoe_spotlight_import_title">E-postalarınızı içe aktarın</string>
+  <string name="byoe_spotlight_import_body">En yeniler ile başlayın</string>
+  <string name="byoe_spotlight_connect_and_import">Bağlan ve içe aktar</string>
+  <string name="byoe_spotlight_connect">Bağlan</string>
+  <string name="byoe_spotlight_later">Şimdi değil</string>
+  <string name="byoe_spotlight_permissions_note">Sonraki: Tüm izinleri onaylayın. Proton, asla Gmail hesabınızdaki bir şeyi düzenlemek veya silmek için izin istemez</string>
+  <!-- BYOE intro and spotlight, Treatment 2 copy -->
+  <string name="byoe_spotlight_treatment2_subtitle">Gmail hesabınızı bağlayın, gerisini biz hallederiz.</string>
+  <string name="byoe_spotlight_treatment2_benefit_gmail_address">Gmail adresinizden alın ve gönderin. Tümü Proton Mail üzerinden</string>
+  <string name="byoe_spotlight_treatment2_benefit_no_edit">Gmail hesabınızı düzenlemeyeceğiz veya silmeyeceğiz</string>
+  <string name="byoe_spotlight_treatment2_benefit_disconnect">İstediğiniz zaman bağlantıyı kesin. Hiçbir şey bozulmaz</string>
+  <string name="byoe_spotlight_treatment2_permissions_note">Sonraki: Google sizden tüm izinleri onaylamanızı isteyecek. Bağlantının çalışması için tümünü onaylayın.</string>
+</resources>

@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Tunda ini — dan kirimkan nanti. Nikmati ini dan banyak lagi dengan Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Bukan waktu yang tepat untuk menerima email ini?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Tingkatkan paket agar dapat terus mengimpor tanpa kehabisan ruang penyimpanan.</string>
+  <string name="upselling_byoe_storage_title">Jangan biarkan impor terhenti</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Tingkatkan paket dan pindahkan semua Gmail ke satu kotak masuk pribadi.</string>
+  <string name="upselling_byoe_connection_limit_title">Hubungkan hingga 3 alamat Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Tingkatkan untuk fleksibilitas penuh</string>
   <string name="upselling_upgrade_plan_generic">Anda memerlukan langganan Proton Mail berbayar untuk mengakses fitur ini</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Pengelola kata sandi terenkripsi</string>
   <string name="upselling_comparison_table_threat_protection">Perlindungan ancaman tingkat lanjut</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Pilih langganan</string>
   <string name="upselling_select_plan_year">12 bulan</string>

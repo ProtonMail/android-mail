@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Torkuta se – ja toimita se myöhemmin. Nauti tästä ja muusta Mail Plus -palvelulla.</string>
   <string name="upselling_snooze_plus_title">Huono aika tälle sähköpostille?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Päivitä tilauksesi, niin voit jatkaa tuontia ilman, että tila loppuu kesken.</string>
+  <string name="upselling_byoe_storage_title">Älä anna tuonnin pysähtyä</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Päivitä ja siirrä kaikki Gmail-viestisi yhteen yksityiseen Saapuneet-kansioon.</string>
+  <string name="upselling_byoe_connection_limit_title">Yhdistä enintään 3 Gmail-osoitetta</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Päivitä saadaksesi täyden joustavuuden</string>
   <string name="upselling_upgrade_plan_generic">Tarvitset maksullisen Proton Mail -tilauksen käyttääksesi tätä ominaisuutta</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Salattu salasanahallinta</string>
   <string name="upselling_comparison_table_threat_protection">Edistynyt uhkasuojaus</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Unlimited folders, filters, labels</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Valitse tilaus</string>
   <string name="upselling_select_plan_year">12 kuukautta</string>

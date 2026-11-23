@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Danh bạ</string>
+  <string name="drawer_byoe_title">Sử dụng Gmail trong Proton Mail</string>
+  <string name="drawer_byoe_subtitle">Đọc và gửi thư Gmail ngay tại đây mà không bị theo dõi.</string>
+  <string name="drawer_byoe_get_started">Bắt đầu</string>
+  <string name="drawer_byoe_dismiss">Bỏ qua</string>
   <string name="drawer_title_bug_report">Báo cáo sự cố</string>
   <string name="drawer_item_create_label">Tạo nhãn</string>
   <string name="drawer_item_create_folder">Tạo thư mục</string>

@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">Duy trì kết nối, ngay cả khi ngoại tuyến</string>
   <string name="onboarding_feedback_description">Đọc, viết và quản lý email ở mọi nơi. Mọi thứ được tự động đồng bộ ngay khi bạn trực tuyến trở lại.</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">Đang chuyển từ Gmail sang?</string>
+  <string name="onboarding_gmail_description">Tiếp tục dùng địa chỉ Gmail ngay trong Proton Mail. Gửi và nhận email không quảng cáo, không bị theo dõi.</string>
+  <string name="onboarding_gmail_help_me_move">Có, giúp tôi chuyển</string>
+  <string name="onboarding_gmail_no_thanks">Không, cảm ơn</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Tiếp</string>
   <string name="onboarding_get_started">Bắt đầu</string>

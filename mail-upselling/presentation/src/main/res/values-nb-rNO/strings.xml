@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Slumre den — og få den levert senere. Nyt dette og mer med Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Dårlig tidspunkt for denne e-posten?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Oppgrader abonnementet for å fortsette importen uten å gå tom for lagringsplass</string>
+  <string name="upselling_byoe_storage_title">Ikke la importen stoppe opp</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Oppgrader og flytt all Gmail-e-post til én privat innboks</string>
+  <string name="upselling_byoe_connection_limit_title">Koble til opptil 3 Gmail-adresser</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Oppgrader for full fleksibilitet</string>
   <string name="upselling_upgrade_plan_generic">Du trenger et betalt Proton Mail-abonnement for å bruke denne funksjonen</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Kryptert passordbehandler</string>
   <string name="upselling_comparison_table_threat_protection">Avansert trusselbeskyttelse</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Ubegrenset antall mapper, etiketter, filtre</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Velg abonnement</string>
   <string name="upselling_select_plan_year">12 måneder</string>

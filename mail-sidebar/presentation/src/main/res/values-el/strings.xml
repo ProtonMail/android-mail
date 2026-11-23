@@ -18,6 +18,10 @@
   -->
 <resources>
   <string name="drawer_title_contacts">Επαφές</string>
+  <string name="drawer_byoe_title">Χρησιμοποιήστε το Gmail στο Proton Mail</string>
+  <string name="drawer_byoe_subtitle">Διαβάστε και στείλτε μηνύματα Gmail εδώ, χωρίς ιχνηλάτηση.</string>
+  <string name="drawer_byoe_get_started">Ξεκινήστε</string>
+  <string name="drawer_byoe_dismiss">Παράβλεψη</string>
   <string name="drawer_title_bug_report">Αναφορά προβλήματος</string>
   <string name="drawer_item_create_label">Δημιουργία ετικέτας</string>
   <string name="drawer_item_create_folder">Δημιουργία φακέλου</string>

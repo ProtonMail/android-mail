@@ -52,7 +52,7 @@
   <string name="upselling_monthly_to_yearly_stay_on_monthly">Manter o plano mensal</string>
   <!-- Upselling: Plus to Unlimited themed titles -->
   <string name="upselling_pu_generic_title">Leve a sua privacidade online mais longe com o Proton Unlimited</string>
-  <string name="upselling_pu_threat_protection_title">Proteja a sua conta de ameaças com o Proton Sentinel</string>
+  <string name="upselling_pu_threat_protection_title">Proteja a sua conta contra ameaças com Proton Sentinel</string>
   <string name="upselling_pu_aliases_title">Obtenha aliases ilimitados para proteger a sua identidade</string>
   <string name="upselling_pu_drive_title">Obtenha 500 GB para armazenar ficheiros e fotos com segurança</string>
   <string name="upselling_pu_vpn_browse_title">Aceda a uma VPN ultra-rápida com servidores em mais de 110 países</string>
@@ -95,6 +95,13 @@
   <!-- Upselling: Snooze -->
   <string name="upselling_snooze_plus_description_override">Adie-o — e receba-o mais tarde. Desfrute disto e de muito mais com o Mail Plus.</string>
   <string name="upselling_snooze_plus_title">Não é o momento ideal para este e-mail?</string>
+  <!-- Upselling: Gmail import paused because storage is full -->
+  <string name="upselling_byoe_storage_description_override">Atualize o plano para continuar a importar sem ficar sem espaço.</string>
+  <string name="upselling_byoe_storage_title">Não deixe que a importação fique parada</string>
+  <!-- Upselling: Gmail connection limit reached on a free plan -->
+  <string name="upselling_byoe_connection_limit_description_override">Atualize e transfira todo o Gmail para uma única caixa de entrada privada.</string>
+  <string name="upselling_byoe_connection_limit_title">Ligue até 3 endereços do Gmail</string>
+  <!-- Proton product names, shown under their logos -->
   <!-- Upselling - Misc buttons -->
   <string name="upselling_button_hint">Melhore o seu plano para ter total flexibilidade</string>
   <string name="upselling_upgrade_plan_generic">Precisa de uma subscrição paga do Proton Mail para aceder a esta funcionalidade</string>
@@ -119,6 +126,7 @@
   <string name="upselling_comparison_table_password_manager">Gestor de palavras-passe encriptado</string>
   <string name="upselling_comparison_table_threat_protection">Proteção avançada contra ameaças</string>
   <string name="upselling_comparison_table_unlimited_folders_filters_labels">Pastas, filtros e etiquetas ilimitados</string>
+  <string name="upselling_comparison_table_gmail_connections">Gmail connections</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Escolha a subscrição</string>
   <string name="upselling_select_plan_year">12 meses</string>

@@ -28,6 +28,7 @@
   <string name="mail_settings_preferences">환경 설정</string>
   <string name="mail_settings_app">앱 사용자화</string>
   <string name="mail_settings_content_search">이메일 콘텐츠 검색</string>
+  <string name="mail_settings_connect_gmail">Gmail 연결</string>
   <string name="mail_settings_mailbox">메일함 설정</string>
   <string name="mail_settings_new_badge">신규</string>
   <string name="mail_settings_folders_labels">폴더 및 라벨</string>

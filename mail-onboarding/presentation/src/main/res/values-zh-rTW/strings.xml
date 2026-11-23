@@ -26,6 +26,11 @@
   <!--  New Onboarding 3  -->
   <string name="onboarding_feedback_title">即使離線，也能保持連線</string>
   <string name="onboarding_feedback_description">無論身在何處，都能閱讀、撰寫及管理電子郵件。當您重新回到線上，所有內容都會自動同步。</string>
+  <!--  Gmail connection (BYOE), replaces New Onboarding 2 and 3 for users in the experiment  -->
+  <string name="onboarding_gmail_title">要從 Gmail 轉移過來嗎？</string>
+  <string name="onboarding_gmail_description">直接在 Proton Mail 中繼續使用您的 Gmail 位址。收發電子郵件，沒有廣告，也沒有追蹤。</string>
+  <string name="onboarding_gmail_help_me_move">好，協助我轉移</string>
+  <string name="onboarding_gmail_no_thanks">不用了，謝謝</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">下一步</string>
   <string name="onboarding_get_started">入門指南</string>
